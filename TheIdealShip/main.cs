@@ -2,17 +2,16 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Reactor;
+//using Reactor;
 using System;
-using Reactor.Networking.Attributes;
-using UnityEngine;
+//using Reactor.Networking.Attributes;
 
 namespace TheIdealShip;
 
 [BepInPlugin(Id, "The Ideal Ship", VersionString)]
 [BepInProcess("Among Us.exe")]
-[BepInDependency(ReactorPlugin.Id)]
-[ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
+//[BepInDependency(ReactorPlugin.Id)]
+//[ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
 public partial class TheIdealShipPlugin : BasePlugin
 {
     public const string Id = "me.huier.TheIdealShip";
@@ -24,6 +23,6 @@ public partial class TheIdealShipPlugin : BasePlugin
 
     public override void Load()
     {
-
+        Harmony.PatchAll();
     }
 }
