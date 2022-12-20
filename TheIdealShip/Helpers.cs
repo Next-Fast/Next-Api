@@ -12,6 +12,7 @@ namespace TheIdealShip
 {
     public static class Helpers
     {
+        private static Sprite ModStamp;
         public static Dictionary<string, Sprite> CachedSprites = new();
         public static Sprite LoadSpriteFromResources (String path,float pixelsPerUnit)
         {
@@ -48,6 +49,21 @@ namespace TheIdealShip
                 System.Console.WriteLine("Error loading texture from resources: " + path);
             }
             return null;
+        }
+
+        public static Sprite getModStamp()
+        {
+            if (ModStamp) return ModStamp;
+            return ModStamp = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.ModStamp.png", 150f);
+        }
+        public static string GetDev()
+        {
+            string DevText = "\n";
+            if(TheIdealShipPlugin.IsDev)
+            {
+                DevText = DevText+"Dev:"+TheIdealShipPlugin.BuildTime;
+            }
+            return DevText;
         }
     }
 }

@@ -1,5 +1,8 @@
 using UnityEngine;
 using HarmonyLib;
+using TheIdealShip.Utilities;
+using AmongUs.Data;
+using AmongUs.GameOptions;
 
 
 namespace TheIdealShip.Patches
@@ -7,10 +10,6 @@ namespace TheIdealShip.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-        public static void showmodstamp()
-        {
-            ModManager.Instance.ShowModStamp();
-        }
         public static string Credentials =
         $@"
         <size=130%><color=#ff351f>The Ideal Ship</color></size>v{TheIdealShipPlugin.Version.ToString()}
@@ -38,13 +37,31 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
         internal static class PingTrackerPatch
         {
+            public static void modlogo()
+            {
+                var modstamp = GameObject.Find("ModStamp");
+                if (modstamp = null)
+                {
+                    modstamp.layer = UnityEngine.LayerMask.NameToLayer("UI");
+                    var rend = modstamp.AddComponent<SpriteRenderer>();
+                    rend.sprite = Helpers.getModStamp();
+                    rend.color = new Color(1, 1, 1, 0.5f);
+                    modstamp.transform.localScale *= 0.6f;
+                    float offset = (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) ? 0.75f : 0f;
+                    modstamp.transform.position = FastDestroyableSingleton<HudManager>.Instance.MapButton.transform.position + Vector3.down * offset;
+                }
+                else
+                {
+                    ModManager.Instance.ShowModStamp();
+                }
+            }
 
             static void Postfix(PingTracker __instance)
             {
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
-                    __instance.text.text = $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{TheIdealShipPlugin.Version.ToString()}\n" + __instance.text.text;
+                    __instance.text.text = $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{TheIdealShipPlugin.Version.ToString()}\n"+ __instance.text.text;
                 }
                 else
                 {

@@ -8,14 +8,18 @@ using System;
 
 namespace TheIdealShip;
 
-[BepInPlugin(Id, "The Ideal Ship", VersionString)]
+[BepInPlugin(Id, ModName, VersionString)]
 [BepInProcess("Among Us.exe")]
 //[BepInDependency(ReactorPlugin.Id)]
 //[ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
 public partial class TheIdealShipPlugin : BasePlugin
 {
+    public const string AmongUsVersion = "12.8";
+    public const string ModName = "The Ideal Ship";
     public const string Id = "me.huier.TheIdealShip";
-    public const string VersionString ="1.0.0";
+    public const string VersionString = "1.0.0";
+    public const string BuildTime = "";
+    public const bool IsDev = true;
     public static Version Version = Version.Parse(VersionString);
     public Harmony Harmony { get; } = new Harmony(Id);
 
