@@ -2,16 +2,17 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-//using Reactor;
+using Reactor;
 using System;
-//using Reactor.Networking.Attributes;
+using Reactor.Networking.Attributes;
+using TheIdealShip.Languages;
 
 namespace TheIdealShip;
 
 [BepInPlugin(Id, ModName, VersionString)]
 [BepInProcess("Among Us.exe")]
-//[BepInDependency(ReactorPlugin.Id)]
-//[ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
+[BepInDependency(ReactorPlugin.Id)]
+[ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
 public partial class TheIdealShipPlugin : BasePlugin
 {
     // Among Us游玩版本
@@ -26,13 +27,28 @@ public partial class TheIdealShipPlugin : BasePlugin
     public const string BuildTime = "";
     // 是否为开发版本
     public const bool IsDev = true;
+    // Github链接
+    public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
+    // Discord服务器链接
+    public const string DiscordURL = "https://discord.gg/PrjetphRxh";
+    // bilibili链接
+    public const string bilibiliURL = "https://space.bilibili.com/394107547";
+    // KOOK链接
+    public const string KOOKURL = "";
     public static Version Version = Version.Parse(VersionString);
     public Harmony Harmony { get; } = new Harmony(Id);
+    public static TheIdealShipPlugin Instance;
 
     public ConfigEntry<string> ConfigName { get; private set; }
 
     public override void Load()
     {
+        Instance = this;
+
+
+        LanguageCSV.Init();
+        LanguagePack.Init();
+
         Harmony.PatchAll();
     }
 }

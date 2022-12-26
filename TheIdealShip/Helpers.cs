@@ -1,11 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using UnityEngine;
+using System.Net;
 using System.Linq;
-using HarmonyLib;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using UnityEngine;
 using Hazel;
+using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace TheIdealShip
@@ -26,7 +29,7 @@ namespace TheIdealShip
             }
             catch
             {
-                System.Console.WriteLine("Error loading sprite from path: " + path);
+                CWrite("Error loading sprite from path: " + path);
             }
             return null;
         }
@@ -46,9 +49,20 @@ namespace TheIdealShip
             }
             catch
             {
-                System.Console.WriteLine("Error loading texture from resources: " + path);
+                CWrite("Error loading texture from resources: " + path);
             }
             return null;
+        }
+
+        public static string cs(Color c,string s)
+        {
+            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>",ToByte(c.r),ToByte(c.g),ToByte(c.b),ToByte(c.a),s);
+        }
+
+        public static byte ToByte(float f)
+        {
+            f = Mathf.Clamp01(f);
+            return (byte)(f * 255);
         }
 
         public static Sprite getModStamp()
@@ -56,6 +70,7 @@ namespace TheIdealShip
             if (ModStamp) return ModStamp;
             return ModStamp = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.ModStamp.png", 150f);
         }
+
         public static string GetDev()
         {
             string DevText = "\n";
@@ -64,6 +79,18 @@ namespace TheIdealShip
                 DevText = DevText+"Dev:"+TheIdealShipPlugin.BuildTime;
             }
             return DevText;
+        }
+
+        public static string GetNTime()
+        {
+            string time;
+            time = DateTime.Now.ToShortDateString().ToString();
+            return time;
+        }
+
+        public static void CWrite(string Text)
+        {
+            System.Console.WriteLine(Text);
         }
     }
 }

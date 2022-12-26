@@ -1,9 +1,8 @@
 using UnityEngine;
 using HarmonyLib;
 using TheIdealShip.Utilities;
-using AmongUs.Data;
-using AmongUs.GameOptions;
-
+using static TheIdealShip.Languages.Language;
+//using static TheIdealShip.Languages.LanguageCSV;
 
 namespace TheIdealShip.Patches
 {
@@ -11,9 +10,9 @@ namespace TheIdealShip.Patches
     public static class CredentialsPatch
     {
         public static string Credentials =
-        $@"
+        @$"
         <size=130%><color=#ff351f>The Ideal Ship</color></size>v{TheIdealShipPlugin.Version.ToString()}
-        <size=60%><color=#a9e3ff>Modded : MC-AS-Huier</color></size>
+        <size=60%><color=#a9e3ff>{GetString("Credential")}</color></size>
         ";
 
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
@@ -26,7 +25,7 @@ namespace TheIdealShip.Patches
 
                 var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
                 credentials.transform.position = new Vector3(0, 0, 0);
-                credentials.SetText($"v{TheIdealShipPlugin.Version.ToString()}\nModded : MC-AS-Huier<size=30f%>");
+                credentials.SetText($"v{TheIdealShipPlugin.Version.ToString()}\n{GetString("Credential")}<size=30f%>");
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.75f;
 
