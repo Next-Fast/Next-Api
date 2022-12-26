@@ -1,6 +1,6 @@
 [submodule "TheIdealShip-Hats"]
-	path = ./Hats
+	path = Hats
     url = https://github.com/TheIdealShipAU/TheIdealShip-Hats
 [submodule "TheIdealShip-Language-pack"]
-	path = ./Language-pack
+	path = Language-pack
     url = https://github.com/TheIdealShipAU/TheIdealShip-Language-pack
