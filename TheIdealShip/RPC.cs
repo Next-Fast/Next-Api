@@ -7,6 +7,8 @@ namespace TheIdealShip
     enum CustomRPC
     {
         // Main 主要
+        ResetVariables,
+        ShareOptions,
         SetRole,
         SetModifier,
 

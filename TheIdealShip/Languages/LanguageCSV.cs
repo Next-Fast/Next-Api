@@ -99,10 +99,10 @@ namespace TheIdealShip.Languages
         // 获取CSV文本
         public static string GetCString(string str, SupportedLangs langId)
         {
-            var res = $"<INVALID:{str}>";
+            var res = $"{str}";
             if (tr.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "")) //strに該当する&無効なlangIdかresが空
             {
-                res = $"*{dic[0]}";
+                res = $"{dic[0]}";
             }
             return res;
         }
