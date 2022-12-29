@@ -73,7 +73,7 @@ namespace TheIdealShip.Patches
             kookPassiveButton.OnClick = new();
             kookPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(TheIdealShipPlugin.KOOKURL)));
             kookPassiveButton.OnMouseOut.AddListener((Action)(() => kookButtonSprite.color = kookText.color = kookColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("打开目录(KooK)"))));
+            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("KooK"))));
             kookButtonSprite.color = kookText.color = kookColor;
             kookButton.gameObject.SetActive(true);
 
