@@ -11,3 +11,4 @@
 [LasMonjas](https://github.com/KiraYamato94/LasMonjas)
 [Nebula](https://github.com/Dolly1016/Nebula)
 [TownOfHost](https://github.com/tukasa0001/TownOfHost)
+[AUMods](https://github.com/AUModS/AUModS)

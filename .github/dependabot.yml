@@ -9,7 +9,7 @@ updates:
       interval: "monthly"
       time: "17:00"
       timezone: "Asia/Shanghai"
-      labels:
+    labels:
       - "Update dependency"
     target-branch: "develop"
     open-pull-requests-limit: 10

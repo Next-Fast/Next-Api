@@ -60,12 +60,11 @@ namespace TheIdealShip.Patches
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => DiscordText.SetText("Discord"))));
             DiscordButtonSprite.color = DiscordText.color = DiscordColor;
             DiscordButton.gameObject.SetActive(true);
-/*
+
             // 生成Kook按钮
-            if (kookButton = null) kookButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
+            if (kookButton == null) kookButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             kookButton.name = "KooKButton";
-            kookButton.transform.position = DiscordButton.transform.position + new Vector3(0.25f, 0.75f);
-            kookButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
+            kookButton.transform.position = DiscordButton.transform.position + new Vector3(0, 0.65f);
 
             var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             Color kookColor = new Color32(122, 204, 53, byte.MaxValue);
@@ -74,10 +73,10 @@ namespace TheIdealShip.Patches
             kookPassiveButton.OnClick = new();
             kookPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(TheIdealShipPlugin.KOOKURL)));
             kookPassiveButton.OnMouseOut.AddListener((Action)(() => kookButtonSprite.color = kookText.color = kookColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("KooK"))));
+            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("打开目录(KooK)"))));
             kookButtonSprite.color = kookText.color = kookColor;
             kookButton.gameObject.SetActive(true);
-*/
+
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             UpdateButton.name = "UpdateButton";

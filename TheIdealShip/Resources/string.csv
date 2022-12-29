@@ -2,3 +2,19 @@ id,0,13
 
 Credential,Mod: MC-AS-Huier,作者:MC-AS-Huier
 Update,Update,更新
+Preset,Preset,预设
+Preset1,Preset 1,预设 1
+Preset2,Preset 2,预设 2
+Preset3,Preset 3,预设 3
+Preset4,Preset 4,预设 4
+Preset5,Preset 5,预设 5
+GameMode,GameMode,游戏模式
+Classic,Classic,经典
+FreePlay,FreePlay,自由模式
+NoGameEnd,NoGameEnd,禁用游戏结束
+On,On,开启
+Off,Off,关闭
+
+Sheriff,Sheriff,警长
+
+SheriffCooldown,Sheriff Cooldown,执法冷却时间
