@@ -7,7 +7,8 @@ namespace TheIdealShip.Patches
     {
         public static void Prefix(GameStartManager __instance)
         {
-            if (CustomOptionHolder.nogameend.getBool())
+            float time = __instance.countDownTimer;
+            if (CustomOptionHolder.noGameEnd.getBool())
             {
                 __instance.MinPlayers = 1;
                 __instance.countDownTimer = 0;
@@ -15,6 +16,7 @@ namespace TheIdealShip.Patches
             else
             {
                 __instance.MinPlayers = 4;
+                __instance.countDownTimer = time;
             }
         }
     }

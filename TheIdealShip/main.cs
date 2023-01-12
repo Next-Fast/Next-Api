@@ -6,6 +6,7 @@ using Reactor;
 using System;
 using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
+using TheIdealShip.Roles;
 
 namespace TheIdealShip;
 
@@ -22,11 +23,13 @@ public partial class TheIdealShipPlugin : BasePlugin
     // 模组id
     public const string Id = "me.huier.TheIdealShip";
     // 模组版本
-    public const string VersionString = "0.1.0";
+    public const string VersionString = "0.2.0";
+/*
     // 模组构建时间
     public const string BuildTime = "";
     // 是否为开发版本
     public const bool IsDev = true;
+*/
     // Github链接
     public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
     // Discord服务器链接
@@ -48,8 +51,9 @@ public partial class TheIdealShipPlugin : BasePlugin
         Instance = this;
 
         CustomOptionHolder.Load();
+        RoleInfo.Init();
 
-        LanguageCSV.Init();
+        Language.Init();
         LanguagePack.Init();
 
         Harmony.PatchAll();

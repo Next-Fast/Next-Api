@@ -11,10 +11,20 @@ Preset5,Preset 5,预设 5
 GameMode,GameMode,游戏模式
 Classic,Classic,经典
 FreePlay,FreePlay,自由模式
-NoGameEnd,NoGameEnd,禁用游戏结束
+NoGameEnd,NoGameEnd,测试模式
+Block Vanilla Roles,Block Vanilla Roles,禁用原版职业
+Minimum Crewmate Roles,Minimum Crewmate Roles,最小船员职业数
+Maximum Crewmate Roles,Maximum Crewmate Roles,最大船员职业数
+Minimum Neutral Roles,Minimum Neutral Roles,最小中立职业数
+Maximum Neutral Roles,Maximum Neutral Roles,最大中立职业数
+Minimum Impostor Roles,Minimum Impostor Roles,最小内鬼职业数
+Maximum Impostor Roles,Maximum Impostor Roles,最大内鬼职业数
+Minimum Modifier Roles,Minimum Modifier Roles,最小附加职业数
+Maximum Modifier Roles,Maximum Modifier Roles,最大附加职业数
 On,On,开启
 Off,Off,关闭
 
 Sheriff,Sheriff,警长
 
 SheriffCooldown,Sheriff Cooldown,执法冷却时间
+ShootNumber,ShootNumber,执法次数

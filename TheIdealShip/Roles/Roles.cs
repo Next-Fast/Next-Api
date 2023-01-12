@@ -26,7 +26,7 @@ namespace TheIdealShip.Roles
 
         public static void clearAndReloadRoles()
         {
-
+            Sheriff.clearAndReloadRoles();
         }
     }
 }

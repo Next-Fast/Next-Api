@@ -10,7 +10,7 @@ namespace TheIdealShip.Patches
         public static bool keyse = false;
         public static bool Prefix()
         {
-            if (CustomOptionHolder.nogameend.getBool()) return keyse;
+            if (CustomOptionHolder.noGameEnd.getBool()) return keyse;
             return keyse;
         }
     }
