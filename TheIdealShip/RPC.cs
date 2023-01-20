@@ -3,6 +3,8 @@ using HarmonyLib;
 using Hazel;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
+using static TheIdealShip.Roles.Role;
+using static TheIdealShip.HudManagerStartPatch;
 
 namespace TheIdealShip
 {
@@ -14,6 +16,7 @@ namespace TheIdealShip
         WorkaroundSetRoles,
         SetRole,
         SetModifier,
+        setDead,
 
         // Role 职业相关
         SheriffKill,
@@ -23,7 +26,8 @@ namespace TheIdealShip
     {
         public static void ResetVariables()
         {
-
+            clearAndReloadRoles();
+            setCustomButtonCooldowns();
         }
 
         public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -64,6 +68,17 @@ namespace TheIdealShip
 
         }
 
+        public static void setDead(byte id, bool isDead)
+        {
+            foreach (var player in CachedPlayer.AllPlayers)
+            {
+                if (player.PlayerId == id)
+                {
+                    player.Data.IsDead = isDead;
+                }
+            }
+        }
+
         public static void SheriffKill(byte targetId)
         {
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -85,6 +100,10 @@ namespace TheIdealShip
             byte packetId = callId;
             switch (packetId)
             {
+                case (byte)CustomRPC.ResetVariables:
+                    RPCProcedure.ResetVariables();
+                    break;
+
                 case (byte)CustomRPC.WorkaroundSetRoles:
                     RPCProcedure.WorkaroundSetRoles(reader.ReadByte(), reader);
                     break;
@@ -93,6 +112,12 @@ namespace TheIdealShip
                     byte roleId = reader.ReadByte();
                     byte playerId = reader.ReadByte();
                     RPCProcedure.setRole(roleId, playerId);
+                    break;
+
+                case (byte)CustomRPC.setDead:
+                    byte id = reader.ReadByte();
+                    bool isDead = reader.ReadBoolean();
+                    RPCProcedure.setDead(id, isDead);
                     break;
 
                 case (byte)CustomRPC.SheriffKill:

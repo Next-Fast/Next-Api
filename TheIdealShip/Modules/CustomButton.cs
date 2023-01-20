@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using TheIdealShip.Utilities;
+using TheIdealShip.Roles;
 
 namespace TheIdealShip.Modules
 {
@@ -29,6 +30,7 @@ namespace TheIdealShip.Modules
         public SpriteRenderer actionButtonRenderer;
         public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
+        public PlayerControl Role;
         public bool isEffectActive = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
@@ -102,14 +104,18 @@ namespace TheIdealShip.Modules
 
         public void onClickEvent()
         {
-            actionButtonRenderer.color = new Color(1f,1f,1f,0.3f);
-            this.OnClick();
-
-            if (this.HasEffect && !this.isEffectActive)
+            if (this.Timer < 0f && HasButton() && CouldUse())
             {
-                this.Timer = this.EffectDuration;
-                actionButton.cooldownTimerText.color = new Color(0F,0.8F,0F);
-                this.isEffectActive = true;
+                actionButtonRenderer.color = new Color(1f,1f,1f,0.3f);
+                this.OnClick();
+
+
+                if (this.HasEffect && !this.isEffectActive)
+                {
+                    this.Timer = this.EffectDuration;
+                    actionButton.cooldownTimerText.color = new Color(0F,0.8F,0F);
+                    this.isEffectActive = true;
+                }
             }
         }
 
@@ -163,19 +169,27 @@ namespace TheIdealShip.Modules
                 }
             }
         }
-
+        /*
+                public void setActive(bool isActive)
+                {
+                    if (isActive)
+                    {
+                        actionButtonGameObject.SetActive(true);
+                        actionButtonRenderer.enabled = true;
+                    }
+                    else
+                    {
+                        actionButtonGameObject.SetActive(false);
+                        actionButtonRenderer.enabled = false;
+                    }
+                }
+        */
         public void setActive(bool isActive)
         {
             if (isActive)
-            {
-                actionButtonGameObject.SetActive(true);
-                actionButtonRenderer.enabled = true;
-            }
+                actionButton.Show();
             else
-            {
-                actionButtonGameObject.SetActive(false);
-                actionButtonRenderer.enabled = false;
-            }
+                actionButton.Hide();
         }
 
         public void Update()
@@ -188,7 +202,7 @@ namespace TheIdealShip.Modules
                 setActive(false);
                 return;
             }
-            setActive(hudManager.UseButton.isActiveAndEnabled);
+            setActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
 
             actionButtonRenderer.sprite = sprite;
 
@@ -197,16 +211,25 @@ namespace TheIdealShip.Modules
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 actionButton.transform.localPosition = pos + PositionOffset;
             }
-
+            /*
+                        if (CouldUse())
+                        {
+                            actionButtonRenderer.color = actionButtonLabelText.color = Palette.EnabledColor;
+                            actionButtonMat.SetFloat(Desat,0f);
+                        }
+                        else
+                        {
+                            actionButtonRenderer.color = actionButtonLabelText.color = Palette.DisabledClear;
+                            actionButtonMat.SetFloat(Desat, 1f);
+                        }
+            */
             if (CouldUse())
             {
-                actionButtonRenderer.color = actionButtonLabelText.color = Palette.EnabledColor;
-                actionButtonMat.SetFloat(Desat,0f);
+                actionButton.SetEnabled();
             }
             else
             {
-                actionButtonRenderer.color = actionButtonLabelText.color = Palette.DisabledClear;
-                actionButtonMat.SetFloat(Desat, 1f);
+                actionButton.SetDisabled();
             }
 
             if (Timer >= 0)

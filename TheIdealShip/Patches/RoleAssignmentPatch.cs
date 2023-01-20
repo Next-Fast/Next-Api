@@ -6,9 +6,9 @@ using HarmonyLib;
 using AmongUs.GameOptions;
 using Hazel;
 using TheIdealShip.Utilities;
-using static  TheIdealShip.Roles.Roles;
 using static RoleManager;
 using TheIdealShip.Roles;
+using static TheIdealShip.Roles.Role;
 
 namespace TheIdealShip.Patches
 {

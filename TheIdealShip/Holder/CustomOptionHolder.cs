@@ -1,8 +1,6 @@
-using System;
-using static TheIdealShip.Languages.Language;
-using UnityEngine;
 using TheIdealShip.Modules;
 using TheIdealShip.Roles;
+using UnityEngine;
 using Types = TheIdealShip.Modules.CustomOption.CustomOptionType;
 
 namespace TheIdealShip
@@ -22,6 +20,7 @@ namespace TheIdealShip
         public static CustomOption presetSelection;
         public static CustomOption modeOption;
         public static CustomOption noGameEnd;
+        public static CustomOption showExilePlayerRole;
         public static CustomOption activateRoles;
         public static CustomOption crewmateRolesCountMin;
         public static CustomOption crewmateRolesCountMax;
@@ -31,10 +30,17 @@ namespace TheIdealShip
         public static CustomOption impostorRolesCountMax;
         public static CustomOption modifierRolesCountMin;
         public static CustomOption modifierRolesCountMax;
+        public static CustomOption disableHauntMenu;
+        public static CustomOption PlayerOption;
+        public static CustomOption PlayerGhostSpeed;
+        public static CustomOption jiarennumber;
 
         public static CustomOption sheriffSpawnRate;
         public static CustomOption sheriffCooldown;
         public static CustomOption sheriffshootNumber;
+
+        public static CustomOption flashSpawnRate;
+        public static CustomOption flashSpeed;
 
         public static void Load()
         {
@@ -42,23 +48,33 @@ namespace TheIdealShip
 
             presetSelection = CustomOption.Create(0, Types.General, cs(GeneralColor, "Preset"), presets, null, true);
             //modeOption = CustomOption.Create(1,Types.General,"GameMode",modeset,null,true);
-            noGameEnd = CustomOption.Create(2,Types.General,cs(GeneralColor,"NoGameEnd"),false,null,true);
-            activateRoles = CustomOption.Create(3,Types.General,cs(GeneralColor,"Block Vanilla Roles"),true,null,true);
+            noGameEnd = CustomOption.Create(2, Types.General,cs(GeneralColor,"NoGameEnd"),false,null,true);
+            jiarennumber = CustomOption.Create(16, Types.General, "jiaren", 0f, 0f, 15f, 1f);
+            showExilePlayerRole = CustomOption.Create(3, Types.General, cs(GeneralColor,"ShowExilePlayerRole"), false,null,true);
+            activateRoles = CustomOption.Create(4,Types.General,cs(GeneralColor,"Block Vanilla Roles"),true,null,true);
 
-            crewmateRolesCountMin = CustomOption.Create(4,Types.General,cs(GeneralColor,"Minimum Crewmate Roles"),15f, 0f, 15f, 1f);
-            crewmateRolesCountMax = CustomOption.Create(5,Types.General,cs(GeneralColor,"Maximum Crewmate Roles"),15f, 0f, 15f, 1f);
-            neutralRolesCountMin = CustomOption.Create(6,Types.General,cs(GeneralColor,"Minimum Neutral Roles"),15f, 0f, 15f, 1f);
-            neutralRolesCountMax = CustomOption.Create(7,Types.General,cs(GeneralColor,"Maximum Neutral Roles"),15f, 0f, 15f, 1f);
-            impostorRolesCountMin = CustomOption.Create(8, Types.General, cs(GeneralColor, "Minimum Impostor Roles"), 15f, 0f, 15f, 1f);
-            impostorRolesCountMax = CustomOption.Create(9, Types.General, cs(GeneralColor, "Maximum Impostor Roles"), 15f, 0f, 15f, 1f);
-            modifierRolesCountMin = CustomOption.Create(10, Types.General, cs(GeneralColor, "Minimum Modifier Roles"), 15f, 0f, 15f, 1f);
-            modifierRolesCountMax = CustomOption.Create(11, Types.General, cs(GeneralColor, "Maximum Modifier Roles"), 15f, 0f, 15f, 1f);
+            crewmateRolesCountMin = CustomOption.Create(5, Types.General,cs(GeneralColor,"Minimum Crewmate Roles"),15f, 0f, 15f, 1f);
+            crewmateRolesCountMax = CustomOption.Create(6, Types.General,cs(GeneralColor,"Maximum Crewmate Roles"),15f, 0f, 15f, 1f);
+            neutralRolesCountMin = CustomOption.Create(7, Types.General,cs(GeneralColor,"Minimum Neutral Roles"),15f, 0f, 15f, 1f);
+            neutralRolesCountMax = CustomOption.Create(8, Types.General,cs(GeneralColor,"Maximum Neutral Roles"),15f, 0f, 15f, 1f);
+            impostorRolesCountMin = CustomOption.Create(9, Types.General, cs(GeneralColor, "Minimum Impostor Roles"), 15f, 0f, 15f, 1f);
+            impostorRolesCountMax = CustomOption.Create(10, Types.General, cs(GeneralColor, "Maximum Impostor Roles"), 15f, 0f, 15f, 1f);
+            modifierRolesCountMin = CustomOption.Create(11, Types.General, cs(GeneralColor, "Minimum Modifier Roles"), 15f, 0f, 15f, 1f);
+            modifierRolesCountMax = CustomOption.Create(12, Types.General, cs(GeneralColor, "Maximum Modifier Roles"), 15f, 0f, 15f, 1f);
+
+            PlayerOption = CustomOption.Create(14, Types.General, "PlayerOption", false, null, true);
+            disableHauntMenu = CustomOption.Create(13, Types.General, "disableHauntMenu", false, PlayerOption);
+            PlayerGhostSpeed = CustomOption.Create(15, Types.General, "PlayerGhostSpeed", 3f, 1f, 10f, 0.5f, PlayerOption);
 
             //                                     Id Tap分类            选项名                              父项   为父项
-            sheriffSpawnRate = CustomOption.Create(20, Types.Crewmate, cs( Sheriff.color, "Sheriff"), rates, null, true);
+            sheriffSpawnRate = CustomOption.Create(20, Types.Crewmate, cs(Sheriff.color, "Sheriff"), rates, null, true);
             //                                    ID  Tap分类          选项名             默认 最小 最大 间隔   父项
             sheriffCooldown = CustomOption.Create(21, Types.Crewmate, "SheriffCooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
             sheriffshootNumber = CustomOption.Create(22, Types.Crewmate, "ShootNumber", 5f,1f,15f,1f,sheriffSpawnRate);
+
+            // modifier 附加职业
+            flashSpawnRate = CustomOption.Create(100, Types.Modifier, cs(Flash.color, "Flash"), rates, null, true);
+            flashSpeed = CustomOption.Create(101, Types.Modifier, "Speed", 5f, 1f, 10f, 0.5f, flashSpawnRate);
         }
     }
 }

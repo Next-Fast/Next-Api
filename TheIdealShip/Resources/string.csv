@@ -12,6 +12,7 @@ GameMode,GameMode,游戏模式
 Classic,Classic,经典
 FreePlay,FreePlay,自由模式
 NoGameEnd,NoGameEnd,测试模式
+ShowExilePlayerRole,Show Exile Player Role,放逐后显示玩家职业
 Block Vanilla Roles,Block Vanilla Roles,禁用原版职业
 Minimum Crewmate Roles,Minimum Crewmate Roles,最小船员职业数
 Maximum Crewmate Roles,Maximum Crewmate Roles,最大船员职业数
@@ -21,10 +22,23 @@ Minimum Impostor Roles,Minimum Impostor Roles,最小内鬼职业数
 Maximum Impostor Roles,Maximum Impostor Roles,最大内鬼职业数
 Minimum Modifier Roles,Minimum Modifier Roles,最小附加职业数
 Maximum Modifier Roles,Maximum Modifier Roles,最大附加职业数
+disableHauntMenu,Disable Haunt Menu,禁用幽幽鬼影
+PlayerOption,Player Option,玩家选项
+PlayerGhostSpeed,Player Ghost Speed,玩家幽灵速度
 On,On,开启
 Off,Off,关闭
+Roles,Roles,职业
+Modifiers,Modifiers,附加职业
+exileText,{0} was the {1},{0} 是 {1}
+jiaren,jiaren,假人数量
+Crewmate,Crewmate,船员
+Impostor,Impostor,内鬼
 
 Sheriff,Sheriff,警长
 
 SheriffCooldown,Sheriff Cooldown,执法冷却时间
 ShootNumber,ShootNumber,执法次数
+
+SheriffIntroD,1,接受正义的裁决吧
+
+SheriffTaskText,1,速速去执法坏人

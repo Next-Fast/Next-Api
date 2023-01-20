@@ -4,7 +4,7 @@ using Il2CppInterop.Runtime;
 using UnityEngine;
 
 namespace TheIdealShip.Utilities;
-
+// From TheOtherRole
 public static unsafe class FastDestroyableSingleton<T> where T : MonoBehaviour
 {
     private static readonly IntPtr _fieldPtr;

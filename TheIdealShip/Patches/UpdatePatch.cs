@@ -75,15 +75,15 @@ namespace TheIdealShip.Patches
         static void SetNameColors()
         {
             var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-            var localRoleInfo = RoleInfo.getRoleInfoForPlayer(localPlayer, false).FirstOrDefault();
+            var localRoleInfo = RoleInfo.GetRoleInfo(localPlayer, false);
             setPlayerNameColor(localPlayer, localRoleInfo.color);
          //   if (localPlayer == Sheriff.sheriff)
          //   setPlayerNameColor(localPlayer, RoleInfo.sheriff.color);
         }
         static void updateVentButton(HudManager __instance)
         {
-            if(MeetingHud.Instance) __instance.ImpostorVentButton.Hide();
-            else if (!__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
+            if(MeetingHud.Instance || CachedPlayer.LocalPlayer.Data.IsDead) __instance.ImpostorVentButton.Hide();
+            else if (CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor &&!__instance.ImpostorVentButton.isActiveAndEnabled) __instance.ImpostorVentButton.Show();
         }
 
         static void updateUseButton(HudManager __instance)

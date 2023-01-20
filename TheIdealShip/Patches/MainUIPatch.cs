@@ -91,12 +91,12 @@ namespace TheIdealShip.Patches
             UpdatePassiveButton.OnClick.AddListener((Action)(() =>
             {
                 UpdateButton.SetActive(false);
-                ModUpdate.UpdateMod();
+                ModUpdater.UpdateMod();
             }));
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
             UpdateButtonSprite.size *= 1.5f;
-            UpdateButton.SetActive(ModUpdate.HUpdate);
+            UpdateButton.SetActive(ModUpdater.HUpdate);
         }
     }
 }
