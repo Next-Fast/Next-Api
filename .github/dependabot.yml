@@ -11,5 +11,5 @@ updates:
       timezone: "Asia/Shanghai"
     labels:
       - "Update dependency"
-    target-branch: "develop"
+    target-branch: "dependency"
     open-pull-requests-limit: 10

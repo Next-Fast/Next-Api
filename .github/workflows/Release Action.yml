@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'Release Action.yml'
+      - '**.yml'
 
 jobs:
   build:
