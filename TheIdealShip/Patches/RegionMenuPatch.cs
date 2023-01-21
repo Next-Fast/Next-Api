@@ -202,7 +202,10 @@ namespace TheIdealShip.Patches
                     UpdateRegions();
                 }
             }
-
+            if (isHttpsButton.transform.position != pos - new Vector3(0f, 3f, 0f))
+            {
+                isHttpsButton.transform.position = pos - new Vector3(0f, 3f, 0f);
+            }
         }
 
         // This is part of the Mini.RegionInstaller, Licensed under GPLv3
