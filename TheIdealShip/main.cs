@@ -7,6 +7,7 @@ using System;
 using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
+using TheIdealShip.Patches;
 
 namespace TheIdealShip
 {
@@ -44,19 +45,19 @@ namespace TheIdealShip
         public static TheIdealShipPlugin Instance;
 
         public ConfigEntry<string> ConfigName { get; private set; }
-//        public static ConfigEntry<string> CustomIp { get; set; }
-//        public static ConfigEntry<ushort> CustomPort { get; set; }
-//        public static ConfigEntry<bool> isHttps { get; set;}
+        public static ConfigEntry<string> CustomIp { get; set; }
+        public static ConfigEntry<ushort> CustomPort { get; set; }
+        public static ConfigEntry<bool> isHttps { get; set;}
 
         public override void Load()
         {
             Logger = Log;
             Instance = this;
 
-//            CustomIp = Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
-//            CustomPort = Config.Bind("Custom", "Custom Server Port", (ushort)22023);
-//            isHttps = Config.Bind("Custom","Custom Server protocol",false);
-//            UpdateRegions();
+            CustomIp = Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
+            CustomPort = Config.Bind("Custom", "Custom Server Port", (ushort)22000);
+            isHttps = Config.Bind("Custom","Custom Server isHttps", false);
+            RegionMenuOpenPatch.UpdateRegions();
 
             Harmony.PatchAll();
 

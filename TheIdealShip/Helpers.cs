@@ -14,6 +14,7 @@ using System.Collections;
 using TheIdealShip.Utilities;
 using Il2CppInterop.Runtime.InteropTypes;
 using System.Linq.Expressions;
+using Il2CppInterop.Runtime;
 
 namespace TheIdealShip
 {

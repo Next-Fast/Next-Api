@@ -30,6 +30,34 @@ namespace TheIdealShip.Modules
 
             Dialogue.gameObject.SetActive(false);
             isCreate = false;
+            AddButton(new Vector2(0, 0),"1","1",Dialogue.gameObject, Color.white);
+        }
+
+        public static void AddButton(Vector2 size, string name, string display,GameObject parent, Color color)
+        {
+            GameObject obj = new GameObject(name);
+
+            obj.transform.SetParent(parent.transform);
+
+            obj.transform.localScale = new Vector3(1f, 1f, 1f);
+            var renderer = obj.AddComponent<SpriteRenderer>();
+            var collider = obj.AddComponent<BoxCollider2D>();
+
+            var text = GameObject.Instantiate(HudManager.Instance.Dialogue.target);
+            text.transform.SetParent(obj.transform);
+            text.transform.localScale = new Vector3(1f, 1f, 1f);
+            text.transform.localPosition = new Vector3(0f, 0f, -1f);
+
+
+            renderer.drawMode = SpriteDrawMode.Tiled;
+            renderer.size = size;
+            renderer.color = color;
+
+            text.alignment = TMPro.TextAlignmentOptions.Center;
+            text.rectTransform.sizeDelta = new Vector2(size.x - 0.15f, 0.2f);
+            text.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            text.text = display;
+            text.fontSize = text.fontSizeMax = text.fontSizeMax = 2f;
         }
     }
 }

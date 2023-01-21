@@ -49,23 +49,25 @@ namespace TheIdealShip
 
         public static void setRole(byte roleId, byte playerId)
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            var player = Helpers.GetPlayerForId(playerId);
+
+            switch((RoleId)roleId)
             {
-                if (player.PlayerId == playerId)
-                {
-                    switch((RoleId)roleId)
-                    {
-                        case RoleId.Sheriff:
-                            Sheriff.sheriff = player;
-                            break;
-                    }
-                }
+                case RoleId.Sheriff:
+                    Sheriff.sheriff = player;
+                    break;
             }
         }
 
         public static void setModifier(byte modifierId, byte playerId, byte flag)
         {
-
+            var player = Helpers.GetPlayerForId(playerId);
+            switch((RoleId)modifierId)
+            {
+                case RoleId.Flash:
+                    Flash.flash = player;
+                    break;
+            }
         }
 
         public static void setDead(byte id, bool isDead)
@@ -112,6 +114,13 @@ namespace TheIdealShip
                     byte roleId = reader.ReadByte();
                     byte playerId = reader.ReadByte();
                     RPCProcedure.setRole(roleId, playerId);
+                    break;
+
+                case (byte)CustomRPC.SetModifier:
+                    byte modifierId = reader.ReadByte();
+                    byte pId = reader.ReadByte();
+                    byte flag = reader.ReadByte();
+                    RPCProcedure.setModifier(modifierId, pId, flag);
                     break;
 
                 case (byte)CustomRPC.setDead:

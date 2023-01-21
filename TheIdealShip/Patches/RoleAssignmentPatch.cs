@@ -62,7 +62,7 @@ namespace TheIdealShip.Patches
            // assignDependentRoles(data); // Assign roles that may have a dependent role
            // assignChanceRoles(data); // Assign roles that may or may not be in the game last
            // assignRoleTargets(data); // Assign targets for Lawyer & Prosecutor
-           // assignModifiers(); // Assign modifier
+            assignModifiers(); // Assign modifier
             setRolesAgain();
         }
 
@@ -189,6 +189,96 @@ namespace TheIdealShip.Patches
             }
         }
 
+        private static void assignChanceRoles(RoleAssignmentData data)
+        {
+            // Get all roles where the chance to occur is set grater than 0% but not 100% and build a ticket pool based on their weight
+            List<byte> crewmateTickets = data.crewSettings.Where(x => x.Value > 0 && x.Value < 10).Select(x => Enumerable.Repeat(x.Key, x.Value)).SelectMany(x => x).ToList();
+            List<byte> neutralTickets = data.neutralSettings.Where(x => x.Value > 0 && x.Value < 10).Select(x => Enumerable.Repeat(x.Key, x.Value)).SelectMany(x => x).ToList();
+            List<byte> impostorTickets = data.impSettings.Where(x => x.Value > 0 && x.Value < 10).Select(x => Enumerable.Repeat(x.Key, x.Value)).SelectMany(x => x).ToList();
+
+            // Assign roles until we run out of either players we can assign roles to or run out of roles we can assign to players
+            while (
+                (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && impostorTickets.Count > 0) ||
+                (data.crewmates.Count > 0 && (
+                    (data.maxCrewmateRoles > 0 && crewmateTickets.Count > 0) ||
+                    (data.maxNeutralRoles > 0 && neutralTickets.Count > 0)
+                )))
+            {
+
+                Dictionary<RoleType, List<byte>> rolesToAssign = new Dictionary<RoleType, List<byte>>();
+                if (data.crewmates.Count > 0 && data.maxCrewmateRoles > 0 && crewmateTickets.Count > 0) rolesToAssign.Add(RoleType.Crewmate, crewmateTickets);
+                if (data.crewmates.Count > 0 && data.maxNeutralRoles > 0 && neutralTickets.Count > 0) rolesToAssign.Add(RoleType.Neutral, neutralTickets);
+                if (data.impostors.Count > 0 && data.maxImpostorRoles > 0 && impostorTickets.Count > 0) rolesToAssign.Add(RoleType.Impostor, impostorTickets);
+
+                // Randomly select a pool of role tickets to assign a role from next (Crewmate role, Neutral role or Impostor role)
+                // then select one of the roles from the selected pool to a player
+                // and remove all tickets of this role (and any potentially blocked role pairings) from the pool(s)
+                var roleType = rolesToAssign.Keys.ElementAt(rnd.Next(0, rolesToAssign.Keys.Count()));
+                var players = roleType == RoleType.Crewmate || roleType == RoleType.Neutral ? data.crewmates : data.impostors;
+                var index = rnd.Next(0, rolesToAssign[roleType].Count);
+                var roleId = rolesToAssign[roleType][index];
+                setRoleToRandomPlayer(roleId, players);
+                rolesToAssign[roleType].RemoveAll(x => x == roleId);
+
+                // Adjust the role limit
+                switch (roleType)
+                {
+                    case RoleType.Crewmate: data.maxCrewmateRoles--; break;
+                    case RoleType.Neutral: data.maxNeutralRoles--; break;
+                    case RoleType.Impostor: data.maxImpostorRoles--; break;
+                }
+            }
+        }
+
+        private static void assignModifiers()
+        {
+            var modifierMin = CustomOptionHolder.modifierRolesCountMin.getSelection();
+            var modifierMax = CustomOptionHolder.modifierRolesCountMax.getSelection();
+            if (modifierMin > modifierMax) modifierMin = modifierMax;
+            int modifierCountSettings = rnd.Next(modifierMin, modifierMax + 1);
+            List<PlayerControl> players = PlayerControl.AllPlayerControls.ToArray().ToList();
+            int modifierCount = Mathf.Min(players.Count, modifierCountSettings);
+            if (modifierCount == 0) return;
+
+            List<RoleId> allModifiers = new List<RoleId>();
+            List<RoleId> ensuredModifiers = new List<RoleId>();
+            List<RoleId> chanceModifiers = new List<RoleId>();
+            allModifiers.AddRange
+            (
+            new List<RoleId>
+            {
+                RoleId.Flash
+            }
+            );
+
+            foreach (RoleId m in allModifiers)
+            {
+                if (getSelectionForRoleId(m) == 10) ensuredModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m) / 10));
+                else chanceModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m)));
+            }
+
+            assignModifiersToPlayers(ensuredModifiers, players, modifierCount); // Assign ensured modifier
+
+            modifierCount -= ensuredModifiers.Count;
+            if (modifierCount <= 0) return;
+            int chanceModifierCount = Mathf.Min(modifierCount, chanceModifiers.Count);
+            List<RoleId> chanceModifierToAssign = new List<RoleId>();
+            while (chanceModifierCount > 0 && chanceModifiers.Count > 0)
+            {
+                var index = rnd.Next(0, chanceModifiers.Count);
+                RoleId modifierId = chanceModifiers[index];
+                chanceModifierToAssign.Add(modifierId);
+
+                int modifierSelection = getSelectionForRoleId(modifierId);
+                while (modifierSelection > 0)
+                {
+                    chanceModifiers.Remove(modifierId);
+                    modifierSelection--;
+                }
+                chanceModifierCount--;
+            }
+        }
+
         private static byte setRoleToRandomPlayer(byte roleId, List<PlayerControl> playerList)
         {
             var index = rnd.Next(0, playerList.Count);
@@ -218,6 +308,58 @@ namespace TheIdealShip.Patches
                     writer.WritePacked((uint)option.Item2);
                 }
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
+        }
+
+        private static int getSelectionForRoleId(RoleId roleId)
+        {
+            int selection = 0;
+            switch (roleId)
+            {
+                case RoleId.Flash :
+                    selection = CustomOptionHolder.flashSpawnRate.getSelection();
+                    break;
+            }
+
+            return selection;
+        }
+
+        private static byte setModifierToRandomPlayer(byte modifierId, List<PlayerControl> playerList, byte flag = 0)
+        {
+            if (playerList.Count == 0) return Byte.MaxValue;
+            var index = rnd.Next(0, playerList.Count);
+            byte playerId = playerList[index].PlayerId;
+            playerList.RemoveAt(index);
+
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.SetModifier, Hazel.SendOption.Reliable, -1);
+            writer.Write(modifierId);
+            writer.Write(playerId);
+            writer.Write(flag);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.setModifier(modifierId, playerId, flag);
+            return playerId;
+        }
+
+        private static void assignModifiersToPlayers(List<RoleId> modifiers, List<PlayerControl> playerList, int modifierCount)
+        {
+            modifiers = modifiers.OrderBy(x => rnd.Next()).ToList(); // randomize list
+
+            while (modifierCount < modifiers.Count)
+            {
+                var index = rnd.Next(0, modifiers.Count);
+                modifiers.RemoveAt(index);
+            }
+
+            byte playerId;
+
+            List<PlayerControl> crewPlayer = new List<PlayerControl>(playerList);
+            crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || RoleInfo.getRoleInfoForPlayer(x).Any(r => r.type == RoleInfo.RoleType.Neutral));
+
+            foreach (RoleId modifier in modifiers)
+            {
+                if (playerList.Count == 0) break;
+                playerId = setModifierToRandomPlayer((byte)modifier, playerList);
+                playerList.RemoveAll(x => x.PlayerId == playerId);
             }
         }
     }

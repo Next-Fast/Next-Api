@@ -1,6 +1,6 @@
-/*
-// Adapted from https://github.com/MoltenMods/Unify
 
+// Adapted from https://github.com/MoltenMods/Unify
+/*
 MIT License
 Copyright (c) 2021 Daemon
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,6 +18,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
 
 
 using HarmonyLib;
@@ -34,7 +35,8 @@ namespace TheIdealShip.Patches
     {
         private static TextBoxTMP ipField;
         private static TextBoxTMP portField;
-//        private static GameObject isHttpsButton;
+        private static GameObject isHttpsButton;
+        private static Vector3 pos = new Vector3(3f, 2f, -100f);
 
         public static void Postfix(RegionMenu __instance)
         {
@@ -51,7 +53,6 @@ namespace TheIdealShip.Patches
                 {
                     portField.gameObject.SetActive(false);
                 }
-                /*
                 if (isHttpsButton != null)
                 {
                     isHttpsButton.gameObject.SetActive(false);
@@ -68,7 +69,6 @@ namespace TheIdealShip.Patches
                 {
                     portField.gameObject.SetActive(true);
                 }
-                /*
                 if (isHttpsButton != null)
                 {
                     isHttpsButton.gameObject.SetActive(true);
@@ -94,15 +94,15 @@ namespace TheIdealShip.Patches
                 if (arrow == null || arrow.gameObject == null) return;
                 UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
-                ipField.transform.localPosition = new Vector3(3f, -1f, -100f);
+                ipField.transform.localPosition = pos - new Vector3(0f, 1f, 0f);
                 ipField.characterLimit = 30;
                 ipField.AllowSymbols = true;
                 ipField.ForceUppercase = false;
-                ipField.SetText(TheIdealShipPlugin.CustomIp.Value);
+                ipField.SetText(TheIdealShipPlugin.CustomIp.Value.ToString());
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
                 {
-                    ipField.outputText.SetText(TheIdealShipPlugin.CustomIp.Value);
-                    ipField.SetText(TheIdealShipPlugin.CustomIp.Value);
+                    ipField.outputText.SetText(TheIdealShipPlugin.CustomIp.Value.ToString());
+                    ipField.SetText(TheIdealShipPlugin.CustomIp.Value.ToString());
                 })));
 
                 ipField.ClearOnFocus = false;
@@ -131,7 +131,7 @@ namespace TheIdealShip.Patches
                 var arrow = portField.transform.FindChild("arrowEnter");
                 UnityEngine.Object.DestroyImmediate(arrow.gameObject);
 
-                portField.transform.localPosition = new Vector3(3f, -1.75f, -100f);
+                portField.transform.localPosition = pos - new Vector3(0f, 2f, 0f);
                 portField.characterLimit = 5;
                 portField.SetText(TheIdealShipPlugin.CustomPort.Value.ToString());
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
@@ -168,36 +168,36 @@ namespace TheIdealShip.Patches
                 }
             }
 
-            if (isHttpsButton = null)
+            if (isHttpsButton == null || isHttpsButton.gameObject == null)
             {
-                isHttpsButton = UnityEngine.Object.Instantiate(GameObject.Find("ExitGameButton"), __instance.transform);
-                isHttpsButton.name = "isHttps";
-                isHttpsButton.transform.localPosition = ipField.transform.localPosition + new Vector3(0,1,0);
+                GameObject tf = GameObject.Find("NormalMenu/BackButton");
 
-                var isHttpsText = isHttpsButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                isHttpsButton = UnityEngine.Object.Instantiate(tf,__instance.transform);
+                isHttpsButton.name = "isHttpsButton";
+                isHttpsButton.transform.position = pos - new Vector3(0f, 3f, 0f);
+
+                var text = isHttpsButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 PassiveButton isHttpsPassiveButton = isHttpsButton.GetComponent<PassiveButton>();
                 SpriteRenderer isHttpsButtonSprite = isHttpsButton.GetComponent<SpriteRenderer>();
                 isHttpsPassiveButton.OnClick = new();
-                isHttpsPassiveButton.OnClick.AddListener((Action)(() => {
+                isHttpsPassiveButton.OnClick.AddListener((UnityAction)act);
+                text.SetText("isHttps");
+                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => text.SetText("isHttps"))));
+                isHttpsButton.gameObject.SetActive(isCustomRegion);
+
+                void act()
+                {
                     if (TheIdealShipPlugin.isHttps.Value)
                     {
                         TheIdealShipPlugin.isHttps.Value = false;
-                        isHttpsButtonSprite.color = Palette.DisabledClear;
                     }
                     else
                     {
                         TheIdealShipPlugin.isHttps.Value = true;
-                        isHttpsButtonSprite.color = Palette.EnabledColor;
                     }
-                }));
-                isHttpsText.SetText("isHttps");
-                if (TheIdealShipPlugin.isHttps.Value)
-                {
-                    isHttpsButtonSprite.color = Palette.DisabledClear;
-                }
-                else
-                {
-                    isHttpsButtonSprite.color = Palette.EnabledColor;
+                    Color isHttpsColor = TheIdealShipPlugin.isHttps.Value ? Palette.AcceptedGreen : Palette.White;
+                    isHttpsPassiveButton.OnMouseOut.AddListener((Action)(() => isHttpsButtonSprite.color = isHttpsColor));
+                    UpdateRegions();
                 }
             }
 
@@ -208,12 +208,15 @@ namespace TheIdealShip.Patches
 
         public static void UpdateRegions()
         {
-            //            string serverIp = TheIdealShipPlugin.isHttps.Value ? "https://" : "http://" + TheIdealShipPlugin.CustomIp.Value;
-            ServerInfo serverInfo = new ServerInfo("Custom", TheIdealShipPlugin.CustomIp.Value, TheIdealShipPlugin.CustomPort.Value, false);
+            string serverIp = (TheIdealShipPlugin.isHttps.Value ? "https://" : "http://" ) + TheIdealShipPlugin.CustomIp.Value;
+            ServerInfo MCCNServer = new ServerInfo("MC-CN","http://au.pafyx.top",22000,false);
+            ServerInfo serverInfo = new ServerInfo("Custom", serverIp, TheIdealShipPlugin.CustomPort.Value, false);
             ServerInfo[] SInfo = new ServerInfo[] {serverInfo};
+            ServerInfo[] MSInfo = new ServerInfo[] {MCCNServer};
             ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
             var regions = new IRegionInfo[] {
-                new StaticHttpRegionInfo("Custom", StringNames.NoTranslation,TheIdealShipPlugin.CustomIp.Value, SInfo).CastFast<IRegionInfo>()
+                new StaticHttpRegionInfo("Custom", StringNames.NoTranslation, serverIp, SInfo).CastFast<IRegionInfo>(),
+                new StaticHttpRegionInfo("MC-CN", StringNames.NoTranslation, "http://au.pafyx.top", MSInfo).CastFast<IRegionInfo>()
             };
 
             IRegionInfo currentRegion = serverManager.CurrentRegion;
@@ -232,4 +235,3 @@ namespace TheIdealShip.Patches
         }
     }
 }
-*/
