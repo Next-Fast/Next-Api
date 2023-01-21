@@ -21,7 +21,7 @@ namespace TheIdealShip.Patches
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                GameManager.Instance.RpcEndGame(GameOverReason.HumansByVote, false);
+                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.forcedEnd, false);
             }
             if (Input.GetKeyDown(KeyCode.F2) && CustomOptionHolder.noGameEnd.getBool())
             {
