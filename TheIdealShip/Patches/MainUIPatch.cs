@@ -73,7 +73,7 @@ namespace TheIdealShip.Patches
             kookPassiveButton.OnClick = new();
             kookPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(TheIdealShipPlugin.KOOKURL)));
             kookPassiveButton.OnMouseOut.AddListener((Action)(() => kookButtonSprite.color = kookText.color = kookColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("打开目录(KooK)"))));
+            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("KooK"))));
             kookButtonSprite.color = kookText.color = kookColor;
             kookButton.gameObject.SetActive(true);
 
@@ -91,12 +91,12 @@ namespace TheIdealShip.Patches
             UpdatePassiveButton.OnClick.AddListener((Action)(() =>
             {
                 UpdateButton.SetActive(false);
-                ModUpdate.UpdateMod();
+                ModUpdater.UpdateMod();
             }));
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
             UpdateButtonSprite.size *= 1.5f;
-            UpdateButton.SetActive(ModUpdate.HUpdate);
+            UpdateButton.SetActive(ModUpdater.HUpdate);
         }
     }
 }

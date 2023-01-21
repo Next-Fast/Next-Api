@@ -58,15 +58,13 @@ namespace TheIdealShip.Patches
             static void Postfix(PingTracker __instance)
             {
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
+/*
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     __instance.text.text = $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{TheIdealShipPlugin.Version.ToString()}\n"+ __instance.text.text;
                 }
-                else
-                {
-                    __instance.text.text = $"{Credentials}\n{__instance.text.text}";
-                    __instance.transform.localPosition = new Vector3(3.5f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                }
+*/
+                __instance.text.text = Credentials + __instance.text.text;
             }
         }
 

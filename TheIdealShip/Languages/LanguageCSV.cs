@@ -7,13 +7,6 @@ namespace TheIdealShip.Languages
 {
     public static class LanguageCSV
     {
-        // 初始化
-        public static void Init()
-        {
-            Helpers.CWrite("正在准备加载CSV");
-            LoadCSV();
-            Helpers.CWrite("正在加载CSV中");
-        }
         public static Dictionary<string, Dictionary<int, string>> tr;
         public static void LoadCSV()
         {

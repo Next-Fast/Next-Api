@@ -12,3 +12,8 @@
 [Nebula](https://github.com/Dolly1016/Nebula)
 [TownOfHost](https://github.com/tukasa0001/TownOfHost)
 [AUMods](https://github.com/AUModS/AUModS)
+[TheOtherRole-GM](https://github.com/yukinogatari/TheOtherRoles-GM)
+
+## translate
+[YouDao](https://fanyi.youdao.com)
+[Deepl](https://www.deepl.com/)

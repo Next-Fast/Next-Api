@@ -1,1 +1,6 @@
-﻿
+﻿using HarmonyLib;
+
+namespace TheIdealShip
+{
+
+}

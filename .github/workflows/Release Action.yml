@@ -1,0 +1,24 @@
+name: Release Action
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'Release Action.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: TheIdealShip.dll
+
+    - uses: ncipollo/release-action@v1
+      with:
+        tag: v0.3.0
+        bodyFile: "TheIdealShip.dll"
