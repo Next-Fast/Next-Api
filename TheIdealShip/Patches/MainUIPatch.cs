@@ -60,12 +60,11 @@ namespace TheIdealShip.Patches
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => DiscordText.SetText("Discord"))));
             DiscordButtonSprite.color = DiscordText.color = DiscordColor;
             DiscordButton.gameObject.SetActive(true);
-/*
+
             // 生成Kook按钮
-            if (kookButton = null) kookButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
+            if (kookButton == null) kookButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             kookButton.name = "KooKButton";
-            kookButton.transform.position = DiscordButton.transform.position + new Vector3(0.25f, 0.75f);
-            kookButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
+            kookButton.transform.position = DiscordButton.transform.position + new Vector3(0, 0.65f);
 
             var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             Color kookColor = new Color32(122, 204, 53, byte.MaxValue);
@@ -77,7 +76,7 @@ namespace TheIdealShip.Patches
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("KooK"))));
             kookButtonSprite.color = kookText.color = kookColor;
             kookButton.gameObject.SetActive(true);
-*/
+
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             UpdateButton.name = "UpdateButton";
@@ -92,12 +91,12 @@ namespace TheIdealShip.Patches
             UpdatePassiveButton.OnClick.AddListener((Action)(() =>
             {
                 UpdateButton.SetActive(false);
-                ModUpdate.UpdateMod();
+                ModUpdater.UpdateMod();
             }));
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
             UpdateButtonSprite.size *= 1.5f;
-            UpdateButton.SetActive(ModUpdate.HUpdate);
+            UpdateButton.SetActive(ModUpdater.HUpdate);
         }
     }
 }

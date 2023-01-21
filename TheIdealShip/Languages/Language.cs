@@ -1,6 +1,8 @@
-using static TheIdealShip.Languages.LanguageCSV;
-using static TheIdealShip.Languages.LanguagePack;
+using csv = TheIdealShip.Languages.LanguageCSV;
+using pack = TheIdealShip.Languages.LanguagePack;
 using System.Collections.Generic;
+using System;
+using System.IO;
 
 namespace TheIdealShip.Languages;
 
@@ -10,19 +12,32 @@ public static class Language
     {
         var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
         string str = "";
-//        if (HPack)
-//        {
-//            str = GetPString(s);
-//        }
-//        else
-//        {
-            str = GetCString(s,langId);
-//        }
+        if (File.Exists(@"Language\"+LanguagePack.languageName+".dat"))
+        {
+            str = LanguagePack.GetPString(s);
+        }
+        else
+        {
+            str = csv.GetCString(s,langId);
+        }
         if (replacementDic != null)
+        {
             foreach (var rd in replacementDic)
             {
                 str = str.Replace(rd.Key, rd.Value);
             }
+        }
         return str;
+    }
+    public static void Init()
+    {
+        if (!(File.Exists(@"Language\" + LanguagePack.languageName + ".dat")))
+        {
+            csv.LoadCSV();
+        }
+        else
+        {
+            pack.Load();
+        }
     }
 }

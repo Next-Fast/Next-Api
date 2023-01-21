@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TheIdealShip.Modules
 {
-    public static class ModUpdate
+    public static class ModUpdater
     {
         // HUdate=HasUpdate 判断是否有更新
         public static bool HUpdate;
