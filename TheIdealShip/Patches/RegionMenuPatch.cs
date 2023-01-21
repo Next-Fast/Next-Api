@@ -181,6 +181,8 @@ namespace TheIdealShip.Patches
                 SpriteRenderer isHttpsButtonSprite = isHttpsButton.GetComponent<SpriteRenderer>();
                 isHttpsPassiveButton.OnClick = new();
                 isHttpsPassiveButton.OnClick.AddListener((UnityAction)act);
+                Color isHttpsColor = TheIdealShipPlugin.isHttps.Value ? Palette.AcceptedGreen : Palette.White;
+                isHttpsPassiveButton.OnMouseOut.AddListener((Action)(() => isHttpsButtonSprite.color = isHttpsColor));
                 text.SetText("isHttps");
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => text.SetText("isHttps"))));
                 isHttpsButton.gameObject.SetActive(isCustomRegion);
