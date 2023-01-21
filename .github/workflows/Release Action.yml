@@ -5,6 +5,10 @@ on:
     branches: [ "main" ]
     paths:
       - '**.yml'
+  workflow_run:
+    workflows: [dotnet-build]
+    types:
+      - completed
 
 jobs:
   build:
