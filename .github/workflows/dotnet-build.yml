@@ -32,5 +32,5 @@ jobs:
       - name: upload TheIdealShip.dll
         uses: actions/upload-artifact@v3
         with:
-          name: TheIdealShip.dll
+          name: TheIdealShip
           path: TheIdealShip/bin/Release/net6.0/TheIdealShip.dll

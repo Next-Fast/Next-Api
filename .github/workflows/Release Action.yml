@@ -6,7 +6,7 @@ on:
     paths:
       - '**.yml'
   workflow_run:
-    workflows: [dotnet-build]
+    workflows: [ "dotnet-build" ]
     types:
       - completed
 
@@ -20,7 +20,10 @@ jobs:
 
     - uses: actions/download-artifact@v3
       with:
-        name: TheIdealShip.dll
+        name: TheIdealShip
+    - name: uzip
+      run: unzip TheIdealShip.zip
+
 
     - uses: ncipollo/release-action@v1
       with:
