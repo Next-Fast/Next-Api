@@ -9,11 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v3
+    - uses: dawidd6/action-download-artifact@v2
       with:
         name: TheIdealShip
 
@@ -23,5 +25,5 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
-        tag: v0.3.2
+        tag: v0.3.2 测试
         bodyFile: "TheIdealShip.dll"
