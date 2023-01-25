@@ -1,3 +1,5 @@
+global using static TheIdealShip.Modules.log;
+
 using System;
 using System.IO;
 using System.Net;
@@ -34,7 +36,7 @@ namespace TheIdealShip
             }
             catch
             {
-                CWrite("Error loading sprite from path: " + path);
+                Warn("加载图片失败路径:" + path, filename : "Helpers");
             }
             return null;
         }
@@ -54,7 +56,7 @@ namespace TheIdealShip
             }
             catch
             {
-                CWrite("Error loading texture from resources: " + path);
+                Warn("加载图片失败路径:" + path, filename: "Helpers");
             }
             return null;
         }
@@ -93,11 +95,11 @@ namespace TheIdealShip
             return time;
         }
 */
-        public static void CWrite(string Text)
+       /*  public static void CWrite(string Text)
         {
             System.Console.WriteLine(Text);
          // TheIdealShipPlugin.Logger.LogInfo(Text);
-        }
+        } */
 
         public static PlayerControl GetPlayerForId(byte id)
         {

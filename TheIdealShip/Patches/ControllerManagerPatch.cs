@@ -12,7 +12,7 @@ namespace TheIdealShip.Patches
             {
                 if (keys.Any(k => Input.GetKeyDown(k)) && keys.All(k => Input.GetKey(k)))
                 {
-                    Helpers.CWrite($"KeyDown:{keys.Where(k => Input.GetKeyDown(k)).First()} in [{string.Join(",", keys)}]");
+                    Warn($"KeyDown:{keys.Where(k => Input.GetKeyDown(k)).First()} in [{string.Join(",", keys)}]");
                     return true;
                 }
                 return false;

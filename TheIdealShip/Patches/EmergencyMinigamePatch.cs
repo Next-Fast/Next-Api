@@ -1,0 +1,40 @@
+using HarmonyLib;
+using TheIdealShip.Roles;
+using TheIdealShip.Utilities;
+
+namespace TheIdealShip.Patches
+{
+    [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
+    class EmergencyMinigameUpdatePatch
+    {
+        public static void Postfix(EmergencyMinigame __instance)
+        {
+            bool roleCanCallEmergency = true;
+            string statusText = "";
+
+            var player = CachedPlayer.LocalPlayer.PlayerControl;
+            var info = RoleInfo.GetRoleInfo(player);
+            var id = info.roleId;
+
+            if (id == RoleId.Jester)
+            {
+                roleCanCallEmergency = Jester.CanCallEmergency;
+                if (!roleCanCallEmergency)
+                {
+                    statusText = "小丑达咩拍灯";
+                }
+            }
+
+            if (!roleCanCallEmergency)
+            {
+                __instance.StatusText.text = statusText;
+                __instance.NumberText.text = string.Empty;
+                __instance.ClosedLid.gameObject.SetActive(true);
+                __instance.OpenLid.gameObject.SetActive(false);
+                __instance.ButtonActive = false;
+                __instance.enabled = false;
+            }
+
+        }
+    }
+}

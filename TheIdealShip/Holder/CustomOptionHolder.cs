@@ -41,6 +41,9 @@ namespace TheIdealShip
         public static CustomOption sheriffCooldown;
         public static CustomOption sheriffshootNumber;
 
+        public static CustomOption jesterSpawnRate;
+        public static CustomOption jesterCanCallEmergency;
+
         public static CustomOption flashSpawnRate;
         public static CustomOption flashSpeed;
 
@@ -76,6 +79,10 @@ namespace TheIdealShip
             //                                    ID  Tap分类          选项名             默认 最小 最大 间隔   父项
             sheriffCooldown = CustomOption.Create(21, Types.Crewmate, "SheriffCooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
             sheriffshootNumber = CustomOption.Create(22, Types.Crewmate, "ShootNumber", 5f,1f,15f,1f,sheriffSpawnRate);
+
+            // 中立职业
+            jesterSpawnRate = CustomOption.Create(150, Types.Neutral, cs(Jester.color, "Jester"), rates, null, true);
+            jesterCanCallEmergency = CustomOption.Create(151, Types.Neutral, "CanCallEmergency", true, jesterSpawnRate);
 
             // modifier 附加职业
             flashSpawnRate = CustomOption.Create(100, Types.Modifier, cs(Flash.color, "Flash"), rates, null, true);

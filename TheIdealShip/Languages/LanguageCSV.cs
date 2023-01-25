@@ -46,14 +46,14 @@ namespace TheIdealShip.Languages
                     }
                     if (tr.ContainsKey(fields[0]))
                     {
-                        Helpers.CWrite($"LoadCSV:翻译重复在{currentLine}行: \"{fields[0]}\"");
+                        Warn($"LoadCSV:翻译重复在{currentLine}行: \"{fields[0]}\"", "Language CSV");
                         continue;
                     }
                     tr.Add(fields[0], tmp);
                 }
                 catch (Exception ex)
                 {
-                    Helpers.CWrite(ex.ToString());
+                    Exception(ex);
                 }
             }
             /*

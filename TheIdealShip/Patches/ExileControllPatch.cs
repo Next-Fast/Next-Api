@@ -16,14 +16,15 @@ namespace TheIdealShip.Patches
             {
                 eText += "\n" + string.Format(GetString("exileTeamText"),RoleInfo.GetRoleTeam(player));
             }
+            if (__instance.ImpostorText.text != null)
+            {
+                eText = eText + "\n" + __instance.ImpostorText.text;
+                __instance.ImpostorText.text = "";
+            }
             if (CustomOptionHolder.showExilePlayerRole.getBool() && GameManager.Instance.LogicOptions.GetConfirmImpostor())
             {
                 if (info != null)
                 {
-                    if (__instance.ImpostorText.text != null)
-                    {
-                        __instance.ImpostorText.text += eText;
-                    }
                     if (__instance.completeString != "TestPlayer was not The Impostor")
                     {
                         __instance.completeString += eText;
