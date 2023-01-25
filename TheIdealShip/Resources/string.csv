@@ -46,3 +46,8 @@ ShootNumber,ShootNumber,执法次数
 SheriffIntroD,1,接受正义的裁决吧
 
 SheriffTaskText,1,速速去执法坏人
+
+JesterWinText,1,小丑获胜
+forcedEndWinText,1,强制结束
+
+JesterWinSubText,1,你就是丑王吧

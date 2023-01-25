@@ -1,5 +1,6 @@
 using HarmonyLib;
 using TheIdealShip.Roles;
+using TheIdealShip.Modules;
 using static TheIdealShip.Languages.Language;
 
 namespace TheIdealShip.Patches
@@ -30,6 +31,24 @@ namespace TheIdealShip.Patches
                         __instance.completeString += eText;
                     }
                 }
+            }
+        }
+    }
+
+    [HarmonyPatch]
+    class ExileControllerWrapUp
+    {
+        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+        class ExileControllerWrapUpPatch
+        {
+            public static void Postfix(ExileController __instance, [HarmonyArgument(0)] ref GameData.PlayerInfo exiled)
+            {
+                if(Jester.jester.PlayerId == exiled.PlayerId)
+                {
+                    Jester.triggerJesterWin = true;
+                }
+
+                CustomButton.MeetingEndedUpdate();
             }
         }
     }

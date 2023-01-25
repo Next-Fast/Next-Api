@@ -27,5 +27,5 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
-        tag: v0.3.0
+        tag: v0.3.2
         bodyFile: "TheIdealShip.dll"
