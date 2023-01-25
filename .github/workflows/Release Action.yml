@@ -1,10 +1,6 @@
 name: Release Action
 
 on:
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - '**.yml'
   workflow_run:
     workflows: [ "dotnet-build" ]
     types:
@@ -19,7 +15,7 @@ jobs:
 
     - uses: actions/download-artifact@v3
       with:
-        name: TheIdealShip.zip
+        name: TheIdealShip
 
     - name: uzip
       run: unzip TheIdealShip.zip
