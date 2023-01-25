@@ -17,6 +17,7 @@ namespace TheIdealShip
         SetRole,
         SetModifier,
         setDead,
+        customrpc,
 
         // Role 职业相关
         SheriffKill,
@@ -132,6 +133,9 @@ namespace TheIdealShip
                 case (byte)CustomRPC.SheriffKill:
                     byte targetId = reader.ReadByte();
                     RPCProcedure.SheriffKill(targetId);
+                    break;
+                case (byte)CustomRPC.customrpc:
+                    reader.Recycle();
                     break;
             }
         }

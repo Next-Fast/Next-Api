@@ -127,6 +127,16 @@ namespace TheIdealShip.Patches
                 p.MyPhysics.Speed = Flash.speed;
             }
         }
+        public static void GhostSpeedUpdate()
+        {
+            if (CustomOptionHolder.PlayerOption.getBool())
+            {
+                for (var i = 0 ; i<PlayerControl.AllPlayerControls.Count ; i++)
+                {
+                    PlayerControl.AllPlayerControls[i].MyPhysics.GhostSpeed = CustomOptionHolder.PlayerGhostSpeed.getFloat();
+                }
+            }
+        }
 
         public static void Postfix(PlayerControl __instance)
         {
@@ -142,6 +152,7 @@ namespace TheIdealShip.Patches
                 impostorSetTarget();
 
                 speedUpdate();
+                GhostSpeedUpdate();
             }
         }
     }

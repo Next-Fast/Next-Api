@@ -15,13 +15,36 @@ namespace TheIdealShip.Roles
             Neutral,
             Modifier,
         }
+        public enum RoleTeam
+        {
+            Crewmate,
+            Impostor,
+            Neutral
+        }
         public RoleType type;
+        public RoleTeam team;
         public Color color;
         public virtual string name { get { return GetString(namekey); } }
         public virtual string IntroD { get { return GetString(namekey + "IntroD"); } }
         public virtual string TaskText { get { return GetString(namekey +"TaskText"); } }
         public RoleId roleId;
         public string namekey;
+
+        RoleInfo
+        (
+            string name,
+            Color color,
+            RoleId roleId,
+            RoleType type,
+            RoleTeam team
+        )
+        {
+            this.color = color;
+            this.namekey = name;
+            this.roleId = roleId;
+            this.type = type;
+            this.team = team;
+        }
 
         RoleInfo
         (
@@ -52,9 +75,9 @@ namespace TheIdealShip.Roles
         public static void Init()
         {
             // Role 普通职业
-            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate);
-            impostor = new RoleInfo("Impostor", Palette.ImpostorRed, RoleId.Impostor, RoleType.Impostor);
-            crewmate = new RoleInfo("Crewmate", Color.white, RoleId.Crewmate, RoleType.Crewmate);
+            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate , RoleTeam.Crewmate);
+            impostor = new RoleInfo("Impostor", Palette.ImpostorRed, RoleId.Impostor, RoleType.Impostor, RoleTeam.Impostor);
+            crewmate = new RoleInfo("Crewmate", Color.white, RoleId.Crewmate, RoleType.Crewmate, RoleTeam.Crewmate);
 
             // Modifier 附加职业
             flash = new RoleInfo("Flash", Flash.color, RoleId.Flash, RoleType.Modifier);
@@ -110,19 +133,20 @@ namespace TheIdealShip.Roles
             string roleTeam;
             string cre = GetString("Crewmate");
             string imp = GetString("Impostor");
+            string neu = GetString("Neutral");
             var info = GetRoleInfo(p);
-            switch (info.roleId)
+            switch (info.team)
             {
-                case RoleId.Crewmate :
+                case RoleTeam.Crewmate :
                     roleTeam = cre;
                     break;
 
-                case RoleId.Sheriff :
-                    roleTeam = cre;
-                    break;
-
-                case RoleId.Impostor :
+                case RoleTeam.Impostor :
                     roleTeam = imp;
+                    break;
+
+                case RoleTeam.Neutral :
+                    roleTeam = neu;
                     break;
 
                 default :
