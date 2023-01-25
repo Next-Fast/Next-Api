@@ -12,6 +12,9 @@ namespace TheIdealShip.Roles
             // Role 普通职业
             Sheriff.clearAndReload();
 
+            // 中立
+            Jester.clearAndReload();
+
             // Modifier 附加职业
             Flash.clearAndReload();
         }
@@ -27,6 +30,7 @@ namespace TheIdealShip.Roles
         Impostor,
 
         // Neutral 中立
+        Jester,
 
         // Modifier 附加
         Flash

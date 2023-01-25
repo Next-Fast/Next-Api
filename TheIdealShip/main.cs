@@ -24,7 +24,7 @@ namespace TheIdealShip
         // 模组id
         public const string Id = "me.huier.TheIdealShip";
         // 模组版本
-        public const string VersionString = "0.3.0";
+        public const string VersionString = "0.3.2";
     /*
         // 模组构建时间
         public const string BuildTime = "";

@@ -17,6 +17,9 @@ namespace TheIdealShip
         SetRole,
         SetModifier,
         setDead,
+        RestoreRole,
+        ChangeRole,
+        customrpc,
 
         // Role 职业相关
         SheriffKill,
@@ -72,25 +75,38 @@ namespace TheIdealShip
 
         public static void setDead(byte id, bool isDead)
         {
-            foreach (var player in CachedPlayer.AllPlayers)
-            {
-                if (player.PlayerId == id)
-                {
-                    player.Data.IsDead = isDead;
-                }
-            }
+            var player = Helpers.GetPlayerForId(id);
+            player.Data.IsDead = isDead;
         }
 
         public static void SheriffKill(byte targetId)
         {
-            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            var player = Helpers.GetPlayerForId(targetId);
+            Sheriff.sheriff.MurderPlayer(player);
+        }
+
+        public static void RestoreRole(byte id)
+        {
+            switch ((RoleId)id)
             {
-                if (player.PlayerId == targetId)
-                {
-                    Sheriff.sheriff.MurderPlayer(player);
-                    return;
-                }
+                case RoleId.Sheriff:
+                    Sheriff.sheriff = null;
+                    break;
+                case RoleId.Flash:
+                    Flash.flash = null;
+                    break;
+                case RoleId.Jester:
+                    Jester.jester = null;
+                    break;
             }
+        }
+
+        public static void ChangeRole(byte playerId, byte targetRoleId)
+        {
+            var player = Helpers.GetPlayerForId(playerId);
+            var info = RoleInfo.GetRoleInfo(player);
+            RestoreRole((byte)info.roleId);
+            setRole(targetRoleId, playerId);
         }
     }
 
@@ -132,6 +148,18 @@ namespace TheIdealShip
                 case (byte)CustomRPC.SheriffKill:
                     byte targetId = reader.ReadByte();
                     RPCProcedure.SheriffKill(targetId);
+                    break;
+                case (byte)CustomRPC.RestoreRole :
+                    byte RestoreRoleId = reader.ReadByte();
+                    RPCProcedure.RestoreRole(RestoreRoleId);
+                    break;
+                case (byte)CustomRPC.ChangeRole :
+                    byte ChangeRolePlayerId = reader.ReadByte();
+                    byte ChangeRoleTargetRoleId = reader.ReadByte();
+                    RPCProcedure.ChangeRole(ChangeRolePlayerId, ChangeRoleTargetRoleId);
+                    break;
+                case (byte)CustomRPC.customrpc:
+                    reader.Recycle();
                     break;
             }
         }

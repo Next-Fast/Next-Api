@@ -35,8 +35,7 @@ namespace TheIdealShip
 
                     MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(
                         CachedPlayer.LocalPlayer.PlayerControl.NetId,
-                        (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1
-                    );
+                        (byte)CustomRPC.SheriffKill, SendOption.Reliable);
                     killWriter.Write(Sheriff.sheriff.Data.PlayerId);
                     killWriter.Write(targetId);
                     AmongUsClient.Instance.FinishRpcImmediately(killWriter);

@@ -126,9 +126,9 @@ namespace TheIdealShip.Modules
                 {
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }
@@ -144,9 +144,9 @@ namespace TheIdealShip.Modules
                     buttons[i].OnMeetingEnds();
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }
@@ -160,9 +160,9 @@ namespace TheIdealShip.Modules
                     buttons[i].Timer = buttons[i].MaxTimer;
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }
