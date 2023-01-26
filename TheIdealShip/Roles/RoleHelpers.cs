@@ -42,6 +42,10 @@ namespace TheIdealShip.Roles
             }
             return roleTeam;
         }
+        public static bool Is(this PlayerControl player,PlayerControl playerControl)
+        {
+            return playerControl == player;
+        }
 
         public static bool Is(this PlayerControl player, RoleId id)
         {
@@ -59,6 +63,11 @@ namespace TheIdealShip.Roles
         {
             var info = allRoleInfos.Where(x => x.roleId == id).FirstOrDefault();
             return info.type == type;
+        }
+
+        public static bool IsSurvival(this PlayerControl player)
+        {
+            return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
         }
 
         public static String GetRolesString(PlayerControl p, bool useColors = true, bool isModifier = false)

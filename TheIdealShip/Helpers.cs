@@ -2,21 +2,14 @@ global using static TheIdealShip.Modules.log;
 
 using System;
 using System.IO;
-using System.Net;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
-using Hazel;
-using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using System.Collections;
 using TheIdealShip.Utilities;
 using Il2CppInterop.Runtime.InteropTypes;
 using System.Linq.Expressions;
-using Il2CppInterop.Runtime;
+using TheIdealShip.Roles;
 
 namespace TheIdealShip
 {
@@ -111,6 +104,19 @@ namespace TheIdealShip
             }
            }
             return null;
+        }
+
+        public static RoleInfo GetPlayerInfoForExile(this GameData.PlayerInfo exile)
+        {
+            var p = GetPlayerForId(exile.PlayerId);
+            var info = RoleHelpers.GetRoleInfo(p);
+            return info;
+        }
+
+        public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile)
+        {
+            var p = GetPlayerForId(exile.PlayerId);
+            return p;
         }
 
         public static T CastFast<T>(this Il2CppObjectBase obj) where T : Il2CppObjectBase
