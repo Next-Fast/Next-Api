@@ -225,11 +225,11 @@ namespace TheIdealShip.Modules
                 (
                     new Dictionary<string, string>()
                     {
-                        ["TISSettings"] = "The Ideal Ship Settings",
-                        ["ImpostorSettings"] = "Impostor Roles Settings",
-                        ["NeutralSettings"] = "Neutral Roles Settings",
-                        ["CrewmateSettings"] = "Crewmate Roles Settings",
-                        ["ModifierSettings"] = "Modifier Settings"
+                        ["TISSettings"] = GetString("TISSettings"),
+                        ["ImpostorSettings"] = GetString("ImpostorSettings"),
+                        ["NeutralSettings"] = GetString("NeutralSettings"),
+                        ["CrewmateSettings"] = GetString("CrewmateSettings"),
+                        ["ModifierSettings"] = GetString("ModifierSettings")
                     }
                 );
                 if (isReturn) return;
@@ -531,6 +531,286 @@ namespace TheIdealShip.Modules
                         }
                     }
                 }
+            }
+        }
+
+        [HarmonyPatch]
+        class GameOptionsDataPatch
+        {
+            private static string buildRoleOptions()
+            {
+                var impRoles = buildOptionsOfType(CustomOption.CustomOptionType.Impostor, true) + "\n";
+                var neutralRoles = buildOptionsOfType(CustomOption.CustomOptionType.Neutral, true) + "\n";
+                var crewRoles = buildOptionsOfType(CustomOption.CustomOptionType.Crewmate, true) + "\n";
+                var modifiers = buildOptionsOfType(CustomOption.CustomOptionType.Modifier, true);
+                return impRoles + neutralRoles + crewRoles + modifiers;
+            }
+
+            private static string buildOptionsOfType(CustomOption.CustomOptionType type, bool headerOnly)
+            {
+                StringBuilder str = new StringBuilder("\n");
+                var options = CustomOption.options.Where(o => o.type == type);
+
+                foreach (var option in options)
+                {
+                    if (option.parent == null)
+                    {
+                        string line = $"{GetString(option.name)}: {option.selections[option.selection].ToString()}";
+                        str.AppendLine(line);
+                    }
+                }
+                if (headerOnly) return str.ToString();
+                else str = new StringBuilder();
+
+                foreach (CustomOption option in options)
+                {
+                    string tName = "";
+                    if (option.name != option.name.Replace("-", ""))
+                    {
+                        tName = "- " + GetString(option.name.Replace("- ", ""));
+                    }
+                    if (option.name != option.name.Replace("</color>", ""))
+                    {
+                        tName = option.name.Replace("</color>", "");
+                        var found = tName.IndexOf(">");
+                        tName = option.name.Replace(tName.Substring(found + 1), GetString(tName.Substring(found + 1)));
+                    }
+                    string selStr = GetString(option.selections[option.selection].ToString());
+
+                    if (option.parent != null)
+                    {
+                        bool isIrrelevant = option.parent.getSelection() == 0 || (option.parent.parent != null && option.parent.parent.getSelection() == 0);
+
+                        Color c = isIrrelevant ? Color.grey : Color.white;  // No use for now
+                        if (isIrrelevant) continue;
+                        str.AppendLine(Helpers.cs(c, $"{tName}: {selStr}"));
+                    }
+                    else
+                    {
+                        var roleStr = GetString("Roles");
+                        if (option == CustomOptionHolder.crewmateRolesCountMin)
+                        {
+                            var optionName = CustomOptionHolder.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), GetString("Crewmate") + roleStr);
+                            var min = CustomOptionHolder.crewmateRolesCountMin.getSelection();
+                            var max = CustomOptionHolder.crewmateRolesCountMax.getSelection();
+                            if (min > max) min = max;
+                            var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+                            str.AppendLine($"{optionName}: {optionValue}");
+                        }
+                        else if (option == CustomOptionHolder.neutralRolesCountMin)
+                        {
+                            var optionName = CustomOptionHolder.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), GetString("Neutral") + roleStr);
+                            var min = CustomOptionHolder.neutralRolesCountMin.getSelection();
+                            var max = CustomOptionHolder.neutralRolesCountMax.getSelection();
+                            if (min > max) min = max;
+                            var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+                            str.AppendLine($"{optionName}: {optionValue}");
+                        }
+                        else if (option == CustomOptionHolder.impostorRolesCountMin)
+                        {
+                            var optionName = CustomOptionHolder.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), GetString("Impostor") + roleStr);
+                            var min = CustomOptionHolder.impostorRolesCountMin.getSelection();
+                            var max = CustomOptionHolder.impostorRolesCountMax.getSelection();
+                            if (min > max) min = max;
+                            var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+                            str.AppendLine($"{optionName}: {optionValue}");
+                        }
+                        else if (option == CustomOptionHolder.modifierRolesCountMin)
+                        {
+                            var optionName = CustomOptionHolder.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), GetString("Modifiers"));
+                            var min = CustomOptionHolder.modifierRolesCountMin.getSelection();
+                            var max = CustomOptionHolder.modifierRolesCountMax.getSelection();
+                            if (min > max) min = max;
+                            var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+                            str.AppendLine($"{optionName}: {optionValue}");
+                        }
+                        else if ((option == CustomOptionHolder.crewmateRolesCountMax) || (option == CustomOptionHolder.neutralRolesCountMax) || (option == CustomOptionHolder.impostorRolesCountMax) || option == CustomOptionHolder.modifierRolesCountMax)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            str.AppendLine($"\n{tName}: {selStr}");
+                        }
+                    }
+                }
+                return str.ToString();
+            }
+
+            [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToString))]
+            private static void Postfix(ref string __result)
+            {
+                var counter = TheIdealShipPlugin.optionsPage.Value;
+                string hudString = "";
+                int maxPage = 7;
+                string PageStr = "Page";
+                var PS = GetString(PageStr + (counter + 1).ToString());
+                switch (counter)
+                {
+                    case 0:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + __result;
+                        break;
+                    case 1:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.General, false);
+                        break;
+                    case 2:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildRoleOptions();
+                        break;
+                    case 3:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Impostor, false);
+                        break;
+                    case 4:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Neutral, false);
+                        break;
+                    case 5:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Crewmate, false);
+                        break;
+                    case 6:
+                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Modifier, false);
+                        break;
+                }
+
+                hudString += GetString("TABPage") + string.Format($"({0}/{1})",counter + 1, maxPage);
+                __result = hudString;
+            }
+        }
+
+        [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+        public static class GameOptionsNextPagePatch
+        {
+            public static void Postfix(KeyboardJoystick __instance)
+            {
+                var optionsPage = TheIdealShipPlugin.optionsPage.Value;
+                int page = optionsPage;
+                if (Input.GetKeyDown(KeyCode.Tab))
+                {
+                    optionsPage= (optionsPage + 1) % 7;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+                {
+                    optionsPage = 0;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+                {
+                    optionsPage = 1;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+                {
+                    optionsPage = 2;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
+                {
+                    optionsPage = 3;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
+                {
+                    optionsPage = 4;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
+                {
+                    optionsPage = 5;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
+                {
+                    optionsPage = 6;
+                }
+                if (page != optionsPage)
+                {
+                    Vector3 position = (Vector3)FastDestroyableSingleton<HudManager>.Instance?.GameSettings?.transform.localPosition;
+                    FastDestroyableSingleton<HudManager>.Instance.GameSettings.transform.localPosition = new Vector3(position.x, 2.9f, position.z);
+                }
+            }
+        }
+
+
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        public class GameSettingsScalePatch
+        {
+            public static void Prefix(HudManager __instance)
+            {
+                if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
+            }
+        }
+
+
+        // This class is taken from Town of Us Reactivated, https://github.com/eDonnes124/Town-Of-Us-R/blob/master/source/Patches/CustomOption/Patches.cs, Licensed under GPLv3
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        public class HudManagerUpdate
+        {
+            public static float
+                MinX,/*-5.3F*/
+                OriginalY = 2.9F,
+                MinY = 2.9F;
+
+
+            public static Scroller Scroller;
+            private static Vector3 LastPosition;
+            private static float lastAspect;
+            private static bool setLastPosition = false;
+
+            public static void Prefix(HudManager __instance)
+            {
+                if (__instance.GameSettings?.transform == null) return;
+
+                // Sets the MinX position to the left edge of the screen + 0.1 units
+                Rect safeArea = Screen.safeArea;
+                float aspect = Mathf.Min((Camera.main).aspect, safeArea.width / safeArea.height);
+                float safeOrthographicSize = CameraSafeArea.GetSafeOrthographicSize(Camera.main);
+                MinX = 0.1f - safeOrthographicSize * aspect;
+
+                if (!setLastPosition || aspect != lastAspect)
+                {
+                    LastPosition = new Vector3(MinX, MinY);
+                    lastAspect = aspect;
+                    setLastPosition = true;
+                    if (Scroller != null) Scroller.ContentXBounds = new FloatRange(MinX, MinX);
+                }
+
+                CreateScroller(__instance);
+
+                Scroller.gameObject.SetActive(__instance.GameSettings.gameObject.activeSelf);
+
+                if (!Scroller.gameObject.active) return;
+
+                var rows = __instance.GameSettings.text.Count(c => c == '\n');
+                float LobbyTextRowHeight = 0.06F;
+                var maxY = Mathf.Max(MinY, rows * LobbyTextRowHeight + (rows - 38) * LobbyTextRowHeight);
+
+                Scroller.ContentYBounds = new FloatRange(MinY, maxY);
+
+                // Prevent scrolling when the player is interacting with a menu
+                if (CachedPlayer.LocalPlayer?.PlayerControl.CanMove != true)
+                {
+                    __instance.GameSettings.transform.localPosition = LastPosition;
+
+                    return;
+                }
+
+                if (__instance.GameSettings.transform.localPosition.x != MinX ||
+                    __instance.GameSettings.transform.localPosition.y < MinY) return;
+
+                LastPosition = __instance.GameSettings.transform.localPosition;
+            }
+
+            private static void CreateScroller(HudManager __instance)
+            {
+                if (Scroller != null) return;
+
+                Scroller = new GameObject("SettingsScroller").AddComponent<Scroller>();
+                Scroller.transform.SetParent(__instance.GameSettings.transform.parent);
+                Scroller.gameObject.layer = 5;
+
+                Scroller.transform.localScale = Vector3.one;
+                Scroller.allowX = false;
+                Scroller.allowY = true;
+                Scroller.active = true;
+                Scroller.velocity = new Vector2(0, 0);
+                Scroller.ScrollbarYBounds = new FloatRange(0, 0);
+                Scroller.ContentXBounds = new FloatRange(MinX, MinX);
+                Scroller.enabled = true;
+
+                Scroller.Inner = __instance.GameSettings.transform;
+                __instance.GameSettings.transform.SetParent(Scroller.transform);
             }
         }
     }

@@ -34,8 +34,24 @@ Modifiers,Modifiers,附加职业
 exileText,{0} was the {1},{0} 是 {1}
 exileTeamText,The specific camp is {0},具体阵营是 {0}
 jiaren,jiaren,假人数量
+Neutral,Neutral,中立
 Crewmate,Crewmate,船员
 Impostor,Impostor,内鬼
+TISSettings,The Ideal Ship Settings,理想船设置
+ImpostorSettings,Impostor Roles Settings,内鬼设置
+NeutralSettings,Neutral Roles Settings,中立设置
+CrewmateSettings,Crewmate Roles Settings,船员设置
+ModifierSettings,Modifier Settings,附加职业设置
+
+Page ,Page ,页面 
+Page1, : Vanilla Settings \n\n,原版设置
+Page2, : The Ideal Ship Settings \n,理想船设置
+Page3, : Role and Modifier Rates \n,职业分配数设置
+Page4, : Impostor Role Settings \n,内鬼职业设置
+Page5, : Neutral Role Settings \n,中立职业设置
+Page6, : Crewmate Role Settings \n,船员职业设置
+Page7, : Modifier Settings \n,附加职业设置
+TABPage,\n Press TAB or Page Number for more... ,\n 按TAB切换页面查看更多
 
 Sheriff,Sheriff,警长
 Jester,Jester,小丑

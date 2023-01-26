@@ -48,6 +48,7 @@ namespace TheIdealShip
         public static ConfigEntry<string> CustomIp { get; set; }
         public static ConfigEntry<ushort> CustomPort { get; set; }
         public static ConfigEntry<bool> isHttps { get; set;}
+        public static ConfigEntry<int> optionsPage { get; set;}
 
         public override void Load()
         {
