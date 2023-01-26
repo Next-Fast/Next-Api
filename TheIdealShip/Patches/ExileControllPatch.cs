@@ -11,11 +11,11 @@ namespace TheIdealShip.Patches
         public static void Postfix(ExileController __instance, [HarmonyArgument(0)] ref GameData.PlayerInfo exiled, [HarmonyArgument(1)] bool tie)
         {
             var player = Helpers.GetPlayerForId(exiled.PlayerId);
-            var info = RoleInfo.GetRoleInfo(player);
+            var info = RoleHelpers.GetRoleInfo(player);
             var eText = "\n" + string.Format(GetString("exileText"),exiled.PlayerName,info.name);
             if (CustomOptionHolder.showExilePlayerConcreteRoleTeam.getBool())
             {
-                eText += "\n" + string.Format(GetString("exileTeamText"),RoleInfo.GetRoleTeam(player));
+                eText += "\n" + string.Format(GetString("exileTeamText"),RoleHelpers.GetRoleTeam(player));
             }
             if (__instance.ImpostorText.text != null)
             {

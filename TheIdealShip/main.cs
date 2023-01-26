@@ -24,7 +24,7 @@ namespace TheIdealShip
         // 模组id
         public const string Id = "me.huier.TheIdealShip";
         // 模组版本
-        public const string VersionString = "0.3.2";
+        public const string VersionString = "0.3.4";
     /*
         // 模组构建时间
         public const string BuildTime = "";
@@ -38,7 +38,7 @@ namespace TheIdealShip
         // bilibili链接
         public const string bilibiliURL = "https://space.bilibili.com/394107547";
         // KOOK链接
-        public const string KOOKURL = "https://kook.top/T9DTrC";
+        public const string QQURL = "https://pd.qq.com/s/hpldx5uja";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);

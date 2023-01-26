@@ -30,17 +30,7 @@ namespace TheIdealShip.Patches
             Neutral = 1,
             Impostor = 2
         }
-        public class RoleAssignmentData
-        {
-            public List<PlayerControl> crewmates { get; set; }
-            public List<PlayerControl> impostors { get; set; }
-            public Dictionary<byte, int> impSettings = new Dictionary<byte, int>();
-            public Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
-            public Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
-            public int maxCrewmateRoles { get; set; }
-            public int maxNeutralRoles { get; set; }
-            public int maxImpostorRoles { get; set; }
-        }
+
         private static int crewValues;
         private static int impValues;
         private static List<Tuple<byte, byte>> playerRoleMap = new List<Tuple<byte, byte>>();
@@ -60,58 +50,13 @@ namespace TheIdealShip.Patches
            // selectFactionForFactionIndependentRoles(data);
             assignEnsuredRoles(data); // Assign roles that should always be in the game next
            // assignDependentRoles(data); // Assign roles that may have a dependent role
-           // assignChanceRoles(data); // Assign roles that may or may not be in the game last
+            assignChanceRoles(data); // Assign roles that may or may not be in the game last
            // assignRoleTargets(data); // Assign targets for Lawyer & Prosecutor
             assignModifiers(); // Assign modifier
             setRolesAgain();
         }
 
-        public static RoleAssignmentData GetRoleAssignmentData()
-        {
-            List<PlayerControl> crewmates = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
-            crewmates.RemoveAll(x => x.Data.Role.IsImpostor);
-            List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
-            impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
-
-            var crewmateMin = CustomOptionHolder.crewmateRolesCountMin.getSelection();
-            var crewmateMax = CustomOptionHolder.crewmateRolesCountMax.getSelection();
-            var neutralMin = CustomOptionHolder.neutralRolesCountMin.getSelection();
-            var neutralMax = CustomOptionHolder.neutralRolesCountMax.getSelection();
-            var impostorMin = CustomOptionHolder.impostorRolesCountMin.getSelection();
-            var impostorMax = CustomOptionHolder.impostorRolesCountMax.getSelection();
-
-            if (crewmateMin > crewmateMax) crewmateMin = crewmateMax;
-            if (neutralMin > neutralMax) neutralMin = neutralMax;
-            if (impostorMin > impostorMax) impostorMin = impostorMax;
-
-            int crewCountSettings = rnd.Next(crewmateMin, crewmateMax + 1);
-            int neutralCountSettings = rnd.Next(neutralMin, neutralMax + 1);
-            int impCountSettings = rnd.Next(impostorMin, impostorMax + 1);
-
-            int maxCrewmateRoles = Mathf.Min(crewmates.Count, crewCountSettings);
-            int maxNeutralRoles = Mathf.Min(crewmates.Count, neutralCountSettings);
-            int maxImpostorRoles = Mathf.Min(impostors.Count, impCountSettings);
-
-            Dictionary<byte, int> impSettings = new Dictionary<byte, int>();
-            Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
-            Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
-
-            crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection());
-
-            return new RoleAssignmentData
-            {
-                crewmates = crewmates,
-                impostors = impostors,
-                crewSettings = crewSettings,
-                neutralSettings = neutralSettings,
-                impSettings = impSettings,
-                maxCrewmateRoles = maxCrewmateRoles,
-                maxNeutralRoles = maxNeutralRoles,
-                maxImpostorRoles = maxImpostorRoles
-            };
-        }
-
-        private static void assignEnsuredRoles (RoleAssignmentData data)
+        private static void assignEnsuredRoles (Roles.RoleAssignmentData data)
         {
             List<byte> ensuredCrewmateRoles = data.crewSettings.Where(x => x.Value == 10).Select(x => x.Key).ToList();
             List<byte> ensuredNeutralRoles = data.neutralSettings.Where(x => x.Value == 10).Select(x => x.Key).ToList();
@@ -189,7 +134,7 @@ namespace TheIdealShip.Patches
             }
         }
 
-        private static void assignChanceRoles(RoleAssignmentData data)
+        private static void assignChanceRoles(Roles.RoleAssignmentData data)
         {
             // Get all roles where the chance to occur is set grater than 0% but not 100% and build a ticket pool based on their weight
             List<byte> crewmateTickets = data.crewSettings.Where(x => x.Value > 0 && x.Value < 10).Select(x => Enumerable.Repeat(x.Key, x.Value)).SelectMany(x => x).ToList();
