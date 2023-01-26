@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>0.3.4</Version>
+        <Version>0.3.3</Version>
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
         <Description>The Ideal Ship</Description>
