@@ -12,12 +12,12 @@ namespace TheIdealShip.Patches
         public static void Postfix(TaskPanelBehaviour __instance)
         {
             var LPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-            var roleInfo = RoleInfo.GetRoleInfo(LPlayer, false);
-            var modifierInfo = RoleInfo.GetRoleInfo(LPlayer, true);
+            var roleInfo = RoleHelpers.GetRoleInfo(LPlayer, false);
+            var modifierInfo = RoleHelpers.GetRoleInfo(LPlayer, true);
             string roleText = "";
             string modifierText = "";
-            if (roleInfo != null) roleText = Helpers.cs(roleInfo.color, GetString("Roles") + ":" + RoleInfo.GetRolesString(LPlayer, false) + "\n"+ roleInfo.TaskText +"\n");
-            if (modifierInfo != null) modifierText = Helpers.cs(modifierInfo.color, GetString("Modifiers") + ":" + RoleInfo.GetRolesString(LPlayer, false, true) + "\n" + modifierInfo.TaskText + "\n");
+            if (roleInfo != null) roleText = Helpers.cs(roleInfo.color, GetString("Roles") + ":" + RoleHelpers.GetRolesString(LPlayer, false) + "\n"+ roleInfo.TaskText +"\n");
+            if (modifierInfo != null) modifierText = Helpers.cs(modifierInfo.color, GetString("Modifiers") + ":" + RoleHelpers.GetRolesString(LPlayer, false, true) + "\n" + modifierInfo.TaskText + "\n");
             __instance.taskText.text = roleText + modifierText + "\n" + __instance.taskText.text;
 //            __instance.taskText.text.Select(x => roleText + modifierText + ((roleInfo == null)&&(modifierInfo == null) ? "" : "\n") + x);
         }

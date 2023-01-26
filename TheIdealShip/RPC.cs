@@ -104,7 +104,7 @@ namespace TheIdealShip
         public static void ChangeRole(byte playerId, byte targetRoleId)
         {
             var player = Helpers.GetPlayerForId(playerId);
-            var info = RoleInfo.GetRoleInfo(player);
+            var info = RoleHelpers.GetRoleInfo(player);
             RestoreRole((byte)info.roleId);
             setRole(targetRoleId, playerId);
         }

@@ -13,7 +13,7 @@ namespace TheIdealShip.Patches
             string statusText = "";
 
             var player = CachedPlayer.LocalPlayer.PlayerControl;
-            var info = RoleInfo.GetRoleInfo(player);
+            var info = RoleHelpers.GetRoleInfo(player);
             var id = info.roleId;
 
             if (id == RoleId.Jester)

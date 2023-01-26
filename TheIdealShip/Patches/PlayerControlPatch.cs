@@ -105,7 +105,7 @@ namespace TheIdealShip.Patches
                         playerInfo.color = playerInfo.color.SetAlpha(1f);
                     }
 
-                    string roleNames = RoleInfo.GetRolesString(p, true);
+                    string roleNames = RoleHelpers.GetRolesString(p, true);
 
                     string playerInfoText = "";
                     if (p == CachedPlayer.LocalPlayer.PlayerControl || p.isDummy)

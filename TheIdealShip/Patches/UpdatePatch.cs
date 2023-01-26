@@ -75,7 +75,7 @@ namespace TheIdealShip.Patches
         static void SetNameColors()
         {
             var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-            var localRoleInfo = RoleInfo.GetRoleInfo(localPlayer, false);
+            var localRoleInfo = RoleHelpers.GetRoleInfo(localPlayer, false);
             setPlayerNameColor(localPlayer, localRoleInfo.color);
          //   if (localPlayer == Sheriff.sheriff)
          //   setPlayerNameColor(localPlayer, RoleInfo.sheriff.color);

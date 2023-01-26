@@ -2,6 +2,8 @@ name: dotnet-build
 
 on:
   pull_request:
+    paths:
+      - '**.yml'
     branches: [ "main" ]
 
 jobs:

@@ -22,8 +22,7 @@ jobs:
     - name: uzip
       run: unzip TheIdealShip.zip
 
-
     - uses: ncipollo/release-action@v1
       with:
-        tag: v0.3.2 测试
+        tag: v0.3.3
         bodyFile: "TheIdealShip.dll"

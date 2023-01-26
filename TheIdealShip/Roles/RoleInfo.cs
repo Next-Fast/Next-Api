@@ -6,7 +6,7 @@ using System;
 
 namespace TheIdealShip.Roles
 {
-    class RoleInfo
+    public class RoleInfo
     {
         public enum RoleType
         {
@@ -64,9 +64,12 @@ namespace TheIdealShip.Roles
 
 
         // Role 普通职业
-        public static RoleInfo sheriff;
         public static RoleInfo impostor;
+
+        public static RoleInfo sheriff;
         public static RoleInfo crewmate;
+
+        public static RoleInfo jester;
 
         // Modifier 附加职业
         public static RoleInfo flash;
@@ -75,9 +78,12 @@ namespace TheIdealShip.Roles
         public static void Init()
         {
             // Role 普通职业
-            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate , RoleTeam.Crewmate);
             impostor = new RoleInfo("Impostor", Palette.ImpostorRed, RoleId.Impostor, RoleType.Impostor, RoleTeam.Impostor);
+
+            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate , RoleTeam.Crewmate);
             crewmate = new RoleInfo("Crewmate", Color.white, RoleId.Crewmate, RoleType.Crewmate, RoleTeam.Crewmate);
+
+            jester = new RoleInfo("Jester", Jester.color, RoleId.Jester, RoleType.Neutral, RoleTeam.Neutral);
 
             // Modifier 附加职业
             flash = new RoleInfo("Flash", Flash.color, RoleId.Flash, RoleType.Modifier);
@@ -85,9 +91,12 @@ namespace TheIdealShip.Roles
             allRoleInfos = new List<RoleInfo>()
             {
                 // Role
-                sheriff,
                 impostor,
+
+                sheriff,
                 crewmate,
+
+                jester,
 
                 // Modifier
                 flash
@@ -111,6 +120,7 @@ namespace TheIdealShip.Roles
             {
                 // roles
                 if (p == Sheriff.sheriff) infos.Add(sheriff);
+                if (p == Jester.jester) infos.Add(jester);
 
                 if (infos.Count == count)
                 {
@@ -121,46 +131,6 @@ namespace TheIdealShip.Roles
                 }
             }
             return infos;
-        }
-
-        public static RoleInfo GetRoleInfo(PlayerControl player, bool isModifier = false)
-        {
-            var info = getRoleInfoForPlayer(player,isModifier,false).FirstOrDefault();
-            return info;
-        }
-        public static string GetRoleTeam(PlayerControl p)
-        {
-            string roleTeam;
-            string cre = GetString("Crewmate");
-            string imp = GetString("Impostor");
-            string neu = GetString("Neutral");
-            var info = GetRoleInfo(p);
-            switch (info.team)
-            {
-                case RoleTeam.Crewmate :
-                    roleTeam = cre;
-                    break;
-
-                case RoleTeam.Impostor :
-                    roleTeam = imp;
-                    break;
-
-                case RoleTeam.Neutral :
-                    roleTeam = neu;
-                    break;
-
-                default :
-                    roleTeam = "";
-                    break;
-            }
-            return roleTeam;
-        }
-
-        public static String GetRolesString(PlayerControl p, bool useColors = true, bool isModifier = false)
-        {
-            string roleName;
-            roleName = String.Join("",getRoleInfoForPlayer(p,isModifier).Select(x => useColors ? Helpers.cs(x.color, GetString(x.namekey)) : GetString(x.namekey)).ToArray());
-            return roleName;
         }
     }
 }
