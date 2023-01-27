@@ -54,6 +54,25 @@ namespace TheIdealShip
             return null;
         }
 
+        public static Texture2D LoadTextureFromDisk(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    var byteTexture = Il2CppSystem.IO.File.ReadAllBytes(path);
+                    ImageConversion.LoadImage(texture, byteTexture, false);
+                    return texture;
+                }
+            }
+            catch
+            {
+                Warn("加载图片失败路径:" + path, filename: "Helpers");
+            }
+            return null;
+        }
+
         public static string cs(Color c,string s)
         {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>",ToByte(c.r),ToByte(c.g),ToByte(c.b),ToByte(c.a),s);

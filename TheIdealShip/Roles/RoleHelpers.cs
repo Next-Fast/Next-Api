@@ -1,12 +1,12 @@
-using System.Xml.Schema;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using TheIdealShip.Roles;
 using static TheIdealShip.Languages.Language;
 using static TheIdealShip.Roles.RoleInfo;
 using RoleTeam = TheIdealShip.Roles.RoleInfo.RoleTeam;
 
-namespace TheIdealShip.Roles
+namespace TheIdealShip
 {
     public static class RoleHelpers
     {

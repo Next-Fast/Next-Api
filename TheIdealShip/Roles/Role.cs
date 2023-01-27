@@ -22,6 +22,7 @@ namespace TheIdealShip.Roles
             Flash.clearAndReload();
         }
 
+
         public static RoleAssignmentData GetRoleAssignmentData()
         {
             List<PlayerControl> crewmates = PlayerControl.AllPlayerControls.ToArray().ToList().OrderBy(x => Guid.NewGuid()).ToList();
@@ -68,6 +69,12 @@ namespace TheIdealShip.Roles
                 maxImpostorRoles = maxImpostorRoles
             };
         }
+    }
+
+    [HarmonyPatch]
+    public class Modifier
+    {
+        public static List<RoleId> ModifierList = new List<RoleId>();
     }
 
     public class RoleAssignmentData

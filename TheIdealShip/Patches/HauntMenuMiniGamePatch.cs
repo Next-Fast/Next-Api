@@ -1,5 +1,5 @@
-/*
 using HarmonyLib;
+using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Patches
 {
@@ -27,9 +27,9 @@ namespace TheIdealShip.Patches
             }
         }
     }
+    [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.FixedUpdate))]
     class HauntMenuMiniGameFixedUpdatePatch
     {
-        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.FixedUpdate))]
         public static bool Prefix(HauntMenuMinigame __instance)
         {
             if (CustomOptionHolder.disableHauntMenu.getBool())
@@ -40,6 +40,15 @@ namespace TheIdealShip.Patches
 
             return false;
         }
+
+        public static void Postfix(HauntMenuMinigame __instance)
+        {
+            if (CustomOptionHolder.disableHauntMenu.getBool() || CachedPlayer.LocalPlayer.PlayerControl.IsSurvival())
+            {
+                __instance.gameObject.SetActive(false);
+            }
+        }
+
     }
 
     class HauntMenuMiniGameBeginPatch
@@ -71,4 +80,4 @@ namespace TheIdealShip.Patches
             return false;
         }
     }
-}*/
+}
