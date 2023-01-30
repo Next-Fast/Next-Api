@@ -43,12 +43,12 @@ namespace TheIdealShip
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TheIdealShipPlugin Instance;
+        public static int OptionPage = 0;
 
         public ConfigEntry<string> ConfigName { get; private set; }
         public static ConfigEntry<string> CustomIp { get; set; }
         public static ConfigEntry<ushort> CustomPort { get; set; }
         public static ConfigEntry<bool> isHttps { get; set;}
-        public static ConfigEntry<int> optionsPage { get; set;}
 
         public override void Load()
         {

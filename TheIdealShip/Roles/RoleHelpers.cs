@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using TheIdealShip.Roles;
+using TheIdealShip.Utilities;
 using static TheIdealShip.Languages.Language;
 using static TheIdealShip.Roles.RoleInfo;
 using RoleTeam = TheIdealShip.Roles.RoleInfo.RoleTeam;
@@ -68,6 +69,24 @@ namespace TheIdealShip
         public static bool IsSurvival(this PlayerControl player)
         {
             return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
+        }
+
+        public static bool RoleIsH(this PlayerControl player)
+        {
+            return player != null;
+        }
+
+        public static bool RoleIsH(this RoleId id)
+        {
+            foreach (var p in CachedPlayer.AllPlayers)
+            {
+                var info = getRoleInfoForPlayer(p,showAll:true);
+                foreach (var i in info)
+                {
+                    if (i.roleId == id) return true;
+                }
+            }
+            return false;
         }
 
         public static String GetRolesString(PlayerControl p, bool useColors = true, bool isModifier = false)

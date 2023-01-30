@@ -575,6 +575,7 @@ namespace TheIdealShip.Modules
                         var found = tName.IndexOf(">");
                         tName = option.name.Replace(tName.Substring(found + 1), GetString(tName.Substring(found + 1)));
                     }
+                    tName = GetString(option.name);
                     string selStr = GetString(option.selections[option.selection].ToString());
 
                     if (option.parent != null)
@@ -637,40 +638,38 @@ namespace TheIdealShip.Modules
                 return str.ToString();
             }
 
-            [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToString))]
+            [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.ToHudString))]
             private static void Postfix(ref string __result)
             {
-                var counter = TheIdealShipPlugin.optionsPage.Value;
+                var counter = TheIdealShipPlugin.OptionPage;
                 string hudString = "";
                 int maxPage = 7;
-                string PageStr = "Page";
-                var PS = GetString(PageStr + (counter + 1).ToString());
                 switch (counter)
                 {
                     case 0:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + __result;
+                        hudString += GetString("Page") + "1" + "\n" + GetString("Page1") + __result;
                         break;
                     case 1:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.General, false);
+                        hudString += GetString("Page") + "2" + "\n" + GetString("Page2") + buildOptionsOfType(CustomOption.CustomOptionType.General, false);
                         break;
                     case 2:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildRoleOptions();
+                        hudString += GetString("Page") + "3" + "\n" + GetString("Page3") + buildRoleOptions();
                         break;
                     case 3:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Impostor, false);
+                        hudString += GetString("Page") + "4" + "\n" + GetString("Page4") + buildOptionsOfType(CustomOption.CustomOptionType.Impostor, false);
                         break;
                     case 4:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Neutral, false);
+                        hudString += GetString("Page") + "5" + "\n" + GetString("Page5") + buildOptionsOfType(CustomOption.CustomOptionType.Neutral, false);
                         break;
                     case 5:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Crewmate, false);
+                        hudString += GetString("Page") + "6" + "\n" + GetString("Page6") + buildOptionsOfType(CustomOption.CustomOptionType.Crewmate, false);
                         break;
                     case 6:
-                        hudString += GetString(PageStr) + counter.ToString() + PS + buildOptionsOfType(CustomOption.CustomOptionType.Modifier, false);
+                        hudString += GetString("Page") + "7" + "\n" +  GetString("Page7") + buildOptionsOfType(CustomOption.CustomOptionType.Modifier, false);
                         break;
                 }
 
-                hudString += GetString("TABPage") + string.Format($"({0}/{1})",counter + 1, maxPage);
+                hudString += GetString("TABPage") + string.Format("({0}/{1})",counter + 1, maxPage);
                 __result = hudString;
             }
         }
@@ -680,41 +679,40 @@ namespace TheIdealShip.Modules
         {
             public static void Postfix(KeyboardJoystick __instance)
             {
-                var optionsPage = TheIdealShipPlugin.optionsPage.Value;
-                int page = optionsPage;
+                int optionsPage = TheIdealShipPlugin.OptionPage;
                 if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    optionsPage= (optionsPage + 1) % 7;
+                    TheIdealShipPlugin.OptionPage = (TheIdealShipPlugin.OptionPage + 1) % 7;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
                 {
-                    optionsPage = 0;
+                    TheIdealShipPlugin.OptionPage = 0;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
                 {
-                    optionsPage = 1;
+                    TheIdealShipPlugin.OptionPage = 1;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
                 {
-                    optionsPage = 2;
+                    TheIdealShipPlugin.OptionPage = 2;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4))
                 {
-                    optionsPage = 3;
+                    TheIdealShipPlugin.OptionPage = 3;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5))
                 {
-                    optionsPage = 4;
+                    TheIdealShipPlugin.OptionPage = 4;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6))
                 {
-                    optionsPage = 5;
+                    TheIdealShipPlugin.OptionPage = 5;
                 }
                 if (Input.GetKeyDown(KeyCode.Alpha7) || Input.GetKeyDown(KeyCode.Keypad7))
                 {
-                    optionsPage = 6;
+                    TheIdealShipPlugin.OptionPage = 6;
                 }
-                if (page != optionsPage)
+                if (optionsPage != TheIdealShipPlugin.OptionPage)
                 {
                     Vector3 position = (Vector3)FastDestroyableSingleton<HudManager>.Instance?.GameSettings?.transform.localPosition;
                     FastDestroyableSingleton<HudManager>.Instance.GameSettings.transform.localPosition = new Vector3(position.x, 2.9f, position.z);
@@ -733,7 +731,7 @@ namespace TheIdealShip.Modules
         }
 
 
-        // This class is taken from Town of Us Reactivated, https://github.com/eDonnes124/Town-Of-Us-R/blob/master/source/Patches/CustomOption/Patches.cs, Licensed under GPLv3
+      // This class is taken from Town of Us Reactivated, https://github.com/eDonnes124/Town-Of-Us-R/blob/master/source/Patches/CustomOption/Patches.cs, Licensed under GPLv3
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public class HudManagerUpdate
         {

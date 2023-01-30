@@ -14,10 +14,11 @@ namespace TheIdealShip.Patches
     class OptionMenuPatch
     {
         public static TabGroup TISTabButton;
-        public static GameObject TISTabContent;
+//        public static GameObject TISTabContent;
         public static void Postfix(OptionsMenuBehaviour __instance)
         {
             var tabs = new List<TabGroup>(__instance.Tabs.ToArray());
+            if (tabs.Count() < 4) return;
           /*   if (TISTabContent == null)
             {
                 TISTabContent = GameObject.Instantiate(tabs[2].Content, null);
@@ -62,7 +63,8 @@ namespace TheIdealShip.Patches
             {
                 TISTabButton = GameObject.Instantiate(tabs[0],tabs[0].transform.parent);
                 TISTabButton.name = "TheIdealShipTab";
-                TISTabButton.Content = TISTabContent;
+//                TISTabButton.Content = TISTabContent;
+                TISTabButton.Content = null;
                 TISTabButton.transform.localPosition += new Vector3(4f,0,0);
                 var text = TISTabButton.transform.FindChild("Text_TMP").gameObject;
                 text.GetComponent<TextTranslatorTMP>().enabled = false;

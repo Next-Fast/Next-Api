@@ -476,16 +476,18 @@ namespace TheIdealShip.Modules
 
         private static async Task LaunchHatFetcherAsync()
         {
-            try
+            foreach (var repo in HatRepo)
             {
-                HttpStatusCode status = await FetchHats();
-                if (status != HttpStatusCode.OK) Msg("自定义帽子未能成功加载","自定义帽子","CustomHats");
+                try
+                {
+                    HttpStatusCode status = await FetchHats(repo);
+                    if (status != HttpStatusCode.OK) Msg("自定义帽子未能成功加载","自定义帽子","CustomHats");
+                }
+                catch (Exception e)
+                {
+                    Exception(e,filename:"CustomHats");
+                }
             }
-            catch (Exception e)
-            {
-                Exception(e,filename:"CustomHats");
-            }
-
             running = false;
         }
 
@@ -501,11 +503,11 @@ namespace TheIdealShip.Modules
             return res;
         }
 
-        public static async Task<HttpStatusCode> FetchHats()
+        public static async Task<HttpStatusCode> FetchHats(string repo)
         {
             HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue{ NoCache = true};
-            var response = await http.GetAsync(new System.Uri($"{HatRepo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
+            var response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
             try
             {
                 if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;

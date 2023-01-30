@@ -19,6 +19,7 @@ namespace TheIdealShip
 
         public static void Postfix(HudManager __instance)
         {
+//            var LocalPlayer = CachedPlayer.LocalPlayer.PlayerControl;
          // 警长击杀 (Sheriff kill)
             sheriffKillButton = new CustomButton
             (
@@ -46,6 +47,7 @@ namespace TheIdealShip
                 },
                 () => {
                     return Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead;
+//                  return Sheriff.sheriff.RoleIsH() && Sheriff.sheriff.Is(LocalPlayer) && LocalPlayer.IsSurvival();
                 },
                 () => {
                     return Sheriff.currentTarget && CachedPlayer.LocalPlayer.PlayerControl.CanMove && Sheriff.shootNumber > 0;

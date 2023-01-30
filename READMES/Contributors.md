@@ -13,6 +13,7 @@
 [TownOfHost](https://github.com/tukasa0001/TownOfHost)
 [AUMods](https://github.com/AUModS/AUModS)
 [TheOtherRole-GM](https://github.com/yukinogatari/TheOtherRoles-GM)
+[TownOfUs-R](https://github.com/eDonnes124/Town-Of-Us-R)
 
 ## translate
 [YouDao](https://fanyi.youdao.com)
