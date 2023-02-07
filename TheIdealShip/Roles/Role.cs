@@ -14,6 +14,8 @@ namespace TheIdealShip.Roles
         {
             // Role 普通职业
             Sheriff.clearAndReload();
+            Camouflager.clearAndReload();
+            Illusory.clearAndReload();
 
             // 中立
             Jester.clearAndReload();
@@ -53,6 +55,9 @@ namespace TheIdealShip.Roles
             Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
             Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
 
+            impSettings.Add((byte)RoleId.Camouflager, CustomOptionHolder.camouflagerSpawnRate.getSelection());
+            impSettings.Add((byte)RoleId.Illusory, CustomOptionHolder.illusorySpawnRate.getSelection());
+            
             crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection());
 
             neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.getSelection());
@@ -97,6 +102,8 @@ namespace TheIdealShip.Roles
 
         // Impostor 内鬼
         Impostor,
+        Camouflager,
+        Illusory,
 
         // Neutral 中立
         Jester,

@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.Linq;
 using static TheIdealShip.Languages.Language;
+using static TheIdealShip.Helpers;
 
 namespace TheIdealShip.Modules
 {
@@ -443,18 +444,7 @@ namespace TheIdealShip.Modules
                 if (option == null) return true;
 
                 __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-                __instance.TitleText.text = GetString(option.name);
-                if (option.name != option.name.Replace("-", ""))
-                {
-                    __instance.TitleText.text = "- " + GetString(option.name.Replace("- ", ""));
-                }
-                if (option.name != option.name.Replace("</color>", ""))
-                {
-                    var name = option.name.Replace("</color>", "");
-                    var found = name.IndexOf(">");
-                    name = option.name.Replace(name.Substring(found + 1), GetString(name.Substring(found + 1)));
-                    __instance.TitleText.text = name;
-                }
+                __instance.TitleText.text = stringOption(option.name);
                 __instance.Value = __instance.oldValue = option.selection;
                 __instance.ValueText.text = GetString(option.selections[option.selection].ToString());
 
@@ -564,18 +554,7 @@ namespace TheIdealShip.Modules
 
                 foreach (CustomOption option in options)
                 {
-                    string tName = "";
-                    if (option.name != option.name.Replace("-", ""))
-                    {
-                        tName = "- " + GetString(option.name.Replace("- ", ""));
-                    }
-                    if (option.name != option.name.Replace("</color>", ""))
-                    {
-                        tName = option.name.Replace("</color>", "");
-                        var found = tName.IndexOf(">");
-                        tName = option.name.Replace(tName.Substring(found + 1), GetString(tName.Substring(found + 1)));
-                    }
-                    tName = GetString(option.name);
+                    string tName = stringOption(option.name);
                     string selStr = GetString(option.selections[option.selection].ToString());
 
                     if (option.parent != null)

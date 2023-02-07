@@ -6,6 +6,7 @@ using System.Net.Mime;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace TheIdealShip.Patches
@@ -71,7 +72,7 @@ namespace TheIdealShip.Patches
                 text.GetComponent<TMPro.TMP_Text>().text = "TIS";
                 PassiveButton passiveButton = TISTabButton.GetComponent<PassiveButton>();
                 passiveButton.OnClick = new Button.ButtonClickedEvent();
-                passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
+                passiveButton.OnClick.AddListener((Action)(() =>
             {
                 __instance.OpenTabGroup(4);
 

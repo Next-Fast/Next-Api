@@ -55,15 +55,30 @@ TABPage,\n Press TAB or Page Number for more... ,\n 按TAB切换页面查看更�
 
 Sheriff,Sheriff,警长
 Jester,Jester,小丑
+Flash,Flash,闪电侠
+Camouflager,Camouflager,隐蔽者
+Illusory,Illusory,虚影
 
 SheriffCooldown,Sheriff Cooldown,执法冷却时间
 ShootNumber,ShootNumber,执法次数
 
-SheriffIntroD,1,接受正义的裁决吧
+Camouflager Cooldown,Camouflager Cooldown,隐蔽冷却时间
+Camouflager Duration,Camouflager Duration,隐蔽时长
 
-SheriffTaskText,1,速速去执法坏人
+Illusory Cooldown,Illusory Cooldown,虚幻冷却时间
+Illusory Duration,Illusory Duration,虚幻时长
 
-JesterWinText,1,小丑获胜
-forcedEndWinText,1,强制结束
+SheriffIntroD,,接受正义的裁决吧
+JesterIntroD,,你是修丑
+IllusoryIntroD,,是真是假虚实不清
+CamouflagerIntroD,,全是黑色傻傻分不清
 
-JesterWinSubText,1,你就是丑王吧
+SheriffTaskText,,速速去执法坏人
+JesterTaskText,,被票出去
+CamouflagerTaskText,,全给我变小黑人
+IllusoryTaskText,,给船员们制造虚影
+
+JesterWinText,,小丑获胜
+forcedEndWinText,,强制结束
+
+JesterWinSubText,,你就是丑王吧

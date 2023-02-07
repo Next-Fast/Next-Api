@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using TheIdealShip.Modules;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
@@ -23,6 +25,24 @@ namespace TheIdealShip
 
         // Role 职业相关
         SheriffKill,
+        Camouflager,
+    }
+
+    public static class RPCHelpers
+    {
+        public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null, bool[] bools = null)
+        {
+            MessageWriter rpcStart =  AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, rpc, SendOption.Reliable);
+            if (bytes != null) { foreach (var b in bytes) { rpcStart.Write(b); } }
+
+            if (ints != null) { foreach (var i in ints) { rpcStart.Write(i); } }
+
+            if (floats != null) { foreach (var f in floats) { rpcStart.Write(f); } }
+
+            if (bools != null) { foreach (var bo in bools) { rpcStart.Write(bo); } }
+            
+            AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
+        }
     }
 
     public static class RPCProcedure
@@ -35,9 +55,9 @@ namespace TheIdealShip
 
         public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
         {
-            for (int i = 0;i < numberOfRoles; i++)
+            for (int i = 0; i < numberOfRoles; i++)
             {
-                byte playerId = (byte) reader.ReadPackedUInt32();
+                byte playerId = (byte)reader.ReadPackedUInt32();
                 byte roleId = (byte)reader.ReadPackedUInt32();
                 try
                 {
@@ -54,7 +74,7 @@ namespace TheIdealShip
         {
             var player = Helpers.GetPlayerForId(playerId);
 
-            switch((RoleId)roleId)
+            switch ((RoleId)roleId)
             {
                 case RoleId.Sheriff:
                     Sheriff.sheriff = player;
@@ -65,7 +85,7 @@ namespace TheIdealShip
         public static void setModifier(byte modifierId, byte playerId, byte flag)
         {
             var player = Helpers.GetPlayerForId(playerId);
-            switch((RoleId)modifierId)
+            switch ((RoleId)modifierId)
             {
                 case RoleId.Flash:
                     Flash.flash = player;
@@ -107,6 +127,21 @@ namespace TheIdealShip
             var info = RoleHelpers.GetRoleInfo(player);
             RestoreRole((byte)info.roleId);
             setRole(targetRoleId, playerId);
+        }
+
+        public static void Camouflager(bool isRestore)
+        {
+            foreach (var player in CachedPlayer.AllPlayers)
+            {
+                if (!isRestore)
+                {
+                    Helpers.setLook(player, "", 6, "", "", "", "");
+                }
+                else
+                {
+                    Helpers.setDefaultLook(player);
+                }
+            }
         }
     }
 
@@ -157,6 +192,10 @@ namespace TheIdealShip
                     byte ChangeRolePlayerId = reader.ReadByte();
                     byte ChangeRoleTargetRoleId = reader.ReadByte();
                     RPCProcedure.ChangeRole(ChangeRolePlayerId, ChangeRoleTargetRoleId);
+                    break;
+                case (byte)CustomRPC.Camouflager :
+                    bool CamouflagerBool = reader.ReadBoolean();
+                    RPCProcedure.Camouflager(CamouflagerBool);
                     break;
                 case (byte)CustomRPC.customrpc:
                     reader.Recycle();

@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+/* using System.Security.Cryptography;
 using System.Net.Http;
 using System.Net;
 using System.IO;
@@ -626,4 +626,4 @@ namespace TheIdealShip.Modules
             return ret;
         }
     }
-}
+} */
