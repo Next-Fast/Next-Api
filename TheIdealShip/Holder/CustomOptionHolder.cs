@@ -15,7 +15,7 @@ namespace TheIdealShip
             var Cs = Helpers.cs(c,s);
             return Cs;
         }
-        public static Color GeneralColor;
+        public static Color GeneralColor = new Color(204f / 255f, 204f / 255f, 0, 1f);
 
         public static CustomOption presetSelection;
         public static CustomOption modeOption;
@@ -57,7 +57,6 @@ namespace TheIdealShip
 
         public static void Load()
         {
-            GeneralColor = new Color(204f / 255f, 204f / 255f, 0, 1f);
 
             presetSelection = CustomOption.Create(0, Types.General, cs(GeneralColor, "Preset"), presets, null, true);
             //modeOption = CustomOption.Create(1,Types.General,"GameMode",modeset,null,true);
