@@ -1,8 +1,6 @@
-using System.Linq;
 using System.Collections.Generic;
 using static TheIdealShip.Languages.Language;
 using UnityEngine;
-using System;
 
 namespace TheIdealShip.Roles
 {

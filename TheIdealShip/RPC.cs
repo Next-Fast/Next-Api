@@ -6,6 +6,7 @@ using TheIdealShip.Modules;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
+using static  TheIdealShip.Helpers;
 using static TheIdealShip.HudManagerStartPatch;
 
 namespace TheIdealShip
@@ -21,11 +22,13 @@ namespace TheIdealShip
         setDead,
         RestoreRole,
         ChangeRole,
+        RestorePlayerLook,
         customrpc,
 
         // Role 职业相关
         SheriffKill,
         Camouflager,
+        Illusory,
     }
 
     public static class RPCHelpers
@@ -129,18 +132,30 @@ namespace TheIdealShip
             setRole(targetRoleId, playerId);
         }
 
-        public static void Camouflager(bool isRestore)
+        public static void RestorePlayerLook()
         {
             foreach (var player in CachedPlayer.AllPlayers)
             {
-                if (!isRestore)
-                {
-                    Helpers.setLook(player, "", 6, "", "", "", "");
-                }
-                else
-                {
-                    Helpers.setDefaultLook(player);
-                }
+                player.PlayerControl.setDefaultLook();
+            }
+        }
+
+        public static void Camouflager()
+        {
+            foreach (var player in CachedPlayer.AllPlayers)
+            {
+                player.PlayerControl.setLook("", 6, "", "", "", "");
+            }
+        }
+
+        public static void Illusory()
+        {
+            if (CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor) return;
+
+            PlayerControl rndPlayer = CachedPlayer.AllPlayers[rnd.Next(0, CachedPlayer.AllPlayers.Count)].PlayerControl;
+            foreach (var player in CachedPlayer.AllPlayers)
+            {
+                player.PlayerControl.setLook(rndPlayer.Data.PlayerName, rndPlayer.Data.DefaultOutfit.ColorId, rndPlayer.Data.DefaultOutfit.HatId, rndPlayer.Data.DefaultOutfit.VisorId, rndPlayer.Data.DefaultOutfit.SkinId, rndPlayer.Data.DefaultOutfit.PetId);
             }
         }
     }
@@ -184,19 +199,30 @@ namespace TheIdealShip
                     byte targetId = reader.ReadByte();
                     RPCProcedure.SheriffKill(targetId);
                     break;
+                
                 case (byte)CustomRPC.RestoreRole :
                     byte RestoreRoleId = reader.ReadByte();
                     RPCProcedure.RestoreRole(RestoreRoleId);
                     break;
+                
+                case (byte)CustomRPC.RestorePlayerLook :
+                    RPCProcedure.RestorePlayerLook();
+                    break;
+                
                 case (byte)CustomRPC.ChangeRole :
                     byte ChangeRolePlayerId = reader.ReadByte();
                     byte ChangeRoleTargetRoleId = reader.ReadByte();
                     RPCProcedure.ChangeRole(ChangeRolePlayerId, ChangeRoleTargetRoleId);
                     break;
+                
                 case (byte)CustomRPC.Camouflager :
-                    bool CamouflagerBool = reader.ReadBoolean();
-                    RPCProcedure.Camouflager(CamouflagerBool);
+                    RPCProcedure.Camouflager();
                     break;
+                
+                case (byte)CustomRPC.Illusory :
+                    RPCProcedure.Illusory();
+                    break;
+                
                 case (byte)CustomRPC.customrpc:
                     reader.Recycle();
                     break;

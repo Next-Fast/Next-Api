@@ -13,6 +13,7 @@ namespace TheIdealShip
     {
         public static CustomButton sheriffKillButton;
         public static CustomButton CamouflagerButton;
+        public static CustomButton IllusoryButton;
 
         public static void setCustomButtonCooldowns()
         {
@@ -67,13 +68,14 @@ namespace TheIdealShip
                 __instance,
                 KeyCode.Q
             );
-
+            
+            // 隐蔽（伪装）技能
             CamouflagerButton = new CustomButton
             (
                 () => 
                 {
-                    RPCHelpers.Create((byte)CustomRPC.Camouflager,bools:new bool[]{false});
-                    RPCProcedure.Camouflager(false);
+                    RPCHelpers.Create((byte)CustomRPC.Camouflager);
+                    RPCProcedure.Camouflager();
                 },
                 () =>
                 {
@@ -92,14 +94,49 @@ namespace TheIdealShip
                 Camouflager.getButtonSprite(),
                 new Vector3(0f,1f,0),
                 __instance,
-                KeyCode.Q,
+                KeyCode.F,
                 true,
                 Camouflager.duration,
                 () =>
                 {
                     CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
-                    RPCHelpers.Create((byte)CustomRPC.Camouflager,bools:new bool[]{true});
-                    RPCProcedure.Camouflager(true);
+                    RPCHelpers.Create((byte)CustomRPC.RestorePlayerLook);
+                    RPCProcedure.RestorePlayerLook();
+                }
+            );
+
+            // 虚影技能
+            IllusoryButton = new CustomButton
+            (
+                () =>
+                {
+                    RPCHelpers.Create((byte)CustomRPC.Illusory);
+                    RPCProcedure.Illusory();
+                },
+                () =>
+                {
+                    return Illusory.illusory != null && Illusory.illusory == LocalPlayer && !LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    IllusoryButton.Timer = IllusoryButton.MaxTimer;
+                    IllusoryButton.isEffectActive = false;
+                    IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                },
+                Illusory.getButtonSprite(),
+                new Vector3(0f,1f,0),
+                __instance,
+                KeyCode.F,
+                true,
+                Illusory.duration,
+                () =>
+                {
+                    RPCHelpers.Create((byte)CustomRPC.RestorePlayerLook);
+                    RPCProcedure.RestorePlayerLook();
                 }
             );
 
