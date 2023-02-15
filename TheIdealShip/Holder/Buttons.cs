@@ -19,6 +19,7 @@ namespace TheIdealShip
         {
             sheriffKillButton.MaxTimer = Sheriff.cooldown;
             CamouflagerButton.MaxTimer = Camouflager.cooldown;
+            IllusoryButton.MaxTimer = Illusory.cooldown;
         }
 
         public static void Postfix(HudManager __instance)

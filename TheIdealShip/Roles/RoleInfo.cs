@@ -88,9 +88,11 @@ namespace TheIdealShip.Roles
         public static RoleInfo crewmate;
 
         public static RoleInfo jester;
+        public static RoleInfo schrodingersCat;
 
         // Modifier 附加职业
         public static RoleInfo flash;
+        public static RoleInfo lover;
 
 
         public static void Init()
@@ -104,9 +106,11 @@ namespace TheIdealShip.Roles
             crewmate = new RoleInfo("Crewmate", Palette.CrewmateBlue, RoleId.Crewmate, RoleType.Crewmate);
 
             jester = new RoleInfo("Jester", Jester.color, RoleId.Jester, RoleType.Neutral);
+            schrodingersCat = new RoleInfo("Schrodinger's Cats", SchrodingersCat.color, RoleId.SchrodingersCats, RoleType.Neutral, SchrodingersCat.team);
 
             // Modifier 附加职业
             flash = new RoleInfo("Flash", Flash.color, RoleId.Flash, RoleType.Modifier);
+            lover = new RoleInfo("Lover", Lover.Color, RoleId.Lover, RoleType.Modifier);
 
             allRoleInfos = new List<RoleInfo>()
             {
@@ -119,9 +123,11 @@ namespace TheIdealShip.Roles
                 crewmate,
 
                 jester,
+                schrodingersCat,
 
                 // Modifier
-                flash
+                flash,
+                lover
             };
         }
 
@@ -135,6 +141,7 @@ namespace TheIdealShip.Roles
             if (isModifier)
             {
                 if (p == Flash.flash) infos.Add(flash);
+                if (p == Lover.lover1 || p == Lover.lover2) infos.Add(lover);
             }
 
             int count = infos.Count;  // Save count after modifiers are added so that the role count can be checked
@@ -145,6 +152,7 @@ namespace TheIdealShip.Roles
                 if (p == Jester.jester) infos.Add(jester);
                 if (p == Camouflager.camouflager) infos.Add(camouflager);
                 if (p == Illusory.illusory) infos.Add(illusory);
+                if (p == SchrodingersCat.schrodingersCat) infos.Add(schrodingersCat);
 
                 if (infos.Count == count)
                 {

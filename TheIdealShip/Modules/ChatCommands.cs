@@ -65,14 +65,5 @@ namespace TheIdealShip.Modules
                 return !canceled;
             }
         }
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-        public static class EnableChat
-        {
-            public static void Postfix(HudManager __instance)
-            {
-                if (!__instance.Chat.isActiveAndEnabled && CustomOptionHolder.noGameEnd.getBool())
-                    __instance.Chat.SetVisible(true);
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@ using System.Globalization;
 using HarmonyLib;
 using UnityEngine;
 using TheIdealShip.Modules;
+using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Patches
 {
@@ -13,13 +14,15 @@ namespace TheIdealShip.Patches
         public static GameObject DiscordButton;
         public static GameObject kookButton;
         public static GameObject UpdateButton;
-        public static bool isCN;
+//        public static bool isCN;
 
         [HarmonyPatch(typeof(MainMenuManager),nameof(MainMenuManager.Start)),HarmonyPrefix]
         public static void Start_Prefix(MainMenuManager __instance)
         {
+            /*
             var langid = AmongUs.Data.Legacy.LegacySaveManager.lastLanguage;
             isCN = langid == 13 || langid == 14;
+            */
             // 将玩法说明改为Github
             var howtoplayButton = GameObject.Find("HowToPlayButton");
             if (howtoplayButton != null)
@@ -34,7 +37,7 @@ namespace TheIdealShip.Patches
 
             // 将自由模式改成bilibili
             var freeplayButton = GameObject.Find("FreePlayButton");
-            if (freeplayButton != null && isCN)
+            if (freeplayButton != null)
             {
                 var bilibiliText = freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 Color bilibiliColor = new Color32(0,182,247,byte.MaxValue);
@@ -48,7 +51,7 @@ namespace TheIdealShip.Patches
 
             if (Template == null) Template = GameObject.Find("ExitGameButton");
             if (Template == null) return;
-
+/*
             // 生成Discord按钮
             if (DiscordButton == null) DiscordButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             DiscordButton.name = "DiscordButton";
@@ -64,9 +67,10 @@ namespace TheIdealShip.Patches
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => DiscordText.SetText("Discord"))));
             DiscordButtonSprite.color = DiscordText.color = DiscordColor;
             DiscordButton.gameObject.SetActive(true);
+*/
 
             // 生成Kook按钮 改为QQ频道
-            if (kookButton == null && isCN)
+            if (kookButton == null)
             {
                 kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
                 kookButton.name = "QQButton";

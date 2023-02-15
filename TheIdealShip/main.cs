@@ -33,8 +33,6 @@ namespace TheIdealShip
     */
         // Github链接
         public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
-        // Discord服务器链接
-        public const string DiscordURL = "https://discord.gg/PrjetphRxh";
         // bilibili链接
         public const string bilibiliURL = "https://space.bilibili.com/394107547";
         // KOOK链接
@@ -44,21 +42,13 @@ namespace TheIdealShip
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TheIdealShipPlugin Instance;
         public static int OptionPage = 0;
-
-        public ConfigEntry<string> ConfigName { get; private set; }
-        public static ConfigEntry<string> CustomIp { get; set; }
-        public static ConfigEntry<ushort> CustomPort { get; set; }
-        public static ConfigEntry<bool> isHttps { get; set;}
+        
 
         public override void Load()
         {
             Logger = Log;
             Instance = this;
-
-            CustomIp = Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
-            CustomPort = Config.Bind("Custom", "Custom Server Port", (ushort)22000);
-            isHttps = Config.Bind("Custom","Custom Server isHttps", false);
-            RegionMenuOpenPatch.UpdateRegions();
+            
 
             Harmony.PatchAll();
 

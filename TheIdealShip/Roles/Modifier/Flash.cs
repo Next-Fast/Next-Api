@@ -9,6 +9,7 @@ namespace TheIdealShip.Roles
         public static float speed = 5f;
         public static void clearAndReload()
         {
+            flash = null;
             speed = CustomOptionHolder.flashSpeed.getFloat();
         }
     }

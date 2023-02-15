@@ -16,6 +16,19 @@ namespace TheIdealShip
             var info = getRoleInfoForPlayer(player, isModifier, false).FirstOrDefault();
             return info;
         }
+        
+        public static List<RoleId> GetAllModifierId(this PlayerControl player)
+        {
+            List<RoleId> allMoidierRoleIds = new List<RoleId>();
+            var info = getRoleInfoForPlayer(player, false, true).Where(x => x.type == RoleType.Modifier);
+            foreach (var i in info)
+            {
+                allMoidierRoleIds.Add(i.roleId);
+            }
+
+            return allMoidierRoleIds;
+        }
+        
         public static string GetRoleTeam(PlayerControl p)
         {
             string roleTeam;
@@ -66,9 +79,19 @@ namespace TheIdealShip
             return info.type == type;
         }
 
+        public static bool IsLover(this PlayerControl player)
+        {
+            return (player.Is(Lover.lover1) || player.Is(Lover.lover2));
+        }
+
         public static bool IsSurvival(this PlayerControl player)
         {
             return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
+        }
+
+        public static void Suicide(this PlayerControl player)
+        {
+            player.MurderPlayer(player);
         }
 
         public static bool RoleIsH(this PlayerControl player)
