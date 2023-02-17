@@ -24,7 +24,7 @@ Maximum Impostor Roles,Maximum Impostor Roles,最大内鬼职业数
 Minimum Modifier Roles,Minimum Modifier Roles,最小附加职业数
 Maximum Modifier Roles,Maximum Modifier Roles,最大附加职业数
 disableHauntMenu,Disable Haunt Menu,禁用幽幽鬼影
-disableServerKickPlayer,Disable Server Kick Player,禁用服务器踢人
+DisableServerKickPlayer,Disable Server Kick Player,禁用服务器踢人
 PlayerOption,Player Option,玩家选项
 PlayerGhostSpeed,Player Ghost Speed,玩家幽灵速度
 On,On,开启
@@ -33,7 +33,7 @@ Roles,Roles,职业
 Modifiers,Modifiers,附加职业
 exileText,{0} was the {1},{0} 是 {1}
 exileTeamText,The specific camp is {0},具体阵营是 {0}
-jiaren,jiaren,假人数量
+DummyNumber,Dummy Number,假人数量
 Neutral,Neutral,中立
 Crewmate,Crewmate,船员
 Impostor,Impostor,内鬼

@@ -74,7 +74,7 @@ namespace TheIdealShip.Patches
             {
                 kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
                 kookButton.name = "QQButton";
-                kookButton.transform.position = DiscordButton.transform.position + new Vector3(0, 0.65f);
+                kookButton.transform.position = Vector3.Reflect(Template.transform.position,Vector3.left) + new Vector3(0, 0.65f);
 
                 var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 Color kookColor = new Color32(187, 255, 255, byte.MaxValue);

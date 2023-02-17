@@ -112,6 +112,10 @@ namespace TheIdealShip
                 s = str.Substring(str.IndexOf("-") + 2);
                 s = str.Replace(s, GetString(s));
             }
+            else
+            {
+                s = GetString(str);
+            }
             return s;
         }
 

@@ -25,11 +25,7 @@
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Roles\Church" />
-    </ItemGroup>
-
-    <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
-        <Copy SourceFiles="./bin/Debug/net6.0/TheIdealShip.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
+    <Target Name="Copy" AfterTargets="Build" Condition="'$(TheIdealShipLast)' != ''">
+        <Copy SourceFiles="./bin/Debug/net6.0/TheIdealShip.dll" DestinationFolder="$(TheIdealShipLast)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
     </Target>
 </Project>

@@ -106,7 +106,7 @@ namespace TheIdealShip.Roles
             crewmate = new RoleInfo("Crewmate", Palette.CrewmateBlue, RoleId.Crewmate, RoleType.Crewmate);
 
             jester = new RoleInfo("Jester", Jester.color, RoleId.Jester, RoleType.Neutral);
-            schrodingersCat = new RoleInfo("Schrodinger's Cats", SchrodingersCat.color, RoleId.SchrodingersCats, RoleType.Neutral, SchrodingersCat.team);
+            schrodingersCat = new RoleInfo("Schrodinger's Cat", SchrodingersCat.color, RoleId.SchrodingersCats, RoleType.Neutral, SchrodingersCat.team);
 
             // Modifier 附加职业
             flash = new RoleInfo("Flash", Flash.color, RoleId.Flash, RoleType.Modifier);

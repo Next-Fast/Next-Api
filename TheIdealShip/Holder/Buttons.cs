@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using InnerNet;
 using Reactor.Networking.Rpc;
 using TheIdealShip.Modules;
 using TheIdealShip.Roles;
@@ -24,8 +25,9 @@ namespace TheIdealShip
 
         public static void Postfix(HudManager __instance)
         {
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
             var LocalPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-         // 警长击杀 (Sheriff kill)
+            // 警长击杀 (Sheriff kill)
             sheriffKillButton = new CustomButton
             (
                 () =>

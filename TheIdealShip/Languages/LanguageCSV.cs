@@ -96,6 +96,12 @@ namespace TheIdealShip.Languages
             {
                 res = $"{dic[0]}";
             }
+
+            if (res == null || res == "")
+            {
+                res = $"*{str}";
+            }
+            
             return res;
         }
     }
