@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using TheIdealShip.Modules;
+using TheIdealShip.HistoryManager;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
@@ -24,6 +25,8 @@ namespace TheIdealShip
         ChangeRole,
         RestorePlayerLook,
         customrpc,
+        VersionShakehand,
+        HistorySynchronization,
 
         // Role 职业相关
         SheriffKill,
@@ -238,6 +241,11 @@ namespace TheIdealShip
             }
         }
 
+        public static void HistorySynchronization(byte playerid, int number, byte role , byte team)
+        {
+            HistoryInfoManager.Add(Helpers.GetPlayerForId(playerid), (RoleInfo.RoleTeam)team, (RoleId)role, true,number);
+        }
+
         public static void Camouflager()
         {
             foreach (var player in CachedPlayer.AllPlayers)
@@ -311,6 +319,10 @@ namespace TheIdealShip
                 
                 case (byte)CustomRPC.RestorePlayerLook :
                     RPCProcedure.RestorePlayerLook();
+                    break;
+                
+                case (byte)CustomRPC.HistorySynchronization :
+                    RPCProcedure.HistorySynchronization(reader.ReadByte(), reader.ReadInt32(), reader.ReadByte(), reader.ReadByte());
                     break;
                 
                 case (byte)CustomRPC.ChangeRole :
