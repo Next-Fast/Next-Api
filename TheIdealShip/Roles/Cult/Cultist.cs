@@ -1,4 +1,4 @@
-﻿namespace TheIdealShip.Roles.Cult;
+﻿namespace TheIdealShip.Roles;
 
 public class Cultist
 {

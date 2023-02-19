@@ -258,7 +258,7 @@ namespace TheIdealShip.Modules
                 var roleTab = GameObject.Find("RoleTab");
                 var gameTab = GameObject.Find("GameTab");
 
-                var tisTab = UnityEngine.Object.Instantiate(roleTab,roleTab.transform.parent);
+                var tisTab = UnityEngine.Object.Instantiate(roleTab, gameTab.transform.parent);
                 var tisTabHighlight = getTabHighlight(tisTab,"TheIdealShipTab","TheIdealShip.Resources.Tab.png");
 
                 var impostorTab = UnityEngine.Object.Instantiate(roleTab, tisTab.transform);
@@ -273,19 +273,24 @@ namespace TheIdealShip.Modules
                 var modifierTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
                 var modifierTabHighlight = getTabHighlight(modifierTab, "ModifierTab", "TheIdealShip.Resources.TabM.png");
 
-                gameTab.transform.position += Vector3.left * 3f;
-                roleTab.transform.position += Vector3.left * 3f;
-                tisTab.transform.position += Vector3.left * 2f;
-                impostorTab.transform.localPosition = Vector3.right * 1f;
-                neutralTab.transform.localPosition = Vector3.right * 1f;
-                crewmateTab.transform.localPosition = Vector3.right * 1f;
-                modifierTab.transform.localPosition = Vector3.right * 1f;
+                gameTab.transform.position += Vector3.left * 3.5f;
+                tisTab.transform.position += Vector3.left * 4.5f +  Vector3.down * 1f;
+                impostorTab.transform.localPosition = Vector3.down * 1f;
+                neutralTab.transform.localPosition = Vector3.down * 1f;
+                crewmateTab.transform.localPosition = Vector3.down * 1f;
+                modifierTab.transform.localPosition = Vector3.down * 1f;
+                
+                gameTab.transform.localScale = Vector3.one;
+                tisTab.transform.localScale = Vector3.one;
+                impostorTab.transform.localScale = Vector3.one;
+                neutralTab.transform.localScale = Vector3.one;
+                crewmateTab.transform.localScale = Vector3.one;
+                modifierTab.transform.localScale = Vector3.one;
 
-                var tabs = new GameObject[]{gameTab,roleTab,tisTab,impostorTab,neutralTab,crewmateTab,modifierTab};
+                var tabs = new GameObject[]{gameTab,tisTab,impostorTab,neutralTab,crewmateTab,modifierTab};
                 var settingsHighlightMap = new Dictionary<GameObject,SpriteRenderer>
                 {
                     [gameSettingMenu.RegularGameSettings] = gameSettingMenu.GameSettingsHightlight,
-                    [gameSettingMenu.RolesSettings.gameObject] = gameSettingMenu.RolesSettingsHightlight,
                     [tisSettings.gameObject] = tisTabHighlight,
                     [impostorSettings.gameObject] = impostorTabHighlight,
                     [neutralSettings.gameObject] = neutralTabHighlight,
@@ -328,20 +333,10 @@ namespace TheIdealShip.Modules
                     {
                         StringOption stringOption = UnityEngine.Object.Instantiate(template,menus[(int)option.type]);
                         stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => {});
-                        stringOption.TitleText.text = GetString(option.name);
-                        if (option.name != option.name.Replace("-", ""))
-                        {
-                            stringOption.TitleText.text = "- " + GetString(option.name.Replace("- ", ""));
-                        }
-                        if (option.name != option.name.Replace("</color>", ""))
-                        {
-                            var name = option.name.Replace("</color>", "");
-                            var found = name.IndexOf(">");
-                            name = option.name.Replace(name.Substring(found + 1),GetString(name.Substring(found + 1)));
-                            stringOption.TitleText.text = name;
-                        }
+                        stringOption.TitleText.text = Helpers.stringOption(option.name);
+
                         stringOption.Value = stringOption.oldValue = option.selection;
-                        stringOption.ValueText.text = GetString(option.selections[option.selection].ToString());
+                        stringOption.ValueText.text = Helpers.stringOption(option.selections[option.selection].ToString());
 
                         option.optionBehaviour = stringOption;
                     }
@@ -356,6 +351,8 @@ namespace TheIdealShip.Modules
                 );
 
                 adaptTaskCount(__instance);
+                if (roleTab != null)
+                    roleTab.SetActive(false);
             }
 
             private static bool setNames (Dictionary<string,string> gameObjectNameDisplayNameMap)

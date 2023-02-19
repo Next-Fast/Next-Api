@@ -1,6 +1,6 @@
 ﻿namespace TheIdealShip.Roles;
 
-public class CultPreacher
+public class Mayor
 {
     
 }
