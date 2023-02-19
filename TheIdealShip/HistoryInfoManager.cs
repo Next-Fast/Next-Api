@@ -78,3 +78,27 @@ public class RoleHistoryManager
    }
 }
 
+public class DeathInfoManager
+{
+   public class DeadPlayer
+   {
+      public PlayerControl player;
+      public DateTime TimeOfDeath;
+      public DeathReason DeathReason;
+      public PlayerControl Murderer;
+      
+      public DeadPlayer(PlayerControl player, DateTime TimeOfDeath, DeathReason DeathReason, PlayerControl Murderer)
+      {
+         this.player = player;
+         this.TimeOfDeath = TimeOfDeath;
+         this.DeathReason = DeathReason;
+         this.Murderer = Murderer;
+      }
+      
+      enum CustomDeathReason 
+      {
+         
+      }
+   }
+}
+

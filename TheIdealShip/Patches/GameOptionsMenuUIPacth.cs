@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
@@ -7,10 +7,11 @@ using Slider = UnityEngine.UI.Slider;
 
 namespace TheIdealShip.Patches;
 
-[HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
-public class GameOptionsMenuUIPacth
+[HarmonyPatch]
+public static class GameOptionsMenuUIPacth
 {
-    public static void Postfix()
+    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start)), HarmonyPostfix]
+    public static void Start_Postfix()
     {
         var ChatAndSettingsButtonBackground = GameObject.Find("ChatAndSettingsButtonBackground");
         if (ChatAndSettingsButtonBackground != null) ChatAndSettingsButtonBackground.SetActive(false);
@@ -31,9 +32,9 @@ public class GameOptionsMenuUIPacth
 
         var BaseGlass = Header.transform.FindChild("baseGlass").gameObject;
         BaseGlass.SetActive(false);
-
-        var GameSettings = GameObject.Find("Game Settings");
-        GameSettings.transform.position  +=  Vector3.up * 1f;  
+        
+        // var GameSettings = GameObject.Find("Game Settings");
+        // if (GameSettings != null) GameSettings.transform.position += Vector3.up * 1f;
 
         var Panel = GameObject.Find("Game Settings/BackPanel");
         if (Panel != null) Panel.SetActive(false);
@@ -41,10 +42,10 @@ public class GameOptionsMenuUIPacth
         var Reset = GameObject.Find("SliderInner/ResetToDefault");
         if (Reset != null) Reset.SetActive(false);
         
-        var Text = GameObject.Find("GameGroup/Text");
-        Text.transform.position += Vector3.right  * 1.5f;
+        // var Text = GameObject.Find("GameGroup/Text");
+        // Text.transform.position += Vector3.right  * 1.5f;
 
-        var SliderInner = GameObject.Find("/SliderInner");
+        var SliderInner = GameObject.Find("GameGroup/SliderInner");
         for (int i = 0; i < SliderInner.transform.childCount; i++)
         {
             var option = SliderInner.transform.GetChild(i);
