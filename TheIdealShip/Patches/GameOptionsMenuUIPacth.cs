@@ -42,8 +42,8 @@ public static class GameOptionsMenuUIPacth
         var Reset = GameObject.Find("SliderInner/ResetToDefault");
         if (Reset != null) Reset.SetActive(false);
         
-        // var Text = GameObject.Find("GameGroup/Text");
-        // Text.transform.position += Vector3.right  * 1.5f;
+        var Text = GameObject.Find("GameGroup/Text");
+        Text.transform.position += Vector3.right  * 1.5f;
 
         var SliderInner = GameObject.Find("GameGroup/SliderInner");
         for (int i = 0; i < SliderInner.transform.childCount; i++)

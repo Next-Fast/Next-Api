@@ -13,8 +13,8 @@ namespace TheIdealShip
 {
     [BepInPlugin(Id, ModName, VersionString)]
     [BepInProcess("Among Us.exe")]
-    [BepInDependency(ReactorPlugin.Id)]
-    [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
+    // [BepInDependency(ReactorPlugin.Id)]
+    // [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
     public class TheIdealShipPlugin : BasePlugin
     {
         // Among Us游玩版本
