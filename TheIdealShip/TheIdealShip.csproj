@@ -15,7 +15,11 @@
         <EmbeddedResource Include=".\Resources\**" />
     </ItemGroup>
     
-    
+    <ItemGroup>
+        <Reference Include="$(TheIdealShipLast)\BepInEx\core\*.dll" />
+        <Reference Include="$(TheIdealShipLast)\BepInEx\interop\*.dll" />
+<!--        <Reference Include="$(AmongUs)\BepInEx\plugins\Reactor.dll" />-->
+    </ItemGroup>
 
     <ItemGroup>
 <!--nuget.org 的包                                              -->
