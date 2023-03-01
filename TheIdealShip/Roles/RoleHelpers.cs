@@ -1,12 +1,13 @@
-using System.Xml.Schema;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using TheIdealShip.Roles;
+using TheIdealShip.Utilities;
 using static TheIdealShip.Languages.Language;
 using static TheIdealShip.Roles.RoleInfo;
 using RoleTeam = TheIdealShip.Roles.RoleInfo.RoleTeam;
 
-namespace TheIdealShip.Roles
+namespace TheIdealShip
 {
     public static class RoleHelpers
     {
@@ -15,6 +16,19 @@ namespace TheIdealShip.Roles
             var info = getRoleInfoForPlayer(player, isModifier, false).FirstOrDefault();
             return info;
         }
+        
+        public static List<RoleId> GetAllModifierId(this PlayerControl player)
+        {
+            List<RoleId> allMoidierRoleIds = new List<RoleId>();
+            var info = getRoleInfoForPlayer(player, false, true).Where(x => x.type == RoleType.Modifier);
+            foreach (var i in info)
+            {
+                allMoidierRoleIds.Add(i.roleId);
+            }
+
+            return allMoidierRoleIds;
+        }
+        
         public static string GetRoleTeam(PlayerControl p)
         {
             string roleTeam;
@@ -42,6 +56,10 @@ namespace TheIdealShip.Roles
             }
             return roleTeam;
         }
+        public static bool Is(this PlayerControl player,PlayerControl playerControl)
+        {
+            return playerControl == player;
+        }
 
         public static bool Is(this PlayerControl player, RoleId id)
         {
@@ -59,6 +77,39 @@ namespace TheIdealShip.Roles
         {
             var info = allRoleInfos.Where(x => x.roleId == id).FirstOrDefault();
             return info.type == type;
+        }
+
+        public static bool IsLover(this PlayerControl player)
+        {
+            return (player.Is(Lover.lover1) || player.Is(Lover.lover2));
+        }
+
+        public static bool IsSurvival(this PlayerControl player)
+        {
+            return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
+        }
+
+        public static void Suicide(this PlayerControl player)
+        {
+            player.MurderPlayer(player);
+        }
+
+        public static bool RoleIsH(this PlayerControl player)
+        {
+            return player != null;
+        }
+
+        public static bool RoleIsH(this RoleId id)
+        {
+            foreach (var p in CachedPlayer.AllPlayers)
+            {
+                var info = getRoleInfoForPlayer(p,showAll:true);
+                foreach (var i in info)
+                {
+                    if (i.roleId == id) return true;
+                }
+            }
+            return false;
         }
 
         public static String GetRolesString(PlayerControl p, bool useColors = true, bool isModifier = false)

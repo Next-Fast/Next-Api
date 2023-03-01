@@ -1,5 +1,7 @@
-/*
+using AmongUs.GameOptions;
 using HarmonyLib;
+using TheIdealShip.Utilities;
+using TheIdealShip.Roles;
 
 namespace TheIdealShip.Patches
 {
@@ -8,67 +10,52 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Start))]
         public static bool Prefix(HauntMenuMinigame __instance)
         {
-            if (CustomOptionHolder.disableHauntMenu.getBool())
-            {
-                DisableHM(__instance);
-                return false;
-            }
+            if (CustomOptionHolder.disableHauntMenu.getBool()) return false;
 
-            return false;
-        }
-
-        public static void DisableHM(HauntMenuMinigame __instance)
-        {
-            __instance.gameObject.SetActive(false);
-            __instance.enabled = false;
-            for (var i = 0; i <= __instance.FilterButtons.Count ; i++)
-            {
-                __instance.FilterButtons[1].gameObject.SetActive(false);
-            }
+            return true;
         }
     }
+    [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.FixedUpdate))]
     class HauntMenuMiniGameFixedUpdatePatch
     {
-        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.FixedUpdate))]
         public static bool Prefix(HauntMenuMinigame __instance)
         {
-            if (CustomOptionHolder.disableHauntMenu.getBool())
-            {
-                HauntMenuMiniGamePatch.DisableHM(__instance);
-                return false;
-            }
+            if (CustomOptionHolder.disableHauntMenu.getBool()) return false;
 
             return false;
         }
+
+        public static void Postfix(HauntMenuMinigame __instance)
+        {
+            if (CustomOptionHolder.disableHauntMenu.getBool())
+            {
+                __instance.gameObject.SetActive(false);
+                return;
+            }
+            if (CachedPlayer.LocalPlayer.PlayerControl.IsSurvival())
+            {
+                __instance.gameObject.SetActive(false);
+            }
+            else
+            {
+                __instance.gameObject.SetActive(true);
+            }
+        }
     }
 
-    class HauntMenuMiniGameBeginPatch
+    [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
+    public static class HauntMenuMinigameSetFilterTextPatch
     {
-        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Begin))]
         public static bool Prefix(HauntMenuMinigame __instance)
         {
-            if (CustomOptionHolder.disableHauntMenu.getBool())
-            {
-                HauntMenuMiniGamePatch.DisableHM(__instance);
-                return false;
-            }
+            if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
+            var roleText = RoleHelpers.GetRoleInfo(__instance.HauntTarget,false).name;
+            var modifierText = RoleHelpers.GetRoleInfo(__instance.HauntTarget, true).name;
 
+            string FilterText = roleText;
+            if (modifierText != null) FilterText += ("\n" + modifierText);
+            __instance.FilterText.text = FilterText;
             return false;
         }
     }
-
-    class HauntMenuMinigameClose
-    {
-        [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Close))]
-        public static bool Prefix(HauntMenuMinigame __instance)
-        {
-            if (CustomOptionHolder.disableHauntMenu.getBool())
-            {
-                HauntMenuMiniGamePatch.DisableHM(__instance);
-                return false;
-            }
-
-            return false;
-        }
-    }
-}*/
+}

@@ -1,8 +1,6 @@
-using System.Linq;
 using System.Collections.Generic;
 using static TheIdealShip.Languages.Language;
 using UnityEngine;
-using System;
 
 namespace TheIdealShip.Roles
 {
@@ -45,7 +43,8 @@ namespace TheIdealShip.Roles
             this.type = type;
             this.team = team;
         }
-
+        
+        
         RoleInfo
         (
             string name,
@@ -58,6 +57,23 @@ namespace TheIdealShip.Roles
             this.namekey = name;
             this.roleId = roleId;
             this.type = type;
+            if (type != RoleType.Modifier)
+            {
+                switch (type)
+                {
+                    case RoleType.Crewmate:
+                        team = RoleTeam.Crewmate;
+                        break;
+                    
+                    case RoleType.Impostor:
+                        team = RoleTeam.Impostor;
+                        break;
+                    
+                    case RoleType.Neutral:
+                        team = RoleTeam.Neutral;
+                        break;
+                }
+            }
         }
 
         public static List<RoleInfo> allRoleInfos;
@@ -65,41 +81,53 @@ namespace TheIdealShip.Roles
 
         // Role 普通职业
         public static RoleInfo impostor;
+        public static RoleInfo camouflager;
+        public static RoleInfo illusory;
 
         public static RoleInfo sheriff;
         public static RoleInfo crewmate;
 
         public static RoleInfo jester;
+        public static RoleInfo schrodingersCat;
 
         // Modifier 附加职业
         public static RoleInfo flash;
+        public static RoleInfo lover;
 
 
         public static void Init()
         {
             // Role 普通职业
-            impostor = new RoleInfo("Impostor", Palette.ImpostorRed, RoleId.Impostor, RoleType.Impostor, RoleTeam.Impostor);
+            impostor = new RoleInfo("Impostor", Palette.ImpostorRed, RoleId.Impostor, RoleType.Impostor);
+            camouflager = new RoleInfo("Camouflager", Camouflager.color, RoleId.Camouflager, RoleType.Impostor);
+            illusory = new RoleInfo("Illusory", Illusory.color, RoleId.Illusory, RoleType.Impostor);
 
-            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate , RoleTeam.Crewmate);
-            crewmate = new RoleInfo("Crewmate", Color.white, RoleId.Crewmate, RoleType.Crewmate, RoleTeam.Crewmate);
+            sheriff = new RoleInfo("Sheriff", Sheriff.color, RoleId.Sheriff, RoleType.Crewmate);
+            crewmate = new RoleInfo("Crewmate", Palette.CrewmateBlue, RoleId.Crewmate, RoleType.Crewmate);
 
-            jester = new RoleInfo("Jester", Jester.color, RoleId.Jester, RoleType.Neutral, RoleTeam.Neutral);
+            jester = new RoleInfo("Jester", Jester.color, RoleId.Jester, RoleType.Neutral);
+            schrodingersCat = new RoleInfo("Schrodinger's Cat", SchrodingersCat.color, RoleId.SchrodingersCats, RoleType.Neutral, SchrodingersCat.team);
 
             // Modifier 附加职业
             flash = new RoleInfo("Flash", Flash.color, RoleId.Flash, RoleType.Modifier);
+            lover = new RoleInfo("Lover", Lover.Color, RoleId.Lover, RoleType.Modifier);
 
             allRoleInfos = new List<RoleInfo>()
             {
                 // Role
                 impostor,
+                camouflager,
+                illusory,
 
                 sheriff,
                 crewmate,
 
                 jester,
+                schrodingersCat,
 
                 // Modifier
-                flash
+                flash,
+                lover
             };
         }
 
@@ -113,6 +141,7 @@ namespace TheIdealShip.Roles
             if (isModifier)
             {
                 if (p == Flash.flash) infos.Add(flash);
+                if (p == Lover.lover1 || p == Lover.lover2) infos.Add(lover);
             }
 
             int count = infos.Count;  // Save count after modifiers are added so that the role count can be checked
@@ -121,6 +150,9 @@ namespace TheIdealShip.Roles
                 // roles
                 if (p == Sheriff.sheriff) infos.Add(sheriff);
                 if (p == Jester.jester) infos.Add(jester);
+                if (p == Camouflager.camouflager) infos.Add(camouflager);
+                if (p == Illusory.illusory) infos.Add(illusory);
+                if (p == SchrodingersCat.schrodingersCat) infos.Add(schrodingersCat);
 
                 if (infos.Count == count)
                 {

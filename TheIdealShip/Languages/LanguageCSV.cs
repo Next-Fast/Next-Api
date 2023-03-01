@@ -47,13 +47,12 @@ namespace TheIdealShip.Languages
                     if (tr.ContainsKey(fields[0]))
                     {
                         Warn($"LoadCSV:翻译重复在{currentLine}行: \"{fields[0]}\"", "Language CSV");
-                        continue;
                     }
                     tr.Add(fields[0], tmp);
                 }
                 catch (Exception ex)
                 {
-                    Exception(ex);
+                    Warn(ex.ToString(),filename:"LanguageCSV");
                 }
             }
             /*
@@ -97,6 +96,12 @@ namespace TheIdealShip.Languages
             {
                 res = $"{dic[0]}";
             }
+
+            if (res == null || res == "")
+            {
+                res = $"*{str}";
+            }
+            
             return res;
         }
     }

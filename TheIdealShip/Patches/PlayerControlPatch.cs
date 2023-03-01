@@ -9,23 +9,25 @@ using System.Linq;
 
 namespace TheIdealShip.Patches
 {
-    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.FixedUpdate))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public static class PlayerControlFixedUpdatePatch
     {
-        static PlayerControl setTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+        static PlayerControl setTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false,
+            List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
         {
             var Go = GameOptionsManager.Instance.currentGameOptions;
             var NGO = GameOptionsManager.Instance.currentNormalGameOptions;
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(NGO.KillDistance, 0, 2)];
             if (!ShipStatus.Instance) return result;
-            if (targetingPlayer == null)targetingPlayer = CachedPlayer.LocalPlayer.PlayerControl;
+            if (targetingPlayer == null) targetingPlayer = CachedPlayer.LocalPlayer.PlayerControl;
             if (targetingPlayer.Data.IsDead) return result;
 
             Vector2 truePosition = targetingPlayer.GetTruePosition();
             foreach (var playerInfo in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
-                if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead && (!onlyCrewmates || !playerInfo.Role.IsImpostor))
+                if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.IsDead &&
+                    (!onlyCrewmates || !playerInfo.Role.IsImpostor))
                 {
                     PlayerControl @object = playerInfo.Object;
                     if (untargetablePlayers != null && untargetablePlayers.Any(x => x == @object))
@@ -38,7 +40,8 @@ namespace TheIdealShip.Patches
                     {
                         Vector2 vector = @object.GetTruePosition() - truePosition;
                         float magnitude = vector.magnitude;
-                        if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                        if (magnitude <= num && !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized,
+                                magnitude, Constants.ShipAndObjectsMask))
                         {
                             result = @object;
                             num = magnitude;
@@ -46,10 +49,11 @@ namespace TheIdealShip.Patches
                     }
                 }
             }
+
             return result;
         }
 
-        static void setPlayerOutline(PlayerControl target,Color color)
+        static void setPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.cosmetics?.currentBodySprite?.BodySprite == null) return;
 
@@ -70,13 +74,15 @@ namespace TheIdealShip.Patches
         static void sheriffSetTarget()
         {
             if (Sheriff.sheriff == null || Sheriff.sheriff != CachedPlayer.LocalPlayer.PlayerControl)
-                    return;
+                return;
             Sheriff.currentTarget = setTarget();
             setPlayerOutline(Sheriff.currentTarget, Sheriff.color);
         }
+
         static void impostorSetTarget()
         {
-            if (!CachedPlayer.LocalPlayer.Data.Role.IsImpostor || !CachedPlayer.LocalPlayer.PlayerControl.CanMove || CachedPlayer.LocalPlayer.Data.IsDead)
+            if (!CachedPlayer.LocalPlayer.Data.Role.IsImpostor || !CachedPlayer.LocalPlayer.PlayerControl.CanMove ||
+                CachedPlayer.LocalPlayer.Data.IsDead)
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 return;
@@ -85,20 +91,24 @@ namespace TheIdealShip.Patches
             PlayerControl target = null;
             target = setTarget(true, true);
 
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(target); // Includes setPlayerOutline(target, Palette.ImpstorRed);
+            FastDestroyableSingleton<HudManager>.Instance.KillButton
+                .SetTarget(target); // Includes setPlayerOutline(target, Palette.ImpstorRed);
         }
 
         public static void updatePlayerInfo()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if(p == CachedPlayer.LocalPlayer.PlayerControl ||CachedPlayer.LocalPlayer.Data.IsDead || p.isDummy)
+                if (p == CachedPlayer.LocalPlayer.PlayerControl || CachedPlayer.LocalPlayer.Data.IsDead || p.isDummy)
                 {
                     Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
-                    TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
+                    TextMeshPro playerInfo = playerInfoTransform != null
+                        ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>()
+                        : null;
                     if (playerInfo == null)
                     {
-                        playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText, p.cosmetics.nameText.transform.parent);
+                        playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText,
+                            p.cosmetics.nameText.transform.parent);
                         playerInfo.transform.localPosition += Vector3.up * 0.225f;
                         playerInfo.fontSize *= 0.75f;
                         playerInfo.gameObject.name = "Info";
@@ -127,13 +137,15 @@ namespace TheIdealShip.Patches
                 p.MyPhysics.Speed = Flash.speed;
             }
         }
+
         public static void GhostSpeedUpdate()
         {
             if (CustomOptionHolder.PlayerOption.getBool())
             {
-                for (var i = 0 ; i<PlayerControl.AllPlayerControls.Count ; i++)
+                for (var i = 0; i < PlayerControl.AllPlayerControls.Count; i++)
                 {
-                    PlayerControl.AllPlayerControls[i].MyPhysics.GhostSpeed = CustomOptionHolder.PlayerGhostSpeed.getFloat();
+                    PlayerControl.AllPlayerControls[i].MyPhysics.GhostSpeed =
+                        CustomOptionHolder.PlayerGhostSpeed.getFloat();
                 }
             }
         }
