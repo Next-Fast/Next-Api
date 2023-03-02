@@ -25,7 +25,7 @@ namespace TheIdealShip.Languages
         //初始化
         public static void Init()
         {
-            Helpers.CWrite("正在Pack加载中");
+            Msg("正在Pack加载中", "Language Pack");
             GetLN();
             CTT();
         }
@@ -35,20 +35,20 @@ namespace TheIdealShip.Languages
             var lang = AmongUs.Data.DataManager.Settings.language.CurrentLanguage.ToString();
             var name = lang.Replace("SupportedLangs.","");
             languageName = name;
-            Helpers.CWrite(name);
+            Msg("Language:" + name, "Language Pack");
         }
         // 创建文件夹
         private static void CTT()
         {
             if (!Directory.Exists(FPath))
             {
-                Helpers.CWrite("不存在Language文件夹,创建文件夹");
+                Msg("不存在Language文件夹,创建文件夹", "Language Pack");
                 Directory.CreateDirectory(FPath);
             }
             if (!(Directory.GetDirectories(FPath).Length > 0 || Directory.GetFiles(FPath).Length > 0) || !File.Exists(LPath) || !File.Exists(PPath))
             {
                 CreateTT();
-                Helpers.CWrite("正在创建语言模板");
+                Msg("正在创建语言模板", "Language Pack");
             }
         }
 

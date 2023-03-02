@@ -12,6 +12,18 @@ using static TheIdealShip.Roles.Role;
 
 namespace TheIdealShip.Patches
 {
+    public class RoleAssignmentData
+    {
+        public List<PlayerControl> crewmates { get; set; }
+        public List<PlayerControl> impostors { get; set; }
+        public Dictionary<byte, int> impSettings = new Dictionary<byte, int>();
+        public Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
+        public Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
+        public int maxCrewmateRoles { get; set; }
+        public int maxNeutralRoles { get; set; }
+        public int maxImpostorRoles { get; set; }
+    }
+
     [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
     class RoleOptionsDataGetNumPerGamePatch
     {
@@ -24,47 +36,6 @@ namespace TheIdealShip.Patches
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     class RoleManagerSelectRolesPatch
     {
-        private enum RoleType
-        {
-            Crewmate = 0,
-            Neutral = 1,
-            Impostor = 2
-        }
-        public class RoleAssignmentData
-        {
-            public List<PlayerControl> crewmates { get; set; }
-            public List<PlayerControl> impostors { get; set; }
-            public Dictionary<byte, int> impSettings = new Dictionary<byte, int>();
-            public Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
-            public Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
-            public int maxCrewmateRoles { get; set; }
-            public int maxNeutralRoles { get; set; }
-            public int maxImpostorRoles { get; set; }
-        }
-        private static int crewValues;
-        private static int impValues;
-        private static List<Tuple<byte, byte>> playerRoleMap = new List<Tuple<byte, byte>>();
-        public static void Postfix()
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ResetVariables, Hazel.SendOption.Reliable, -1);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.ResetVariables();
-            if (CustomOptionHolder.activateRoles.getBool())
-            assignRoles();
-        }
-
-        private static void assignRoles()
-        {
-            var data = GetRoleAssignmentData();
-           // assignSpecialRoles(data); // Assign special roles like mafia and lovers first as they assign a role to multiple players and the chances are independent of the ticket system
-           // selectFactionForFactionIndependentRoles(data);
-            assignEnsuredRoles(data); // Assign roles that should always be in the game next
-           // assignDependentRoles(data); // Assign roles that may have a dependent role
-           // assignChanceRoles(data); // Assign roles that may or may not be in the game last
-           // assignRoleTargets(data); // Assign targets for Lawyer & Prosecutor
-            assignModifiers(); // Assign modifier
-            setRolesAgain();
-        }
 
         public static RoleAssignmentData GetRoleAssignmentData()
         {
@@ -96,7 +67,13 @@ namespace TheIdealShip.Patches
             Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
             Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
 
+            impSettings.Add((byte)RoleId.Camouflager, CustomOptionHolder.camouflagerSpawnRate.getSelection());
+            impSettings.Add((byte)RoleId.Illusory, CustomOptionHolder.illusorySpawnRate.getSelection());
+                
             crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection());
+
+            neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.getSelection());
+            neutralSettings.Add((byte)RoleId.SchrodingersCats, CustomOptionHolder.SchrodingersCatRate.getSelection());
 
             return new RoleAssignmentData
             {
@@ -107,8 +84,39 @@ namespace TheIdealShip.Patches
                 impSettings = impSettings,
                 maxCrewmateRoles = maxCrewmateRoles,
                 maxNeutralRoles = maxNeutralRoles,
-                maxImpostorRoles = maxImpostorRoles
+                maxImpostorRoles = maxImpostorRoles 
             };
+        }
+        private enum RoleType
+        {
+            Crewmate = 0,
+            Neutral = 1,
+            Impostor = 2
+        }
+
+        private static int crewValues;
+        private static int impValues;
+        private static List<Tuple<byte, byte>> playerRoleMap = new List<Tuple<byte, byte>>();
+        public static void Postfix()
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.ResetVariables, Hazel.SendOption.Reliable, -1);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.ResetVariables();
+            if (CustomOptionHolder.activateRoles.getBool()) assignRoles();
+        }
+        
+
+        private static void assignRoles()
+        {
+            var data = GetRoleAssignmentData();
+           // assignSpecialRoles(data); // Assign special roles like mafia and lovers first as they assign a role to multiple players and the chances are independent of the ticket system
+           // selectFactionForFactionIndependentRoles(data);
+            assignEnsuredRoles(data); // Assign roles that should always be in the game next
+           // assignDependentRoles(data); // Assign roles that may have a dependent role
+            assignChanceRoles(data); // Assign roles that may or may not be in the game last
+           // assignRoleTargets(data); // Assign targets for Lawyer & Prosecutor
+            assignModifiers(); // Assign modifier
+            setRolesAgain();
         }
 
         private static void assignEnsuredRoles (RoleAssignmentData data)
@@ -152,8 +160,8 @@ namespace TheIdealShip.Patches
                     data.crewmates.Count > 0
                     &&
                     ensuredCrewmateRoles.Count > 0
-                )
-                rolesToAssign.Add(RoleType.Crewmate, ensuredCrewmateRoles);
+                ) 
+                    rolesToAssign.Add(RoleType.Crewmate, ensuredCrewmateRoles);
 
                 if
                 (
@@ -162,8 +170,8 @@ namespace TheIdealShip.Patches
                     data.maxNeutralRoles > 0
                     &&
                     ensuredNeutralRoles.Count > 0
-                )
-                rolesToAssign.Add(RoleType.Neutral, ensuredNeutralRoles);
+                ) 
+                    rolesToAssign.Add(RoleType.Neutral, ensuredNeutralRoles);
 
                 if
                 (
@@ -171,8 +179,8 @@ namespace TheIdealShip.Patches
                     &&
                     data.maxImpostorRoles > 0
                     && ensuredImpostorRoles.Count > 0
-                )
-                rolesToAssign.Add(RoleType.Impostor, ensuredImpostorRoles);
+                ) 
+                    rolesToAssign.Add(RoleType.Impostor, ensuredImpostorRoles);
 
                 var roleType = rolesToAssign.Keys.ElementAt(rnd.Next(0,rolesToAssign.Keys.Count()));
                 var players = roleType == RoleType.Crewmate || roleType == RoleType.Neutral ? data.crewmates : data.impostors;
@@ -250,6 +258,24 @@ namespace TheIdealShip.Patches
                 RoleId.Flash
             }
             );
+            
+            if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10) 
+            {
+                // 分配恋人
+                bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.LoverIsEvilProbability.getSelection() * 10;
+                byte firstLoverId;
+                List<PlayerControl> impPlayer = new List<PlayerControl>(players);
+                List<PlayerControl> crewPlayer = new List<PlayerControl>(players);
+                impPlayer.RemoveAll(x => !x.Data.Role.IsImpostor);
+                crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor);
+
+                if (isEvilLover) firstLoverId = setModifierToRandomPlayer((byte)RoleId.Lover, impPlayer);
+                else firstLoverId = setModifierToRandomPlayer((byte)RoleId.Lover, crewPlayer);
+                byte secondLoverId = setModifierToRandomPlayer((byte)RoleId.Lover, crewPlayer, 1);
+
+                players.RemoveAll(x => x.PlayerId == firstLoverId || x.PlayerId == secondLoverId);
+                modifierCount--;
+            }
 
             foreach (RoleId m in allModifiers)
             {

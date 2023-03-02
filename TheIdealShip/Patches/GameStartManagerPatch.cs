@@ -29,10 +29,10 @@ namespace TheIdealShip.Patches
     {
         public static void Prefix()
         {
-            if (CustomOptionHolder.noGameEnd.getBool())
+            if (CustomOptionHolder.noGameEnd.getBool() && CustomOptionHolder.dummynumber.getSelection() != 0)
             {
-                int num = CustomOptionHolder.jiarennumber.getQuantity();
-                for (int n = 0; n < num; n++)
+                int num = CustomOptionHolder.dummynumber.getSelection();
+                for (int n = 1; n < num; n++)
                 {
                     var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
                     var i = playerControl.PlayerId = (byte)GameData.Instance.GetAvailableId();

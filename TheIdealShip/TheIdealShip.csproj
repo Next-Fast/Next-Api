@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Version>0.3.0</Version>
+        <Version>0.3.5</Version>
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
         <Description>The Ideal Ship</Description>
@@ -14,18 +14,24 @@
     <ItemGroup>
         <EmbeddedResource Include=".\Resources\**" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Reference Include="$(TheIdealShipLast)\BepInEx\core\*.dll" />
+        <Reference Include="$(TheIdealShipLast)\BepInEx\interop\*.dll" />
+<!--        <Reference Include="$(AmongUs)\BepInEx\plugins\Reactor.dll" />-->
+    </ItemGroup>
 
     <ItemGroup>
 <!--nuget.org 的包                                              -->
-        <PackageReference Include="Reactor" Version="2.1.0" />
-<!--    <PackageReference Include="csv" Version="2.0.93" />  -->
+<!--        <PackageReference Include="Reactor" Version="2.1.0" />-->
+<!--         <PackageReference Include="Csvnet6" Version="1.1.0" /> -->
 <!--nuget.bepinex.dev 的包                                       -->
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.667" Private="false" ExcludeAssets="runtime;native" />
-        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2022.12.14" PrivateAssets="all" />
+<!--        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2022.12.14" PrivateAssets="all" />-->
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
 
-    <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
-        <Copy SourceFiles="./bin/Debug/net6.0/TheIdealShip.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
+    <Target Name="Copy" AfterTargets="Build" Condition="'$(TheIdealShipLast)' != ''">
+        <Copy SourceFiles="./bin/Debug/net6.0/TheIdealShip.dll" DestinationFolder="$(TheIdealShipLast)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
     </Target>
 </Project>

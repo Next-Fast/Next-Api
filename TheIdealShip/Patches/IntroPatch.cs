@@ -16,8 +16,8 @@ namespace TheIdealShip.Patches
         {
             var LocalP = CachedPlayer.LocalPlayer.PlayerControl;
 //  获取本地玩家角色信息
-            RoleInfo roleInfo = RoleInfo.GetRoleInfo(LocalP, false);
-            RoleInfo modifierInfo = RoleInfo.GetRoleInfo(LocalP, true);
+            RoleInfo roleInfo = RoleHelpers.GetRoleInfo(LocalP, false);
+            RoleInfo modifierInfo = RoleHelpers.GetRoleInfo(LocalP, true);
             if (roleInfo != null)
             {
                 __instance.YouAreText.color = roleInfo.color;
@@ -28,7 +28,8 @@ namespace TheIdealShip.Patches
             }
             if (modifierInfo != null)
             {
-                __instance.RoleText.text += Helpers.cs(modifierInfo.color, $"\n{modifierInfo.IntroD}");
+                __instance.RoleText.text += Helpers.cs(modifierInfo.color, $" {modifierInfo.name}");
+                __instance.RoleBlurbText.text += Helpers.cs(modifierInfo.color, $"\n{modifierInfo.IntroD}");
             }
         }
         public static bool Prefix(IntroCutscene __instance)
@@ -45,7 +46,7 @@ namespace TheIdealShip.Patches
         public static void setRoleTeamText(IntroCutscene __instance)
         {
             var LocalP = CachedPlayer.LocalPlayer.PlayerControl;
-            var teamText = RoleInfo.GetRoleTeam(LocalP);
+            var teamText = RoleHelpers.GetRoleTeam(LocalP);
             __instance.TeamTitle.text = teamText;
         }
         public static bool Prefix(IntroCutscene __instance)

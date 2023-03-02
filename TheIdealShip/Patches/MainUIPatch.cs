@@ -1,7 +1,9 @@
 using System;
+using System.Globalization;
 using HarmonyLib;
 using UnityEngine;
 using TheIdealShip.Modules;
+using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Patches
 {
@@ -12,10 +14,15 @@ namespace TheIdealShip.Patches
         public static GameObject DiscordButton;
         public static GameObject kookButton;
         public static GameObject UpdateButton;
+//        public static bool isCN;
 
         [HarmonyPatch(typeof(MainMenuManager),nameof(MainMenuManager.Start)),HarmonyPrefix]
         public static void Start_Prefix(MainMenuManager __instance)
         {
+            /*
+            var langid = AmongUs.Data.Legacy.LegacySaveManager.lastLanguage;
+            isCN = langid == 13 || langid == 14;
+            */
             // 将玩法说明改为Github
             var howtoplayButton = GameObject.Find("HowToPlayButton");
             if (howtoplayButton != null)
@@ -44,7 +51,7 @@ namespace TheIdealShip.Patches
 
             if (Template == null) Template = GameObject.Find("ExitGameButton");
             if (Template == null) return;
-
+/*
             // 生成Discord按钮
             if (DiscordButton == null) DiscordButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             DiscordButton.name = "DiscordButton";
@@ -60,22 +67,27 @@ namespace TheIdealShip.Patches
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => DiscordText.SetText("Discord"))));
             DiscordButtonSprite.color = DiscordText.color = DiscordColor;
             DiscordButton.gameObject.SetActive(true);
+*/
 
-            // 生成Kook按钮
-            if (kookButton == null) kookButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
-            kookButton.name = "KooKButton";
-            kookButton.transform.position = DiscordButton.transform.position + new Vector3(0, 0.65f);
+            // 生成Kook按钮 改为QQ频道
+            if (kookButton == null)
+            {
+                kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
+                kookButton.name = "QQButton";
+                kookButton.transform.position = Vector3.Reflect(Template.transform.position,Vector3.left) + new Vector3(0, 0.65f);
 
-            var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-            Color kookColor = new Color32(122, 204, 53, byte.MaxValue);
-            PassiveButton kookPassiveButton = kookButton.GetComponent<PassiveButton>();
-            SpriteRenderer kookButtonSprite = kookButton.GetComponent<SpriteRenderer>();
-            kookPassiveButton.OnClick = new();
-            kookPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(TheIdealShipPlugin.KOOKURL)));
-            kookPassiveButton.OnMouseOut.AddListener((Action)(() => kookButtonSprite.color = kookText.color = kookColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("KooK"))));
-            kookButtonSprite.color = kookText.color = kookColor;
-            kookButton.gameObject.SetActive(true);
+                var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                Color kookColor = new Color32(187, 255, 255, byte.MaxValue);
+                PassiveButton kookPassiveButton = kookButton.GetComponent<PassiveButton>();
+                SpriteRenderer kookButtonSprite = kookButton.GetComponent<SpriteRenderer>();
+                kookPassiveButton.OnClick = new();
+                kookPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(TheIdealShipPlugin.QQURL)));
+                kookPassiveButton.OnMouseOut.AddListener((Action)(() =>
+                    kookButtonSprite.color = kookText.color = kookColor));
+                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("QQ频道"))));
+                kookButtonSprite.color = kookText.color = kookColor;
+                kookButton.gameObject.SetActive(true);
+            }
 
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);

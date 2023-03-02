@@ -13,6 +13,7 @@ Classic,Classic,经典
 FreePlay,FreePlay,自由模式
 NoGameEnd,NoGameEnd,测试模式
 ShowExilePlayerRole,Show Exile Player Role,放逐后显示玩家职业
+ShowExilePlayerConcreteRoleTeam,Show Exile Player Concrete Role Team,放逐后显示玩家具体阵营
 Block Vanilla Roles,Block Vanilla Roles,禁用原版职业
 Minimum Crewmate Roles,Minimum Crewmate Roles,最小船员职业数
 Maximum Crewmate Roles,Maximum Crewmate Roles,最大船员职业数
@@ -23,6 +24,7 @@ Maximum Impostor Roles,Maximum Impostor Roles,最大内鬼职业数
 Minimum Modifier Roles,Minimum Modifier Roles,最小附加职业数
 Maximum Modifier Roles,Maximum Modifier Roles,最大附加职业数
 disableHauntMenu,Disable Haunt Menu,禁用幽幽鬼影
+DisableServerKickPlayer,Disable Server Kick Player,禁用服务器踢人
 PlayerOption,Player Option,玩家选项
 PlayerGhostSpeed,Player Ghost Speed,玩家幽灵速度
 On,On,开启
@@ -30,15 +32,53 @@ Off,Off,关闭
 Roles,Roles,职业
 Modifiers,Modifiers,附加职业
 exileText,{0} was the {1},{0} 是 {1}
-jiaren,jiaren,假人数量
+exileTeamText,The specific camp is {0},具体阵营是 {0}
+DummyNumber,Dummy Number,假人数量
+Neutral,Neutral,中立
 Crewmate,Crewmate,船员
 Impostor,Impostor,内鬼
+TISSettings,The Ideal Ship Settings,理想船设置
+ImpostorSettings,Impostor Roles Settings,内鬼设置
+NeutralSettings,Neutral Roles Settings,中立设置
+CrewmateSettings,Crewmate Roles Settings,船员设置
+ModifierSettings,Modifier Settings,附加职业设置
+
+Page ,Page ,页面 
+Page1, : Vanilla Settings \n\n,原版设置
+Page2, : The Ideal Ship Settings \n,理想船设置
+Page3, : Role and Modifier Rates \n,职业分配数设置
+Page4, : Impostor Role Settings \n,内鬼职业设置
+Page5, : Neutral Role Settings \n,中立职业设置
+Page6, : Crewmate Role Settings \n,船员职业设置
+Page7, : Modifier Settings \n,附加职业设置
+TABPage,\n Press TAB or Page Number for more... ,\n 按TAB切换页面查看更多
 
 Sheriff,Sheriff,警长
+Jester,Jester,小丑
+Flash,Flash,闪电侠
+Camouflager,Camouflager,隐蔽者
+Illusory,Illusory,虚影
 
 SheriffCooldown,Sheriff Cooldown,执法冷却时间
 ShootNumber,ShootNumber,执法次数
 
-SheriffIntroD,1,接受正义的裁决吧
+Camouflager Cooldown,Camouflager Cooldown,隐蔽冷却时间
+Camouflager Duration,Camouflager Duration,隐蔽时长
 
-SheriffTaskText,1,速速去执法坏人
+Illusory Cooldown,Illusory Cooldown,虚幻冷却时间
+Illusory Duration,Illusory Duration,虚幻时长
+
+SheriffIntroD,,接受正义的裁决吧
+JesterIntroD,,你是修丑
+IllusoryIntroD,,是真是假虚实不清
+CamouflagerIntroD,,全是黑色傻傻分不清
+
+SheriffTaskText,,速速去执法坏人
+JesterTaskText,,被票出去
+CamouflagerTaskText,,全给我变小黑人
+IllusoryTaskText,,给船员们制造虚影
+
+JesterWinText,,小丑获胜
+forcedEndWinText,,强制结束
+
+JesterWinSubText,,你就是丑王吧

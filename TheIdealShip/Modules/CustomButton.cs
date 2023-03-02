@@ -30,7 +30,6 @@ namespace TheIdealShip.Modules
         public SpriteRenderer actionButtonRenderer;
         public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
-        public PlayerControl Role;
         public bool isEffectActive = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
@@ -70,8 +69,6 @@ namespace TheIdealShip.Modules
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
-
-            setActive(false);
         }
 
         public CustomButton
@@ -129,9 +126,9 @@ namespace TheIdealShip.Modules
                 {
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }
@@ -147,9 +144,9 @@ namespace TheIdealShip.Modules
                     buttons[i].OnMeetingEnds();
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }
@@ -163,9 +160,9 @@ namespace TheIdealShip.Modules
                     buttons[i].Timer = buttons[i].MaxTimer;
                     buttons[i].Update();
                 }
-                catch (NullReferenceException)
+                catch (NullReferenceException ex)
                 {
-                    Helpers.CWrite("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    Exception(ex);
                 }
             }
         }

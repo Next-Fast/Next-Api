@@ -1,20 +1,16 @@
+global using static TheIdealShip.Modules.log;
+
 using System;
 using System.IO;
-using System.Net;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
-using Hazel;
-using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using System.Collections;
 using TheIdealShip.Utilities;
 using Il2CppInterop.Runtime.InteropTypes;
 using System.Linq.Expressions;
-using Il2CppInterop.Runtime;
+using TheIdealShip.Roles;
+using static TheIdealShip.Languages.Language;
 
 namespace TheIdealShip
 {
@@ -34,7 +30,7 @@ namespace TheIdealShip
             }
             catch
             {
-                CWrite("Error loading sprite from path: " + path);
+                Warn("加载图片失败路径:" + path, filename : "Helpers");
             }
             return null;
         }
@@ -54,7 +50,26 @@ namespace TheIdealShip
             }
             catch
             {
-                CWrite("Error loading texture from resources: " + path);
+                Warn("加载图片失败路径:" + path, filename: "Helpers");
+            }
+            return null;
+        }
+
+        public static Texture2D LoadTextureFromDisk(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    var byteTexture = Il2CppSystem.IO.File.ReadAllBytes(path);
+                    ImageConversion.LoadImage(texture, byteTexture, false);
+                    return texture;
+                }
+            }
+            catch
+            {
+                Warn("加载图片失败路径:" + path, filename: "Helpers");
             }
             return null;
         }
@@ -75,6 +90,42 @@ namespace TheIdealShip
             if (ModStamp) return ModStamp;
             return ModStamp = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.ModStamp.png", 150f);
         }
+
+        public static string stringOption(string str)
+        {
+            string s = "";
+            if (str.Contains("</color>") && str.Contains("-"))
+            {
+                s = str.Substring(str.IndexOf("-") + 2);
+                s = s.clearColor();
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            if (str.Contains("</color>"))
+            {
+                s = str.clearColor();
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            if (str.Contains("-"))
+            {
+                s = str.Substring(str.IndexOf("-") + 2);
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            {
+                s = GetString(str);
+            }
+            return s;
+        }
+
+        private static string clearColor(this string str)
+        {
+            string s = str.Replace("</color>", "");
+            var found = s.IndexOf(">");
+            s = s.Substring(found + 1);
+            return s;
+        }
 /*
         public static string GetDev()
         {
@@ -93,11 +144,11 @@ namespace TheIdealShip
             return time;
         }
 */
-        public static void CWrite(string Text)
+       /*  public static void CWrite(string Text)
         {
             System.Console.WriteLine(Text);
          // TheIdealShipPlugin.Logger.LogInfo(Text);
-        }
+        } */
 
         public static PlayerControl GetPlayerForId(byte id)
         {
@@ -109,6 +160,59 @@ namespace TheIdealShip
             }
            }
             return null;
+        }
+
+        public static RoleInfo GetPlayerInfoForExile(this GameData.PlayerInfo exile)
+        {
+            var p = GetPlayerForId(exile.PlayerId);
+            var info = RoleHelpers.GetRoleInfo(p);
+            return info;
+        }
+
+        public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile)
+        {
+            var p = GetPlayerForId(exile.PlayerId);
+            return p;
+        }
+
+        public static void setDefaultLook(this PlayerControl target) {
+            target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+        }
+
+        public static void setLook(this PlayerControl target, string playerName, int colorId, string hatId, string visorId, string skinId, string petId )
+        {
+            target.RawSetColor(colorId);
+            target.RawSetHat(hatId, colorId);
+            target.RawSetVisor(visorId, colorId);
+            target.RawSetName(playerName);
+
+            SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(skinId).viewData.viewData;
+            PlayerPhysics playerPhysics = target.MyPhysics;
+            AnimationClip clip = null;
+            var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
+            var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+
+
+            if (currentPhysicsAnim == playerPhysics.Animations.group.RunAnim) clip = nextSkin.RunAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim) clip = nextSkin.SpawnAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim) clip = nextSkin.IdleAnim;
+            else clip = nextSkin.IdleAnim;
+            float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            playerPhysics.myPlayer.cosmetics.skin.skin = nextSkin;
+            playerPhysics.myPlayer.cosmetics.skin.UpdateMaterial();
+
+            spriteAnim.Play(clip, 1f);
+            spriteAnim.m_animator.Play("a", 0, progress % 1);
+            spriteAnim.m_animator.Update(0f);
+
+            if (target.cosmetics.currentPet) UnityEngine.Object.Destroy(target.cosmetics.currentPet.gameObject);
+            target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(FastDestroyableSingleton<HatManager>.Instance.GetPetById(petId).viewData.viewData);
+            target.cosmetics.currentPet.transform.position = target.transform.position;
+            target.cosmetics.currentPet.Source = target;
+            target.cosmetics.currentPet.Visible = target.Visible;
+            target.SetPlayerMaterialColors(target.cosmetics.currentPet.rend);
         }
 
         public static T CastFast<T>(this Il2CppObjectBase obj) where T : Il2CppObjectBase

@@ -1,24 +1,28 @@
 name: Release Action
 
 on:
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - 'Release Action.yml'
+  workflow_run:
+    workflows: [ "dotnet-build" ]
+    types:
+      - completed
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
     - uses: actions/checkout@v3
 
-    - uses: actions/download-artifact@v3
+    - uses: dawidd6/action-download-artifact@v2
       with:
-        name: TheIdealShip.dll
+        name: TheIdealShip
+
+    - name: uzip
+      run: unzip TheIdealShip.zip
 
     - uses: ncipollo/release-action@v1
       with:
-        tag: v0.3.0
+        tag: v0.3.3
         bodyFile: "TheIdealShip.dll"

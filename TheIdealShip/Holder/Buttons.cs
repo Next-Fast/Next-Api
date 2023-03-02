@@ -1,5 +1,7 @@
 using HarmonyLib;
 using Hazel;
+using InnerNet;
+// using Reactor.Networking.Rpc;
 using TheIdealShip.Modules;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
@@ -11,18 +13,25 @@ namespace TheIdealShip
     public static class HudManagerStartPatch
     {
         public static CustomButton sheriffKillButton;
+        public static CustomButton CamouflagerButton;
+        public static CustomButton IllusoryButton;
 
         public static void setCustomButtonCooldowns()
         {
             sheriffKillButton.MaxTimer = Sheriff.cooldown;
+            CamouflagerButton.MaxTimer = Camouflager.cooldown;
+            IllusoryButton.MaxTimer = Illusory.cooldown;
         }
 
         public static void Postfix(HudManager __instance)
         {
-         // 警长击杀 (Sheriff kill)
+            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
+            var LocalPlayer = CachedPlayer.LocalPlayer.PlayerControl;
+            // 警长击杀 (Sheriff kill)
             sheriffKillButton = new CustomButton
             (
-                () => {
+                () =>
+                {
                     byte targetId = 0;
                     if (Sheriff.currentTarget.Data.Role.IsImpostor)
                     {
@@ -35,8 +44,7 @@ namespace TheIdealShip
 
                     MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(
                         CachedPlayer.LocalPlayer.PlayerControl.NetId,
-                        (byte)CustomRPC.SheriffKill, SendOption.Reliable, -1
-                    );
+                        (byte)CustomRPC.SheriffKill, SendOption.Reliable);
                     killWriter.Write(Sheriff.sheriff.Data.PlayerId);
                     killWriter.Write(targetId);
                     AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -45,19 +53,94 @@ namespace TheIdealShip
                     Sheriff.currentTarget = null;
                     Sheriff.shootNumber--;
                 },
-                () => {
-                    return Sheriff.sheriff != null && Sheriff.sheriff == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead;
+                () =>
+                {
+                    return Sheriff.sheriff != null && Sheriff.sheriff == LocalPlayer && !LocalPlayer.Data.IsDead;
+//                  return Sheriff.sheriff.RoleIsH() && Sheriff.sheriff.Is(LocalPlayer) && LocalPlayer.IsSurvival();
                 },
-                () => {
-                    return Sheriff.currentTarget && CachedPlayer.LocalPlayer.PlayerControl.CanMove && Sheriff.shootNumber > 0;
+                () =>
+                {
+                    return Sheriff.currentTarget && LocalPlayer.CanMove && Sheriff.shootNumber > 0;
                 },
-                () => {
+                () =>
+                {
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0f,1f,0),
                 __instance,
                 KeyCode.Q
+            );
+            
+            // 隐蔽（伪装）技能
+            CamouflagerButton = new CustomButton
+            (
+                () => 
+                {
+                    RPCHelpers.Create((byte)CustomRPC.Camouflager);
+                    RPCProcedure.Camouflager();
+                },
+                () =>
+                {
+                    return Camouflager.camouflager != null && Camouflager.camouflager == LocalPlayer && !LocalPlayer.Data.IsDead;
+                },
+                () => 
+                {
+                    return LocalPlayer.CanMove;
+                },
+                () => 
+                {
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    CamouflagerButton.isEffectActive = false;
+                    CamouflagerButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                },
+                Camouflager.getButtonSprite(),
+                new Vector3(0f,1f,0),
+                __instance,
+                KeyCode.F,
+                true,
+                Camouflager.duration,
+                () =>
+                {
+                    CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
+                    RPCHelpers.Create((byte)CustomRPC.RestorePlayerLook);
+                    RPCProcedure.RestorePlayerLook();
+                }
+            );
+
+            // 虚影技能
+            IllusoryButton = new CustomButton
+            (
+                () =>
+                {
+                    RPCHelpers.Create((byte)CustomRPC.Illusory);
+                    RPCProcedure.Illusory();
+                },
+                () =>
+                {
+                    return Illusory.illusory != null && Illusory.illusory == LocalPlayer && !LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    IllusoryButton.Timer = IllusoryButton.MaxTimer;
+                    IllusoryButton.isEffectActive = false;
+                    IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                },
+                Illusory.getButtonSprite(),
+                new Vector3(0f,1f,0),
+                __instance,
+                KeyCode.F,
+                true,
+                Illusory.duration,
+                () =>
+                {
+                    RPCHelpers.Create((byte)CustomRPC.RestorePlayerLook);
+                    RPCProcedure.RestorePlayerLook();
+                }
             );
 
             setCustomButtonCooldowns();
