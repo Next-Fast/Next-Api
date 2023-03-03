@@ -21,18 +21,18 @@ public static class GameOptionsMenuUIPacth
         // //
         // var Chat = GameObject.Find("ChatButton");
         // Chat.GetComponent<SpriteRenderer>().sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.chatIcon.png",100f);
-        
+
         var CloseBackground = GameObject.Find("CloseButton/CloseButtonBackground");
         if (CloseBackground != null) CloseBackground.SetActive(false);
-        
-        var Header = GameObject.Find("Header");
+
+/*         var Header = GameObject.Find("Header");
         SpriteRenderer HeaderSprite = Header.GetComponent<SpriteRenderer>();
         HeaderSprite.sprite = null;
         // if (Header != null) Header.SetActive(false);
 
         var BaseGlass = Header.transform.FindChild("baseGlass").gameObject;
         BaseGlass.SetActive(false);
-        
+
         // var GameSettings = GameObject.Find("Game Settings");
         // if (GameSettings != null) GameSettings.transform.position += Vector3.up * 1f;
 
@@ -41,7 +41,7 @@ public static class GameOptionsMenuUIPacth
 
         var Reset = GameObject.Find("SliderInner/ResetToDefault");
         if (Reset != null) Reset.SetActive(false);
-        
+
         var Text = GameObject.Find("GameGroup/Text");
         Text.transform.position += Vector3.right  * 1.5f;
 
@@ -57,6 +57,6 @@ public static class GameOptionsMenuUIPacth
                 // if (Optionobject.name == "CheckBox")
                 //     Optionobject.gameObject.GetComponent<SpriteRenderer>().sprite = null;
             }
-        }
+        }*/
     }
 }
