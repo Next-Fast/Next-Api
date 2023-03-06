@@ -79,6 +79,12 @@ public class RPCPatch
                     RPCProcedure.SchrodingerSCatTeamChange(SchrodingerSCatTeam);
                     break;
 
+                case (byte)CustomRPC.LoverSendChat:
+                    PlayerControl sendChatPlayer = Helpers.GetPlayerForId(reader.ReadByte());
+                    string ChatText = reader.ReadString();
+                    RPCProcedure.LoverSendChat(sendChatPlayer, ChatText);
+                    break;
+
                 case (byte)CustomRPC.customrpc:
                     reader.Recycle();
                     break;

@@ -255,10 +255,10 @@ namespace TheIdealShip.Patches
             (
             new List<RoleId>
             {
-                RoleId.Flash
+                RoleId.Flash,
             }
             );
-            
+
             if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10) 
             {
                 // 分配恋人

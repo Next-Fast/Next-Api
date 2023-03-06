@@ -5,6 +5,8 @@ using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
 using static TheIdealShip.HudManagerStartPatch;
+using System.Text.RegularExpressions;
+using TheIdealShip.Patches;
 
 namespace TheIdealShip
 {
@@ -28,7 +30,8 @@ namespace TheIdealShip
         SheriffKill,
         Camouflager,
         Illusory,
-        SchrodingerSCatTeamChange
+        SchrodingerSCatTeamChange,
+        LoverSendChat
     }
 
     public static class RPCProcedure
@@ -36,7 +39,7 @@ namespace TheIdealShip
         public static void ResetVariables()
         {
             clearAndReloadRoles();
-            setCustomButtonCooldowns();
+            /* setCustomButtonCooldowns(); */
         }
 
         public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -165,6 +168,24 @@ namespace TheIdealShip
         public static void SchrodingerSCatTeamChange(byte team)
         {
             SchrodingersCat.team = (RoleInfo.RoleTeam)team;
+        }
+
+        public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
+        {
+            if (!isSend)
+            {
+                LoveChatPatch.LoverChat.AddChat(player, text);
+                return;
+            }
+            if (isSend)
+            {
+                text = Regex.Replace(text, "<.*?>", string.Empty);
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.LoverSendChat, SendOption.Reliable);
+                messageWriter.Write(player.PlayerId);
+                messageWriter.Write(text);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+                LoveChatPatch.LoverChat.AddChat(PlayerControl.LocalPlayer, text);
+            }
         }
     }
 }

@@ -142,8 +142,7 @@ namespace TheIdealShip
                     RPCProcedure.RestorePlayerLook();
                 }
             );
-
-            setCustomButtonCooldowns();
+/*             setCustomButtonCooldowns(); */
         }
     }
 }
