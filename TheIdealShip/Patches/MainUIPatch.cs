@@ -35,9 +35,10 @@ namespace TheIdealShip.Patches
               //  howtoplayButton.GetComponent<SpriteRenderer>().color = githubText.color = githubColor;
             }
 
+#if DEBUG
             // 将自由模式改成bilibili
             var freeplayButton = GameObject.Find("FreePlayButton");
-            if (freeplayButton != null)
+            if (freeplayButton != null && (TheIdealShipPlugin.isChinese || TheIdealShipPlugin.isCn))
             {
                 var bilibiliText = freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 Color bilibiliColor = new Color32(0,182,247,byte.MaxValue);
@@ -47,6 +48,7 @@ namespace TheIdealShip.Patches
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText("BiliBili"))));
                 freeplayButton.GetComponent<SpriteRenderer>().color = bilibiliText.color = bilibiliColor;
             }
+#endif
 
 
             if (Template == null) Template = GameObject.Find("ExitGameButton");
@@ -70,7 +72,7 @@ namespace TheIdealShip.Patches
 */
 
             // 生成Kook按钮 改为QQ频道
-            if (kookButton == null)
+            if (kookButton == null && (TheIdealShipPlugin.isCn || TheIdealShipPlugin.isChinese))
             {
                 kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
                 kookButton.name = "QQButton";
@@ -93,7 +95,6 @@ namespace TheIdealShip.Patches
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             UpdateButton.name = "UpdateButton";
             UpdateButton.transform.position = Template.transform.position + new Vector3(0.25f, 0.75f);
-            UpdateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
             var UpdateText = UpdateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             Color UpdateColor = new Color32(128, 255, 255, byte.MaxValue);
@@ -107,7 +108,6 @@ namespace TheIdealShip.Patches
             }));
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
-            UpdateButtonSprite.size *= 1.5f;
             UpdateButton.SetActive(ModUpdater.HUpdate);
         }
     }

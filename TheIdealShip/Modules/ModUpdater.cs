@@ -16,7 +16,7 @@ namespace TheIdealShip.Modules
             string GithubURL = TheIdealShipPlugin.GithubURL;
             string GiteeURL = "https://gitee.com/mc-huier-sgss/TheIdealShip";
             var langid = AmongUs.Data.Legacy.LegacySaveManager.lastLanguage;
-            string UpdateURL = langid == 13 ? GiteeURL : GithubURL;
+            string UpdateURL = TheIdealShipPlugin.isCn ? GiteeURL : GithubURL;
             string apiURL = UpdateURL.Replace("https://", "https://api.");
             var GL = await http.GetAsync(apiURL + "/releases/latest/");
             string json = await GL.Content.ReadAsStringAsync();

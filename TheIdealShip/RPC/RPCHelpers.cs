@@ -21,7 +21,7 @@ public static class RPCHelpers
     //         return false;
     //     }
     // }
-    public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null, bool[] bools = null)
+    public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null, bool[] bools = null, string[] strings = null)
     {
         MessageWriter rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, rpc, SendOption.Reliable);
         if (bytes != null) { foreach (var b in bytes) { rpcStart.Write(b); } }
@@ -32,7 +32,14 @@ public static class RPCHelpers
 
         if (bools != null) { foreach (var bo in bools) { rpcStart.Write(bo); } }
 
+        if (strings != null) { foreach (var str in strings) { rpcStart.Write(str); } }
+
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
+    }
+
+    public static void ReadRPCValue()
+    {
+
     }
 
     // public static void StartRPC(byte rpc, MessageReader reader = null)
@@ -99,4 +106,12 @@ public static class RPCHelpers
     //             break;
     //     }
     // }
+}
+public static class ReadRPCValue
+{
+    public static byte[] bytes;
+    public static int[] ints;
+    public static bool[] bools;
+    public static float[] floats;
+    public static string[] strings;
 }

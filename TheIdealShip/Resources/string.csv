@@ -58,6 +58,7 @@ Jester,Jester,小丑
 Flash,Flash,闪电侠
 Camouflager,Camouflager,隐蔽者
 Illusory,Illusory,虚影
+Lover,Lover,恋人
 
 SheriffCooldown,Sheriff Cooldown,执法冷却时间
 ShootNumber,ShootNumber,执法次数
@@ -72,13 +73,17 @@ SheriffIntroD,,接受正义的裁决吧
 JesterIntroD,,你是修丑
 IllusoryIntroD,,是真是假虚实不清
 CamouflagerIntroD,,全是黑色傻傻分不清
+LoverIntroD,,你和{0}坠入了爱河
 
 SheriffTaskText,,速速去执法坏人
 JesterTaskText,,被票出去
 CamouflagerTaskText,,全给我变小黑人
 IllusoryTaskText,,给船员们制造虚影
+LoverTaskText,,你和{0}恋爱了
 
 JesterWinText,,小丑获胜
+LoverWinText,,恋人获胜
 forcedEndWinText,,强制结束
 
 JesterWinSubText,,你就是丑王吧
+LoverWinSubText,,这就是恋爱的滋味

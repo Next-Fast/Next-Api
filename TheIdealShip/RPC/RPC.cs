@@ -25,6 +25,7 @@ namespace TheIdealShip
         customrpc,
         VersionShakehand,
         HistorySynchronization,
+        RpcValueHandshake,
 
         // Role 职业相关
         SheriffKill,

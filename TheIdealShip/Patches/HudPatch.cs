@@ -20,7 +20,7 @@ namespace TheIdealShip.Patches
             string roleText = "";
             string modifierText = "";
             if (roleInfo != null) roleText = Helpers.cs(roleInfo.color, GetString("Roles") + ":" + RoleHelpers.GetRolesString(LPlayer, false) + "\n"+ roleInfo.TaskText +"\n");
-            if (modifierInfo != null) modifierText = Helpers.cs(modifierInfo.color, GetString("Modifiers") + ":" + RoleHelpers.GetRolesString(LPlayer, false, true) + "\n" + modifierInfo.TaskText + "\n");
+            if (modifierInfo != null) modifierText = Helpers.cs(modifierInfo.color, GetString("Modifiers") + ":" + RoleHelpers.GetRolesString(LPlayer, false, true) + "\n" + (modifierInfo.roleId == RoleId.Lover ? string.Format(modifierInfo.TaskText, RoleHelpers.getLover2().name) : modifierInfo.TaskText) + "\n");
             __instance.taskText.text = roleText + modifierText + "\n" + __instance.taskText.text;
 //            __instance.taskText.text.Select(x => roleText + modifierText + ((roleInfo == null)&&(modifierInfo == null) ? "" : "\n") + x);
         }

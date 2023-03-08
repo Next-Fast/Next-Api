@@ -35,7 +35,7 @@ namespace TheIdealShip.Languages
             var lang = AmongUs.Data.DataManager.Settings.language.CurrentLanguage.ToString();
             var name = lang.Replace("SupportedLangs.","");
             languageName = name;
-            Msg("Language:" + name, "Language Pack");
+            Info("Language:" + name, "Language Pack");
         }
         // 创建文件夹
         private static void CTT()

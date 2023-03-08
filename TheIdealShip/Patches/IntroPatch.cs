@@ -29,7 +29,7 @@ namespace TheIdealShip.Patches
             if (modifierInfo != null)
             {
                 __instance.RoleText.text += Helpers.cs(modifierInfo.color, $" {modifierInfo.name}");
-                __instance.RoleBlurbText.text += Helpers.cs(modifierInfo.color, $"\n{modifierInfo.IntroD}");
+                __instance.RoleBlurbText.text += "\n" + Helpers.cs(modifierInfo.color, modifierInfo.roleId == RoleId.Lover ? string.Format(modifierInfo.IntroD, RoleHelpers.getLover2().name) : modifierInfo.IntroD);
             }
         }
         public static bool Prefix(IntroCutscene __instance)

@@ -1,5 +1,4 @@
-global using static TheIdealShip.Modules.log;
-
+using System.Text;
 using System;
 using System.IO;
 using System.Reflection;
@@ -125,6 +124,13 @@ namespace TheIdealShip
             var found = s.IndexOf(">");
             s = s.Substring(found + 1);
             return s;
+        }
+
+        public static string ToColorString(this string text, Color color)
+        {
+            string colorString;
+            colorString = "<color=" + ColorUtility.ToHtmlStringRGB(color) + ">" + text +"<color/>";
+            return colorString;
         }
 /*
         public static string GetDev()
