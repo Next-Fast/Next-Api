@@ -57,7 +57,7 @@ namespace TheIdealShip.Patches
 
         static void Postfix(HudManager __instance)
         {
-            if (!AmongUsClient.Instance.IsGameStarted) return;
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             CustomButton.HudUpdate();
             SetNameColors();
             updateVentButton(__instance);

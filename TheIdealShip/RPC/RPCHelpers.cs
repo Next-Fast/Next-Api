@@ -205,11 +205,11 @@ public static class RPCHelpers
                 RPCProcedure.SchrodingerSCatTeamChange(reader.ReadByte());
                 break;
 
-            case (byte)CustomRPC.LoverSendChat:
+/*             case (byte)CustomRPC.LoverSendChat:
                 PlayerControl sendChatPlayer = Helpers.GetPlayerForId(reader.ReadByte());
                 string ChatText = reader.ReadString();
                 RPCProcedure.LoverSendChat(sendChatPlayer, ChatText);
-                break;
+                break; */
         }
     }
 }

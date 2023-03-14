@@ -61,7 +61,7 @@ namespace TheIdealShip.Modules
             this.hotkey = hotkey;
             Timer = 16.2f;
             buttons.Add(this);
-            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton,hudManager.KillButton.transform.parent);
+            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             actionButtonGameObject = actionButton.gameObject;
             actionButtonRenderer = actionButton.graphic;
             actionButtonMat = actionButtonRenderer.material;
@@ -136,8 +136,7 @@ namespace TheIdealShip.Modules
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
-
-            for (int i =0; i < buttons.Count; i++)
+            for (int i = 0; i < buttons.Count; i++)
             {
                 try
                 {
@@ -194,16 +193,11 @@ namespace TheIdealShip.Modules
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton())
-            {
-                setActive(false);
-                return;
-            }
-            setActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
+            setActive((hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled ) && HasButton());
 
             actionButtonRenderer.sprite = sprite;
 
-            if (hudManager.UseButton != null)
+            if (HudManager.Instance.UseButton != null)
             {
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 actionButton.transform.localPosition = pos + PositionOffset;

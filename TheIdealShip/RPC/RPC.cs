@@ -4,7 +4,6 @@ using TheIdealShip.HistoryManager;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
-using static TheIdealShip.HudManagerStartPatch;
 using System.Text.RegularExpressions;
 using TheIdealShip.Patches;
 
@@ -40,7 +39,7 @@ namespace TheIdealShip
         public static void ResetVariables()
         {
             clearAndReloadRoles();
-            /* setCustomButtonCooldowns(); */
+/*             setCustomButtonCooldowns(); */
         }
 
         public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -171,7 +170,7 @@ namespace TheIdealShip
             SchrodingersCat.team = (RoleInfo.RoleTeam)team;
         }
 
-        public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
+/*         public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
         {
             if (!isSend)
             {
@@ -187,6 +186,6 @@ namespace TheIdealShip
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
                 LoveChatPatch.LoverChat.AddChat(PlayerControl.LocalPlayer, text);
             }
-        }
+        } */
     }
 }

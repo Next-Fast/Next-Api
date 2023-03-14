@@ -25,8 +25,18 @@ namespace TheIdealShip
 
         public static void Postfix(HudManager __instance)
         {
-            if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
-            var LocalPlayer = CachedPlayer.LocalPlayer.PlayerControl;
+            try
+            {
+                CreateButton(__instance);
+            }
+            catch
+            {
+                Warn("创建技能失败", filename:"Button");
+            }
+        }
+
+        public static void CreateButton(HudManager __instance)
+        {
             // 警长击杀 (Sheriff kill)
             sheriffKillButton = new CustomButton
             (
@@ -55,47 +65,47 @@ namespace TheIdealShip
                 },
                 () =>
                 {
-                    return Sheriff.sheriff != null && Sheriff.sheriff == LocalPlayer && !LocalPlayer.Data.IsDead;
-//                  return Sheriff.sheriff.RoleIsH() && Sheriff.sheriff.Is(LocalPlayer) && LocalPlayer.IsSurvival();
+                    return Sheriff.sheriff == PlayerControl.LocalPlayer;
+                    //                  return Sheriff.sheriff.RoleIsH() && Sheriff.sheriff.Is(LocalPlayer) && LocalPlayer.IsSurvival();
                 },
                 () =>
                 {
-                    return Sheriff.currentTarget && LocalPlayer.CanMove && Sheriff.shootNumber > 0;
+                    return Sheriff.currentTarget && Sheriff.shootNumber > 0;
                 },
                 () =>
                 {
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
                 },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(0f,1f,0),
+                new Vector3(0f, 1f, 0),
                 __instance,
                 KeyCode.Q
             );
-            
+
             // 隐蔽（伪装）技能
             CamouflagerButton = new CustomButton
             (
-                () => 
+                () =>
                 {
                     RPCHelpers.Create((byte)CustomRPC.Camouflager);
                     RPCProcedure.Camouflager();
                 },
                 () =>
                 {
-                    return Camouflager.camouflager != null && Camouflager.camouflager == LocalPlayer && !LocalPlayer.Data.IsDead;
+                    return Camouflager.camouflager == PlayerControl.LocalPlayer;
                 },
-                () => 
+                () =>
                 {
-                    return LocalPlayer.CanMove;
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => 
+                () =>
                 {
                     CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
                     CamouflagerButton.isEffectActive = false;
                     CamouflagerButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
                 Camouflager.getButtonSprite(),
-                new Vector3(0f,1f,0),
+                new Vector3(0f, 1f, 0),
                 __instance,
                 KeyCode.F,
                 true,
@@ -118,11 +128,11 @@ namespace TheIdealShip
                 },
                 () =>
                 {
-                    return Illusory.illusory != null && Illusory.illusory == LocalPlayer && !LocalPlayer.Data.IsDead;
+                    return Illusory.illusory == PlayerControl.LocalPlayer;
                 },
                 () =>
                 {
-                    return LocalPlayer.CanMove;
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -131,7 +141,7 @@ namespace TheIdealShip
                     IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
                 Illusory.getButtonSprite(),
-                new Vector3(0f,1f,0),
+                new Vector3(0f, 1f, 0),
                 __instance,
                 KeyCode.F,
                 true,
@@ -142,7 +152,8 @@ namespace TheIdealShip
                     RPCProcedure.RestorePlayerLook();
                 }
             );
-/*             setCustomButtonCooldowns(); */
+
+            setCustomButtonCooldowns();
         }
     }
 }

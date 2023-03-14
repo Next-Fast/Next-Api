@@ -15,7 +15,7 @@ namespace TheIdealShip.Roles
             ButtonSprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Illusory.png", 115f);
             return ButtonSprite;
         }
-        
+
         public static void clearAndReload()
         {
             illusory = null;

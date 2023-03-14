@@ -48,6 +48,7 @@ namespace TheIdealShip
         {
             Logger = Log;
             Instance = this;
+            Harmony.PatchAll();
 
             constInit();
 
@@ -57,8 +58,6 @@ namespace TheIdealShip
 
             Language.Init();
             LanguagePack.Init();
-
-            Harmony.PatchAll();
         }
 
 

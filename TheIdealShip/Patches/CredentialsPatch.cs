@@ -39,7 +39,7 @@ namespace TheIdealShip.Patches
             public static void modlogo()
             {
                 var modstamp = GameObject.Find("ModStamp");
-                if (modstamp = null)
+                if (modstamp != null)
                 {
                     modstamp.layer = UnityEngine.LayerMask.NameToLayer("UI");
                     var rend = modstamp.AddComponent<SpriteRenderer>();
@@ -58,13 +58,19 @@ namespace TheIdealShip.Patches
             static void Postfix(PingTracker __instance)
             {
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
+                string text = Credentials;
 /*
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     __instance.text.text = $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{TheIdealShipPlugin.Version.ToString()}\n"+ __instance.text.text;
                 }
 */
-                __instance.text.text = Credentials + __instance.text.text;
+/*
+                if (CustomOptionHolder.noGameEnd.getBool())
+                {
+                    text += "\n" + GetString("NoGameEnd").ToColorString(colo);
+                } */
+                __instance.text.text = text + __instance.text.text;
             }
         }
 

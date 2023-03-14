@@ -44,7 +44,7 @@ namespace TheIdealShip
         public static CustomOption illusorySpawnRate;
         public static CustomOption illusoryCooldown;
         public static CustomOption illusoryDuration;
-        
+
         public static CustomOption sheriffSpawnRate;
         public static CustomOption sheriffCooldown;
         public static CustomOption sheriffshootNumber;
@@ -60,6 +60,7 @@ namespace TheIdealShip
         public static CustomOption LoverSpawnRate;
         public static CustomOption LoverIsEvilProbability;
         public static CustomOption LoverDieForLove;
+        public static CustomOption LoverPrivateChat;
 
         public static void Load()
         {
@@ -82,14 +83,14 @@ namespace TheIdealShip
             modifierRolesCountMax = CustomOption.Create(12, Types.General, cs(GeneralColor, "Maximum Modifier Roles"), 15f, 0f, 15f, 1f);
 
             PlayerOption = CustomOption.Create(14, Types.General, "PlayerOption", false, null, true);
-            //disableHauntMenu = CustomOption.Create(13, Types.General, "disableHauntMenu", false, PlayerOption);
+            disableHauntMenu = CustomOption.Create(13, Types.General, "disableHauntMenu", false, PlayerOption);
             PlayerGhostSpeed = CustomOption.Create(15, Types.General, "PlayerGhostSpeed", 3f, 1f, 10f, 0.5f, PlayerOption);
             disableServerKickPlayer = CustomOption.Create(18, Types.General, "DisableServerKickPlayer", false, null, true);
 
             camouflagerSpawnRate = CustomOption.Create(50, Types.Impostor, cs(Camouflager.color, "Camouflager"), rates, null, true);
             camouflagerCooldown = CustomOption.Create(51, Types.Impostor, "Camouflager Cooldown", 30f, 10f, 60f, 2.5f, camouflagerSpawnRate);
             camouflagerDuration = CustomOption.Create(52, Types.Impostor, "Camouflager Duration", 10f, 5f, 20f, 1f, camouflagerSpawnRate);
-            
+
             illusorySpawnRate = CustomOption.Create(60, Types.Impostor, cs(Illusory.color, "Illusory"), rates, null, true);
             illusoryCooldown = CustomOption.Create(61, Types.Impostor, "Illusory Cooldown", 30f, 10f, 60f, 2.5f, camouflagerSpawnRate);
             illusoryDuration = CustomOption.Create(62, Types.Impostor, "Illusory Duration", 10f, 5f, 20f, 1f, camouflagerSpawnRate);
@@ -103,7 +104,7 @@ namespace TheIdealShip
             // 中立职业
             jesterSpawnRate = CustomOption.Create(150, Types.Neutral, cs(Jester.color, "Jester"), rates, null, true);
             jesterCanCallEmergency = CustomOption.Create(151, Types.Neutral, "CanCallEmergency", true, jesterSpawnRate);
-            
+
             SchrodingersCatRate = CustomOption.Create(161, Types.Neutral, cs(SchrodingersCat.color, "Schrodinger's Cat"), rates, null, true);
 
             // modifier 附加职业
@@ -113,7 +114,8 @@ namespace TheIdealShip
             LoverSpawnRate = CustomOption.Create(110, Types.Modifier, cs(Lover.Color, "Lover"), rates, null, true);
             LoverIsEvilProbability = CustomOption.Create(111, Types.Modifier, "Evil Lover Probability", rates, LoverSpawnRate);
             LoverDieForLove = CustomOption.Create(112, Types.Modifier, "Die For Love", true, LoverSpawnRate);
-            
+            LoverPrivateChat = CustomOption.Create(113, Types.Modifier, "Lover Private Chat", false, LoverSpawnRate);
+
         }
     }
 }

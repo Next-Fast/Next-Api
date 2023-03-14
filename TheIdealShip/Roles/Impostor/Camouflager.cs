@@ -15,7 +15,7 @@ namespace TheIdealShip.Roles
             ButtonSprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.CamouflagerButton.png", 115f);
             return ButtonSprite;
         }
-        
+
         public static void clearAndReload()
         {
             camouflager = null;
