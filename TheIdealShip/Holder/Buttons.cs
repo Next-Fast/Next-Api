@@ -65,21 +65,18 @@ namespace TheIdealShip
                 },
                 () =>
                 {
-                    return Sheriff.sheriff == PlayerControl.LocalPlayer;
-                    //                  return Sheriff.sheriff.RoleIsH() && Sheriff.sheriff.Is(LocalPlayer) && LocalPlayer.IsSurvival();
-                },
-                () =>
-                {
-                    return Sheriff.currentTarget && Sheriff.shootNumber > 0;
-                },
-                () =>
-                {
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
                 },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0f, 1f, 0),
                 __instance,
-                KeyCode.Q
+                KeyCode.Q,
+                RoleId.Sheriff,
+                CouldUse:
+                () =>
+                {
+                    return Sheriff.currentTarget != null && Sheriff.shootNumber > 0;
+                }
             );
 
             // 隐蔽（伪装）技能
@@ -92,14 +89,6 @@ namespace TheIdealShip
                 },
                 () =>
                 {
-                    return Camouflager.camouflager == PlayerControl.LocalPlayer;
-                },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
-                () =>
-                {
                     CamouflagerButton.Timer = CamouflagerButton.MaxTimer;
                     CamouflagerButton.isEffectActive = false;
                     CamouflagerButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
@@ -108,6 +97,9 @@ namespace TheIdealShip
                 new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
+                RoleId.Camouflager,
+                null,
+                null,
                 true,
                 Camouflager.duration,
                 () =>
@@ -128,14 +120,6 @@ namespace TheIdealShip
                 },
                 () =>
                 {
-                    return Illusory.illusory == PlayerControl.LocalPlayer;
-                },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
-                () =>
-                {
                     IllusoryButton.Timer = IllusoryButton.MaxTimer;
                     IllusoryButton.isEffectActive = false;
                     IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
@@ -144,6 +128,9 @@ namespace TheIdealShip
                 new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
+                RoleId.Illusory,
+                null,
+                null,
                 true,
                 Illusory.duration,
                 () =>

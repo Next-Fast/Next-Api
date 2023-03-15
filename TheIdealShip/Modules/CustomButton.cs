@@ -28,22 +28,24 @@ namespace TheIdealShip.Modules
         public SpriteRenderer actionButtonRenderer;
         public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
+        public Roles.RoleId roleId;
         public bool isEffectActive = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
         public CustomButton
         (
             Action OnClick,
-            Func<bool> HasButton,
-            Func<bool> CouldUse,
             Action OnMeetingEnds,
             Sprite sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
-            bool HasEffect,
-            float EffectDuration,
-            Action OnEffectEnds
+            Roles.RoleId roleId,
+            Func<bool> HasButton = null,
+            Func<bool> CouldUse = null,
+            bool HasEffect = false,
+            float EffectDuration = 0f,
+            Action OnEffectEnds = null
         )
         {
             this.hudManager = hudManager;
@@ -67,9 +69,10 @@ namespace TheIdealShip.Modules
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
+            this.roleId = roleId;
         }
 
-        public CustomButton
+/*         public CustomButton
         (
             Action OnClick,
             Func<bool> HasButton,
@@ -78,7 +81,8 @@ namespace TheIdealShip.Modules
             Sprite Sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
-            KeyCode? hotkey
+            KeyCode? hotkey,
+            Roles.RoleId roleId
         )
         : this
         (
@@ -92,10 +96,11 @@ namespace TheIdealShip.Modules
             hotkey,
             false,
             0f,
-            () => { }
+            () => { },
+            roleId
         )
         {
-        }
+        } */
 
 /*         public class ButtonPosition
         {
@@ -210,7 +215,13 @@ namespace TheIdealShip.Modules
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            setActive((hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled ) && HasButton());
+            if (Main.PlayerAndRoleIdDic[(byte)CachedPlayer.LocalPlayer.PlayerId] != roleId || !HasButton() || MeetingHud.Instance || ExileController.Instance || localPlayer == null || !localPlayer.PlayerControl.IsSurvival())
+            {
+                setActive(false);
+                return;
+            }
+
+            setActive((hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled));
 
             actionButtonRenderer.sprite = sprite;
 
@@ -231,7 +242,7 @@ namespace TheIdealShip.Modules
                             actionButtonMat.SetFloat(Desat, 1f);
                         }
             */
-            if (CouldUse())
+            if (CouldUse() && localPlayer.PlayerControl.CanMove)
             {
                 actionButton.SetEnabled();
             }

@@ -80,6 +80,8 @@ namespace TheIdealShip
                     Roles.Illusory.illusory = player;
                     break;
             }
+
+            Main.PlayerAndRoleIdDic.Add(playerId, (RoleId)roleId);
         }
 
         public static void setModifier(byte modifierId, byte playerId, byte flag)
