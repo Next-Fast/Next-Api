@@ -50,6 +50,7 @@ namespace TheIdealShip
             Instance = this;
             Harmony.PatchAll();
 
+            Modules.log.ConsoleTextFC();
             constInit();
 
             CustomOptionHolder.Load();

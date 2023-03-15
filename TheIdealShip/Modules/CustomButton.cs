@@ -1,11 +1,9 @@
-using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using TheIdealShip.Utilities;
-using TheIdealShip.Roles;
 
 namespace TheIdealShip.Modules
 {
@@ -98,6 +96,25 @@ namespace TheIdealShip.Modules
         )
         {
         }
+
+/*         public class ButtonPosition
+        {
+            // 左 left 中 centre 右 right 上 up 下down
+            enum PositionBasics
+            {
+                左,
+                中,
+                下,
+                右,
+                左下,
+                右下,
+            }
+            Dictionary<int, Dictionary<PositionBasics, Vector3>> PosDic;
+            public Vector3 ButtonP()
+            {
+
+            }
+        } */
 
         public void onClickEvent()
         {

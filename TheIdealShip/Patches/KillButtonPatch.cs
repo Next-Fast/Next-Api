@@ -3,7 +3,7 @@ using TheIdealShip.Roles;
 
 namespace TheIdealShip.Patches
 {
-    class KillButtonPatch
+/*     class KillButtonPatch
     {
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
         public static class PlayerControlMurderPlayerPatch
@@ -24,5 +24,5 @@ namespace TheIdealShip.Patches
                 }
             }
         }
-    }
+    } */
 }

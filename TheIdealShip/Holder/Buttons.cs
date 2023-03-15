@@ -105,7 +105,7 @@ namespace TheIdealShip
                     CamouflagerButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
                 Camouflager.getButtonSprite(),
-                new Vector3(0f, 1f, 0),
+                new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
                 true,
@@ -141,7 +141,7 @@ namespace TheIdealShip
                     IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
                 Illusory.getButtonSprite(),
-                new Vector3(0f, 1f, 0),
+                new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
                 true,
