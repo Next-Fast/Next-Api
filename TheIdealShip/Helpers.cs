@@ -1,5 +1,4 @@
-global using static TheIdealShip.Modules.log;
-
+using System.Text;
 using System;
 using System.IO;
 using System.Reflection;
@@ -126,6 +125,20 @@ namespace TheIdealShip
             s = s.Substring(found + 1);
             return s;
         }
+
+        public static string ToColorString(this string text, Color color)
+        {
+            string colorString;
+            colorString = "<color=" + ColorUtility.ToHtmlStringRGB(color) + ">" + text +"<color/>";
+            return colorString;
+        }
+
+        public static string ToColorString(this string text, System.Drawing.Color color)
+        {
+            string colorString;
+            colorString = "<color=" + System.Drawing.ColorTranslator.ToHtml(color) + ">" + text + "<color/>";
+            return colorString;
+        }
 /*
         public static string GetDev()
         {
@@ -152,13 +165,13 @@ namespace TheIdealShip
 
         public static PlayerControl GetPlayerForId(byte id)
         {
-           foreach (var AP in CachedPlayer.AllPlayers)
-           {
-            if (AP.PlayerId == id)
+            foreach (var AP in CachedPlayer.AllPlayers)
             {
-                return AP;
+                if (AP.PlayerId == id)
+                {
+                    return AP;
+                }
             }
-           }
             return null;
         }
 

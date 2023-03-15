@@ -13,51 +13,6 @@ namespace TheIdealShip.Patches
     [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]
     class HudManagerUpdatePatch
     {
-        /*
-        private static Dictionary<byte, (string name, Color color)> TagColorDict = new();
-        static void resetNameTagsAndColors()
-        {
-            var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-            var myData = CachedPlayer.LocalPlayer.Data;
-            var amImpostor = myData.Role.IsImpostor;
-
-            var dict = TagColorDict;
-            dict.Clear();
-
-            foreach (var data in GameData.Instance.AllPlayers.GetFastEnumerator())
-            {
-                var player = data.Object;
-                string text = data.PlayerName;
-                Color color;
-                if (player)
-                {
-                    var playerName = text;
-                    var nameText = player.cosmetics.nameText;
-
-                    nameText.text = playerName;
-                    nameText.color = color = amImpostor && data.Role.IsImpostor ? Palette.ImpostorRed : Color.white;
-                }
-                else
-                {
-                    color = Color.white;
-                }
-
-
-                dict.Add(data.PlayerId, (text, color));
-            }
-
-            if (MeetingHud.Instance != null)
-            {
-                foreach (PlayerVoteArea playerVoteArea in MeetingHud.Instance.playerStates)
-                {
-                    var data = dict[playerVoteArea.TargetPlayerId];
-                    var text = playerVoteArea.NameText;
-                    text.text = data.name;
-                    text.color = data.color;
-                }
-            }
-        }
-        */
         static void setPlayerNameColor(PlayerControl p,Color color)
         {
             p.cosmetics.nameText.color = color;
@@ -77,8 +32,6 @@ namespace TheIdealShip.Patches
             var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
             var localRoleInfo = RoleHelpers.GetRoleInfo(localPlayer, false);
             setPlayerNameColor(localPlayer, localRoleInfo.color);
-         //   if (localPlayer == Sheriff.sheriff)
-         //   setPlayerNameColor(localPlayer, RoleInfo.sheriff.color);
         }
         static void updateVentButton(HudManager __instance)
         {
@@ -108,7 +61,6 @@ namespace TheIdealShip.Patches
             CustomButton.HudUpdate();
             SetNameColors();
             updateVentButton(__instance);
-            // Meeting hide buttons if needed (used for the map usage, because closing the map would show buttons)
             updateSabotageButton(__instance);
             updateUseButton(__instance);
             updateMapButton(__instance);

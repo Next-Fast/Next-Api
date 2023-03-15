@@ -212,10 +212,11 @@ namespace TheIdealShip.Modules
             }
         }
 
-        [HarmonyPatch(typeof(GameOptionsMenu),nameof(GameOptionsMenu.Start))]
+        [HarmonyPatch]
         class GameOptionsMenuPatch
         {
-            public static void Postfix(GameOptionsMenu __instance)
+            [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start)), HarmonyPostfix]
+            public static void SettingsMenu_Postfix(GameOptionsMenu __instance)
             {
                 createTabs(__instance);
             }
@@ -273,19 +274,26 @@ namespace TheIdealShip.Modules
                 var modifierTab = UnityEngine.Object.Instantiate(roleTab, crewmateTab.transform);
                 var modifierTabHighlight = getTabHighlight(modifierTab, "ModifierTab", "TheIdealShip.Resources.TabM.png");
 
-                gameTab.transform.position += Vector3.left * 3.5f;
+                gameTab.transform.position += Vector3.left * 1.5f;
+                tisTab.transform.position += Vector3.left * 1.5f;
+                impostorTab.transform.localPosition = Vector3.right * 1f;
+                neutralTab.transform.localPosition = Vector3.right* 1f;
+                crewmateTab.transform.localPosition = Vector3.right* 1f;
+                modifierTab.transform.localPosition = Vector3.right* 1f;
+
+/*                 gameTab.transform.position += Vector3.left * 3.5f;
                 tisTab.transform.position += Vector3.left * 4.5f +  Vector3.down * 1f;
                 impostorTab.transform.localPosition = Vector3.down * 1f;
                 neutralTab.transform.localPosition = Vector3.down * 1f;
                 crewmateTab.transform.localPosition = Vector3.down * 1f;
-                modifierTab.transform.localPosition = Vector3.down * 1f;
-                
-                gameTab.transform.localScale = Vector3.one;
+                modifierTab.transform.localPosition = Vector3.down * 1f; */
+
+/*                 gameTab.transform.localScale = Vector3.one;
                 tisTab.transform.localScale = Vector3.one;
                 impostorTab.transform.localScale = Vector3.one;
                 neutralTab.transform.localScale = Vector3.one;
                 crewmateTab.transform.localScale = Vector3.one;
-                modifierTab.transform.localScale = Vector3.one;
+                modifierTab.transform.localScale = Vector3.one; */
 
                 var tabs = new GameObject[]{gameTab,tisTab,impostorTab,neutralTab,crewmateTab,modifierTab};
                 var settingsHighlightMap = new Dictionary<GameObject,SpriteRenderer>
@@ -351,6 +359,7 @@ namespace TheIdealShip.Modules
                 );
 
                 adaptTaskCount(__instance);
+
                 if (roleTab != null)
                     roleTab.SetActive(false);
             }

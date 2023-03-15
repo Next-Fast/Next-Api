@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
@@ -16,15 +16,9 @@ public static class GameOptionsMenuUIPacth
         var ChatAndSettingsButtonBackground = GameObject.Find("ChatAndSettingsButtonBackground");
         if (ChatAndSettingsButtonBackground != null) ChatAndSettingsButtonBackground.SetActive(false);
 
-        // var Close = GameObject.Find("CloseButton");
-        // Close.GetComponent<SpriteRenderer>().sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.closeButton.png",100f);
-        // //
-        // var Chat = GameObject.Find("ChatButton");
-        // Chat.GetComponent<SpriteRenderer>().sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.chatIcon.png",100f);
-        
         var CloseBackground = GameObject.Find("CloseButton/CloseButtonBackground");
         if (CloseBackground != null) CloseBackground.SetActive(false);
-        
+
         var Header = GameObject.Find("Header");
         SpriteRenderer HeaderSprite = Header.GetComponent<SpriteRenderer>();
         HeaderSprite.sprite = null;
@@ -32,18 +26,32 @@ public static class GameOptionsMenuUIPacth
 
         var BaseGlass = Header.transform.FindChild("baseGlass").gameObject;
         BaseGlass.SetActive(false);
-        
-        // var GameSettings = GameObject.Find("Game Settings");
-        // if (GameSettings != null) GameSettings.transform.position += Vector3.up * 1f;
+
+        foreach
+        (
+            var gs in
+        new List<string>()
+        {
+            "TISSettings",
+            "ImpostorSettings" ,
+            "NeutralSettings",
+            "CrewmateSettings",
+            "ModifierSettings"
+        }
+        )
+        {
+            var GameSettings = GameObject.Find(gs);
+            if (GameSettings != null) GameSettings.transform.position = new Vector3(GameSettings.transform.position.x, 1.4f, GameSettings.transform.position.z);
+        }
 
         var Panel = GameObject.Find("Game Settings/BackPanel");
         if (Panel != null) Panel.SetActive(false);
 
         var Reset = GameObject.Find("SliderInner/ResetToDefault");
         if (Reset != null) Reset.SetActive(false);
-        
+
         var Text = GameObject.Find("GameGroup/Text");
-        Text.transform.position += Vector3.right  * 1.5f;
+        Text.transform.localPosition += new Vector3(1.6f, 0.9f, Text.transform.localPosition.z);
 
         var SliderInner = GameObject.Find("GameGroup/SliderInner");
         for (int i = 0; i < SliderInner.transform.childCount; i++)
@@ -52,11 +60,18 @@ public static class GameOptionsMenuUIPacth
             for (int j = 0; j < option.transform.childCount; j++)
             {
                 var Optionobject = option.transform.GetChild(j);
-                if (Optionobject.name == "Background") 
+                if (Optionobject.name == "Background")
                     Optionobject.gameObject.SetActive(false);
                 // if (Optionobject.name == "CheckBox")
                 //     Optionobject.gameObject.GetComponent<SpriteRenderer>().sprite = null;
             }
         }
     }
-}
+
+    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start)), HarmonyPostfix]
+    public static void setting_Postfix()
+    {
+        var GameSettings = GameObject.Find("Game Settings");
+        if (GameSettings != null) GameSettings.transform.position = new Vector3(GameSettings.transform.position.x, 1.4f, GameSettings.transform.position.z);
+    }
+} */

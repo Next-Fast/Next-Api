@@ -1,11 +1,9 @@
-using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using TheIdealShip.Utilities;
-using TheIdealShip.Roles;
 
 namespace TheIdealShip.Modules
 {
@@ -30,19 +28,21 @@ namespace TheIdealShip.Modules
         public SpriteRenderer actionButtonRenderer;
         public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
+        public Roles.RoleId roleId;
         public bool isEffectActive = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
         public CustomButton
         (
             Action OnClick,
+            Action OnMeetingEnds,
             Func<bool> HasButton,
             Func<bool> CouldUse,
-            Action OnMeetingEnds,
             Sprite sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
+            Roles.RoleId roleId,
             bool HasEffect,
             float EffectDuration,
             Action OnEffectEnds
@@ -56,12 +56,12 @@ namespace TheIdealShip.Modules
             this.OnMeetingEnds = OnMeetingEnds;
             this.HasEffect = HasEffect;
             this.EffectDuration = EffectDuration;
-            this.OnMeetingEnds = OnEffectEnds;
+            this.OnEffectEnds = OnEffectEnds;
             this.sprite = sprite;
             this.hotkey = hotkey;
             Timer = 16.2f;
             buttons.Add(this);
-            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton,hudManager.KillButton.transform.parent);
+            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             actionButtonGameObject = actionButton.gameObject;
             actionButtonRenderer = actionButton.graphic;
             actionButtonMat = actionButtonRenderer.material;
@@ -69,35 +69,57 @@ namespace TheIdealShip.Modules
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
+            this.roleId = roleId;
         }
 
         public CustomButton
         (
             Action OnClick,
+            Action OnMeetingEnds,
             Func<bool> HasButton,
             Func<bool> CouldUse,
-            Action OnMeetingEnds,
-            Sprite Sprite,
+            Sprite sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
-            KeyCode? hotkey
+            KeyCode? hotkey,
+            Roles.RoleId roleId
         )
         : this
         (
             OnClick,
+            OnMeetingEnds,
             HasButton,
             CouldUse,
-            OnMeetingEnds,
-            Sprite,
+            sprite,
             PositionOffset,
             hudManager,
             hotkey,
+            roleId,
             false,
             0f,
             () => { }
         )
         {
         }
+
+/*         public class ButtonPosition
+        {
+            // 左 left 中 centre 右 right 上 up 下down
+            enum PositionBasics
+            {
+                左,
+                中,
+                下,
+                右,
+                左下,
+                右下,
+            }
+            Dictionary<int, Dictionary<PositionBasics, Vector3>> PosDic;
+            public Vector3 ButtonP()
+            {
+
+            }
+        } */
 
         public void onClickEvent()
         {
@@ -136,8 +158,7 @@ namespace TheIdealShip.Modules
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
-
-            for (int i =0; i < buttons.Count; i++)
+            for (int i = 0; i < buttons.Count; i++)
             {
                 try
                 {
@@ -194,16 +215,18 @@ namespace TheIdealShip.Modules
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton())
+            if (!Main.PlayerAndRoleIdDic.ContainsKey((byte)localPlayer.PlayerId)) return;
+            if (Main.PlayerAndRoleIdDic[(byte)localPlayer.PlayerId] != roleId || MeetingHud.Instance || ExileController.Instance)
             {
                 setActive(false);
                 return;
             }
-            setActive(hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled);
+
+            setActive((hudManager.UseButton.isActiveAndEnabled || hudManager.PetButton.isActiveAndEnabled));
 
             actionButtonRenderer.sprite = sprite;
 
-            if (hudManager.UseButton != null)
+            if (HudManager.Instance.UseButton != null)
             {
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 actionButton.transform.localPosition = pos + PositionOffset;
@@ -220,6 +243,17 @@ namespace TheIdealShip.Modules
                             actionButtonMat.SetFloat(Desat, 1f);
                         }
             */
+
+            string ButtonText = Languages.Language.GetString(roleId.ToString().Replace("RoleId", "") + "ButtonText");
+            if (ButtonText == ButtonText.Replace("ButtonText", "") || ButtonText != "")
+            {
+                actionButton.OverrideText(ButtonText);
+            }
+            else
+            {
+                actionButtonLabelText.enabled = false;
+            }
+
             if (CouldUse())
             {
                 actionButton.SetEnabled();

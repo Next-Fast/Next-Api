@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using static TheIdealShip.Languages.Language;
 using UnityEngine;
+using TheIdealShip.Utilities;
+using System.Linq;
 
 namespace TheIdealShip.Roles
 {
@@ -24,7 +26,7 @@ namespace TheIdealShip.Roles
         public Color color;
         public virtual string name { get { return GetString(namekey); } }
         public virtual string IntroD { get { return GetString(namekey + "IntroD"); } }
-        public virtual string TaskText { get { return GetString(namekey +"TaskText"); } }
+        public virtual string TaskText { get {return GetString(namekey +"TaskText"); } }
         public RoleId roleId;
         public string namekey;
 
@@ -43,8 +45,7 @@ namespace TheIdealShip.Roles
             this.type = type;
             this.team = team;
         }
-        
-        
+
         RoleInfo
         (
             string name,
@@ -64,11 +65,11 @@ namespace TheIdealShip.Roles
                     case RoleType.Crewmate:
                         team = RoleTeam.Crewmate;
                         break;
-                    
+
                     case RoleType.Impostor:
                         team = RoleTeam.Impostor;
                         break;
-                    
+
                     case RoleType.Neutral:
                         team = RoleTeam.Neutral;
                         break;
