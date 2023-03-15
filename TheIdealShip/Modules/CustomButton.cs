@@ -245,7 +245,7 @@ namespace TheIdealShip.Modules
             */
 
             string ButtonText = Languages.Language.GetString(roleId.ToString().Replace("RoleId", "") + "ButtonText");
-            if (ButtonText != null || ButtonText != "")
+            if (ButtonText == ButtonText.Replace("ButtonText", "") || ButtonText != "")
             {
                 actionButton.OverrideText(ButtonText);
             }
