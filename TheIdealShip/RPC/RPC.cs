@@ -172,7 +172,7 @@ namespace TheIdealShip
             SchrodingersCat.team = (RoleInfo.RoleTeam)team;
         }
 
-/*         public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
+        public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
         {
             if (!isSend)
             {
@@ -188,6 +188,6 @@ namespace TheIdealShip
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
                 LoveChatPatch.LoverChat.AddChat(PlayerControl.LocalPlayer, text);
             }
-        } */
+        }
     }
 }

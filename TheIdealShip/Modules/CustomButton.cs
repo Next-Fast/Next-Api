@@ -36,13 +36,13 @@ namespace TheIdealShip.Modules
         (
             Action OnClick,
             Action OnMeetingEnds,
+            Func<bool> HasButton,
+            Func<bool> CouldUse,
             Sprite sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
             Roles.RoleId roleId,
-            Func<bool> HasButton = null,
-            Func<bool> CouldUse = null,
             bool HasEffect = false,
             float EffectDuration = 0f,
             Action OnEffectEnds = null
@@ -215,7 +215,8 @@ namespace TheIdealShip.Modules
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            if (Main.PlayerAndRoleIdDic[(byte)CachedPlayer.LocalPlayer.PlayerId] != roleId || !HasButton() || MeetingHud.Instance || ExileController.Instance || localPlayer == null || !localPlayer.PlayerControl.IsSurvival())
+            if (!Main.PlayerAndRoleIdDic.ContainsKey((byte)localPlayer.PlayerId)) return;
+            if (Main.PlayerAndRoleIdDic[(byte)localPlayer.PlayerId] != roleId || MeetingHud.Instance || ExileController.Instance)
             {
                 setActive(false);
                 return;
@@ -242,7 +243,7 @@ namespace TheIdealShip.Modules
                             actionButtonMat.SetFloat(Desat, 1f);
                         }
             */
-            if (CouldUse() && localPlayer.PlayerControl.CanMove)
+            if (CouldUse())
             {
                 actionButton.SetEnabled();
             }

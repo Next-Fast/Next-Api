@@ -25,7 +25,7 @@ namespace TheIdealShip.Patches
 //            __instance.taskText.text.Select(x => roleText + modifierText + ((roleInfo == null)&&(modifierInfo == null) ? "" : "\n") + x);
         }
     }
-/*     [HarmonyPatch]
+    [HarmonyPatch]
     public static class LoveChatPatch
     {
         public static ChatController LoverChat;
@@ -95,5 +95,5 @@ namespace TheIdealShip.Patches
             }
             return false;
         }
-    } */
+    }
 }

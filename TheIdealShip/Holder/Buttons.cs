@@ -67,16 +67,19 @@ namespace TheIdealShip
                 {
                     sheriffKillButton.Timer = sheriffKillButton.MaxTimer;
                 },
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return Sheriff.currentTarget != null && Sheriff.shootNumber > 0 && PlayerControl.LocalPlayer.CanMove;
+                },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0f, 1f, 0),
                 __instance,
                 KeyCode.Q,
-                RoleId.Sheriff,
-                CouldUse:
-                () =>
-                {
-                    return Sheriff.currentTarget != null && Sheriff.shootNumber > 0;
-                }
+                RoleId.Sheriff
             );
 
             // 隐蔽（伪装）技能
@@ -93,13 +96,19 @@ namespace TheIdealShip
                     CamouflagerButton.isEffectActive = false;
                     CamouflagerButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
                 Camouflager.getButtonSprite(),
                 new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
                 RoleId.Camouflager,
-                null,
-                null,
                 true,
                 Camouflager.duration,
                 () =>
@@ -124,13 +133,19 @@ namespace TheIdealShip
                     IllusoryButton.isEffectActive = false;
                     IllusoryButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
+                () =>
+                {
+                    return !PlayerControl.LocalPlayer.Data.IsDead;
+                },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
                 Illusory.getButtonSprite(),
                 new Vector3(0f, 2f, 0),
                 __instance,
                 KeyCode.F,
                 RoleId.Illusory,
-                null,
-                null,
                 true,
                 Illusory.duration,
                 () =>

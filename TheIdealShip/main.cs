@@ -45,7 +45,7 @@ namespace TheIdealShip
         public Harmony Harmony { get; } = new Harmony(Id);
         public static TheIdealShipPlugin Instance;
         public static int OptionPage = 0;
-        public static Dictionary<byte, RoleId> PlayerAndRoleIdDic;
+        public static Dictionary<byte, RoleId> PlayerAndRoleIdDic = new Dictionary<byte, RoleId>();
 
         public override void Load()
         {

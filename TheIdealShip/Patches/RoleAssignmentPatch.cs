@@ -277,7 +277,7 @@ namespace TheIdealShip.Patches
             }
             );
 
-            if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10 && CachedPlayer.AllPlayers.Count > 2)
+            if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10 && CachedPlayer.AllPlayers.Count >= 2)
             {
                 // 分配恋人
                 bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.LoverIsEvilProbability.getSelection() * 10;
