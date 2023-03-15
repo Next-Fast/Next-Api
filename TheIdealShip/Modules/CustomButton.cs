@@ -43,9 +43,9 @@ namespace TheIdealShip.Modules
             HudManager hudManager,
             KeyCode? hotkey,
             Roles.RoleId roleId,
-            bool HasEffect = false,
-            float EffectDuration = 0f,
-            Action OnEffectEnds = null
+            bool HasEffect,
+            float EffectDuration,
+            Action OnEffectEnds
         )
         {
             this.hudManager = hudManager;
@@ -56,7 +56,7 @@ namespace TheIdealShip.Modules
             this.OnMeetingEnds = OnMeetingEnds;
             this.HasEffect = HasEffect;
             this.EffectDuration = EffectDuration;
-            this.OnMeetingEnds = OnEffectEnds;
+            this.OnEffectEnds = OnEffectEnds;
             this.sprite = sprite;
             this.hotkey = hotkey;
             Timer = 16.2f;
@@ -72,13 +72,13 @@ namespace TheIdealShip.Modules
             this.roleId = roleId;
         }
 
-/*         public CustomButton
+        public CustomButton
         (
             Action OnClick,
+            Action OnMeetingEnds,
             Func<bool> HasButton,
             Func<bool> CouldUse,
-            Action OnMeetingEnds,
-            Sprite Sprite,
+            Sprite sprite,
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
@@ -87,20 +87,20 @@ namespace TheIdealShip.Modules
         : this
         (
             OnClick,
+            OnMeetingEnds,
             HasButton,
             CouldUse,
-            OnMeetingEnds,
-            Sprite,
+            sprite,
             PositionOffset,
             hudManager,
             hotkey,
+            roleId,
             false,
             0f,
-            () => { },
-            roleId
+            () => { }
         )
         {
-        } */
+        }
 
 /*         public class ButtonPosition
         {
@@ -243,6 +243,17 @@ namespace TheIdealShip.Modules
                             actionButtonMat.SetFloat(Desat, 1f);
                         }
             */
+
+            string ButtonText = Languages.Language.GetString(roleId.ToString().Replace("RoleId", "") + "ButtonText");
+            if (ButtonText != null || ButtonText != "")
+            {
+                actionButton.OverrideText(ButtonText);
+            }
+            else
+            {
+                actionButtonLabelText.enabled = false;
+            }
+
             if (CouldUse())
             {
                 actionButton.SetEnabled();

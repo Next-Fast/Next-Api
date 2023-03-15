@@ -39,7 +39,8 @@ namespace TheIdealShip
         public static void ResetVariables()
         {
             clearAndReloadRoles();
-/*             setCustomButtonCooldowns(); */
+            HudManagerStartPatch.setCustomButtonCooldowns();
+            Main.PlayerAndRoleIdDic.Clear();
         }
 
         public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -159,11 +160,10 @@ namespace TheIdealShip
         public static void Illusory()
         {
             if (CachedPlayer.LocalPlayer.PlayerControl.Data.Role.IsImpostor) return;
-
-            PlayerControl rndPlayer = CachedPlayer.AllPlayers[rnd.Next(0, CachedPlayer.AllPlayers.Count)].PlayerControl;
-            foreach (var player in CachedPlayer.AllPlayers)
+            for (var i = 0 ; i < CachedPlayer.AllPlayers.Count ; i++)
             {
-                player.PlayerControl.setLook(rndPlayer.Data.PlayerName, rndPlayer.Data.DefaultOutfit.ColorId, rndPlayer.Data.DefaultOutfit.HatId, rndPlayer.Data.DefaultOutfit.VisorId, rndPlayer.Data.DefaultOutfit.SkinId, rndPlayer.Data.DefaultOutfit.PetId);
+                PlayerControl rndPlayer = CachedPlayer.AllPlayers[rnd.Next(0, CachedPlayer.AllPlayers.Count)].PlayerControl;
+                CachedPlayer.AllPlayers[i].PlayerControl.setLook(rndPlayer.Data.PlayerName, rndPlayer.Data.DefaultOutfit.ColorId, rndPlayer.Data.DefaultOutfit.HatId, rndPlayer.Data.DefaultOutfit.VisorId, rndPlayer.Data.DefaultOutfit.SkinId, rndPlayer.Data.DefaultOutfit.PetId);
             }
         }
 
