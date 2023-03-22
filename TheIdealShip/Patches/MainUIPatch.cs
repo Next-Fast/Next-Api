@@ -1,9 +1,6 @@
 using System;
-using System.Globalization;
 using HarmonyLib;
 using UnityEngine;
-using TheIdealShip.Modules;
-using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Patches
 {
@@ -35,7 +32,7 @@ namespace TheIdealShip.Patches
               //  howtoplayButton.GetComponent<SpriteRenderer>().color = githubText.color = githubColor;
             }
 
-#if DEBUG
+
             // 将自由模式改成bilibili
             var freeplayButton = GameObject.Find("FreePlayButton");
             if (freeplayButton != null && (TheIdealShipPlugin.isChinese || TheIdealShipPlugin.isCn))
@@ -48,7 +45,6 @@ namespace TheIdealShip.Patches
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText("BiliBili"))));
                 freeplayButton.GetComponent<SpriteRenderer>().color = bilibiliText.color = bilibiliColor;
             }
-#endif
 
 
             if (Template == null) Template = GameObject.Find("ExitGameButton");

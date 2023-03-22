@@ -1,7 +1,8 @@
+global using Types = TheIdealShip.Modules.CustomOption.CustomOptionType;
+global using static TheIdealShip.CustomOptionHolder;
 using TheIdealShip.Modules;
 using TheIdealShip.Roles;
 using UnityEngine;
-using Types = TheIdealShip.Modules.CustomOption.CustomOptionType;
 
 namespace TheIdealShip
 {
@@ -36,10 +37,6 @@ namespace TheIdealShip
         public static CustomOption PlayerGhostSpeed;
         public static CustomOption dummynumber;
         public static CustomOption disableServerKickPlayer;
-
-        public static CustomOption camouflagerSpawnRate;
-        public static CustomOption camouflagerCooldown;
-        public static CustomOption camouflagerDuration;
 
         public static CustomOption illusorySpawnRate;
         public static CustomOption illusoryCooldown;
@@ -87,13 +84,9 @@ namespace TheIdealShip
             PlayerGhostSpeed = CustomOption.Create(15, Types.General, "PlayerGhostSpeed", 3f, 1f, 10f, 0.5f, PlayerOption);
             disableServerKickPlayer = CustomOption.Create(18, Types.General, "DisableServerKickPlayer", false, null, true);
 
-            camouflagerSpawnRate = CustomOption.Create(50, Types.Impostor, cs(Camouflager.color, "Camouflager"), rates, null, true);
-            camouflagerCooldown = CustomOption.Create(51, Types.Impostor, "Camouflager Cooldown", 30f, 10f, 60f, 2.5f, camouflagerSpawnRate);
-            camouflagerDuration = CustomOption.Create(52, Types.Impostor, "Camouflager Duration", 10f, 5f, 20f, 1f, camouflagerSpawnRate);
-
             illusorySpawnRate = CustomOption.Create(60, Types.Impostor, cs(Illusory.color, "Illusory"), rates, null, true);
-            illusoryCooldown = CustomOption.Create(61, Types.Impostor, "Illusory Cooldown", 30f, 10f, 60f, 2.5f, camouflagerSpawnRate);
-            illusoryDuration = CustomOption.Create(62, Types.Impostor, "Illusory Duration", 10f, 5f, 20f, 1f, camouflagerSpawnRate);
+            illusoryCooldown = CustomOption.Create(61, Types.Impostor, "Illusory Cooldown", 30f, 10f, 60f, 2.5f, illusorySpawnRate);
+            illusoryDuration = CustomOption.Create(62, Types.Impostor, "Illusory Duration", 10f, 5f, 20f, 1f, illusorySpawnRate);
 
             //                                     Id Tap分类            选项名                              父项   为父项
             sheriffSpawnRate = CustomOption.Create(20, Types.Crewmate, cs(Sheriff.color, "Sheriff"), rates, null, true);
