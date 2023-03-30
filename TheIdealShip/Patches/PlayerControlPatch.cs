@@ -116,16 +116,32 @@ namespace TheIdealShip.Patches
                         playerInfo.color = playerInfo.color.SetAlpha(1f);
                     }
 
+                    PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
+                    Transform meetingInfoTransform = playerVoteArea != null ? playerVoteArea.NameText.transform.parent.FindChild("Info") : null;
+                    TMPro.TextMeshPro meetingInfo = meetingInfoTransform != null ? meetingInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
+                    if (meetingInfo == null && playerVoteArea != null)
+                    {
+                        meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+                        meetingInfo.transform.localPosition += Vector3.down * 0.20f;
+                        meetingInfo.fontSize *= 0.75f;
+                        meetingInfo.gameObject.name = "Info";
+                    }
+
                     string roleNames = RoleHelpers.GetRolesString(p, true);
+                    string modifierName = RoleHelpers.GetRolesString(p, true, true);
 
                     string playerInfoText = "";
+                    string meetingInfoText = "";
                     if (p == CachedPlayer.LocalPlayer.PlayerControl || p.isDummy)
                     {
                         playerInfoText = $"{roleNames}";
+                        meetingInfoText = $"{roleNames}\n{modifierName}".Trim();
                     }
 
                     playerInfo.text = playerInfoText;
                     playerInfo.gameObject.SetActive(p.Visible);
+                    if (meetingInfo != null)
+                        meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;
                 }
             }
         }
