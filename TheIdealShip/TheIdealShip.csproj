@@ -20,8 +20,8 @@
         <PackageReference Include="Reactor" Version="2.1.0" />
 <!--         <PackageReference Include="Csvnet6" Version="1.1.0" /> -->
 <!--nuget.bepinex.dev 的包                                       -->
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.664" Private="false" ExcludeAssets="runtime;native" />
-        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.3.28" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.668" Private="false" ExcludeAssets="runtime;native" />
+        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.3.28" PrivateAssets="all" />      
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
 
