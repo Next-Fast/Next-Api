@@ -5,7 +5,7 @@ using TheIdealShip.Roles;
 
 namespace TheIdealShip.Patches
 {
-    public class HauntMenuMiniGamePatch
+    /* public class HauntMenuMiniGamePatch
     {
         [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.Start))]
         public static bool Prefix(HauntMenuMinigame __instance)
@@ -40,10 +40,14 @@ namespace TheIdealShip.Patches
             {
                 __instance.gameObject.SetActive(true);
             }
+            foreach (var b in __instance.FilterButtons)
+            {
+                b.gameObject.SetActive(false);
+            }
         }
-    }
+    } */
 
-    [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
+[HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
     public static class HauntMenuMinigameSetFilterTextPatch
     {
         public static bool Prefix(HauntMenuMinigame __instance)

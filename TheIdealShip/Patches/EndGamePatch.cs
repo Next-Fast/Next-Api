@@ -82,6 +82,8 @@ namespace TheIdealShip.Patches
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             }
+            if (TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Impostor) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data));
+            if (!TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Crewmate) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data));
         }
     }
 

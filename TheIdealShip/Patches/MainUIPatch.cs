@@ -1,9 +1,6 @@
 using System;
-using System.Globalization;
 using HarmonyLib;
 using UnityEngine;
-using TheIdealShip.Modules;
-using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Patches
 {
@@ -35,9 +32,10 @@ namespace TheIdealShip.Patches
               //  howtoplayButton.GetComponent<SpriteRenderer>().color = githubText.color = githubColor;
             }
 
+
             // 将自由模式改成bilibili
             var freeplayButton = GameObject.Find("FreePlayButton");
-            if (freeplayButton != null)
+            if (freeplayButton != null && (TheIdealShipPlugin.isChinese || TheIdealShipPlugin.isCn))
             {
                 var bilibiliText = freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 Color bilibiliColor = new Color32(0,182,247,byte.MaxValue);
@@ -69,12 +67,12 @@ namespace TheIdealShip.Patches
             DiscordButton.gameObject.SetActive(true);
 */
 
-            // 生成Kook按钮 改为QQ频道
-            if (kookButton == null)
+/*             // 生成Kook按钮 改为QQ频道
+            if (kookButton == null && (TheIdealShipPlugin.isCn || TheIdealShipPlugin.isChinese))
             {
                 kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
                 kookButton.name = "QQButton";
-                kookButton.transform.position = Vector3.Reflect(Template.transform.position,Vector3.left) + new Vector3(0, 0.65f);
+                kookButton.transform.position = Vector3.Reflect(Template.transform.position,Vector3.left);// + new Vector3(0, 0.65f);
 
                 var kookText = kookButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 Color kookColor = new Color32(187, 255, 255, byte.MaxValue);
@@ -87,13 +85,12 @@ namespace TheIdealShip.Patches
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("QQ频道"))));
                 kookButtonSprite.color = kookText.color = kookColor;
                 kookButton.gameObject.SetActive(true);
-            }
+            } */
 
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
             UpdateButton.name = "UpdateButton";
             UpdateButton.transform.position = Template.transform.position + new Vector3(0.25f, 0.75f);
-            UpdateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
             var UpdateText = UpdateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
             Color UpdateColor = new Color32(128, 255, 255, byte.MaxValue);
@@ -107,7 +104,6 @@ namespace TheIdealShip.Patches
             }));
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
-            UpdateButtonSprite.size *= 1.5f;
             UpdateButton.SetActive(ModUpdater.HUpdate);
         }
     }

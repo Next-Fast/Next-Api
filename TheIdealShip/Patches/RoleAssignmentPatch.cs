@@ -33,6 +33,24 @@ namespace TheIdealShip.Patches
         }
     }
 
+    [HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+    class GameOptionsDataGetAdjustedNumImpostorsPatch
+    {
+        public static void Postfix(ref int __result)
+        {
+            __result = Mathf.Clamp(GameOptionsManager.Instance.CurrentGameOptions.NumImpostors, 1, 3);
+        }
+    }
+
+    [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.Validate))]
+    class GameOptionsDataValidatePatch
+    {
+        public static void Postfix(GameOptionsData __instance)
+        {
+            __instance.NumImpostors = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+        }
+    }
+
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     class RoleManagerSelectRolesPatch
     {
@@ -67,9 +85,9 @@ namespace TheIdealShip.Patches
             Dictionary<byte, int> neutralSettings = new Dictionary<byte, int>();
             Dictionary<byte, int> crewSettings = new Dictionary<byte, int>();
 
-            impSettings.Add((byte)RoleId.Camouflager, CustomOptionHolder.camouflagerSpawnRate.getSelection());
+            impSettings.Add((byte)RoleId.Camouflager, Camouflager.camouflagerSpawnRate.getSelection());
             impSettings.Add((byte)RoleId.Illusory, CustomOptionHolder.illusorySpawnRate.getSelection());
-                
+
             crewSettings.Add((byte)RoleId.Sheriff, CustomOptionHolder.sheriffSpawnRate.getSelection());
 
             neutralSettings.Add((byte)RoleId.Jester, CustomOptionHolder.jesterSpawnRate.getSelection());
@@ -84,7 +102,7 @@ namespace TheIdealShip.Patches
                 impSettings = impSettings,
                 maxCrewmateRoles = maxCrewmateRoles,
                 maxNeutralRoles = maxNeutralRoles,
-                maxImpostorRoles = maxImpostorRoles 
+                maxImpostorRoles = maxImpostorRoles
             };
         }
         private enum RoleType
@@ -104,7 +122,7 @@ namespace TheIdealShip.Patches
             RPCProcedure.ResetVariables();
             if (CustomOptionHolder.activateRoles.getBool()) assignRoles();
         }
-        
+
 
         private static void assignRoles()
         {
@@ -255,11 +273,11 @@ namespace TheIdealShip.Patches
             (
             new List<RoleId>
             {
-                RoleId.Flash
+                RoleId.Flash,
             }
             );
-            
-            if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10) 
+
+            if (rnd.Next(1, 101) <= CustomOptionHolder.LoverSpawnRate.getSelection() * 10 && CachedPlayer.AllPlayers.Count >= 2)
             {
                 // 分配恋人
                 bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.LoverIsEvilProbability.getSelection() * 10;

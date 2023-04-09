@@ -16,7 +16,7 @@ namespace TheIdealShip
             var info = getRoleInfoForPlayer(player, isModifier, false).FirstOrDefault();
             return info;
         }
-        
+
         public static List<RoleId> GetAllModifierId(this PlayerControl player)
         {
             List<RoleId> allMoidierRoleIds = new List<RoleId>();
@@ -28,7 +28,7 @@ namespace TheIdealShip
 
             return allMoidierRoleIds;
         }
-        
+
         public static string GetRoleTeam(PlayerControl p)
         {
             string roleTeam;
@@ -97,6 +97,11 @@ namespace TheIdealShip
         public static bool RoleIsH(this PlayerControl player)
         {
             return player != null;
+        }
+
+        public static PlayerControl getLover2()
+        {
+            return CachedPlayer.AllPlayers.Where(x => (x.PlayerControl.IsLover() && x != CachedPlayer.LocalPlayer)).FirstOrDefault();
         }
 
         public static bool RoleIsH(this RoleId id)

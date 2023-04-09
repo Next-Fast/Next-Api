@@ -1,10 +1,17 @@
-using LogLevel = BepInEx.Logging.LogLevel;
 using System;
+using LogLevel = BepInEx.Logging.LogLevel;
 
 namespace TheIdealShip.Modules
 {
     class log
     {
+        public static void ConsoleTextFC()
+        {
+            if (System.Console.OutputEncoding != System.Text.Encoding.UTF8)
+            {
+                System.Console.OutputEncoding = System.Text.Encoding.UTF8;
+            }
+        }
         private static void SendToFile(string tag, string filename,string text, LogLevel level = LogLevel.Info)
         {
             var logger = TheIdealShipPlugin.Logger;

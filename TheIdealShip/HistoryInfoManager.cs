@@ -11,7 +11,7 @@ public static class HistoryInfoManager
    public static Dictionary<byte, List<HistoryInfo>> HistoryInfoDc = new Dictionary<byte, List<HistoryInfo>>();
    public static Dictionary<byte, int> SerialNumber = new Dictionary<byte, int>();
 
-   public class HistoryInfo 
+   public class HistoryInfo
    {
       public static int Number;
       public static RoleTeam Team;
@@ -42,13 +42,13 @@ public class TeamHistoryManager
 {
    public static RoleTeam OldTeam;
    public static RoleTeam NewTeam;
-   
+
    public static void Start()
    {
       OldTeam = RoleHelpers.GetRoleInfo(CachedPlayer.LocalPlayer.PlayerControl).team;
       NewTeam = OldTeam;
    }
-   
+
    public static void Update()
    {
       if (NewTeam != OldTeam)
