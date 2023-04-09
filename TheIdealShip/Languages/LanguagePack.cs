@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Collections.Generic;
 using System;
 using System.Text;
@@ -37,6 +38,53 @@ namespace TheIdealShip.Languages
             languageName = name;
             Info("Language:" + name, "Language Pack");
         }
+        // 获取语言数字
+        public static int GetLangInt()
+        {
+            var lang = AmongUs.Data.DataManager.Settings.language.CurrentLanguage;
+            return lang switch
+            {
+                SupportedLangs.English => 0,
+                SupportedLangs.Latam => 1,
+                SupportedLangs.Brazilian => 2,
+                SupportedLangs.Portuguese => 3,
+                SupportedLangs.Korean => 4,
+                SupportedLangs.Russian => 5,
+                SupportedLangs.Dutch => 6,
+                SupportedLangs.Filipino => 7,
+                SupportedLangs.French => 8,
+                SupportedLangs.German => 9,
+                SupportedLangs.Italian => 10,
+                SupportedLangs.Japanese => 11,
+                SupportedLangs.Spanish => 12,
+                SupportedLangs.SChinese => 13,
+                SupportedLangs.TChinese => 14,
+                SupportedLangs.Irish => 15,
+                _ => 0,
+            };
+        }
+
+        public static string GetLname(int id) => id switch
+        {
+            0 => "English",
+            1 => "Latam",
+            2 => "Brazilian",
+            3 => "Portuguese",
+            4 => "Korean",
+            5 => "Russian",
+            6 => "Dutch",
+            7 => "Filipino",
+            8 => "French",
+            9 => "German",
+            10 => "Italian",
+            11 => "Japanese",
+            12 => "Spanish",
+            13 => "SChinese",
+            14 => "TChinese",
+            15 => "Irish",
+            _ => "",
+        };
+
         // 创建文件夹
         private static void CTT()
         {

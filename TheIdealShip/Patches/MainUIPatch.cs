@@ -67,7 +67,7 @@ namespace TheIdealShip.Patches
             DiscordButton.gameObject.SetActive(true);
 */
 
-            // 生成Kook按钮 改为QQ频道
+/*             // 生成Kook按钮 改为QQ频道
             if (kookButton == null && (TheIdealShipPlugin.isCn || TheIdealShipPlugin.isChinese))
             {
                 kookButton = UnityEngine.Object.Instantiate(Template, Template.transform.parent);
@@ -85,7 +85,7 @@ namespace TheIdealShip.Patches
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("QQ频道"))));
                 kookButtonSprite.color = kookText.color = kookColor;
                 kookButton.gameObject.SetActive(true);
-            }
+            } */
 
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
