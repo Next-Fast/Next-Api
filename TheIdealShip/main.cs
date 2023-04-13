@@ -21,13 +21,13 @@ namespace TheIdealShip
     public class TheIdealShipPlugin : BasePlugin
     {
         // Among Us游玩版本
-        public const string AmongUsVersion = "2023.2.28";
+        public const string AmongUsVersion = "2023.3.28";
         // 模组名称
         public const string ModName = "The Ideal Ship";
         // 模组id
         public const string Id = "me.huier.TheIdealShip";
         // 模组版本
-        public const string VersionString = "0.3.5";
+        public const string VersionString = "0.3.6";
         // 模组构建时间
         public static string BuildTime = "2023.3.8";
         // 是否为开发版本
@@ -38,8 +38,6 @@ namespace TheIdealShip
         public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
         // bilibili链接
         public const string bilibiliURL = "https://space.bilibili.com/394107547";
-        // KOOK链接
-        public const string QQURL = "https://pd.qq.com/s/hpldx5uja";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);
@@ -71,14 +69,14 @@ namespace TheIdealShip
             IsDev = false;
             #endif
 
-            uint langId = AmongUs.Data.Legacy.LegacySaveManager.LastLanguage;
+/*          uint langId = AmongUs.Data.Legacy.LegacySaveManager.LastLanguage;
             isChinese = (langId == 13 || langId == 14);
-
+ */
             var CountryName = RegionInfo.CurrentRegion.EnglishName;
             isCn = CountryName.Contains("China");//|| CountryName.Contains("Hong Kong") || CountryName.Contains("Taiwan");
 
             Info($"IsDev:{IsDev.ToString()}", "Const");
-            Info($"LanguageId:{langId.ToString()}", "Const");
+/*          Info($"LanguageId:{langId.ToString()}", "Const"); */
             Info($"CountryName:{CountryName} | {RegionInfo.CurrentRegion.DisplayName}", "Const");
             Info($"isCn:{isCn.ToString()}", "Const");
             Info($"IsChinese:{isChinese.ToString()}", "Const");

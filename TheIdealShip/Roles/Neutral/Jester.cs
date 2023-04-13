@@ -12,4 +12,10 @@ public class Jester
         jester = null;
         CanCallEmergency = CustomOptionHolder.jesterCanCallEmergency.getBool();
     }
+
+    public static void OptionLoad()
+    {
+        jesterSpawnRate = CustomOption.Create(150, Types.Neutral, cs(Jester.color, "Jester"), rates, null, true);
+        jesterCanCallEmergency = CustomOption.Create(151, Types.Neutral, "CanCallEmergency", true, jesterSpawnRate);
+    }
 }

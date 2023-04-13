@@ -47,7 +47,17 @@ namespace TheIdealShip.Patches
         }
     } */
 
-[HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
+    [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Refresh))]
+    public static class AbilityButtonRefreshPatch
+    {
+        public static void Postfix(AbilityButton __instance)
+        {
+            if(!CustomOptionHolder.disableHauntMenu.getBool()) return;
+            __instance.gameObject.SetActive(false);
+        }
+    }
+
+    [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
     public static class HauntMenuMinigameSetFilterTextPatch
     {
         public static bool Prefix(HauntMenuMinigame __instance)
