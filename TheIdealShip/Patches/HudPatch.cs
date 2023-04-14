@@ -33,6 +33,10 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPostfix]
         public static void LoverChat_Postfix(HudManager __instance)
         {
+            if (CustomOptionHolder.noGameEnd.getBool())
+            {
+                if(!__instance.Chat.isActiveAndEnabled) __instance.Chat.SetVisible(true);
+            }
             if (!CachedPlayer.LocalPlayer.PlayerControl.IsLover()) return;
             if (LoverChat == null)
             {
@@ -62,9 +66,15 @@ namespace TheIdealShip.Patches
         }
 
         [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat)), HarmonyPrefix]
-        public static bool LoverAddChat_Prefix(ChatController __instance,[HarmonyArgument(0)]PlayerControl sourcePlayer, [HarmonyArgument(1)]string chatText)
+        public static bool AddChat_Prefix(ChatController __instance,[HarmonyArgument(0)]PlayerControl sourcePlayer, [HarmonyArgument(1)]string chatText)
         {
-            if (__instance.name != "LoveChat") return true;
+            if (!CheckForModification(__instance, sourcePlayer, chatText)) return true;
+            CreateAddChat(__instance, sourcePlayer, chatText);
+            return false;
+        }
+
+        private static void CreateAddChat(ChatController __instance, PlayerControl sourcePlayer, string chatText)
+        {
             GameData.PlayerInfo data = PlayerControl.LocalPlayer.Data;
             GameData.PlayerInfo data2 = sourcePlayer.Data;
             ChatBubble chatBubble = __instance.chatBubPool.Get<ChatBubble>();
@@ -93,6 +103,12 @@ namespace TheIdealShip.Patches
             {
                 SoundManager.Instance.PlaySound(__instance.MessageSound, false, 1f, null).pitch = 0.5f + (float)sourcePlayer.PlayerId / 15f;
             }
+        }
+
+        private static bool CheckForModification(ChatController __instance, PlayerControl sourcePlayer, string chatText)
+        {
+            if (__instance.name == "LoverChat") return true;
+
             return false;
         }
     }

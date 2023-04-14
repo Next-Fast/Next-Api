@@ -11,4 +11,10 @@ public static class Flash
         flash = null;
         speed = CustomOptionHolder.flashSpeed.getFloat();
     }
+
+    public static void OptionLoad()
+    {
+        flashSpawnRate = CustomOption.Create(100, Types.Modifier, cs(Flash.color, "Flash"), rates, null, true);
+        flashSpeed = CustomOption.Create(101, Types.Modifier, "Speed", 5f, 1f, 10f, 0.5f, flashSpawnRate);
+    }
 }

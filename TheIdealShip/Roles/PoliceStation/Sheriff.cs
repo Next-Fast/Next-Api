@@ -16,4 +16,11 @@ public static class Sheriff
             cooldown = CustomOptionHolder.sheriffCooldown.getFloat();
             shootNumber = CustomOptionHolder.sheriffshootNumber.getFloat();
     }
+
+    public static void OptionLoad()
+    {
+        sheriffSpawnRate = CustomOption.Create(20, Types.Crewmate, cs(Sheriff.color, "Sheriff"), rates, null, true);
+        sheriffCooldown = CustomOption.Create(21, Types.Crewmate, "SheriffCooldown", 30f, 10f, 60f, 2.5f, sheriffSpawnRate);
+        sheriffshootNumber = CustomOption.Create(22, Types.Crewmate, "ShootNumber", 5f, 1f, 15f, 1f, sheriffSpawnRate);
+    }
 }

@@ -13,4 +13,12 @@ public class Lover
         lover2 = null;
         suicide = false;
     }
+
+    public static void OptionLoad()
+    {
+        LoverSpawnRate = CustomOption.Create(110, Types.Modifier, cs(Lover.Color, "Lover"), rates, null, true);
+        LoverIsEvilProbability = CustomOption.Create(111, Types.Modifier, "Evil Lover Probability", rates, LoverSpawnRate);
+        LoverDieForLove = CustomOption.Create(112, Types.Modifier, "Die For Love", true, LoverSpawnRate);
+        LoverPrivateChat = CustomOption.Create(113, Types.Modifier, "Lover Private Chat", false, LoverSpawnRate);
+    }
 }

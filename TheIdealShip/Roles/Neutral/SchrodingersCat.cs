@@ -14,4 +14,9 @@ public class SchrodingersCat
         team = RoleTeam.Neutral;
     }
 
+    public static void OptionLoad()
+    {
+        SchrodingersCatRate = CustomOption.Create(161, Types.Neutral, cs(SchrodingersCat.color, "Schrodinger's Cat"), rates, null, true);
+    }
+
 }
