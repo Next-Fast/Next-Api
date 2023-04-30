@@ -23,11 +23,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.x
-
       - name: install wget
         run: sudo apt install wget
 
@@ -37,8 +32,16 @@ jobs:
       - name: BepInEx
         run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShip/
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+
       - name: build
         run: dotnet build TheIdealShip/TheIdealShip.csproj --configuration Release
+
+      - name: path
+        run: sudo chmod -R 777 ./TheIdealShip
 
       - name: move
         run: mv TheIdealShip/bin/Release/net6.0/TheIdealShip.dll ./TheIdealShip/BepInEx/plugins/
