@@ -35,7 +35,7 @@ jobs:
         run: wget https://builds.bepinex.dev/projects/bepinex_be/668/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f.zip
 
       - name: BepInEx
-        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f -d ./TheIdealShip/
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShip/
 
       - name: build
         run: dotnet build TheIdealShip/TheIdealShip.csproj --configuration Release
