@@ -11,7 +11,10 @@ using System;
 using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
+using System.Reflection;
 
+[assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
+[assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 namespace TheIdealShip
 {
     [BepInPlugin(Id, ModName, VersionString)]

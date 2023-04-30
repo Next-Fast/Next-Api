@@ -1,7 +1,10 @@
+using System.Text;
+using System.Configuration;
 using UnityEngine;
 using HarmonyLib;
 using TheIdealShip.Utilities;
 using static TheIdealShip.Languages.Language;
+using System.Drawing;
 //using static TheIdealShip.Languages.LanguageCSV;
 
 namespace TheIdealShip.Patches
@@ -18,8 +21,13 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
         {
+            private static StringBuilder StringB = new();
             static void Postfix(VersionShower __instance)
             {
+                StringB.Append(__instance.text);
+                #if DEBUG
+                StringB.AppendLine(Helpers.ToColorString($"{ThisAssembly.Git.Branch}\n{ThisAssembly.Git.Commit}", System.Drawing.Color.Orange));
+                #endif
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
                 if (amongUsLogo == null) return;
 
@@ -44,7 +52,7 @@ namespace TheIdealShip.Patches
                     modstamp.layer = UnityEngine.LayerMask.NameToLayer("UI");
                     var rend = modstamp.AddComponent<SpriteRenderer>();
                     rend.sprite = Helpers.getModStamp();
-                    rend.color = new Color(1, 1, 1, 0.5f);
+                    rend.color = new UnityEngine.Color(1, 1, 1, 0.5f);
                     modstamp.transform.localScale *= 0.6f;
                     float offset = (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) ? 0.75f : 0f;
                     modstamp.transform.position = FastDestroyableSingleton<HudManager>.Instance.MapButton.transform.position + Vector3.down * offset;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
+using TheIdealShip.RPC;
 using static TheIdealShip.Roles.RoleInfo;
 
 namespace TheIdealShip.HistoryManager;

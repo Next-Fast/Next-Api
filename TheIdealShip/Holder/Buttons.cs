@@ -1,7 +1,6 @@
 using HarmonyLib;
 using Hazel;
-using InnerNet;
-// using Reactor.Networking.Rpc;
+using TheIdealShip.RPC;
 using TheIdealShip.Modules;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;

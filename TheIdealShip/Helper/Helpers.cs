@@ -1,3 +1,5 @@
+global using TheIdealShip.Helper;
+
 using System;
 using System.IO;
 using System.Reflection;
@@ -10,7 +12,7 @@ using System.Linq.Expressions;
 using TheIdealShip.Roles;
 using static TheIdealShip.Languages.Language;
 
-namespace TheIdealShip
+namespace TheIdealShip.Helper
 {
     public static class Helpers
     {

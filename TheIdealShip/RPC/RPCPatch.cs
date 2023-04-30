@@ -1,7 +1,7 @@
 using HarmonyLib;
 using Hazel;
 
-namespace TheIdealShip;
+namespace TheIdealShip.RPC;
 
 [HarmonyPatch]
 public class RPCPatch
@@ -13,6 +13,11 @@ public class RPCPatch
         {
             byte packetId = callId;
             RPCHelpers.StartRPC(packetId, reader);
+        }
+
+        static void Prefix(PlayerControl __instance,[HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
+        {
+
         }
     }
 }

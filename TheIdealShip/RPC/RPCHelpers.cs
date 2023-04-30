@@ -2,7 +2,7 @@ using System;
 using Hazel;
 using TheIdealShip.Utilities;
 
-namespace TheIdealShip;
+namespace TheIdealShip.RPC;
 public static class RPCHelpers
 {
     // public static List<byte> OtherRPCBytes = new List<byte>();
