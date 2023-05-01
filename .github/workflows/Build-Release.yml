@@ -1,10 +1,8 @@
-name: dotnet-build
+name: Build-Release
 
 on:
   pull_request:
     branches: [ "main" ]
-  push:
-    branches: [ "develop" ]
 
 jobs:
   build:
@@ -30,7 +28,7 @@ jobs:
         run: wget https://builds.bepinex.dev/projects/bepinex_be/668/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f.zip
 
       - name: BepInEx
-        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShip/
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShipRelease/
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
@@ -41,13 +39,19 @@ jobs:
         run: dotnet build TheIdealShip/TheIdealShip.csproj --configuration Release
 
       - name: path
-        run: sudo chmod -R 777 ./TheIdealShip
+        run: sudo chmod -R 777 ./TheIdealShipRelease
 
       - name: move
-        run: mv TheIdealShip/bin/Release/net6.0/TheIdealShip.dll ./TheIdealShip/BepInEx/plugins/
+        run: mv TheIdealShip/bin/Release/net6.0/TheIdealShip.dll ./TheIdealShipRelease/BepInEx/plugins/
 
       - name: upload TheIdealShip.dll
         uses: actions/upload-artifact@v3
         with:
           name: TheIdealShip
+          path: ./TheIdealShipRelease
+
+      - name: upload TheIdealShipReleaseCode
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheIdealShipCode
           path: ./TheIdealShip
