@@ -1,5 +1,3 @@
-global using RoleBase = TheIdealShip.Roles.RoleBase;
-
 using System.Collections.Generic;
 namespace TheIdealShip.Roles;
 
@@ -13,9 +11,6 @@ public class RoleBase
     public bool CanVent { get; }
     public bool HasTask { get; }
 
-    public List<CustomButton> Buttons = new List<CustomButton>();
-    public List<CustomOption> Options = new List<CustomOption>();
-
     public RoleBase(string role, RoleId roleId)
     {
         RoleName = role;
@@ -24,11 +19,10 @@ public class RoleBase
         CanVent = false;
         HasTask = true;
 
-        Buttons = null;
-        Options = null;
-
         RoleBaseS.Add(this);
     }
+
+    public virtual void OptionLoad(){}
 }
 
 public static class RoleBaseVoid
