@@ -8,7 +8,7 @@ public class Postman : RoleBase
     {
     }
 
-    public override void OptionLoad()
+    public void OptionLoad()
     {
     }
 }
