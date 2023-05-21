@@ -49,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: TheIdealShip_${{ steps.info.outputs.sha_short }}.dll
-          path: TheIdealShip/bin/Release/net6.0/TheIdealShip.dll
+          path: TheIdealShip/bin/Debug/net6.0/TheIdealShip.dll
