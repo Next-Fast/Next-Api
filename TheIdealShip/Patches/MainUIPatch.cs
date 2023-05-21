@@ -11,15 +11,10 @@ namespace TheIdealShip.Patches
         public static GameObject DiscordButton;
         public static GameObject kookButton;
         public static GameObject UpdateButton;
-//        public static bool isCN;
 
         [HarmonyPatch(typeof(MainMenuManager),nameof(MainMenuManager.Start)),HarmonyPrefix]
         public static void Start_Prefix(MainMenuManager __instance)
         {
-            /*
-            var langid = AmongUs.Data.Legacy.LegacySaveManager.lastLanguage;
-            isCN = langid == 13 || langid == 14;
-            */
             // 将玩法说明改为Github
             var howtoplayButton = GameObject.Find("HowToPlayButton");
             if (howtoplayButton != null)
@@ -105,6 +100,12 @@ namespace TheIdealShip.Patches
             UpdatePassiveButton.OnMouseOut.AddListener((Action)(() => UpdateButtonSprite.color = UpdateText.color = UpdateColor));
             UpdateButtonSprite.color = UpdateText.color = UpdateColor;
             UpdateButton.SetActive(ModUpdater.HUpdate);
+        }
+
+        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+        public static void Start_Postfix(MainMenuManager __instance)
+        {
+
         }
     }
 }

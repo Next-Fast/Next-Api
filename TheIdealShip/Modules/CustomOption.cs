@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using BepInEx.Configuration;
-using TheIdealShip.Utilities;
 using UnityEngine;
 using Hazel;
 using HarmonyLib;
 using System.Text;
-using System.Reflection;
 using System.Linq;
+using TheIdealShip.RPC;
+using TheIdealShip.Utilities;
 using static TheIdealShip.Languages.Language;
-using static TheIdealShip.Helpers;
+using static TheIdealShip.Helper.Helpers;
 
 namespace TheIdealShip.Modules
 {

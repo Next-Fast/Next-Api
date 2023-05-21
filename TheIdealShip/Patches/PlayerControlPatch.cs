@@ -1,12 +1,11 @@
-using System;
 using HarmonyLib;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
 using TMPro;
 using UnityEngine;
 using AmongUs.GameOptions;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TheIdealShip.Patches
 {

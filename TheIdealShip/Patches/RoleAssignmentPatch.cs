@@ -6,7 +6,7 @@ using HarmonyLib;
 using AmongUs.GameOptions;
 using Hazel;
 using TheIdealShip.Utilities;
-using static RoleManager;
+using TheIdealShip.RPC;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Role;
 

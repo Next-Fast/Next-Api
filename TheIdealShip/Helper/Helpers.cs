@@ -1,3 +1,5 @@
+global using TheIdealShip.Helper;
+
 using System;
 using System.IO;
 using System.Reflection;
@@ -10,7 +12,7 @@ using System.Linq.Expressions;
 using TheIdealShip.Roles;
 using static TheIdealShip.Languages.Language;
 
-namespace TheIdealShip
+namespace TheIdealShip.Helper
 {
     public static class Helpers
     {
@@ -206,7 +208,7 @@ namespace TheIdealShip
 
 
             if (currentPhysicsAnim == playerPhysics.Animations.group.RunAnim) clip = nextSkin.RunAnim;
-            else if (currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim) clip = nextSkin.SpawnAnim;
+            else if (currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim ) clip = nextSkin.SpawnAnim;
             else if (currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
             else if (currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
             else if (currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim) clip = nextSkin.IdleAnim;

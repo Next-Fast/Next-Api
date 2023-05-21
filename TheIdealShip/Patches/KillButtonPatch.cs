@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using TheIdealShip.Roles;
+using TheIdealShip.RPC;
 
 namespace TheIdealShip.Patches
 {

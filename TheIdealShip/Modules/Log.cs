@@ -12,8 +12,15 @@ namespace TheIdealShip.Modules
                 System.Console.OutputEncoding = System.Text.Encoding.UTF8;
             }
         }
+
+        public static bool closeLog = false;
         private static void SendToFile(string tag, string filename,string text, LogLevel level = LogLevel.Info)
         {
+            if(closeLog){
+                #if Release
+                return;
+                #endif
+            }
             var logger = TheIdealShipPlugin.Logger;
             string t = DateTime.Now.ToString("HH:mm:ss");
             string log_text = $"[{t}]";

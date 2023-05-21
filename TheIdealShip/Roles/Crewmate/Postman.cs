@@ -1,9 +1,14 @@
-﻿namespace TheIdealShip.Roles;
+﻿using System.Collections.Generic;
 
-/* public class Postman : RoleBase
+namespace TheIdealShip.Roles;
+
+public class Postman : RoleBase
 {
     public Postman() : base("Postman", RoleId.Postman)
     {
-        can
     }
-} */
+
+    public void OptionLoad()
+    {
+    }
+}

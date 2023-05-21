@@ -1,0 +1,52 @@
+name: Build-debug
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.cache/bepinex
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Collect build info
+        id: info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let shortHash = "";
+            await exec.exec("git", ["rev-parse", "--short", "HEAD"],
+            {
+              listeners:
+              {
+                stdout: d => shortHash += d.toString().trim(),
+              }
+            });
+            core.setOutput("sha_short", shortHash);
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+
+      - name: build
+        run: dotnet build TheIdealShip/TheIdealShip.csproj
+
+      - name: upload TheIdealShip.dll
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheIdealShip_${{ steps.info.outputs.sha_short }}.dll
+          path: TheIdealShip/bin/Debug/net6.0/TheIdealShip.dll

@@ -7,7 +7,7 @@ using static TheIdealShip.Roles.Role;
 using System.Text.RegularExpressions;
 using TheIdealShip.Patches;
 
-namespace TheIdealShip
+namespace TheIdealShip.RPC
 {
     enum CustomRPC
     {

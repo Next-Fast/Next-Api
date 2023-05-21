@@ -1,9 +1,7 @@
-using System.Security.Cryptography;
-using System;
 using HarmonyLib;
-using System.Linq;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
+using TheIdealShip.RPC;
 
 namespace TheIdealShip.Modules
 {

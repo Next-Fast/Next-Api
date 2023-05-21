@@ -11,7 +11,10 @@ using System;
 using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
+using System.Reflection;
 
+[assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
+[assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 namespace TheIdealShip
 {
     [BepInPlugin(Id, ModName, VersionString)]
@@ -69,14 +72,14 @@ namespace TheIdealShip
             IsDev = false;
             #endif
 
-/*          uint langId = AmongUs.Data.Legacy.LegacySaveManager.LastLanguage;
-            isChinese = (langId == 13 || langId == 14);
- */
+            /* uint langId = AmongUs.Data.Legacy.LegacySaveManager.LastLanguage;
+            isChinese = (langId == 13 || langId == 14); */
+
             var CountryName = RegionInfo.CurrentRegion.EnglishName;
             isCn = CountryName.Contains("China");//|| CountryName.Contains("Hong Kong") || CountryName.Contains("Taiwan");
 
             Info($"IsDev:{IsDev.ToString()}", "Const");
-/*          Info($"LanguageId:{langId.ToString()}", "Const"); */
+            /* Info($"LanguageId:{langId.ToString()}", "Const"); */
             Info($"CountryName:{CountryName} | {RegionInfo.CurrentRegion.DisplayName}", "Const");
             Info($"isCn:{isCn.ToString()}", "Const");
             Info($"IsChinese:{isChinese.ToString()}", "Const");

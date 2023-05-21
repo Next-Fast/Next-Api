@@ -23,6 +23,7 @@
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.668" Private="false" ExcludeAssets="runtime;native" />
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.3.28" PrivateAssets="all" />
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime" />
+        <PackageReference Include="GitInfo" Version="2.3.0" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(TheIdealShipLast)' != ''">

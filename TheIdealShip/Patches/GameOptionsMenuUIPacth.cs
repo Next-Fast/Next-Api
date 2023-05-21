@@ -1,4 +1,4 @@
-/* using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace TheIdealShip.Patches;
 [HarmonyPatch]
 public static class GameOptionsMenuUIPacth
 {
-    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start)), HarmonyPostfix]
+/*     [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start)), HarmonyPostfix]
     public static void Start_Postfix()
     {
         var ChatAndSettingsButtonBackground = GameObject.Find("ChatAndSettingsButtonBackground");
@@ -41,7 +41,7 @@ public static class GameOptionsMenuUIPacth
         )
         {
             var GameSettings = GameObject.Find(gs);
-            if (GameSettings != null) GameSettings.transform.position = new Vector3(GameSettings.transform.position.x, 1.4f, GameSettings.transform.position.z);
+            if (GameSettings != null) GameSettings.transform.position = new Vector3(GameSettings.transform.position.x, 0.5f, GameSettings.transform.position.z);
         }
 
         var Panel = GameObject.Find("Game Settings/BackPanel");
@@ -66,12 +66,11 @@ public static class GameOptionsMenuUIPacth
                 //     Optionobject.gameObject.GetComponent<SpriteRenderer>().sprite = null;
             }
         }
-    }
+    } */
 
-    [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start)), HarmonyPostfix]
-    public static void setting_Postfix()
+/*     [HarmonyPatch(typeof(GameSettingMenu), nameof(GameSettingMenu.Start)), HarmonyPostfix]
+    public static void setting_Postfix(GameSettingMenu __instance)
     {
-        var GameSettings = GameObject.Find("Game Settings");
-        if (GameSettings != null) GameSettings.transform.position = new Vector3(GameSettings.transform.position.x, 1.4f, GameSettings.transform.position.z);
-    }
-} */
+        __instance.transform.localPosition = new Vector3(__instance..transform.localPosition.x, 0.5f, __instance.transform.localPosition.z);
+    } */
+}

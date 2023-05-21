@@ -1,0 +1,63 @@
+name: Build-Release
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.nuget/packages
+            ~/.cache/bepinex
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install wget
+        run: sudo apt install wget
+
+      - name: download BepInEx
+        run: wget https://builds.bepinex.dev/projects/bepinex_be/668/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f.zip
+
+      - name: BepInEx
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShipRelease/
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+
+      - name: build
+        run: dotnet build TheIdealShip/TheIdealShip.csproj --configuration Release
+
+      - name: path
+        run: sudo chmod -R 777 ./TheIdealShipRelease
+
+      - name: upload TheIdealShip
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheIdealShip
+          path: TheIdealShip/bin/Release/net6.0/TheIdealShip.dll
+
+      - name: move
+        run: mv TheIdealShip/bin/Release/net6.0/TheIdealShip.dll ./TheIdealShipRelease/BepInEx/plugins/
+
+      - name: upload TheIdealShip
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheIdealShip
+          path: ./TheIdealShipRelease
+
+      - name: upload TheIdealShipReleaseCode
+        uses: actions/upload-artifact@v3
+        with:
+          name: TheIdealShipCode
+          path: ./TheIdealShip
