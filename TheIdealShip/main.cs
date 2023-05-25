@@ -12,6 +12,7 @@ using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
 using System.Reflection;
+using TheIdealShip.Modules.Manager;
 
 [assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 [assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
@@ -56,15 +57,18 @@ namespace TheIdealShip
             Instance = this;
             Harmony.PatchAll();
 
-            Modules.log.ConsoleTextFC();
             constInit();
 
             CustomOptionHolder.Load();
             RoleInfo.Init();
-
+            FilesManager.Init();
 
             Language.Init();
             LanguagePack.Init();
+
+#if DEBUG
+            Modules.log.ConsoleTextFC();
+#endif
         }
 
 

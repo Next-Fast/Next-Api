@@ -8,6 +8,7 @@ using System.Text.Encodings.Web;
 using csv = TheIdealShip.Languages.LanguageCSV;
 using System.Reflection;
 using System.IO;
+using TheIdealShip.Modules.Manager;
 
 namespace TheIdealShip.Languages
 {
@@ -88,11 +89,7 @@ namespace TheIdealShip.Languages
         // 创建文件夹
         private static void CTT()
         {
-            if (!Directory.Exists(FPath))
-            {
-                Msg("不存在Language文件夹,创建文件夹", "Language Pack");
-                Directory.CreateDirectory(FPath);
-            }
+            FilesManager.CreateDirectory(FPath);
             if (!(Directory.GetDirectories(FPath).Length > 0 || Directory.GetFiles(FPath).Length > 0) || !File.Exists(LPath) || !File.Exists(PPath))
             {
                 CreateTT();
