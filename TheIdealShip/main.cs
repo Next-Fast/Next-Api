@@ -41,6 +41,8 @@ namespace TheIdealShip
         public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
         // bilibili链接
         public const string bilibiliURL = "https://space.bilibili.com/394107547";
+        // Gitee链接
+        public const string GiteeURL = "https://gitee.com/mc-huier-sgss/TheIdealShip";
         public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public Harmony Harmony { get; } = new Harmony(Id);

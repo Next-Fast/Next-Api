@@ -9,12 +9,14 @@ namespace TheIdealShip.Modules
         // HUdate=HasUpdate 判断是否有更新
         public static bool HUpdate;
         // 模组下载链接
-        public static string ModDownloadURL = "";
+        public const string ModDownloadURL = "";
+        // 构建件存放
+        public const string nightlyURL ="https://nightly.link/TheIdealShipAU/TheIdealShip/workflows/Build-Release/main";
+        static string GithubURL = TheIdealShipPlugin.GithubURL;
+        static string GiteeURL = TheIdealShipPlugin.GiteeURL;
         public static async void ap()
         {
             var http = new HttpClient();
-            string GithubURL = TheIdealShipPlugin.GithubURL;
-            string GiteeURL = "https://gitee.com/mc-huier-sgss/TheIdealShip";
             var langid = AmongUs.Data.Legacy.LegacySaveManager.lastLanguage;
             string UpdateURL = TheIdealShipPlugin.isCn ? GiteeURL : GithubURL;
             string apiURL = UpdateURL.Replace("https://", "https://api.");
