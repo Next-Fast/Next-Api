@@ -11,6 +11,8 @@ namespace TheIdealShip.Patches
     [HarmonyPatch]
     public class AnnouncementPatch
     {
+
+        // https://github.com/Dolly1016/Nebula/blob/master/Nebula/Module/ModUpdater.cs
         public static List<Announcement> modUpdateAn;
         [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements)), HarmonyPrefix]
         public static bool SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] Il2CppReferenceArray<Announcement> aRange)
