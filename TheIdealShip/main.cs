@@ -72,6 +72,7 @@ namespace TheIdealShip
             IsDev = false;
             #endif
 
+
             /* uint langId = AmongUs.Data.Legacy.LegacySaveManager.LastLanguage;
             isChinese = (langId == 13 || langId == 14); */
 

@@ -44,7 +44,7 @@ jobs:
       - name: upload TheIdealShip
         uses: actions/upload-artifact@v3
         with:
-          name: TheIdealShip
+          name: TheIdealShip.dll
           path: TheIdealShip/bin/Release/net6.0/TheIdealShip.dll
 
       - name: move
