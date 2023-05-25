@@ -82,7 +82,7 @@ namespace TheIdealShip
             PlayerOption = CustomOption.Create(14, Types.General, "PlayerOption", false, null, true);
             disableHauntMenu = CustomOption.Create(13, Types.General, "disableHauntMenu", false, PlayerOption);
             PlayerGhostSpeed = CustomOption.Create(15, Types.General, "PlayerGhostSpeed", 3f, 1f, 10f, 0.5f, PlayerOption);
-            disableServerKickPlayer = CustomOption.Create(18, Types.General, "DisableServerKickPlayer", false, null, true);
+/*             disableServerKickPlayer = CustomOption.Create(18, Types.General, "DisableServerKickPlayer", false, null, true); */
 
             Jester.OptionLoad();
             Illusory.OptionLoad();
