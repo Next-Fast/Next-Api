@@ -1,18 +1,19 @@
 global using static TheIdealShip.Modules.log;
 global using Main = TheIdealShip.TheIdealShipPlugin;
 
+using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Globalization;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Reactor;
-using System;
 using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
-using System.Reflection;
 using TheIdealShip.Modules.Manager;
+using TheIdealShip.Patches;
 
 [assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 [assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
@@ -42,6 +43,8 @@ namespace TheIdealShip
         public const string GithubURL = "https://github.com/TheIdealShipAU/TheIdealShip";
         // bilibili链接
         public const string bilibiliURL = "https://space.bilibili.com/394107547";
+        public const string QQURL = "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OqTfMLjm7lMD5OMV68Rs9JLnbcXc-fDR&authKey=8tt0sNVVsfsGvOBFLNmtDA8CD7fweh%2Bbe1%2FMq2j62zGNWJ17Q%2FNXfG4c7r6JlN1S&noverify=0&group_code=815101721";
+        public const string QQNumber = "815101721";
         // Gitee链接
         public const string GiteeURL = "https://gitee.com/mc-huier-sgss/TheIdealShip";
         public static Version Version = Version.Parse(VersionString);
@@ -62,6 +65,7 @@ namespace TheIdealShip
             CustomOptionHolder.Load();
             RoleInfo.Init();
             FilesManager.Init();
+            RegionMenuOpenPatch.autoAddServer();
 
             Language.Init();
             LanguagePack.Init();
