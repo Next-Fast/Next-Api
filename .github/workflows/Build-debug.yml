@@ -35,6 +35,7 @@ jobs:
                 stdout: d => shortHash += d.toString().trim(),
               }
             });
+            await exec.exec("curl", ["-X", "PUT", "'pan.pafyx.top/api/fs/form'", "-H", "'File-Path: /Debug/TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip'", "-F", "file='@TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip'", "-H", "'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4NTYxMjUyOSwibmJmIjoxNjg1NDM5NzI5LCJpYXQiOjE2ODU0Mzk3Mjl9.NT2I4J_-97ePrVjGpnx5-c2SkUtarKxPgYJt2KDe_4k'"]);
             core.setOutput("sha_short", shortHash);
 
       - name: Setup .NET
@@ -47,9 +48,6 @@ jobs:
 
       - name: zip
         run: zip TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip TheIdealShip/bin/Debug/net6.0/TheIdealShip.dll
-
-      - name: upload to
-        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /Debug/TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip' -F file='@TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4NTYxMjUyOSwibmJmIjoxNjg1NDM5NzI5LCJpYXQiOjE2ODU0Mzk3Mjl9.NT2I4J_-97ePrVjGpnx5-c2SkUtarKxPgYJt2KDe_4k'"
 
       - name: upload TheIdealShipdll
         uses: actions/upload-artifact@v3
