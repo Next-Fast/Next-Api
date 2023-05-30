@@ -22,17 +22,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.x
-
-      - name: build
-        run: dotnet build TheIdealShip/TheIdealShip.csproj
-
-      - name: zip
-        run: zip TheIdealShip.zip TheIdealShip/bin/Debug/net6.0/TheIdealShip.dll
-
       - name: Collect build info
         id: info
         uses: actions/github-script@v6
@@ -46,10 +35,17 @@ jobs:
                 stdout: d => shortHash += d.toString().trim(),
               }
             });
-            await exec.exec("curl", ["-X", "PUT", "'pan.pafyx.top/api/fs/form'", "-H", "'File-Path: /Debug/TheIdealShip_${{ steps.info.outputs.sha_short }}.dll.zip'", "-F", "file='@TheIdealShip.zip'", "-H", "'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4NTYxMjUyOSwibmJmIjoxNjg1NDM5NzI5LCJpYXQiOjE2ODU0Mzk3Mjl9.NT2I4J_-97ePrVjGpnx5-c2SkUtarKxPgYJt2KDe_4k'"]);
             core.setOutput("sha_short", shortHash);
 
-      - name: upload TheIdealShipdll
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.x
+
+      - name: build
+        run: dotnet build TheIdealShip/TheIdealShip.csproj
+
+      - name: upload TheIdealShip.dll
         uses: actions/upload-artifact@v3
         with:
           name: TheIdealShip_${{ steps.info.outputs.sha_short }}.dll
