@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ServerAdd
+namespace TheIdealShip.Patches
 {
     [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.Open))]
     public static class RegionMenuOpenPatch
