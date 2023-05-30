@@ -127,12 +127,8 @@ namespace TheIdealShip.Patches
         private static void assignRoles()
         {
             var data = GetRoleAssignmentData();
-           // assignSpecialRoles(data); // Assign special roles like mafia and lovers first as they assign a role to multiple players and the chances are independent of the ticket system
-           // selectFactionForFactionIndependentRoles(data);
             assignEnsuredRoles(data); // Assign roles that should always be in the game next
-           // assignDependentRoles(data); // Assign roles that may have a dependent role
             assignChanceRoles(data); // Assign roles that may or may not be in the game last
-           // assignRoleTargets(data); // Assign targets for Lawyer & Prosecutor
             assignModifiers(); // Assign modifier
             setRolesAgain();
         }

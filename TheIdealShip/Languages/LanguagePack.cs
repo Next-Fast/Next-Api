@@ -39,7 +39,7 @@ namespace TheIdealShip.Languages
             languageName = name;
             Info("Language:" + name, "Language Pack");
         }
-        // 获取语言数字
+        // 语言转序号
         public static int GetLangInt()
         {
             var lang = AmongUs.Data.DataManager.Settings.language.CurrentLanguage;
@@ -64,7 +64,7 @@ namespace TheIdealShip.Languages
                 _ => 0,
             };
         }
-
+        // 序号转语言英文名
         public static string GetLname(int id) => id switch
         {
             0 => "English",
@@ -82,7 +82,7 @@ namespace TheIdealShip.Languages
             12 => "Spanish",
             13 => "SChinese",
             14 => "TChinese",
-            15 => "Irish", 
+            15 => "Irish",
             _ => "",
         };
 
@@ -166,14 +166,6 @@ namespace TheIdealShip.Languages
             catch (Exception)
             {
                 return false;
-            }
-        }
-
-        public bool deserialize(Stream stream)
-        {
-            using (StreamReader sr = new StreamReader(stream, Encoding.GetEncoding("utf-8")))
-            {
-                return deserialize(sr);
             }
         }
 
