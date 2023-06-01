@@ -1,3 +1,5 @@
+using System;
+using TheIdealShip.Utils;
 namespace TheIdealShip.Updates;
 
 public static class VersionManager
@@ -19,6 +21,9 @@ public static class VersionManager
     private static string KApi_addCheckVersion(this string URL) => URL +  "/checkVersion";
     private static string KApi_addGetInfo(this string URL) => URL + "/getExample";
 
+    public static Version lastVersion;
+    public static Version NowVersion;
+
     public static void VersionCheck()
     {
         
@@ -39,6 +44,7 @@ public static class VersionManager
     // 使用2018k.cn检测更新
     public static bool KVersionCheck(string URL)
     {
+        log.Msg("", MethodUtils.GetClassName());
         return false;
     }
 }
