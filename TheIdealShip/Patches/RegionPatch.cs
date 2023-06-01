@@ -82,7 +82,7 @@ namespace TheIdealShip.Patches
             {
                 createHttp("au-sh.pafyx.top", "梦服上海(新)", 22000, false),
                 createHttp("au-as.duikbo.at", "Modded Asia (MAS)", 443, true),
-                createHttp("aumods.one", "Modded NA (MNA)", 443, true),
+                createHttp("www.aumods.xyz", "Modded NA (MNA)", 443, true),
                 createHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true),
             };
 
@@ -108,12 +108,19 @@ namespace TheIdealShip.Patches
     public static class Menu
     {
         private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+
         [HarmonyPatch(typeof(RegionMenu), nameof(RegionMenu.OnEnable)), HarmonyPrefix]
         public static bool RegionMenuOnEnablePatch(RegionMenu __instance)
         {
             if (serverManager.AvailableRegions.Count <= 3) return true;
-            CreateServerOption(__instance);
+            CreateRegionMenu(__instance);
             return false;
+        }
+
+        private static void CreateRegionMenu(RegionMenu __instance)
+        {
+            CreateServerOption(__instance);
+            ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.defaultButtonSelected, __instance.controllerSelectable, false);
         }
 
         private static void CreateServerOption(RegionMenu __instance)
@@ -170,13 +177,11 @@ namespace TheIdealShip.Patches
             {
                 __instance.defaultButtonSelected = __instance.controllerSelectable[0];
             }
-            ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.defaultButtonSelected, __instance.controllerSelectable, false);
         }
 
         public static void shuaXing(RegionMenu __instance)
         {
             __instance.ButtonPool.ReclaimAll();
-            ControllerManager.Instance.CloseOverlayMenu(__instance.name);
             CreateServerOption(__instance);
         }
     }
