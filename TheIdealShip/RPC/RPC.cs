@@ -3,7 +3,7 @@ using Hazel;
 using TheIdealShip.HistoryManager;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
-using static TheIdealShip.Roles.Role;
+using static TheIdealShip.Roles.Core.Role;
 using System.Text.RegularExpressions;
 using TheIdealShip.Patches;
 
@@ -131,8 +131,8 @@ namespace TheIdealShip.RPC
         public static void ChangeRole(byte playerId, byte targetRoleId)
         {
             var player = Helpers.GetPlayerForId(playerId);
-            var info = RoleHelpers.GetRoleInfo(player);
-            RestoreRole((byte)info.roleId);
+/*             var info = RoleHelpers.GetRoleInfo(player);
+            RestoreRole((byte)info.roleId); */
             setRole(targetRoleId, playerId);
         }
 
@@ -144,10 +144,10 @@ namespace TheIdealShip.RPC
             }
         }
 
-        public static void HistorySynchronization(byte playerid, int number, byte role , byte team)
+/*         public static void HistorySynchronization(byte playerid, int number, byte role , byte team)
         {
             HistoryInfoManager.Add(Helpers.GetPlayerForId(playerid), (RoleInfo.RoleTeam)team, (RoleId)role, true,number);
-        }
+        } */
 
         public static void Camouflager()
         {
@@ -167,10 +167,10 @@ namespace TheIdealShip.RPC
             }
         }
 
-        public static void SchrodingerSCatTeamChange(byte team)
+/*         public static void SchrodingerSCatTeamChange(byte team)
         {
             SchrodingersCat.team = (RoleInfo.RoleTeam)team;
-        }
+        } */
 
         public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
         {

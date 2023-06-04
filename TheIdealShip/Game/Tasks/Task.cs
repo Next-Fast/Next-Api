@@ -2,7 +2,7 @@ using System;
 using HarmonyLib;
 using TheIdealShip.Utilities;
 
-namespace TheIdealShip
+namespace TheIdealShip.Game.Tasks
 {
     [HarmonyPatch]
     public static class TasksHandler

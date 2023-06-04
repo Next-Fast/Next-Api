@@ -10,7 +10,7 @@ namespace TheIdealShip;
 [HarmonyPatch(typeof(TaskPanelBehaviour), nameof(TaskPanelBehaviour.SetTaskText))]
 class TaskPanelBehaviourPatch
 {
-    public static void Postfix(TaskPanelBehaviour __instance)
+/*     public static void Postfix(TaskPanelBehaviour __instance)
     {
         var LPlayer = CachedPlayer.LocalPlayer.PlayerControl;
         var roleInfo = RoleHelpers.GetRoleInfo(LPlayer, false);
@@ -20,5 +20,5 @@ class TaskPanelBehaviourPatch
         if (roleInfo != null) roleText = Helpers.cs(roleInfo.color, GetString("Roles") + ":" + RoleHelpers.GetRolesString(LPlayer, false) + "\n" + roleInfo.TaskText + "\n");
         if (modifierInfo != null) modifierText = Helpers.cs(modifierInfo.color, GetString("Modifiers") + ":" + RoleHelpers.GetRolesString(LPlayer, false, true) + "\n" + (modifierInfo.roleId == RoleId.Lover && RoleHelpers.getLover2() != null ? string.Format(modifierInfo.TaskText, RoleHelpers.getLover2().name) : modifierInfo.TaskText) + "\n");
         __instance.taskText.text = roleText + modifierText + "\n" + __instance.taskText.text;
-    }
+    } */
 }

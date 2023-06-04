@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static TheIdealShip.Roles.RoleInfo;
 
 namespace TheIdealShip.Roles;
 public class SchrodingersCat

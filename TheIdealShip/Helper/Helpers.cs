@@ -176,12 +176,12 @@ namespace TheIdealShip.Helper
             return null;
         }
 
-        public static RoleInfo GetPlayerInfoForExile(this GameData.PlayerInfo exile)
+/*         public static RoleInfo GetPlayerInfoForExile(this GameData.PlayerInfo exile)
         {
             var p = GetPlayerForId(exile.PlayerId);
             var info = RoleHelpers.GetRoleInfo(p);
             return info;
-        }
+        } */
 
         public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile)
         {

@@ -4,21 +4,8 @@ using UnityEngine;
 
 namespace TheIdealShip.Roles
 {
-    public class RoleInfo
+   /*  public class RoleInfo
     {
-        public enum RoleType
-        {
-            Crewmate,
-            Impostor,
-            Neutral,
-            Modifier,
-        }
-        public enum RoleTeam
-        {
-            Crewmate,
-            Impostor,
-            Neutral
-        }
         public RoleType type;
         public RoleTeam team;
         public Color color;
@@ -56,11 +43,11 @@ namespace TheIdealShip.Roles
             this.namekey = name;
             this.roleId = roleId;
             this.type = type;
-            if (type != RoleType.Modifier)
+            if (type != RoleType.ModifierRole)
             {
                 switch (type)
                 {
-                    case RoleType.Crewmate:
+                    case RoleTeamTypes.Crewmate:
                         team = RoleTeam.Crewmate;
                         break;
 
@@ -163,5 +150,5 @@ namespace TheIdealShip.Roles
             }
             return infos;
         }
-    }
+    } */
 }

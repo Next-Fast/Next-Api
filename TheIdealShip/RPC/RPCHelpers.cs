@@ -185,9 +185,9 @@ public static class RPCHelpers
                 RPCProcedure.RestorePlayerLook();
                 break;
 
-            case (byte)CustomRPC.HistorySynchronization:
+/*             case (byte)CustomRPC.HistorySynchronization:
                 RPCProcedure.HistorySynchronization(reader.ReadByte(), reader.ReadInt32(), reader.ReadByte(), reader.ReadByte());
-                break;
+                break; */
 
             case (byte)CustomRPC.ChangeRole :
                 RPCProcedure.ChangeRole(reader.ReadByte(), reader.ReadByte());
@@ -201,10 +201,10 @@ public static class RPCHelpers
                 RPCProcedure.Illusory();
                 break;
 
-            case (byte)CustomRPC.SchrodingerSCatTeamChange:
+/*             case (byte)CustomRPC.SchrodingerSCatTeamChange:
                 RPCProcedure.SchrodingerSCatTeamChange(reader.ReadByte());
                 break;
-
+ */
 /*             case (byte)CustomRPC.LoverSendChat:
                 PlayerControl sendChatPlayer = Helpers.GetPlayerForId(reader.ReadByte());
                 string ChatText = reader.ReadString();

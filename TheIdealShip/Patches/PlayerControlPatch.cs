@@ -126,16 +126,16 @@ namespace TheIdealShip.Patches
                         meetingInfo.gameObject.name = "Info";
                     }
 
-                    string roleNames = RoleHelpers.GetRolesString(p, true);
-                    string modifierName = RoleHelpers.GetRolesString(p, true, true);
+/*                     string roleNames = RoleHelpers.GetRolesString(p, true);
+                    string modifierName = RoleHelpers.GetRolesString(p, true, true); */
 
                     string playerInfoText = "";
                     string meetingInfoText = "";
-                    if (p == CachedPlayer.LocalPlayer.PlayerControl || p.isDummy)
+/*                     if (p == CachedPlayer.LocalPlayer.PlayerControl || p.isDummy)
                     {
                         playerInfoText = $"{roleNames}";
                         meetingInfoText = $"{roleNames}\n{modifierName}".Trim();
-                    }
+                    } */
 
                     playerInfo.text = playerInfoText;
                     playerInfo.gameObject.SetActive(p.Visible);

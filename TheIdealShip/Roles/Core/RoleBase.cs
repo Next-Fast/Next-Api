@@ -1,21 +1,20 @@
 global using TheIdealShip.Roles.Core;
 
+using System;
+
+
 namespace TheIdealShip.Roles.Core;
 
-public class RoleBase
+public class RoleBase : IDisposable
 {
-    public string RoleName { get; }
-    public RoleId roleid { get; }
-    public RoleInfo info { get; }
+    public PlayerControl Player { get; private set; }
+    public SimpleRoleInfo SimpleRoleInfo { get; }
     public bool CanKill { get; }
     public bool CanVent { get; }
     public bool HasTask { get; }
 
     public RoleBase(string role, RoleId roleId)
     {
-        RoleName = role;
-        roleid = roleId;
-        info = null;
         CanKill = false;
         CanVent = false;
         HasTask = true;
@@ -24,5 +23,12 @@ public class RoleBase
 
     }
 
-/*     public virtual void OptionLoad(){} */
+    public void Dispose()
+    {
+        OnDestroy();
+        Player = null;
+    }
+
+    public virtual void OnDestroy()
+    { }
 }

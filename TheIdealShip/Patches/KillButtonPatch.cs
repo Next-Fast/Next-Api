@@ -19,13 +19,13 @@ namespace TheIdealShip.Patches
                     if (target == Lover.lover2) { Lover.lover1.Suicide(); }
                 }
 
-                if (SchrodingersCat.schrodingersCat != null && target == SchrodingersCat.schrodingersCat)
+/*                 if (SchrodingersCat.schrodingersCat != null && target == SchrodingersCat.schrodingersCat)
                 {
                     RoleInfo.RoleTeam STeam = RoleHelpers.GetRoleInfo(__instance).team;
                     RPCHelpers.Create((byte)CustomRPC.SchrodingerSCatTeamChange, bytes: new []{ (byte)STeam });
                     return false;
                 }
-
+ */
                 return true;
             }
         }

@@ -1,9 +1,10 @@
 global using TheIdealShip.Modules;
+global using Role = TheIdealShip.Roles.Core.Role;
 using HarmonyLib;
 using System;
 
 
-namespace TheIdealShip.Roles
+namespace TheIdealShip.Roles.Core
 {
     [HarmonyPatch]
     public class Role
@@ -24,6 +25,7 @@ namespace TheIdealShip.Roles
             Flash.clearAndReload();
         }
     }
+
     public enum RoleId
     {
         // Crewmate 船员
@@ -44,5 +46,18 @@ namespace TheIdealShip.Roles
         Flash,
         Lover
 
+    }
+
+    public enum RoleType
+    {
+        MainRole,
+        ModifierRole,
+        NotRole
+    }
+    public enum RoleTeam
+    {
+        Crewmate,
+        Impostor,
+        Neutral
     }
 }

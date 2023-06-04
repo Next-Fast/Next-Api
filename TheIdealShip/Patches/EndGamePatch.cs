@@ -39,7 +39,7 @@ namespace TheIdealShip.Patches
         internal class PlayerRoleInfo
         {
             public string PlayerName { get; set; }
-            public List<RoleInfo> Roles { get; set; }
+/*             public List<RoleInfo> Roles { get; set; } */
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public bool IsGuesser { get; set; }
@@ -82,8 +82,8 @@ namespace TheIdealShip.Patches
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             }
-            if (TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Impostor) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data));
-            if (!TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Crewmate) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data));
+/*             if (TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Impostor) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data));
+            if (!TempData.winners[0].IsImpostor && SchrodingersCat.team == RoleInfo.RoleTeam.Crewmate) TempData.winners.Add(new WinningPlayerData(SchrodingersCat.schrodingersCat.Data)); */
         }
     }
 

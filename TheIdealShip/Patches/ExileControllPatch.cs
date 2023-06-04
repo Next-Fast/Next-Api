@@ -8,12 +8,12 @@ namespace TheIdealShip.Patches
     [HarmonyPatch(typeof(ExileController),nameof(ExileController.Begin))]
     class ExileControllerBeginPatch
     {
-        public static void Postfix(ExileController __instance, [HarmonyArgument(0)] ref GameData.PlayerInfo exiled, [HarmonyArgument(1)] bool tie)
+/*         public static void Postfix(ExileController __instance, [HarmonyArgument(0)] ref GameData.PlayerInfo exiled, [HarmonyArgument(1)] bool tie)
         {
             if (exiled != null)
             {
                 var player = exiled.GetPlayerForExile();
-                var info = RoleHelpers.GetRoleInfo(player);
+/*                 var info = RoleHelpers.GetRoleInfo(player);
                 var eText = "\n" + string.Format(GetString("exileText"),exiled.PlayerName,info.name);
                 if (CustomOptionHolder.showExilePlayerConcreteRoleTeam.getBool())
                 {
@@ -35,7 +35,7 @@ namespace TheIdealShip.Patches
                     }
                 }
             }
-        }
+        } */
     }
 
     [HarmonyPatch]
@@ -48,10 +48,10 @@ namespace TheIdealShip.Patches
             {
                 if (__instance.exiled != null)
                 {
-                    if(__instance.exiled.GetPlayerForExile().Is(RoleId.Jester))
+/*                     if(__instance.exiled.GetPlayerForExile().Is(RoleId.Jester))
                     {
                         Jester.triggerJesterWin = true;
-                    }
+                    } */
                 }
 
                 CustomButton.MeetingEndedUpdate();
