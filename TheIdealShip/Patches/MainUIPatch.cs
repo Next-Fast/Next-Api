@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TheIdealShip.Patches
 {
-    [HarmonyPatch]
+/*     [HarmonyPatch]
     public static class MainUIPatch
     {
         public static GameObject Template;
@@ -80,7 +80,7 @@ namespace TheIdealShip.Patches
                 __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => kookText.SetText("QQ频道"))));
                 kookButtonSprite.color = kookText.color = kookColor;
                 kookButton.gameObject.SetActive(true);
-            } */
+            }
 
             // 生成Update按钮
             if (UpdateButton == null) UpdateButton = UnityEngine.Object.Instantiate(Template,Template.transform.parent);
@@ -107,5 +107,5 @@ namespace TheIdealShip.Patches
         {
 
         }
-    }
+    } */
 }
