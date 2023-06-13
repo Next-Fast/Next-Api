@@ -13,8 +13,8 @@ namespace TheIdealShip.Patches
             string statusText = "";
 
             var player = CachedPlayer.LocalPlayer.PlayerControl;
-            var info = RoleHelpers.GetRoleInfo(player);
-            var id = info.roleId;
+/*             var info = RoleHelpers.GetRoleInfo(player); */
+/*             var id = info.roleId;
 
             if (id == RoleId.Jester)
             {
@@ -23,7 +23,7 @@ namespace TheIdealShip.Patches
                 {
                     statusText = "小丑达咩拍灯";
                 }
-            }
+            } */
 
             if (!roleCanCallEmergency)
             {

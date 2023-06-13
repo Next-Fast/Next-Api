@@ -8,7 +8,7 @@ using Hazel;
 using TheIdealShip.Utilities;
 using TheIdealShip.RPC;
 using TheIdealShip.Roles;
-using static TheIdealShip.Roles.Role;
+using static TheIdealShip.Roles.Core.Role;
 
 namespace TheIdealShip.Patches
 {
@@ -393,7 +393,7 @@ namespace TheIdealShip.Patches
             byte playerId;
 
             List<PlayerControl> crewPlayer = new List<PlayerControl>(playerList);
-            crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || RoleInfo.getRoleInfoForPlayer(x).Any(r => r.type == RoleInfo.RoleType.Neutral));
+           /*  crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || RoleInfo.getRoleInfoForPlayer(x).Any(r => r.type == RoleInfo.RoleType.Neutral)); */
 
             foreach (RoleId modifier in modifiers)
             {

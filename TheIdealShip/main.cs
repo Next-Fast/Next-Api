@@ -63,7 +63,7 @@ namespace TheIdealShip
             constInit();
 
             CustomOptionHolder.Load();
-            RoleInfo.Init();
+/*             RoleInfo.Init(); */
             FilesManager.Init();
             RegionMenuOpenPatch.autoAddServer();
 

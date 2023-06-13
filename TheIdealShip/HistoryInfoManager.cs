@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
 using TheIdealShip.RPC;
-using static TheIdealShip.Roles.RoleInfo;
+/* using static TheIdealShip.Roles.RoleInfo; */
 
 namespace TheIdealShip.HistoryManager;
 
@@ -44,11 +44,11 @@ public class TeamHistoryManager
    public static RoleTeam OldTeam;
    public static RoleTeam NewTeam;
 
-   public static void Start()
+/*    public static void Start()
    {
       OldTeam = RoleHelpers.GetRoleInfo(CachedPlayer.LocalPlayer.PlayerControl).team;
       NewTeam = OldTeam;
-   }
+   } */
 
    public static void Update()
    {
@@ -64,11 +64,11 @@ public class RoleHistoryManager
    public static RoleId OldRole;
    public static RoleId NewRole;
 
-   public static void Start()
+/*    public static void Start()
    {
       OldRole = RoleHelpers.GetRoleInfo(CachedPlayer.LocalPlayer.PlayerControl).roleId;
       NewRole = OldRole;
-   }
+   } */
 
    public static void Update()
    {

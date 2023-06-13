@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TheIdealShip.Utilities;
 
-namespace TheIdealShip.Modules
-{
+namespace TheIdealShip.Modules;
     public class CustomButton
     {
         public static List<CustomButton> buttons = new List<CustomButton>();
@@ -28,7 +27,7 @@ namespace TheIdealShip.Modules
         public SpriteRenderer actionButtonRenderer;
         public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
-        public Roles.RoleId roleId;
+        public RoleId roleId;
         public bool isEffectActive = false;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
 
@@ -42,7 +41,7 @@ namespace TheIdealShip.Modules
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
-            Roles.RoleId roleId,
+            RoleId roleId,
             bool HasEffect,
             float EffectDuration,
             Action OnEffectEnds
@@ -82,7 +81,7 @@ namespace TheIdealShip.Modules
             Vector3 PositionOffset,
             HudManager hudManager,
             KeyCode? hotkey,
-            Roles.RoleId roleId
+            RoleId roleId
         )
         : this
         (
@@ -283,4 +282,3 @@ namespace TheIdealShip.Modules
             if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) onClickEvent();
         }
     }
-}

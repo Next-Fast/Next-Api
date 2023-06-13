@@ -30,8 +30,8 @@ namespace TheIdealShip.Patches
         static void SetNameColors()
         {
             var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-            var localRoleInfo = RoleHelpers.GetRoleInfo(localPlayer, false);
-            setPlayerNameColor(localPlayer, localRoleInfo.color);
+/*             var localRoleInfo = RoleHelpers.GetRoleInfo(localPlayer, false); */
+/*             setPlayerNameColor(localPlayer, localRoleInfo.color); */
         }
         static void updateVentButton(HudManager __instance)
         {

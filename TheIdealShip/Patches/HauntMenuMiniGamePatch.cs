@@ -60,7 +60,7 @@ namespace TheIdealShip.Patches
     [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
     public static class HauntMenuMinigameSetFilterTextPatch
     {
-        public static bool Prefix(HauntMenuMinigame __instance)
+/*         public static bool Prefix(HauntMenuMinigame __instance)
         {
             if (GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek) return true;
             var roleText = RoleHelpers.GetRoleInfo(__instance.HauntTarget,false).name;
@@ -70,6 +70,6 @@ namespace TheIdealShip.Patches
             if (modifierText != null) FilterText += ("\n" + modifierText);
             __instance.FilterText.text = FilterText;
             return false;
-        }
+        } */
     }
 }

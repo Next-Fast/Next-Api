@@ -23,7 +23,7 @@ namespace TheIdealShip.Modules
                 {
                     switch (args[0])
                     {
-                        case "/role":
+/*                         case "/role":
                             foreach (var n in CachedPlayer.AllPlayers)
                             {
                                 foreach (var rn in RoleInfo.allRoleInfos)
@@ -41,7 +41,7 @@ namespace TheIdealShip.Modules
                                     }
                                 }
                             }
-                            break;
+                            break; */
                         case "/isD":
                             if (args[1] == "true")
                             {
