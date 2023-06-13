@@ -1,5 +1,8 @@
+using System.Text;
 using System;
 using LogLevel = BepInEx.Logging.LogLevel;
+using TheIdealShip.Modules.Manager;
+using System.IO;
 
 namespace TheIdealShip.Modules
 {
@@ -14,6 +17,7 @@ namespace TheIdealShip.Modules
         }
 
         public static bool closeLog = false;
+        public static StringBuilder stringB = new StringBuilder();
         private static void SendToFile(string tag, string filename,string text, LogLevel level = LogLevel.Info)
         {
             if(closeLog){
@@ -21,6 +25,7 @@ namespace TheIdealShip.Modules
                 return;
                 #endif
             }
+
             var logger = TheIdealShipPlugin.Logger;
             string t = DateTime.Now.ToString("HH:mm:ss");
             string log_text = $"[{t}]";
@@ -55,7 +60,17 @@ namespace TheIdealShip.Modules
                     logger.LogInfo(log_text);
                     break;
             }
+
+            stringB.AppendLine($"[{level.ToString()}]:{log_text}");
         }
+
+        public static void OutputTISLog()
+        {
+            FilesManager.CreateDirectory(FilesManager.TIS_DataPath + "/log");
+            File.WriteAllText(FilesManager.TIS_DataPath + $"/log/TISLog_{DateTime.Now.ToString()}.txt", stringB.ToString());
+            log.Msg("输出日志成功", "LogOutToData","Log");
+        }
+
         /*
             各消息作用:
 
@@ -77,6 +92,7 @@ namespace TheIdealShip.Modules
             可能只有开发人员感兴趣的消息 : A message that would likely only interest a developer
             Debug,
         */
+
         public static void Info(string text, string tag = null, string filename = null) =>
             SendToFile(tag, filename, text, LogLevel.Info);
         public static void Warn(string text, string tag = null, string filename = null) =>
