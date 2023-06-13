@@ -200,7 +200,7 @@ namespace TheIdealShip.Helper
             target.RawSetVisor(visorId, colorId);
             target.RawSetName(playerName);
 
-            SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(skinId).viewData.viewData;
+            SkinViewData nextSkin = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(skinId).CreateAddressableAsset().GetAsset();
             PlayerPhysics playerPhysics = target.MyPhysics;
             AnimationClip clip = null;
             var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
@@ -222,7 +222,7 @@ namespace TheIdealShip.Helper
             spriteAnim.m_animator.Update(0f);
 
             if (target.cosmetics.currentPet) UnityEngine.Object.Destroy(target.cosmetics.currentPet.gameObject);
-            target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(FastDestroyableSingleton<HatManager>.Instance.GetPetById(petId).viewData.viewData);
+            target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(FastDestroyableSingleton<HatManager>.Instance.GetPetById(petId).CreateAddressableAsset().GetAsset());
             target.cosmetics.currentPet.transform.position = target.transform.position;
             target.cosmetics.currentPet.Source = target;
             target.cosmetics.currentPet.Visible = target.Visible;

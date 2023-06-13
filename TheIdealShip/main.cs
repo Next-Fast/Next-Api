@@ -8,8 +8,8 @@ using System.Globalization;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Reactor;
-using Reactor.Networking.Attributes;
+/* using Reactor;
+using Reactor.Networking.Attributes; */
 using TheIdealShip.Languages;
 using TheIdealShip.Roles;
 using TheIdealShip.Modules.Manager;
@@ -21,8 +21,8 @@ namespace TheIdealShip
 {
     [BepInPlugin(Id, ModName, VersionString)]
     [BepInProcess("Among Us.exe")]
-    [BepInDependency(ReactorPlugin.Id)]
-    [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
+/*     [BepInDependency(ReactorPlugin.Id)]
+    [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)] */
     public class TheIdealShipPlugin : BasePlugin
     {
         // Among Us游玩版本
