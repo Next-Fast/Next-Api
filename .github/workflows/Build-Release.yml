@@ -57,7 +57,7 @@ jobs:
         run: zip TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip TheIdealShip/bin/Release/net6.0/TheIdealShip.dll
 
       - name: upload dll to alist
-        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4NTYxMjUyOSwibmJmIjoxNjg1NDM5NzI5LCJpYXQiOjE2ODU0Mzk3Mjl9.NT2I4J_-97ePrVjGpnx5-c2SkUtarKxPgYJt2KDe_4k'"
+        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4Njg3NjM3MCwibmJmIjoxNjg2NzAzNTcwLCJpYXQiOjE2ODY3MDM1NzB9.m_u9uKnoFDTo9f0c6Ida3iostaJs2Vc2g0myHoqiY_k'"
 
       - name: upload TheIdealShip
         uses: actions/upload-artifact@v3
@@ -72,7 +72,7 @@ jobs:
         run: zip TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip ./TheIdealShipRelease
 
       - name: upload dll to alist
-        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4NTYxMjUyOSwibmJmIjoxNjg1NDM5NzI5LCJpYXQiOjE2ODU0Mzk3Mjl9.NT2I4J_-97ePrVjGpnx5-c2SkUtarKxPgYJt2KDe_4k'"
+        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4Njg3NjM3MCwibmJmIjoxNjg2NzAzNTcwLCJpYXQiOjE2ODY3MDM1NzB9.m_u9uKnoFDTo9f0c6Ida3iostaJs2Vc2g0myHoqiY_k'"
 
       - name: upload TheIdealShip
         uses: actions/upload-artifact@v3
