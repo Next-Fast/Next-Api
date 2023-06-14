@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace TheIdealShip.Patches
 {
-    [HarmonyPatch]
+/*     [HarmonyPatch]
     public static class CredentialsPatch
     {
         public static string Credentials =
@@ -77,7 +77,7 @@ namespace TheIdealShip.Patches
                 if (CustomOptionHolder.noGameEnd.getBool())
                 {
                     text += "\n" + GetString("NoGameEnd").ToColorString(colo);
-                } */
+                }
                 __instance.text.text = text + __instance.text.text;
             }
         }
@@ -100,5 +100,5 @@ namespace TheIdealShip.Patches
                 renderer.sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Banner.png", 300f);
             }
         }
-    }
+    } */
 }
