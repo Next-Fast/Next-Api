@@ -37,10 +37,10 @@ jobs:
         run: sudo apt install wget
 
       - name: download BepInEx
-        run: wget https://builds.bepinex.dev/projects/bepinex_be/668/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f.zip
+        run: wget https://builds.bepinex.dev/projects/bepinex_be/669/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.669%2Bc36d9c4.zip
 
       - name: BepInEx
-        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShipRelease/
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.669+c36d9c4.zip -d ./TheIdealShipRelease/
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
