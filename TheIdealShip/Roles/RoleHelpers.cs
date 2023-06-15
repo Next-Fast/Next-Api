@@ -84,15 +84,17 @@ namespace TheIdealShip
             return (player.Is(Lover.lover1) || player.Is(Lover.lover2));
         }
 
-/*         public static bool IsSurvival(this PlayerControl player)
-        {
-            return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
-        } */
+        /*         public static bool IsSurvival(this PlayerControl player)
+                {
+                    return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
+                } */
 
         public static void Suicide(this PlayerControl player)
         {
             player.MurderPlayer(player);
         }
+
+        static PlayerControl player1;
 
         public static bool RoleIsH(this PlayerControl player)
         {

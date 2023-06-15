@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace TheIdealShip.Patches
 {
-/*     [HarmonyPatch]
+    [HarmonyPatch]
     public static class CredentialsPatch
     {
         public static string Credentials =
@@ -21,23 +21,17 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
         {
-            private static StringBuilder StringB = new();
+            private static string stringText;
             static void Postfix(VersionShower __instance)
             {
-                StringB.Append(__instance.text);
+                stringText = __instance.text.text;
                 #if DEBUG
-                StringB.AppendLine(Helpers.ToColorString($"{ThisAssembly.Git.Branch}\n{ThisAssembly.Git.Commit}", System.Drawing.Color.Orange));
+                stringText += " " + $"{ThisAssembly.Git.Branch} {ThisAssembly.Git.Commit}";
                 #endif
-                var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
-                if (amongUsLogo == null) return;
 
-                var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
-                credentials.transform.position = new Vector3(0, 0, 0);
-                credentials.SetText($"v{TheIdealShipPlugin.Version.ToString()}\n{GetString("Credential")}<size=30f%>");
-                credentials.alignment = TMPro.TextAlignmentOptions.Center;
-                credentials.fontSize *= 0.75f;
+                stringText += "" + $"作者:天寸梦初  ver{Main.AmongUsVersion}";
 
-                credentials.transform.SetParent(amongUsLogo.transform);
+                __instance.text.text = stringText;
             }
         }
 
@@ -67,16 +61,14 @@ namespace TheIdealShip.Patches
             {
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
                 string text = Credentials;
-/*
+
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     __instance.text.text = $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{TheIdealShipPlugin.Version.ToString()}\n"+ __instance.text.text;
                 }
-*/
-/*
                 if (CustomOptionHolder.noGameEnd.getBool())
                 {
-                    text += "\n" + GetString("NoGameEnd").ToColorString(colo);
+                    text += "\n" + GetString("NoGameEnd");
                 }
                 __instance.text.text = text + __instance.text.text;
             }
@@ -85,20 +77,14 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(MainMenuManager),nameof(MainMenuManager.Start))]
         public static class LogoPatch
         {
-                static void Postfix(PingTracker __instance)
-                {
-                var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
-                if (amongUsLogo != null)
-                {
-                    amongUsLogo.transform.localScale *= 0.6f;
-                    amongUsLogo.transform.position += Vector3.up* 0.25f;
-                }
-
+            public static void Postfix(PingTracker __instance)
+            {
                 var Logo = new GameObject("bannerLogo_TheIdealShip");
-                Logo.transform.position = Vector3.up;
+                Logo.transform.position = new Vector3(2f, -0.2f, 0);
+                Logo.transform.localScale = new Vector3(1.1f, 1.5f, 1);
                 var renderer = Logo.AddComponent<SpriteRenderer>();
                 renderer.sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Banner.png", 300f);
             }
         }
-    } */
+    }
 }

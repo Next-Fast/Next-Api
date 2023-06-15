@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace TheIdealShip.Patches
 {
-/*     [HarmonyPatch]
+    [HarmonyPatch]
     public static class MainUIPatch
     {
-        public static GameObject Template;
+/*         public static GameObject Template;
         public static GameObject DiscordButton;
         public static GameObject kookButton;
         public static GameObject UpdateButton;
@@ -106,6 +106,12 @@ namespace TheIdealShip.Patches
         public static void Start_Postfix(MainMenuManager __instance)
         {
 
+        } */
+
+        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
+        public static void MainMenuManagerStart_PostfixPatch(MainMenuManager __instance)
+        {
+            AccountManager._instance.accountTab.gameObject.SetActive(false);
         }
-    } */
+    }
 }
