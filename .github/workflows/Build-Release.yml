@@ -37,10 +37,16 @@ jobs:
         run: sudo apt install wget
 
       - name: download BepInEx
-        run: wget https://builds.bepinex.dev/projects/bepinex_be/669/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.669%2Bc36d9c4.zip
+        run: wget https://builds.bepinex.dev/projects/bepinex_be/670/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.670%2B42a6727.zip
 
       - name: BepInEx
-        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.669+c36d9c4.zip -d ./TheIdealShipRelease/
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.670+42a6727.zip -d ./TheIdealShipRelease/
+
+      - name: download reactor
+        run: wget https://github.com/NuclearPowered/Reactor/suites/13640078343/artifacts/752800405
+
+      - name: unzip reactor
+        run: unzip Reactor.dll.zip -d ./TheIdealShipRelease/BepInEx/plugins/
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
