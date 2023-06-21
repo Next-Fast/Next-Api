@@ -101,7 +101,7 @@ namespace TheIdealShip.Languages
             {
                 res = $"*{str}";
             }
-            
+
             return res;
         }
     }
