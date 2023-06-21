@@ -6,9 +6,8 @@ using System.Text.Json;
 using System.Text.Unicode;
 using System.Text.Encodings.Web;
 using csv = TheIdealShip.Languages.LanguageCSV;
-using System.Reflection;
 using System.IO;
-using TheIdealShip.Modules.Manager;
+using TheIdealShip.Manager;
 
 namespace TheIdealShip.Languages
 {

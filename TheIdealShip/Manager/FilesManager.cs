@@ -1,6 +1,7 @@
 using System.IO;
 using static TheIdealShip.Utils.TextUtils;
-namespace TheIdealShip.Modules.Manager;
+
+namespace TheIdealShip.Manager;
 
 public class FilesManager
 {

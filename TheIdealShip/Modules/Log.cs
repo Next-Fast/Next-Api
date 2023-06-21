@@ -1,8 +1,8 @@
 using System.Text;
 using System;
 using LogLevel = BepInEx.Logging.LogLevel;
-using TheIdealShip.Modules.Manager;
 using System.IO;
+using TheIdealShip.Manager;
 
 namespace TheIdealShip.Modules
 {

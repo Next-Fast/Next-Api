@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using UnityEngine;
+using Reactor;
 
 namespace TheIdealShip.Patches
 {
@@ -112,6 +113,12 @@ namespace TheIdealShip.Patches
         public static void MainMenuManagerStart_PostfixPatch(MainMenuManager __instance)
         {
             AccountManager._instance.accountTab.gameObject.SetActive(false);
+        }
+
+        [HarmonyPatch(typeof(Reactor.Patches.ReactorVersionShower), nameof(Reactor.Patches.ReactorVersionShower.UpdateText)), HarmonyPrefix]
+        public static bool ReactorVersionShower_PrefixPatch(VersionShower __instacne)
+        {
+            return false;
         }
     }
 }

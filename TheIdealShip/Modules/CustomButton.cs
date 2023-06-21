@@ -25,11 +25,9 @@ namespace TheIdealShip.Modules;
         public Action OnEffectEnds;
         public GameObject actionButtonGameObject;
         public SpriteRenderer actionButtonRenderer;
-        public Material actionButtonMat;
         public TextMeshPro actionButtonLabelText;
         public RoleId roleId;
         public bool isEffectActive = false;
-        private static readonly int Desat = Shader.PropertyToID("_Desat");
 
         public CustomButton
         (
@@ -63,7 +61,6 @@ namespace TheIdealShip.Modules;
             actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             actionButtonGameObject = actionButton.gameObject;
             actionButtonRenderer = actionButton.graphic;
-            actionButtonMat = actionButtonRenderer.material;
             actionButtonLabelText = actionButton.buttonLabelText;
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();

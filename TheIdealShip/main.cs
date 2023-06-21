@@ -8,12 +8,9 @@ using System.Globalization;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Reactor;
-using Reactor.Networking.Attributes;
 using TheIdealShip.Languages;
-using TheIdealShip.Roles;
-using TheIdealShip.Modules.Manager;
 using TheIdealShip.Patches;
+using TheIdealShip.Manager;
 
 [assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 [assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
@@ -21,8 +18,6 @@ namespace TheIdealShip
 {
     [BepInPlugin(Id, ModName, VersionString)]
     [BepInProcess("Among Us.exe")]
-    [BepInDependency(ReactorPlugin.Id)]
-    [ReactorModFlags(Reactor.Networking.ModFlags.RequireOnAllClients)]
     public class TheIdealShipPlugin : BasePlugin
     {
         // Among Us游玩版本
@@ -60,6 +55,10 @@ namespace TheIdealShip
             Instance = this;
             Harmony.PatchAll();
 
+#if DEBUG
+            Modules.log.ConsoleTextFC();
+#endif
+
             constInit();
 
             CustomOptionHolder.Load();
@@ -69,10 +68,6 @@ namespace TheIdealShip
 
             Language.Init();
             LanguagePack.Init();
-
-#if DEBUG
-            Modules.log.ConsoleTextFC();
-#endif
         }
 
 

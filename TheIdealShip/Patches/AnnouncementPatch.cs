@@ -7,6 +7,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using TheIdealShip.Modules;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace TheIdealShip.Patches
 {
@@ -17,23 +18,14 @@ namespace TheIdealShip.Patches
         // https://github.com/Dolly1016/Nebula/blob/master/Nebula/Module/ModUpdater.cs
         public static List<Announcement> modUpdateAn;
         [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements)), HarmonyPrefix]
-        public static bool SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] Il2CppReferenceArray<Announcement> aRange)
+        public static void SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] ref Il2CppReferenceArray<Announcement> aRange)
         {
-            if (!ModUpdater.HUpdate) return true;
-
-            List<Announcement> list = new();
-            foreach (var a in aRange) list.Add(a);
-            if (modUpdateAn != null) foreach (var a in modUpdateAn) list.Add(a);
-
-            __instance.allAnnouncements = new Il2CppSystem.Collections.Generic.List<Announcement>();
-            foreach (var a in list) __instance.allAnnouncements.Add(a);
+            List<Announcement> list = new(aRange.ToList());
+            if (modUpdateAn != null)
+                list.AddRange(modUpdateAn);
 
             list.Sort((a1 , a2) => AnCompare(a1, a2));
-
-            __instance.HandleChange();
-            __instance.OnAddAnnouncement?.Invoke();
-
-            return false;
+            aRange = list.ToArray();
         }
 
         public static void AddAnnouncement(Announcement an)
