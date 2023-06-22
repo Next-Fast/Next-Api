@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using TheIdealShip.Roles;
 using Innersloth.Assets;
 using static TheIdealShip.Languages.Language;
+using TheIdealShip.Utils;
 
 namespace TheIdealShip.Helper
 {
@@ -67,6 +68,23 @@ namespace TheIdealShip.Helper
                     ImageConversion.LoadImage(texture, byteTexture, false);
                     return texture;
                 }
+            }
+            catch
+            {
+                Warn("加载图片失败路径:" + path, filename: "Helpers");
+            }
+            return null;
+        }
+
+        public static Sprite LoadSpriteFromDisk(String path, float pixelsPerUnit)
+        {
+            try
+            {
+                if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+                Texture2D texture = LoadTextureFromDisk(path);
+                sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+                sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+                return CachedSprites[path + pixelsPerUnit] = sprite;
             }
             catch
             {
@@ -201,23 +219,20 @@ namespace TheIdealShip.Helper
             target.RawSetVisor(visorId, colorId);
             target.RawSetName(playerName);
 
-            SkinViewData nextSkin;
-            AddressableAsset<SkinViewData> SkinViewData = FastDestroyableSingleton<HatManager>.Instance.GetSkinById(skinId).CreateAddressableAsset();
-            SkinViewData.LoadAsync();
-            nextSkin = SkinViewData.GetAsset();
+            SkinViewData nextSkin = skinId.GetSkinViewDataById();
 
             PlayerPhysics playerPhysics = target.MyPhysics;
             AnimationClip clip = null;
             var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
             var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
 
+            var group = playerPhysics.Animations.group;
+            if (currentPhysicsAnim == group.RunAnim) clip = nextSkin.RunAnim;
+            if (currentPhysicsAnim == group.SpawnAnim ) clip = nextSkin.SpawnAnim;
+            if (currentPhysicsAnim == group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
+            if (currentPhysicsAnim == group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
+            if (currentPhysicsAnim == group.IdleAnim) clip = nextSkin.IdleAnim;
 
-            if (currentPhysicsAnim == playerPhysics.Animations.group.RunAnim) clip = nextSkin.RunAnim;
-            else if (currentPhysicsAnim == playerPhysics.Animations.group.SpawnAnim ) clip = nextSkin.SpawnAnim;
-            else if (currentPhysicsAnim == playerPhysics.Animations.group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
-            else if (currentPhysicsAnim == playerPhysics.Animations.group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
-            else if (currentPhysicsAnim == playerPhysics.Animations.group.IdleAnim) clip = nextSkin.IdleAnim;
-            else clip = nextSkin.IdleAnim;
             float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             playerPhysics.myPlayer.cosmetics.skin.skin = nextSkin;
             playerPhysics.myPlayer.cosmetics.skin.UpdateMaterial();
@@ -227,9 +242,7 @@ namespace TheIdealShip.Helper
             spriteAnim.m_animator.Update(0f);
 
             if (target.cosmetics.currentPet) UnityEngine.Object.Destroy(target.cosmetics.currentPet.gameObject);
-            AddressableAsset<PetBehaviour> petViewData = FastDestroyableSingleton<HatManager>.Instance.GetPetById(petId).CreateAddressableAsset();
-            petViewData.LoadAsync();
-            target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(petViewData.GetAsset());
+            target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(petId.GetPetBehaviourById());
             target.cosmetics.currentPet.transform.position = target.transform.position;
             target.cosmetics.currentPet.Source = target;
             target.cosmetics.currentPet.Visible = target.Visible;
