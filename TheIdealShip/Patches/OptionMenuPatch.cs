@@ -38,8 +38,10 @@ namespace TheIdealShip.Patches
                     }
                 }
 
-                DownloadS.transform.GetChild(0).GetComponent<TextTranslatorTMP>().enabled = false;
+                DownloadS.DestroyTranslator();
                 DownloadS.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "下载源";
+                var Dropdown1 = DownloadS.AddComponent<Dropdown>();
+/*                 Dropdown1.image.sprite  */
                 DownloadS.SetActive(TISTabContent.active);
             }
 

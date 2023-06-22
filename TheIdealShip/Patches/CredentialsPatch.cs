@@ -73,18 +73,5 @@ namespace TheIdealShip.Patches
                 __instance.text.text = text + __instance.text.text;
             }
         }
-
-        [HarmonyPatch(typeof(MainMenuManager),nameof(MainMenuManager.Start))]
-        public static class LogoPatch
-        {
-            public static void Postfix(PingTracker __instance)
-            {
-                var Logo = new GameObject("bannerLogo_TheIdealShip");
-                Logo.transform.position = new Vector3(2f, -0.2f, 0);
-                Logo.transform.localScale = new Vector3(1.1f, 1.5f, 1);
-                var renderer = Logo.AddComponent<SpriteRenderer>();
-                renderer.sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Banner.png", 300f);
-            }
-        }
     }
 }
