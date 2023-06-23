@@ -1,6 +1,5 @@
 using System;
 using Hazel;
-using TheIdealShip.HistoryManager;
 using TheIdealShip.Utilities;
 using TheIdealShip.Roles;
 using static TheIdealShip.Roles.Core.Role;
@@ -62,7 +61,7 @@ namespace TheIdealShip.RPC
 
         public static void setRole(byte roleId, byte playerId)
         {
-            var player = Helpers.GetPlayerForId(playerId);
+            var player = PlayerUtils.GetPlayerForId(playerId);
             switch ((RoleId)roleId)
             {
                 case RoleId.Sheriff:
@@ -87,7 +86,7 @@ namespace TheIdealShip.RPC
 
         public static void setModifier(byte modifierId, byte playerId, byte flag)
         {
-            var player = Helpers.GetPlayerForId(playerId);
+            var player = PlayerUtils.GetPlayerForId(playerId);
             switch ((RoleId)modifierId)
             {
                 case RoleId.Flash:
@@ -102,13 +101,13 @@ namespace TheIdealShip.RPC
 
         public static void setDead(byte id, bool isDead)
         {
-            var player = Helpers.GetPlayerForId(id);
+            var player = PlayerUtils.GetPlayerForId(id);
             player.Data.IsDead = isDead;
         }
 
         public static void SheriffKill(byte targetId)
         {
-            var player = Helpers.GetPlayerForId(targetId);
+            var player = PlayerUtils.GetPlayerForId(targetId);
             Sheriff.sheriff.MurderPlayer(player);
         }
 
@@ -130,9 +129,7 @@ namespace TheIdealShip.RPC
 
         public static void ChangeRole(byte playerId, byte targetRoleId)
         {
-            var player = Helpers.GetPlayerForId(playerId);
-/*             var info = RoleHelpers.GetRoleInfo(player);
-            RestoreRole((byte)info.roleId); */
+            var player = PlayerUtils.GetPlayerForId(playerId);
             setRole(targetRoleId, playerId);
         }
 
@@ -143,11 +140,6 @@ namespace TheIdealShip.RPC
                 player.PlayerControl.setDefaultLook();
             }
         }
-
-/*         public static void HistorySynchronization(byte playerid, int number, byte role , byte team)
-        {
-            HistoryInfoManager.Add(Helpers.GetPlayerForId(playerid), (RoleInfo.RoleTeam)team, (RoleId)role, true,number);
-        } */
 
         public static void Camouflager()
         {
@@ -166,11 +158,6 @@ namespace TheIdealShip.RPC
                 CachedPlayer.AllPlayers[i].PlayerControl.setLook(rndPlayer.Data.PlayerName, rndPlayer.Data.DefaultOutfit.ColorId, rndPlayer.Data.DefaultOutfit.HatId, rndPlayer.Data.DefaultOutfit.VisorId, rndPlayer.Data.DefaultOutfit.SkinId, rndPlayer.Data.DefaultOutfit.PetId);
             }
         }
-
-/*         public static void SchrodingerSCatTeamChange(byte team)
-        {
-            SchrodingersCat.team = (RoleInfo.RoleTeam)team;
-        } */
 
         public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
         {

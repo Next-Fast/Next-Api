@@ -12,7 +12,7 @@ namespace TheIdealShip.Roles
         public static Sprite getButtonSprite()
         {
             if (ButtonSprite) return ButtonSprite;
-            ButtonSprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Illusory.png", 115f);
+            ButtonSprite = SpriteUtils.LoadSpriteFromResources("TheIdealShip.Resources.Illusory.png", 115f);
             return ButtonSprite;
         }
 

@@ -1,5 +1,6 @@
 global using static TheIdealShip.Modules.log;
 global using Main = TheIdealShip.TheIdealShipPlugin;
+global using TheIdealShip.Utils;
 
 using System;
 using System.Reflection;

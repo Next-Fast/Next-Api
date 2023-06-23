@@ -13,7 +13,7 @@ namespace TheIdealShip
        // public static string[] modeset = new string[]{"Classic","FreePlay"};
         public static string cs(Color c, string s)
         {
-            var Cs = Helpers.cs(c,s);
+            var Cs = TextUtils.cs(c,s);
             return Cs;
         }
         public static Color GeneralColor = new Color(204f / 255f, 204f / 255f, 0, 1f);

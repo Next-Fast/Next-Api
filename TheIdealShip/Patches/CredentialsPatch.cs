@@ -45,7 +45,7 @@ namespace TheIdealShip.Patches
                 {
                     modstamp.layer = UnityEngine.LayerMask.NameToLayer("UI");
                     var rend = modstamp.AddComponent<SpriteRenderer>();
-                    rend.sprite = Helpers.getModStamp();
+                    rend.sprite = SpriteUtils.getModStamp();
                     rend.color = new UnityEngine.Color(1, 1, 1, 0.5f);
                     modstamp.transform.localScale *= 0.6f;
                     float offset = (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started) ? 0.75f : 0f;

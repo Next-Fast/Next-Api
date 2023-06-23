@@ -39,7 +39,7 @@ namespace TheIdealShip.Patches
             TIS_Logo_SpriteRenderer = TIS_Logo.AddComponent<SpriteRenderer>();
 
             Au_Logo_Sprite = Au_Logo_SpriteRenderer.sprite;
-            TIS_Logo_Sprite = Helpers.LoadSpriteFromResources("TheIdealShip.Resources.Banner.png", 300f);
+            TIS_Logo_Sprite = SpriteUtils.LoadSpriteFromResources("TheIdealShip.Resources.Banner.png", 300f);
 
             BackGround_Video = BackGround.AddComponent<VideoPlayer>();
         }

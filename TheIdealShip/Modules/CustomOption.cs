@@ -9,7 +9,7 @@ using System.Linq;
 using TheIdealShip.RPC;
 using TheIdealShip.Utilities;
 using static TheIdealShip.Languages.Language;
-using static TheIdealShip.Helper.Helpers;
+using static TheIdealShip.Utils.TextUtils;
 
 namespace TheIdealShip.Modules
 {
@@ -341,10 +341,10 @@ namespace TheIdealShip.Modules
                     {
                         StringOption stringOption = UnityEngine.Object.Instantiate(template,menus[(int)option.type]);
                         stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => {});
-                        stringOption.TitleText.text = Helpers.stringOption(option.name);
+                        stringOption.TitleText.text = CustomOption.stringOption(option.name);
 
                         stringOption.Value = stringOption.oldValue = option.selection;
-                        stringOption.ValueText.text = Helpers.stringOption(option.selections[option.selection].ToString());
+                        stringOption.ValueText.text = CustomOption.stringOption(option.selections[option.selection].ToString());
 
                         option.optionBehaviour = stringOption;
                     }
@@ -387,7 +387,7 @@ namespace TheIdealShip.Modules
             private static SpriteRenderer getTabHighlight (GameObject tab,string tabname,string tabSpritePath)
             {
                 var tabHighlight = tab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-                tab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = Helpers.LoadSpriteFromResources(tabSpritePath,100f);
+                tab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = SpriteUtils.LoadSpriteFromResources(tabSpritePath,100f);
                 tab.name = tabname;
                 return tabHighlight;
             }
@@ -569,7 +569,7 @@ namespace TheIdealShip.Modules
 
                         Color c = isIrrelevant ? Color.grey : Color.white;  // No use for now
                         if (isIrrelevant) continue;
-                        str.AppendLine(Helpers.cs(c, $"{tName}: {selStr}"));
+                        str.AppendLine(TextUtils.cs(c, $"{tName}: {selStr}"));
                     }
                     else
                     {
@@ -795,6 +795,34 @@ namespace TheIdealShip.Modules
                 Scroller.Inner = __instance.GameSettings.transform;
                 __instance.GameSettings.transform.SetParent(Scroller.transform);
             }
+        }
+
+        public static string stringOption(string str)
+        {
+            string s = "";
+            if (str.Contains("</color>") && str.Contains("-"))
+            {
+                s = str.Substring(str.IndexOf("-") + 2);
+                s = s.clearColor();
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            if (str.Contains("</color>"))
+            {
+                s = str.clearColor();
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            if (str.Contains("-"))
+            {
+                s = str.Substring(str.IndexOf("-") + 2);
+                s = str.Replace(s, GetString(s));
+            }
+            else
+            {
+                s = GetString(str);
+            }
+            return s;
         }
     }
 }
