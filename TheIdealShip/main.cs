@@ -67,6 +67,8 @@ namespace TheIdealShip
             FilesManager.Init();
             RegionMenuOpenPatch.autoAddServer();
 
+            RegisterManager.Registration(Assembly.GetAssembly(this.GetType()));
+
             Language.Init();
             LanguagePack.Init();
         }
