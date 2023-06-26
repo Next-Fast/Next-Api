@@ -26,7 +26,7 @@ namespace TheIdealShip.Modules
                 #endif
             }
 
-            var logger = TheIdealShipPlugin.Logger;
+            var logger = Main.TISLog;
             string t = DateTime.Now.ToString("HH:mm:ss");
             string log_text = $"[{t}]";
             if (tag != null)

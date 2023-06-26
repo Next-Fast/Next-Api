@@ -54,6 +54,7 @@ namespace TheIdealShip.Roles.Core
         ModifierRole,
         NotRole
     }
+
     public enum RoleTeam
     {
         Crewmate,

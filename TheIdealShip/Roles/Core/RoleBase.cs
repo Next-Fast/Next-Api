@@ -5,23 +5,27 @@ using System;
 
 namespace TheIdealShip.Roles.Core;
 
-public class RoleBase : IDisposable
+public abstract class RoleBase : IDisposable
 {
     public PlayerControl Player { get; private set; }
-    public SimpleRoleInfo SimpleRoleInfo { get; }
+    public SimpleRoleInfo SimpleRoleInfo { get; set;}
     public bool CanKill { get; }
     public bool CanVent { get; }
     public bool HasTask { get; }
 
-    public RoleBase(string role, RoleId roleId)
+    public RoleBase(PlayerControl player)
     {
         CanKill = false;
         CanVent = false;
         HasTask = true;
 
-        RoleManager.RoleBaseS.Add(this);
+        this.Player = player;
+        SimpleRoleInfo.setBase(this);
 
+        RoleManager.AllRoleBase.Add(this);
     }
+
+    public void setInfo(SimpleRoleInfo info) => SimpleRoleInfo = info;
 
     public void Dispose()
     {

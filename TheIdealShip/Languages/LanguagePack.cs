@@ -100,7 +100,7 @@ namespace TheIdealShip.Languages
         private static void CreateTT ()
         {
             var text = "";
-            foreach (var title in csv.tr)
+            foreach (var title in csv.translateMaps)
             {
                 text += '"'+$"{title.Key}"+'"' + " : "+'"'+LanguageCSV.GetCString(title.Key,0)+'"'+"\n";
                 File.WriteAllText(LPath,text);

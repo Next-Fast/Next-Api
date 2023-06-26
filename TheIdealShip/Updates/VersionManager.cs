@@ -6,16 +6,19 @@ public static class VersionManager
 {
     // HUdate=HasUpdate 判断是否有更新
     public static bool HUpdate;
+    // Github链接
+    public const string GithubUrl = "https://github.com/TheIdealShipAU/TheIdealShip";
+    // Gitee链接
+    public const string GiteeUrl = "https://gitee.com/mc-huier-sgss/TheIdealShip";
+    // CDN
+    public const string jsdelivrUrl = "https://cdn.jsdelivr.net/gh/TheIdealShipAU/TheIdealShip";
     // 构建件存放
-    public const string nightlyURL = "https://nightly.link/TheIdealShipAU/TheIdealShip/workflows/Build-Release/main";
+    public const string nightlyUrl = "https://nightly.link/TheIdealShipAU/TheIdealShip/workflows/Build-Release/main";
     // 服务器alist
-    public const string alistURL = "http://pan.pafyx.top/TIS";
+    public const string alistUrl = "http://pan.pafyx.top/TIS";
     // 2018k.cnAPI
-    public const string KApiURL = "http://api.2018k.cn";
+    public const string KApiUrl = "http://api.2018k.cn";
     public const string KApiId = "FC912F87DE524E5393F6F35B66B8ACEB";
-
-    static string GithubURL = TheIdealShipPlugin.GithubURL;
-    static string GiteeURL = TheIdealShipPlugin.GiteeURL;
 
     private static string KApi_addId(this string URL) => URL + "?id=" + KApiId;
     private static string KApi_addCheckVersion(this string URL) => URL +  "/checkVersion";

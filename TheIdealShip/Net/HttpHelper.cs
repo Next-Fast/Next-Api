@@ -1,7 +1,7 @@
 using System.IO;
 using System.Net.Http;
 
-namespace TheIdealShip;
+namespace TheIdealShip.Net;
 
 public class HttpHelper
 {

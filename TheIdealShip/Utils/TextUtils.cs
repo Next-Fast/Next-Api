@@ -26,6 +26,8 @@ public static class TextUtils
         return (byte)(f * 255);
     }
 
+    public static string RemoveBlank(this string s) => s.Replace(" ", "");
+
     public static string clearColor(this string str)
     {
         string s = str.Replace("</color>", "");

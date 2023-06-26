@@ -54,7 +54,7 @@ namespace TheIdealShip.RPC
                 }
                 catch (Exception e)
                 {
-                    TheIdealShipPlugin.Logger.LogError("Error while deserializing roles: " + e.Message);
+                    Error("Error while deserializing roles: " + e.Message);
                 }
             }
         }

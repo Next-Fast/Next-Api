@@ -5,6 +5,7 @@ using System.Reflection;
 using System;
 using UnityEngine;
 using HarmonyLib;
+using TheIdealShip.Modules;
 
 namespace TheIdealShip.Utilities;
 
@@ -84,7 +85,7 @@ public static class CachedPlayerPatches
         {
             if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
             {
-                TheIdealShipPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                log.Error($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
             }
         }
 #endif

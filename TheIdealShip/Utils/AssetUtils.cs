@@ -2,6 +2,7 @@ using System;
 using Innersloth.Assets;
 using TheIdealShip.Utilities;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TheIdealShip.Utils;
 

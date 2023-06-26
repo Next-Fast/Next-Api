@@ -418,7 +418,7 @@ namespace TheIdealShip.Modules
             {
                 if (!(menus.Count == options.Count && options.Count == settings.Count))
                 {
-                    TheIdealShipPlugin.Logger.LogError("List counts are not equal");
+                    Error("List counts are not equal");
                     return;
                 }
                 for (int i = 0; i < menus.Count; i++)
