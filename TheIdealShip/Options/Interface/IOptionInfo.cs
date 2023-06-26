@@ -8,6 +8,7 @@ public interface IOptionInfo
     public string optionName { get; }
     public int optionId { get; }
     public int hierarchy { get; }
-    public IOptionInfo parent { get; }
-    public List<IOptionInfo> children { get; }
+    public OptionInfo parent { get; set; }
+    public List<OptionInfo> children { get; set; }
+    public OptionBase option { get; }
 }
