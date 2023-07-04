@@ -28,38 +28,32 @@ namespace TheIdealShip.Patches
                 TISTabContent.transform.localScale = new Vector3(1f, 1f, 1f);
             }
 
-            /*if (DownloadS == null)
+            if (DownloadS == null)
             {
-
-                DownloadS = new GameObject(nameof(DownloadS));
-                DownloadS.transform.SetParent(TISTabContent.transform);
-                Il2CppInterop.Runtime.Injection.ClassInjector.RegisterTypeInIl2Cpp<Dropdown>();
-                var dr = DownloadS.AddComponent<Dropdown>();
-
-                Sprite sprite = tabs[0].transform.FindChild("Background").GetComponent<SpriteRenderer>().sprite;
-                Il2CppSystem.Collections.Generic.List<Dropdown.OptionData> optionDatas = new();
-                List<string> OptionText = new();
-                VersionManager.URLs.Do(n => OptionText.Add(n.Item2));
-                OptionText.Add("Auto");
-                foreach (var text in OptionText)
+                for (var i = 0; i < tabs[2].Content.transform.childCount; i++)
                 {
-                    Dropdown.OptionData optionData = new();
-                    optionData.text = text;
-                    optionDatas.Add(optionData);
+                    if (tabs[2].Content.transform.GetChild(i).name == "Languages" && tabs[2].Content.transform.GetChild(i).transform.GetChild(0).name == "TitleText_TMP")
+                    {
+                        DownloadS = GameObject.Instantiate(tabs[2].Content.transform.GetChild(i).gameObject, TISTabContent.transform);
+                    }
                 }
 
-                dr.ClearOptions();
-                dr.AddOptions(optionDatas);
-            }*/
+                DownloadS.DestroyTranslator();
+                DownloadS.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = "下载源";
+                var Dropdown1 = DownloadS.AddComponent<Dropdown>();
+/*                 Dropdown1.image.sprite  */
+                DownloadS.SetActive(TISTabContent.active);
+            }
 
             if (TISTabButton == null)
             {
                 TISTabButton = GameObject.Instantiate(tabs[0],tabs[0].transform.parent);
                 TISTabButton.name = "TheIdealShipTab";
                 TISTabButton.Content = TISTabContent;
+//                TISTabButton.Content = null;
                 TISTabButton.transform.localPosition += new Vector3(4f,0,0);
                 var text = TISTabButton.transform.FindChild("Text_TMP").gameObject;
-                text.DestroyTranslator();
+                text.GetComponent<TextTranslatorTMP>().enabled = false;
                 text.GetComponent<TMPro.TMP_Text>().text = "TIS";
                 PassiveButton passiveButton = TISTabButton.GetComponent<PassiveButton>();
                 passiveButton.OnClick = new Button.ButtonClickedEvent();
@@ -87,13 +81,6 @@ namespace TheIdealShip.Patches
                 tabs[i].transform.localScale = new Vector3(0.9f, 1, 1);
             }
             __instance.Tabs = new Il2CppReferenceArray<TabGroup>(tabs.ToArray());
-        }
-
-        [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update)), HarmonyPostfix]
-        public static void UpdatePatch()
-        {
-            DownloadS.active = true;
-            DownloadS.GetComponent<Dropdown>().Show();
         }
     }
 }
