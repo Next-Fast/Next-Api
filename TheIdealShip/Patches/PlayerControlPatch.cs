@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
@@ -15,7 +16,7 @@ namespace TheIdealShip.Patches
         static PlayerControl setTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false,
             List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
         {
-            var Go = GameOptionsManager.Instance.currentGameOptions;
+            var go = GameOptionsManager.Instance.currentGameOptions;
             var NGO = GameOptionsManager.Instance.currentNormalGameOptions;
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(NGO.KillDistance, 0, 2)];
@@ -99,49 +100,48 @@ namespace TheIdealShip.Patches
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p == CachedPlayer.LocalPlayer.PlayerControl || CachedPlayer.LocalPlayer.Data.IsDead || p.isDummy)
+                if (p != CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead &&
+                    !p.isDummy) continue;
+                Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
+                TextMeshPro playerInfo = playerInfoTransform != null
+                    ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>()
+                    : null;
+                if (playerInfo == null)
                 {
-                    Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
-                    TextMeshPro playerInfo = playerInfoTransform != null
-                        ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>()
-                        : null;
-                    if (playerInfo == null)
-                    {
-                        playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText,
-                            p.cosmetics.nameText.transform.parent);
-                        playerInfo.transform.localPosition += Vector3.up * 0.225f;
-                        playerInfo.fontSize *= 0.75f;
-                        playerInfo.gameObject.name = "Info";
-                        playerInfo.color = playerInfo.color.SetAlpha(1f);
-                    }
+                    playerInfo = UnityEngine.Object.Instantiate(p.cosmetics.nameText,
+                        p.cosmetics.nameText.transform.parent);
+                    playerInfo.transform.localPosition += Vector3.up * 0.225f;
+                    playerInfo.fontSize *= 0.75f;
+                    playerInfo.gameObject.name = "Info";
+                    playerInfo.color = playerInfo.color.SetAlpha(1f);
+                }
 
-                    PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
-                    Transform meetingInfoTransform = playerVoteArea != null ? playerVoteArea.NameText.transform.parent.FindChild("Info") : null;
-                    TMPro.TextMeshPro meetingInfo = meetingInfoTransform != null ? meetingInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
-                    if (meetingInfo == null && playerVoteArea != null)
-                    {
-                        meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
-                        meetingInfo.transform.localPosition += Vector3.down * 0.20f;
-                        meetingInfo.fontSize *= 0.75f;
-                        meetingInfo.gameObject.name = "Info";
-                    }
+                PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
+                Transform meetingInfoTransform = playerVoteArea != null ? playerVoteArea.NameText.transform.parent.FindChild("Info") : null;
+                TMPro.TextMeshPro meetingInfo = meetingInfoTransform != null ? meetingInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
+                if (meetingInfo == null && playerVoteArea != null)
+                {
+                    meetingInfo = UnityEngine.Object.Instantiate(playerVoteArea.NameText, playerVoteArea.NameText.transform.parent);
+                    meetingInfo.transform.localPosition += Vector3.down * 0.20f;
+                    meetingInfo.fontSize *= 0.75f;
+                    meetingInfo.gameObject.name = "Info";
+                }
 
 /*                     string roleNames = RoleHelpers.GetRolesString(p, true);
                     string modifierName = RoleHelpers.GetRolesString(p, true, true); */
 
-                    string playerInfoText = "";
-                    string meetingInfoText = "";
+                string playerInfoText = "";
+                string meetingInfoText = "";
 /*                     if (p == CachedPlayer.LocalPlayer.PlayerControl || p.isDummy)
                     {
                         playerInfoText = $"{roleNames}";
                         meetingInfoText = $"{roleNames}\n{modifierName}".Trim();
                     } */
 
-                    playerInfo.text = playerInfoText;
-                    playerInfo.gameObject.SetActive(p.Visible);
-                    if (meetingInfo != null)
-                        meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;
-                }
+                playerInfo.text = playerInfoText;
+                playerInfo.gameObject.SetActive(p.Visible);
+                if (meetingInfo != null)
+                    meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;
             }
         }
 
@@ -160,7 +160,7 @@ namespace TheIdealShip.Patches
             {
                 for (var i = 0; i < PlayerControl.AllPlayerControls.Count; i++)
                 {
-                    PlayerControl.AllPlayerControls[i].MyPhysics.GhostSpeed =
+                    CachedPlayer.AllPlayers[i].PlayerControl.MyPhysics.GhostSpeed =
                         CustomOptionHolder.PlayerGhostSpeed.getFloat();
                 }
             }

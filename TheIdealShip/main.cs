@@ -68,7 +68,7 @@ namespace TheIdealShip
             RegionMenuOpenPatch.autoAddServer();
 
             RegisterManager.Registration(Assembly.GetAssembly(this.GetType()));
-            updateTask = AddComponent<UpdateTask>();
+            /*updateTask = AddComponent<UpdateTask>();*/
 
             Language.Init();
             LanguagePack.Init();

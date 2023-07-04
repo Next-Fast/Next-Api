@@ -22,7 +22,8 @@ namespace TheIdealShip.Patches
             if (xiaButton == null || xiaButton.gameObject == null)
             {
                 GameObject tf = GameObject.Find("NormalMenu/BackButton");
-
+                if (!tf) return;
+                    
                 xiaButton = UnityEngine.Object.Instantiate(tf, __instance.transform);
                 xiaButton.name = "xiaButton";
                 xiaButton.transform.position = pos - new Vector3(-0.6f, 3f, 0f);
@@ -152,6 +153,7 @@ namespace TheIdealShip.Patches
             }
 
             __instance.controllerSelectable.Clear();
+            List<UiElement> List = new ();
             int num = 0;
             foreach (IRegionInfo regionInfo in regionInfos)
             {
@@ -162,7 +164,7 @@ namespace TheIdealShip.Patches
                 serverListButton.Text.text = DestroyableSingleton<TranslationController>.Instance.GetStringWithDefault(regionInfo.TranslateName, regionInfo.Name);
                 serverListButton.Text.ForceMeshUpdate(false, false);
                 serverListButton.Button.OnClick.RemoveAllListeners();
-                serverListButton.Button.OnClick.AddListener((UnityAction)(() =>
+                serverListButton.Button.OnClick.AddListener((Action)(() =>
                 {
                     __instance.ChooseOption(region);
                 }));
@@ -171,13 +173,16 @@ namespace TheIdealShip.Patches
                 {
                     __instance.defaultButtonSelected = serverListButton.Button;
                 }
-                __instance.controllerSelectable.Add(serverListButton.Button);
+                List.Add(serverListButton.Button);
                 num++;
             }
+
             if (__instance.defaultButtonSelected == null && __instance.controllerSelectable.Count > 0)
             {
-                __instance.defaultButtonSelected = __instance.controllerSelectable[0];
+                __instance.defaultButtonSelected = List[0];
             }
+            
+            List.Do(n => __instance.controllerSelectable.Add(n));
         }
 
         public static void shuaXing(RegionMenu __instance)

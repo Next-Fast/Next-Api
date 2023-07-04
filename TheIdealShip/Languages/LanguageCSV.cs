@@ -13,10 +13,7 @@ namespace TheIdealShip.Languages
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream("TheIdealShip.Resources.string.csv");
-            var sr = new StreamReader(stream);
             translateMaps = new Dictionary<string,Dictionary<int,string>>();
-            string[] header = sr.ReadLine().Split(',');
-
 
             var options = new CsvOptions()
             {

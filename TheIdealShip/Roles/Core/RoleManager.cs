@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using TheIdealShip.Utilities;
 
 namespace TheIdealShip.Roles.Core;
 
@@ -8,8 +9,9 @@ public static class RoleManager
 {
     public static List<RoleBase> AllRoleBase = new ();
     public static List<SimpleRoleInfo> AllSimpleRoleInfo = new();
-    public static Dictionary<RoleId,SimpleRoleInfo> AllRoleInfo = new(RoleHelpers.AllRoles.Length);
+    public static Dictionary<RoleId,SimpleRoleInfo> AllRoleInfo = new(AllRoles.Length);
     public static Dictionary<string, RoleBase> RoleBaseDic = new Dictionary<string, RoleBase>();
+    public static readonly RoleId[] AllRoles = EnumHelper.GetAllValues<RoleId>();
 
     public static List<SimpleRoleInfo> _AllMainRole = new ();
     public static List<SimpleRoleInfo> _AllModifierRole = new();

@@ -94,8 +94,6 @@ namespace TheIdealShip
             player.MurderPlayer(player);
         }
 
-        static PlayerControl player1;
-
         public static bool RoleIsH(this PlayerControl player)
         {
             return player != null;

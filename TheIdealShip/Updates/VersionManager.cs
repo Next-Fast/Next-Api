@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TheIdealShip.Utils;
 namespace TheIdealShip.Updates;
 
@@ -19,6 +20,15 @@ public static class VersionManager
     // 2018k.cnAPI
     public const string KApiUrl = "http://api.2018k.cn";
     public const string KApiId = "FC912F87DE524E5393F6F35B66B8ACEB";
+
+    public static readonly List<(string, string)> URLs = new List<(string, string)>()
+    {
+        (GithubUrl, "Github"),
+        (GiteeUrl, "Gitee"),
+        (jsdelivrUrl,"JsdelivrUrl"),
+        (nightlyUrl,"Nightly"),
+        (alistUrl,"Alist")
+    };
 
     private static string KApi_addId(this string URL) => URL + "?id=" + KApiId;
     private static string KApi_addCheckVersion(this string URL) => URL +  "/checkVersion";

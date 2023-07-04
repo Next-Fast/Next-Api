@@ -1,3 +1,5 @@
+using System;
+using TheIdealShip.Options.OptionValues;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,16 +10,18 @@ public class OptionBase
     public string name;
     public int id;
     public OptionInfo optionInfo;
-    public OptionValue optionValue;
+    public object optionValue;
     public Color nameColor;
     public optionTab tab;
+    public optionType type;
     public OptionBase
     (
         string name,
         int id,
-        OptionValue optionValue,
+        object optionValue,
         optionTab tab,
-        Color color
+        Color color,
+        optionType type
     )
     {
         this.name = name;
@@ -25,6 +29,7 @@ public class OptionBase
         this.tab = tab;
         this.nameColor = color;
         this.optionValue = optionValue;
+        this.type = type;
 
         optionInfo = new OptionInfo(name, id, this);
         OptionManager.AllOption.Add(this);
@@ -33,34 +38,6 @@ public class OptionBase
     public void AddChildren(OptionInfo info) => optionInfo.AddChildren(info);
     public void RemoveChildren(OptionInfo info) => optionInfo.RemoveChildren(info);
     public void SetParent(OptionInfo info) => optionInfo.setParent(info);
-}
-
-public class OptionValue
-{
-    public int defaultValue;
-    public int Value;
-    public int min;
-    public int step;
-    public int max;
-    public OptionValue
-    (
-        int defaultValue,
-        int min,
-        int step,
-        int max
-    )
-    {
-        this.defaultValue = defaultValue;
-        this.min = min;
-        this.step = step;
-        this.max = max;
-
-        Value = defaultValue;
-    }
-
-    public int GetValue() => Value;
-    public void increase() => Value += step;
-    public void decrease() => Value -= step;
 }
 
 public class OptionInfo : IOptionInfo
@@ -115,4 +92,12 @@ public enum optionTab
     Crewmate,
     Neutral,
     other
+}
+
+public enum optionType
+{
+    Boolean,
+    Float,
+    String,
+    Int
 }

@@ -20,9 +20,9 @@ namespace TheIdealShip.Patches
         [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements)), HarmonyPrefix]
         public static void SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] ref Il2CppReferenceArray<Announcement> aRange)
         {
+            if (modUpdateAn == null) return;
             List<Announcement> list = new(aRange.ToList());
-            if (modUpdateAn != null)
-                list.AddRange(modUpdateAn);
+            list.AddRange(modUpdateAn);
 
             list.Sort((a1 , a2) => AnCompare(a1, a2));
             aRange = list.ToArray();

@@ -26,6 +26,7 @@
         <PackageReference Include="GitInfo" Version="2.3.0" />
         <PackageReference Include="Csv" Version="2.0.93"/>
         <PackageReference Include="YamlDotNet" Version="13.1.1" />
+        <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all"/>
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(TheIdealShipLast)' != ''">

@@ -1,9 +1,11 @@
 using System.Security.Cryptography.X509Certificates;
 using System;
 using HarmonyLib;
+using TheIdealShip.UI.Components;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 using UnityEngine.Video;
+using Object = UnityEngine.Object;
 
 
 namespace TheIdealShip.Patches
@@ -15,6 +17,7 @@ namespace TheIdealShip.Patches
         public static GameObject Au_Logo;
         public static GameObject TIS_Logo;
         public static GameObject BackGround;
+        private static GameObject LeftPanel;
 
         private static SpriteRenderer Au_Logo_SpriteRenderer;
         private static SpriteRenderer BackGround_SpriteRenderer;
@@ -31,6 +34,7 @@ namespace TheIdealShip.Patches
         {
             Ambience = GameObject.Find("Ambience");
             Au_Logo = GameObject.Find("LOGO-AU");
+            LeftPanel = GameObject.Find("LeftPanel");
             BackGround = new GameObject("TIS_BackGround");
             TIS_Logo = new GameObject("TIS_Logo");
 
@@ -44,10 +48,21 @@ namespace TheIdealShip.Patches
             BackGround_Video = BackGround.AddComponent<VideoPlayer>();
         }
 
+        private static void Init_SetGameObjectTransform()
+        {
+            TIS_Logo.transform.SetParent(LeftPanel.transform);
+        }
+
+        private static void Init_DestroyGameObject()
+        {
+
+        }
+
         private static void Create()
         {
-            var Au_Logo_PassiveButton = Au_Logo.GetComponent<PassiveButton>();
-            Au_Logo_PassiveButton.OnClick = new ();
+            var Au_Logo_PassiveButton = Au_Logo.AddComponent<PassiveButton>();
+            if (!Au_Logo_PassiveButton) return;
+            Au_Logo_PassiveButton.OnClick = new ButtonClickedEvent();
             Au_Logo_PassiveButton.OnClick.AddListener((Action)Au_Logo_OnClick);
 
             TIS_Logo.transform.position = new Vector3(2f, -0.2f, 0);
@@ -82,8 +97,16 @@ namespace TheIdealShip.Patches
         }
 
         [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.OnSceneLoaded)), HarmonyPrefix]
-        public static bool AccountManager_OnSceneLoaded_Prefix_Patch()
+        public static bool AccountManager_OnSceneLoaded_Prefix_Patch(AccountManager __instance)
         {
+            if (AccountManager._instance.accountTab.gameObject.active)
+            {
+                AccountManager._instance.accountTab.gameObject.SetActive(false);
+            }
+            if (AccountManager._instance.accountTab)
+            {
+                Object.DestroyObject(AccountManager._instance.accountTab);
+            }
             return false;
         }
     }
