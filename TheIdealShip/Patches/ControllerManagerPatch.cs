@@ -1,44 +1,31 @@
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
-using TheIdealShip.Modules;
 
-namespace TheIdealShip.Patches
+namespace TheIdealShip.Patches;
+[HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
+class ControllerManagerUpdatePatch
 {
-    [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
-    class ControllerManagerUpdatePatch
+    public static void Postfix()
     {
-            static bool GetKeysDown(params KeyCode[] keys)
-            {
-                if (keys.Any(k => Input.GetKeyDown(k)) && keys.All(k => Input.GetKey(k)))
-                {
-                    Warn($"KeyDown:{keys.Where(k => Input.GetKeyDown(k)).First()} in [{string.Join(",", keys)}]");
-                    return true;
-                }
-                return false;
-            }
-        public static void Postfix()
+        if (Input.GetKeyDown(KeyCode.F1))
         {
-            if (Input.GetKeyDown(KeyCode.F1))
+            GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.forcedEnd, false);
+        }
+        if (Input.GetKeyDown(KeyCode.F2) && CustomOptionHolder.noGameEnd.getBool())
+        {
+            var Dia = RoleMenu.Dialogue;
+            if (RoleMenu.isCreate)
             {
-                GameManager.Instance.RpcEndGame((GameOverReason)CustomGameOverReason.forcedEnd, false);
+                RoleMenu.CreateRoleMenu();
             }
-            if (Input.GetKeyDown(KeyCode.F2) && CustomOptionHolder.noGameEnd.getBool())
+            if (Dia.gameObject.active == false)
             {
-                var Dia = RoleMenu.Dialogue;
-                if (RoleMenu.isCreate)
-                {
-                  RoleMenu.CreateRoleMenu();
-                }
-                if (Dia.gameObject.active == false)
-                {
-                    Dia.gameObject.SetActive(true);
-                }
-                else
-                {
-                    Dia.gameObject.SetActive(false);
-                }
-
+                Dia.gameObject.SetActive(true);
+            }
+            else
+            {
+                Dia.gameObject.SetActive(false);
             }
         }
     }

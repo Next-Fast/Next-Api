@@ -1,5 +1,4 @@
 using System.IO;
-using static TheIdealShip.Utils.TextUtils;
 
 namespace TheIdealShip.Manager;
 
@@ -20,11 +19,11 @@ public class FilesManager
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
-            log.Msg("创建文件夹:" + path.TextRemove("./") + "成功", filename: "FilesManager");
+            Msg("创建文件夹:" + path.TextRemove("./") + "成功", filename: "FilesManager");
         }
         else
         {
-            log.Msg("文件夹已存在", filename: "FilesManager");
+            Msg("文件夹已存在", filename: "FilesManager");
         }
     }
 }

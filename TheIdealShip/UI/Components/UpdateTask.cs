@@ -13,10 +13,6 @@ public class UpdateTask : MonoBehaviour
     public Action task;
     public static List<UpdateTask> Tasks = new();
 
-    public UpdateTask()
-    {
-    }
-
     public void Start()
     {
 

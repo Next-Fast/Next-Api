@@ -1,33 +1,35 @@
-using System.Collections.Generic;
 using System.IO;
 
-namespace TheIdealShip
+namespace TheIdealShip;
+
+public static class SkinChecks
 {
-    public static class SkinChecks
+    public static string TORFolderName = "TheOtherHats";
+    public static string[] TORHatStrings;
+
+    public static string ExtremeHatFolderName = "ExtremeHat";
+
+    public static bool TORCheck()
     {
-        public static string TORFolderName = "TheOtherHats";
-        public static string[] TORHatStrings;
-        public static bool TORCheck()
+        if (Directory.Exists(GetPatch(TORFolderName)))
         {
-            if (Directory.Exists(GetPatch(TORFolderName)))
-            {
-                TORHatStrings = Directory.GetFiles(GetPatch(TORFolderName), ".png");
-                return true;
-            }
-            return false;
+            TORHatStrings = Directory.GetFiles(GetPatch(TORFolderName), ".png");
+            return true;
         }
 
-        public static string ExtremeHatFolderName = "ExtremeHat";
-        public static bool ExtremeCheck()
+        return false;
+    }
+
+    public static bool ExtremeCheck()
+    {
+        if (Directory.Exists(GetPatch(ExtremeHatFolderName)))
         {
-            if (Directory.Exists(GetPatch(ExtremeHatFolderName)))
-            {
-                TORHatStrings = Directory.GetFiles(GetPatch(TORFolderName), ".png");
-                return true;
-            }
-            return false;
+            TORHatStrings = Directory.GetFiles(GetPatch(TORFolderName), ".png");
+            return true;
         }
+
+        return false;
+    }
 
         public static string GetPatch(string name) => "./" + name;
-    }
 }

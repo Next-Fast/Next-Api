@@ -1,29 +1,25 @@
 using HarmonyLib;
 using TheIdealShip.Utilities;
-using TheIdealShip.Roles;
-using TheIdealShip.RPC;
 
-namespace TheIdealShip.Modules
+namespace TheIdealShip.Modules;
+
+[HarmonyPatch]
+public static class ChatCommands
 {
-    [HarmonyPatch]
-    public static class ChatCommands
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
+    private static class SendChatPatch
     {
-
-        [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
-        private static class SendChatPatch
+        public static bool Prefix(ChatController __instance)
         {
-            public static bool Prefix(ChatController __instance)
-            {
-                __instance.TimeSinceLastMessage = 3f;
-                var text = __instance.TextArea.text;
-                string[] args = text.Split(' ');
-                var canceled = false;
-                var cancelVal = "";
-                if (CustomOptionHolder.noGameEnd.getBool())
+            __instance.TimeSinceLastMessage = 3f;
+            var text = __instance.TextArea.text;
+            var args = text.Split(' ');
+            var canceled = false;
+            var cancelVal = "";
+            if (noGameEnd.getBool())
+                switch (args[0])
                 {
-                    switch (args[0])
-                    {
-/*                         case "/role":
+                    /*                         case "/role":
                             foreach (var n in CachedPlayer.AllPlayers)
                             {
                                 foreach (var rn in RoleInfo.allRoleInfos)
@@ -42,26 +38,20 @@ namespace TheIdealShip.Modules
                                 }
                             }
                             break; */
-                        case "/isD":
-                            if (args[1] == "true")
-                            {
-                                CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead = true;
-                            }
-                            if (args[1] == "false")
-                            {
-                                CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead = false;
-                            }
-                            break;
-                    }
+                    case "/isD":
+                        if (args[1] == "true") CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead = true;
+                        if (args[1] == "false") CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead = false;
+                        break;
                 }
-                if (canceled)
-                {
-                    __instance.TextArea.Clear();
-                    __instance.TextArea.SetText(cancelVal);
-                    __instance.quickChatMenu.ResetGlyphs();
-                }
-                return !canceled;
+
+            if (canceled)
+            {
+                __instance.TextArea.Clear();
+                __instance.TextArea.SetText(cancelVal);
+                __instance.quickChatMenu.ResetGlyphs();
             }
+
+            return !canceled;
         }
     }
 }

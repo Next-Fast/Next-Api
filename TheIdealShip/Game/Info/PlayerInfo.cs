@@ -1,14 +1,9 @@
-using UnityEngine;
 using HarmonyLib;
-using TheIdealShip.Roles;
-using TheIdealShip.Utilities;
-using static TheIdealShip.Languages.Language;
 
 namespace TheIdealShip;
 
-
 [HarmonyPatch(typeof(TaskPanelBehaviour), nameof(TaskPanelBehaviour.SetTaskText))]
-class TaskPanelBehaviourPatch
+internal class TaskPanelBehaviourPatch
 {
 /*     public static void Postfix(TaskPanelBehaviour __instance)
     {

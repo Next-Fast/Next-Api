@@ -4,7 +4,19 @@ namespace TheIdealShip.Utils;
 
 public class MethodUtils
 {
-    public static string GetNamespace() => MethodBase.GetCurrentMethod().DeclaringType.Namespace;
-    public static string GetVoidName() => MethodBase.GetCurrentMethod().Name;
-    public static string GetClassName() => System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name;
+    /// <summary>
+    /// 获取运行方法命名空间
+    /// </summary>
+    public static string GetNamespace() => MethodBase.GetCurrentMethod()?.DeclaringType?.Namespace;
+    
+    /// <summary>
+    ///  获取运行方法
+    /// </summary>
+    public static string GetVoidName() => MethodBase.GetCurrentMethod()?.Name;
+    
+    /// <summary>
+    /// 获取运行方法类
+    /// </summary>
+    /// <returns></returns>
+    public static string GetClassName() => MethodBase.GetCurrentMethod()?.DeclaringType?.Name;
 }
