@@ -1,64 +1,63 @@
 global using TheIdealShip.Modules;
 global using Role = TheIdealShip.Roles.Core.Role;
-using HarmonyLib;
 using System;
+using HarmonyLib;
 
 
-namespace TheIdealShip.Roles.Core
+namespace TheIdealShip.Roles.Core;
+
+[HarmonyPatch]
+public class Role
 {
-    [HarmonyPatch]
-    public class Role
+    public static Random rnd = new((int)DateTime.Now.Ticks);
+
+    public static void clearAndReloadRoles()
     {
-        public static Random rnd = new Random((int)DateTime.Now.Ticks);
-        public static void clearAndReloadRoles()
-        {
-            // Role 普通职业
-            Sheriff.clearAndReload();
-            Camouflager.clearAndReload();
-            Illusory.clearAndReload();
+        // Role 普通职业
+        Sheriff.clearAndReload();
+        Camouflager.clearAndReload();
+        Illusory.clearAndReload();
 
-            // 中立
-            Jester.clearAndReload();
-            SchrodingersCat.clearAndReload();
+        // 中立
+        Jester.clearAndReload();
+        SchrodingersCat.clearAndReload();
 
-            // Modifier 附加职业
-            Flash.clearAndReload();
-        }
+        // Modifier 附加职业
+        Flash.clearAndReload();
     }
+}
 
-    public enum RoleId
-    {
-        // Crewmate 船员
-        Crewmate,
-        Sheriff,
-        Postman,
+public enum RoleId
+{
+    // Crewmate 船员
+    Crewmate,
+    Sheriff,
+    Postman,
 
-        // Impostor 内鬼
-        Impostor,
-        Camouflager,
-        Illusory,
+    // Impostor 内鬼
+    Impostor,
+    Camouflager,
+    Illusory,
 
-        // Neutral 中立
-        Jester,
-        SchrodingersCats,
+    // Neutral 中立
+    Jester,
+    SchrodingersCats,
 
-        // Modifier 附加
-        Flash,
-        Lover
+    // Modifier 附加
+    Flash,
+    Lover
+}
 
-    }
+public enum RoleType
+{
+    MainRole,
+    ModifierRole,
+    NotRole
+}
 
-    public enum RoleType
-    {
-        MainRole,
-        ModifierRole,
-        NotRole
-    }
-
-    public enum RoleTeam
-    {
-        Crewmate,
-        Impostor,
-        Neutral
-    }
+public enum RoleTeam
+{
+    Crewmate,
+    Impostor,
+    Neutral
 }

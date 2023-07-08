@@ -1,8 +1,8 @@
-using System;
 using Hazel;
 using TheIdealShip.Utilities;
 
 namespace TheIdealShip.RPC;
+
 public static class RPCHelpers
 {
     // public static List<byte> OtherRPCBytes = new List<byte>();
@@ -22,20 +22,32 @@ public static class RPCHelpers
     //         return false;
     //     }
     // }
-    public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null, bool[] bools = null, string[] strings = null)
+    public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null,
+        bool[] bools = null, string[] strings = null)
     {
-        MessageWriter rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, rpc, SendOption.Reliable);
-        if (bytes != null) { foreach (var b in bytes) { rpcStart.Write(b); } }
+        var rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, rpc,
+            SendOption.Reliable);
+        if (bytes != null)
+            foreach (var b in bytes)
+                rpcStart.Write(b);
 
-        if (ints != null) { foreach (var i in ints) { rpcStart.Write(i); } }
+        if (ints != null)
+            foreach (var i in ints)
+                rpcStart.Write(i);
 
-        if (floats != null) { foreach (var f in floats) { rpcStart.Write(f); } }
+        if (floats != null)
+            foreach (var f in floats)
+                rpcStart.Write(f);
 
-        if (bools != null) { foreach (var bo in bools) { rpcStart.Write(bo); } }
+        if (bools != null)
+            foreach (var bo in bools)
+                rpcStart.Write(bo);
 
-        if (strings != null) { foreach (var str in strings) { rpcStart.Write(str); } }
+        if (strings != null)
+            foreach (var str in strings)
+                rpcStart.Write(str);
 
-//        SendValueLength(bytes.Length, ints.Length, bools.Length, floats.Length, strings.Length);
+        //        SendValueLength(bytes.Length, ints.Length, bools.Length, floats.Length, strings.Length);
 
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }
@@ -44,31 +56,31 @@ public static class RPCHelpers
     {
         for (var b = 0; b < ReadRPCValue.byteL; b++)
         {
-            byte ByteValue = reader.ReadByte();
+            var ByteValue = reader.ReadByte();
             ReadRPCValue.bytes[b] = ByteValue;
         }
 
         for (var i = 0; i < ReadRPCValue.intL; i++)
         {
-            int IntValue = reader.ReadInt32();
+            var IntValue = reader.ReadInt32();
             ReadRPCValue.ints[i] = IntValue;
         }
 
         for (var bo = 0; bo < ReadRPCValue.boolL; bo++)
         {
-            bool BoolValue = reader.ReadBoolean();
+            var BoolValue = reader.ReadBoolean();
             ReadRPCValue.bools[bo] = BoolValue;
         }
 
         for (var f = 0; f < ReadRPCValue.floatL; f++)
         {
-            float FloatValue = reader.ReadSingle();
+            var FloatValue = reader.ReadSingle();
             ReadRPCValue.floats[f] = FloatValue;
         }
 
         for (var s = 0; s < ReadRPCValue.stringL; s++)
         {
-            string StringValue = reader.ReadString();
+            var StringValue = reader.ReadString();
             ReadRPCValue.strings[s] = StringValue;
         }
     }
@@ -76,9 +88,9 @@ public static class RPCHelpers
     public static void ReadValueLength(MessageReader reader)
     {
         ReadRPCValue.ClearAll();
-        for (int length = reader.ReadInt32(); length == 0; length--)
+        for (var length = reader.ReadInt32(); length == 0; length--)
         {
-            byte type = reader.ReadByte();
+            var type = reader.ReadByte();
             switch (type)
             {
                 case (byte)ReadType.Byte:
@@ -102,13 +114,15 @@ public static class RPCHelpers
                     break;
             }
         }
+
         ReadValue(reader);
     }
 
     public static void SendValueLength(int byteL = 0, int intL = 0, int boolL = 0, int FloatL = 0, int StringL = 0)
     {
-        MessageWriter rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.RpcValueHandshake, SendOption.Reliable);
-        int Length = 0;
+        var rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId,
+            (byte)CustomRPC.RpcValueHandshake, SendOption.Reliable);
+        var Length = 0;
         if (byteL != 0) Length++;
         if (intL != 0) Length++;
         if (boolL != 0) Length++;
@@ -145,10 +159,12 @@ public static class RPCHelpers
             rpcStart.Write((byte)ReadType.String);
             rpcStart.Write(StringL);
         }
+
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }
 
-    public static void StartRPC(byte rpc, MessageReader reader = null, byte[] bytes = null, string[] strings = null, bool[] bools = null )
+    public static void StartRPC(byte rpc, MessageReader reader = null, byte[] bytes = null, string[] strings = null,
+        bool[] bools = null)
     {
         switch (rpc)
         {
@@ -176,12 +192,12 @@ public static class RPCHelpers
                 RPCProcedure.SheriffKill(reader.ReadByte());
                 break;
 
-            case (byte)CustomRPC.RestoreRole :
-                byte RestoreRoleId = reader.ReadByte();
+            case (byte)CustomRPC.RestoreRole:
+                var RestoreRoleId = reader.ReadByte();
                 RPCProcedure.RestoreRole(RestoreRoleId);
                 break;
 
-            case (byte)CustomRPC.RestorePlayerLook :
+            case (byte)CustomRPC.RestorePlayerLook:
                 RPCProcedure.RestorePlayerLook();
                 break;
 
@@ -189,15 +205,15 @@ public static class RPCHelpers
                 RPCProcedure.HistorySynchronization(reader.ReadByte(), reader.ReadInt32(), reader.ReadByte(), reader.ReadByte());
                 break; */
 
-            case (byte)CustomRPC.ChangeRole :
+            case (byte)CustomRPC.ChangeRole:
                 RPCProcedure.ChangeRole(reader.ReadByte(), reader.ReadByte());
                 break;
 
-            case (byte)CustomRPC.Camouflager :
+            case (byte)CustomRPC.Camouflager:
                 RPCProcedure.Camouflager();
                 break;
 
-            case (byte)CustomRPC.Illusory :
+            case (byte)CustomRPC.Illusory:
                 RPCProcedure.Illusory();
                 break;
 
@@ -213,6 +229,7 @@ public static class RPCHelpers
         }
     }
 }
+
 public static class ReadRPCValue
 {
     public static byte[] bytes;
@@ -225,6 +242,7 @@ public static class ReadRPCValue
     public static int boolL;
     public static int floatL;
     public static int stringL;
+
     public static void ClearAll()
     {
         bytes = null;
@@ -239,6 +257,7 @@ public static class ReadRPCValue
         stringL = 0;
     }
 }
+
 public enum ReadType
 {
     Byte,

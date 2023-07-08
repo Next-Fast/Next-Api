@@ -1,13 +1,10 @@
 using HarmonyLib;
-using TheIdealShip.Roles;
-using TheIdealShip.Modules;
-using static TheIdealShip.Languages.Language;
 
-namespace TheIdealShip.Patches
+namespace TheIdealShip.Patches;
+
+[HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+internal class ExileControllerBeginPatch
 {
-    [HarmonyPatch(typeof(ExileController),nameof(ExileController.Begin))]
-    class ExileControllerBeginPatch
-    {
 /*         public static void Postfix(ExileController __instance, [HarmonyArgument(0)] ref GameData.PlayerInfo exiled, [HarmonyArgument(1)] bool tie)
         {
             if (exiled != null)
@@ -36,26 +33,25 @@ namespace TheIdealShip.Patches
                 }
             }
         } */
-    }
+}
 
-    [HarmonyPatch]
-    class ExileControllerWrapUp
+[HarmonyPatch]
+internal class ExileControllerWrapUp
+{
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+    private class ExileControllerWrapUpPatch
     {
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        class ExileControllerWrapUpPatch
+        public static void Postfix(ExileController __instance)
         {
-            public static void Postfix(ExileController __instance)
+            if (__instance.exiled != null)
             {
-                if (__instance.exiled != null)
-                {
 /*                     if(__instance.exiled.GetPlayerForExile().Is(RoleId.Jester))
                     {
                         Jester.triggerJesterWin = true;
                     } */
-                }
-
-                CustomButton.MeetingEndedUpdate();
             }
+
+            CustomButton.MeetingEndedUpdate();
         }
     }
 }

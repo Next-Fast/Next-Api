@@ -31,5 +31,8 @@ public static class SkinChecks
         return false;
     }
 
-    public static string GetPatch(string name) => "./" + name;
+    public static string GetPatch(string name)
+    {
+        return "./" + name;
+    }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using TheIdealShip.Utilities.Attributes;
+﻿using TheIdealShip.Utilities.Attributes;
 using UnityEngine;
 
 namespace TheIdealShip.UI.Components;
@@ -8,6 +7,7 @@ namespace TheIdealShip.UI.Components;
 public class DownMenu : MonoBehaviour
 {
     public GameObject GameObject;
+
     public void Start()
     {
     }

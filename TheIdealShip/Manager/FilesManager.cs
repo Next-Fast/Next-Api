@@ -32,7 +32,18 @@ public class FilesManager
         return !Directory.Exists(path);
     }
 
-    public static bool GetDataDirectory(string name) => CreateDirectory(Path.Combine(TIS_DataPath, name));
-    public static bool GetRootDirectory(string name) => CreateDirectory($"./{name}");
-    public static bool GetCreativityDirectory(string name) => CreateDirectory(Path.Combine(CreativityPath, name));
+    public static bool GetDataDirectory(string name)
+    {
+        return CreateDirectory(Path.Combine(TIS_DataPath, name));
+    }
+
+    public static bool GetRootDirectory(string name)
+    {
+        return CreateDirectory($"./{name}");
+    }
+
+    public static bool GetCreativityDirectory(string name)
+    {
+        return CreateDirectory(Path.Combine(CreativityPath, name));
+    }
 }

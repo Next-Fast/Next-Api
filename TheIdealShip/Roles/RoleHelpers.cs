@@ -1,16 +1,14 @@
-using System;
 using System.Linq;
-using System.Collections.Generic;
 using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
-using static TheIdealShip.Languages.Language;
+
 /* using static TheIdealShip.Roles.RoleInfo; */
 
-namespace TheIdealShip
+namespace TheIdealShip;
+
+public static class RoleHelpers
 {
-    public static class RoleHelpers
-    {
-        public static readonly RoleId[] AllRoles = EnumHelper.GetAllValues<RoleId>();/* 
+    public static readonly RoleId[] AllRoles = EnumHelper.GetAllValues<RoleId>(); /* 
         public static RoleInfo GetRoleInfo(PlayerControl player, bool isModifier = false)
         {
             var info = getRoleInfoForPlayer(player, isModifier, false).FirstOrDefault();
@@ -29,37 +27,37 @@ namespace TheIdealShip
             return allMoidierRoleIds;
         } */
 
-        /* public static string GetRoleTeam(PlayerControl p)
+    /* public static string GetRoleTeam(PlayerControl p)
+    {
+        string roleTeam;
+        string cre = GetString("Crewmate");
+        string imp = GetString("Impostor");
+        string neu = GetString("Neutral");
+        var info = GetRoleInfo(p);
+        switch (info.team)
         {
-            string roleTeam;
-            string cre = GetString("Crewmate");
-            string imp = GetString("Impostor");
-            string neu = GetString("Neutral");
-            var info = GetRoleInfo(p);
-            switch (info.team)
-            {
-                case RoleTeam.Crewmate:
-                    roleTeam = cre;
-                    break;
+            case RoleTeam.Crewmate:
+                roleTeam = cre;
+                break;
 
-                case RoleTeam.Impostor:
-                    roleTeam = imp;
-                    break;
+            case RoleTeam.Impostor:
+                roleTeam = imp;
+                break;
 
-                case RoleTeam.Neutral:
-                    roleTeam = neu;
-                    break;
+            case RoleTeam.Neutral:
+                roleTeam = neu;
+                break;
 
-                default:
-                    roleTeam = "";
-                    break;
-            }
-            return roleTeam;
-        } */
-        public static bool Is(this PlayerControl player,PlayerControl playerControl)
-        {
-            return playerControl == player;
+            default:
+                roleTeam = "";
+                break;
         }
+        return roleTeam;
+    } */
+    public static bool Is(this PlayerControl player, PlayerControl playerControl)
+    {
+        return playerControl == player;
+    }
 
 /*         public static bool Is(this PlayerControl player, RoleId id)
         {
@@ -79,30 +77,31 @@ namespace TheIdealShip
             return info.type == type;
         } */
 
-        public static bool IsLover(this PlayerControl player)
-        {
-            return (player.Is(Lover.lover1) || player.Is(Lover.lover2));
-        }
+    public static bool IsLover(this PlayerControl player)
+    {
+        return player.Is(Lover.lover1) || player.Is(Lover.lover2);
+    }
 
-        /*         public static bool IsSurvival(this PlayerControl player)
-                {
-                    return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
-                } */
+    /*         public static bool IsSurvival(this PlayerControl player)
+            {
+                return !player.Data.IsDead && !player.Data.Disconnected && player.Data != null && GetRoleInfo(player) != null;
+            } */
 
-        public static void Suicide(this PlayerControl player)
-        {
-            player.MurderPlayer(player);
-        }
+    public static void Suicide(this PlayerControl player)
+    {
+        player.MurderPlayer(player);
+    }
 
-        public static bool RoleIsH(this PlayerControl player)
-        {
-            return player != null;
-        }
+    public static bool RoleIsH(this PlayerControl player)
+    {
+        return player != null;
+    }
 
-        public static PlayerControl getLover2()
-        {
-            return CachedPlayer.AllPlayers.Where(x => (x.PlayerControl.IsLover() && x != CachedPlayer.LocalPlayer)).FirstOrDefault();
-        }
+    public static PlayerControl getLover2()
+    {
+        return CachedPlayer.AllPlayers.Where(x => x.PlayerControl.IsLover() && x != CachedPlayer.LocalPlayer)
+            .FirstOrDefault();
+    }
 
 /*         public static bool RoleIsH(this RoleId id)
         {
@@ -123,5 +122,4 @@ namespace TheIdealShip
             roleName = String.Join("", getRoleInfoForPlayer(p, isModifier).Select(x => useColors ? Helpers.cs(x.color, GetString(x.namekey)) : GetString(x.namekey)).ToArray());
             return roleName;
         } */
-    }
 }

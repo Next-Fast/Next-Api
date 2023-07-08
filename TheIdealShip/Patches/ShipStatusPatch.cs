@@ -3,7 +3,7 @@ using HarmonyLib;
 namespace TheIdealShip.Patches;
 
 [HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
-class CheckTaskCompletionPatch
+internal class CheckTaskCompletionPatch
 {
     public static bool Prefix(ref bool __result)
     {

@@ -1,18 +1,17 @@
 using HarmonyLib;
-using TheIdealShip.Roles;
 using TheIdealShip.Utilities;
 
-namespace TheIdealShip.Patches
-{
-    [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
-    class EmergencyMinigameUpdatePatch
-    {
-        public static void Postfix(EmergencyMinigame __instance)
-        {
-            bool roleCanCallEmergency = true;
-            string statusText = "";
+namespace TheIdealShip.Patches;
 
-            var player = CachedPlayer.LocalPlayer.PlayerControl;
+[HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
+internal class EmergencyMinigameUpdatePatch
+{
+    public static void Postfix(EmergencyMinigame __instance)
+    {
+        var roleCanCallEmergency = true;
+        var statusText = "";
+
+        var player = CachedPlayer.LocalPlayer.PlayerControl;
 /*             var info = RoleHelpers.GetRoleInfo(player); */
 /*             var id = info.roleId;
 
@@ -25,16 +24,14 @@ namespace TheIdealShip.Patches
                 }
             } */
 
-            if (!roleCanCallEmergency)
-            {
-                __instance.StatusText.text = statusText;
-                __instance.NumberText.text = string.Empty;
-                __instance.ClosedLid.gameObject.SetActive(true);
-                __instance.OpenLid.gameObject.SetActive(false);
-                __instance.ButtonActive = false;
-                __instance.enabled = false;
-            }
-
+        if (!roleCanCallEmergency)
+        {
+            __instance.StatusText.text = statusText;
+            __instance.NumberText.text = string.Empty;
+            __instance.ClosedLid.gameObject.SetActive(true);
+            __instance.OpenLid.gameObject.SetActive(false);
+            __instance.ButtonActive = false;
+            __instance.enabled = false;
         }
     }
 }

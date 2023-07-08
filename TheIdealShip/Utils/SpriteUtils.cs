@@ -9,17 +9,17 @@ namespace TheIdealShip.Utils;
 
 public static class SpriteUtils
 {
-
     private static Sprite ModStamp;
     public static Dictionary<string, Sprite> CachedSprites = new();
 
-    public static Sprite LoadSpriteFromResources(String path, float pixelsPerUnit)
+    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit)
     {
         try
         {
             if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
-            Texture2D texture = LoadTextureFromResources(path);
-            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            var texture = LoadTextureFromResources(path);
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
+                pixelsPerUnit);
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedSprites[path + pixelsPerUnit] = sprite;
         }
@@ -27,6 +27,7 @@ public static class SpriteUtils
         {
             Warn("加载图片失败路径:" + path, filename: "Helpers");
         }
+
         return null;
     }
 
@@ -34,9 +35,9 @@ public static class SpriteUtils
     {
         try
         {
-            Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream(path);
+            var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+            var assembly = Assembly.GetExecutingAssembly();
+            var stream = assembly.GetManifestResourceStream(path);
             var length = stream.Length;
             var byteTexture = new Il2CppStructArray<byte>(length);
             stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int)length));
@@ -47,6 +48,7 @@ public static class SpriteUtils
         {
             Warn("加载图片失败路径:" + path, filename: "Helpers");
         }
+
         return null;
     }
 
@@ -56,7 +58,7 @@ public static class SpriteUtils
         {
             if (File.Exists(path))
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                 var byteTexture = Il2CppSystem.IO.File.ReadAllBytes(path);
                 ImageConversion.LoadImage(texture, byteTexture, false);
                 return texture;
@@ -66,16 +68,18 @@ public static class SpriteUtils
         {
             Warn("加载图片失败路径:" + path, filename: "Helpers");
         }
+
         return null;
     }
 
-    public static Sprite LoadSpriteFromDisk(String path, float pixelsPerUnit)
+    public static Sprite LoadSpriteFromDisk(string path, float pixelsPerUnit)
     {
         try
         {
             if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
-            Texture2D texture = LoadTextureFromDisk(path);
-            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            var texture = LoadTextureFromDisk(path);
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
+                pixelsPerUnit);
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedSprites[path + pixelsPerUnit] = sprite;
         }
@@ -83,6 +87,7 @@ public static class SpriteUtils
         {
             Warn("加载图片失败路径:" + path, filename: "Helpers");
         }
+
         return null;
     }
 

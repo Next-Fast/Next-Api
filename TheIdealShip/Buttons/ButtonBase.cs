@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using UnityEngine;
 
 namespace TheIdealShip.Buttons;
@@ -7,8 +6,8 @@ namespace TheIdealShip.Buttons;
 public class ButtonBase
 {
     public ActionButton ActionButton;
-    public string text;
     public GameObject ButtonGameObject;
+    public string text;
 
     public ButtonBase()
     {

@@ -13,6 +13,7 @@ namespace TheIdealShip.Modules;
 public class CustomButton
 {
     public static List<CustomButton> buttons = new();
+    private readonly Action OnClick;
     public ActionButton actionButton;
     public GameObject actionButtonGameObject;
     public TextMeshPro actionButtonLabelText;
@@ -25,7 +26,6 @@ public class CustomButton
     public HudManager hudManager;
     public bool isEffectActive;
     public float MaxTimer = float.MaxValue;
-    private readonly Action OnClick;
     public Action OnEffectEnds;
     public Action OnMeetingEnds;
     public Vector3 PositionOffset;

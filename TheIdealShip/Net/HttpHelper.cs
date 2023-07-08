@@ -8,10 +8,10 @@ public class HttpHelper
     // https://github.com/KARPED1EM/TownOfHostEdited/blob/TOHE/Modules/ModUpdater.cs
     public static string Get(string url)
     {
-        string result = "";
-        HttpClient req = new HttpClient();
+        var result = "";
+        var req = new HttpClient();
         var res = req.GetAsync(url).Result;
-        Stream stream = res.Content.ReadAsStreamAsync().Result;
+        var stream = res.Content.ReadAsStreamAsync().Result;
 
         try
         {
@@ -21,7 +21,7 @@ public class HttpHelper
         }
         catch
         {
-            log.Error("读取失败","Http-Get");
+            Error("读取失败", "Http-Get");
         }
 
         finally

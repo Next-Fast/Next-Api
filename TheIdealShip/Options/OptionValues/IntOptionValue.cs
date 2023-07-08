@@ -1,4 +1,7 @@
+using System;
+
 namespace TheIdealShip.Options.OptionValues;
+
 public class IntOptionValue : OptionValue<int>
 {
     public IntOptionValue((int, int, int, int) tuple) : base(tuple)
@@ -11,16 +14,17 @@ public class IntOptionValue : OptionValue<int>
 
     public override void decrease()
     {
-        throw new System.NotImplementedException();
+        if (Value - Step < Min) return;
+
+        Value -= Step;
     }
 
-    public override int GetValue()
-    {
-        throw new System.NotImplementedException();
-    }
+    public override int GetValue() => Value;
 
     public override void increase()
     {
-        throw new System.NotImplementedException();
+        if (Value + Step > Min) return;
+
+        Value += Step;
     }
 }

@@ -1,25 +1,24 @@
-using System;
-using TheIdealShip.Options.OptionValues;
 using System.Collections.Generic;
+using TheIdealShip.Options.OptionValues;
 using UnityEngine;
 
 namespace TheIdealShip.Options;
 
 public class OptionBase
 {
-    public string name;
+    public BooleanOptionValue BooleanOptionValue;
+    public FloatOptionValue FloatOptionValue;
     public int id;
+    public IntOptionValue IntOptionValue;
+    public string name;
+    public Color nameColor;
     public OptionInfo optionInfo;
     public object optionValue;
-    public Color nameColor;
+    public StringOptionValue StringOptionValue;
     public optionTab tab;
     public optionType type;
-    public FloatOptionValue FloatOptionValue;
-    public StringOptionValue StringOptionValue;
-    public BooleanOptionValue BooleanOptionValue;
-    public IntOptionValue IntOptionValue;
-    
-    
+
+
     public OptionBase
     (
         string name,
@@ -36,23 +35,26 @@ public class OptionBase
         optionInfo = new OptionInfo(name, id, this);
         OptionManager.AllOption.Add(this);
     }
-    
 
-    public void AddChildren(OptionInfo info) => optionInfo.AddChildren(info);
-    public void RemoveChildren(OptionInfo info) => optionInfo.RemoveChildren(info);
-    public void SetParent(OptionInfo info) => optionInfo.setParent(info);
+
+    public void AddChildren(OptionInfo info)
+    {
+        optionInfo.AddChildren(info);
+    }
+
+    public void RemoveChildren(OptionInfo info)
+    {
+        optionInfo.RemoveChildren(info);
+    }
+
+    public void SetParent(OptionInfo info)
+    {
+        optionInfo.setParent(info);
+    }
 }
 
 public class OptionInfo : IOptionInfo
 {
-    public bool enable { get; set; }
-    public string optionName { get; }
-    public int optionId { get; }
-    public int hierarchy { get; }
-    public OptionInfo parent { get; set; }
-    public List<OptionInfo> children { get; set; }
-    public OptionBase option { get; }
-
     public OptionInfo
     (
         string Name,
@@ -71,6 +73,14 @@ public class OptionInfo : IOptionInfo
         children = Children;
         OptionManager.AllOptionInfo.Add(this);
     }
+
+    public bool enable { get; set; }
+    public string optionName { get; }
+    public int optionId { get; }
+    public int hierarchy { get; }
+    public OptionInfo parent { get; set; }
+    public List<OptionInfo> children { get; set; }
+    public OptionBase option { get; }
 
     public void setParent(OptionInfo optionInfo)
     {

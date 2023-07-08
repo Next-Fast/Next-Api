@@ -12,11 +12,14 @@ public class FloatOptionValue : OptionValue<float>
 
     public override void decrease()
     {
-        if (Value - Step < Min ) return;
+        if (Value - Step < Min) return;
         Value -= Step;
     }
 
-    public override float GetValue() => Value;
+    public override float GetValue()
+    {
+        return Value;
+    }
 
     public override void increase()
     {

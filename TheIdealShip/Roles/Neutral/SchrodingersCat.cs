@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
 namespace TheIdealShip.Roles;
+
 public class SchrodingersCat
 {
     public static PlayerControl schrodingersCat;
-    public static Color color = new Color(130, 130, 130);
+    public static Color color = new(130, 130, 130);
     public static RoleTeam team = RoleTeam.Neutral;
 
     public static void clearAndReload()
@@ -15,7 +16,7 @@ public class SchrodingersCat
 
     public static void OptionLoad()
     {
-        SchrodingersCatRate = CustomOption.Create(161, Types.Neutral, cs(SchrodingersCat.color, "Schrodinger's Cat"), rates, null, true);
+        SchrodingersCatRate =
+            CustomOption.Create(161, Types.Neutral, cs(color, "Schrodinger's Cat"), rates, null, true);
     }
-
 }

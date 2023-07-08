@@ -19,7 +19,8 @@ public static class il2cppHelper
 
     private static class CastHelper<T> where T : Il2CppObjectBase
     {
-        public static Func<IntPtr, T> Cast;
+        public static readonly Func<IntPtr, T> Cast;
+
         static CastHelper()
         {
             var constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });

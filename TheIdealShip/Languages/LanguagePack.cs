@@ -8,7 +8,6 @@ using System.Text.Unicode;
 using AmongUs.Data;
 using TheIdealShip.Manager;
 using csv = TheIdealShip.Languages.LanguageCSV;
-using Exception = System.Exception;
 
 namespace TheIdealShip.Languages;
 
@@ -137,7 +136,7 @@ public class LanguagePack
     }
 
     public void deserialize(string path)
-    { 
+    {
         using (var sr = new StreamReader(path, Encoding.GetEncoding("utf-8")))
         {
             deserialize(sr);

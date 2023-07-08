@@ -1,11 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System;
-using UnityEngine;
 using HarmonyLib;
-using TheIdealShip.Modules;
+using UnityEngine;
 
 namespace TheIdealShip.Utilities;
 
@@ -15,56 +14,33 @@ public class CachedPlayer
     public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new();
     public static readonly List<CachedPlayer> AllPlayers = new();
     public static CachedPlayer LocalPlayer;
+    public GameData.PlayerInfo Data;
+    public CustomNetworkTransform NetTransform;
+    public PlayerControl PlayerControl;
+    public byte PlayerId;
+    public PlayerPhysics PlayerPhysics;
 
     public Transform transform;
-    public PlayerControl PlayerControl;
-    public PlayerPhysics PlayerPhysics;
-    public CustomNetworkTransform NetTransform;
-    public GameData.PlayerInfo Data;
-    public byte PlayerId;
 
     public static implicit operator bool(CachedPlayer player)
     {
         return player != null && player.PlayerControl;
     }
 
-    public static implicit operator PlayerControl(CachedPlayer player) => player.PlayerControl;
-    public static implicit operator PlayerPhysics(CachedPlayer player) => player.PlayerPhysics;
+    public static implicit operator PlayerControl(CachedPlayer player)
+    {
+        return player.PlayerControl;
+    }
 
+    public static implicit operator PlayerPhysics(CachedPlayer player)
+    {
+        return player.PlayerPhysics;
+    }
 }
 
 [HarmonyPatch]
 public static class CachedPlayerPatches
 {
-    [HarmonyPatch]
-    private class CacheLocalPlayerPatch
-    {
-        [HarmonyTargetMethod]
-        public static MethodBase TargetMethod()
-        {
-            var type = typeof(PlayerControl).GetNestedTypes(AccessTools.all).FirstOrDefault(t => t.Name.Contains("Start"));
-            return AccessTools.Method(type, nameof(IEnumerator.MoveNext));
-        }
-
-        [HarmonyPostfix]
-        public static void SetLocalPlayer()
-        {
-            var localPlayer = PlayerControl.LocalPlayer;
-            if (!localPlayer)
-            {
-                CachedPlayer.LocalPlayer = null;
-                return;
-            }
-
-            var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
-            if (cached != null)
-            {
-                CachedPlayer.LocalPlayer = cached;
-                return;
-            }
-        }
-    }
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
     [HarmonyPostfix]
     public static void CachePlayerPatch(PlayerControl __instance)
@@ -82,12 +58,9 @@ public static class CachedPlayerPatches
 
 #if DEBUG
         foreach (var cachedPlayer in CachedPlayer.AllPlayers)
-        {
-            if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
-            {
-                log.Error($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
-            }
-        }
+            if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform ||
+                !cachedPlayer.transform)
+                Error($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
 #endif
     }
 
@@ -104,7 +77,7 @@ public static class CachedPlayerPatches
     [HarmonyPostfix]
     public static void AddCachedDataOnDeserialize()
     {
-        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers)
+        foreach (var cachedPlayer in CachedPlayer.AllPlayers)
         {
             cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
             cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
@@ -115,7 +88,7 @@ public static class CachedPlayerPatches
     [HarmonyPostfix]
     public static void AddCachedDataOnAddPlayer()
     {
-        foreach (CachedPlayer cachedPlayer in CachedPlayer.AllPlayers)
+        foreach (var cachedPlayer in CachedPlayer.AllPlayers)
         {
             cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
             cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
@@ -127,5 +100,34 @@ public static class CachedPlayerPatches
     public static void SetCachedPlayerId(PlayerControl __instance)
     {
         CachedPlayer.PlayerPtrs[__instance.Pointer].PlayerId = __instance.PlayerId;
+    }
+
+    [HarmonyPatch]
+    private class CacheLocalPlayerPatch
+    {
+        [HarmonyTargetMethod]
+        public static MethodBase TargetMethod()
+        {
+            var type = typeof(PlayerControl).GetNestedTypes(AccessTools.all)
+                .FirstOrDefault(t => t.Name.Contains("Start"));
+            return AccessTools.Method(type, nameof(IEnumerator.MoveNext));
+        }
+
+        [HarmonyPostfix]
+        public static void SetLocalPlayer()
+        {
+            var localPlayer = PlayerControl.LocalPlayer;
+            if (!localPlayer)
+            {
+                CachedPlayer.LocalPlayer = null;
+                return;
+            }
+
+            var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
+            if (cached != null)
+            {
+                CachedPlayer.LocalPlayer = cached;
+            }
+        }
     }
 }

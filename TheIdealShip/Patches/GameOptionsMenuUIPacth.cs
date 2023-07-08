@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Slider = UnityEngine.UI.Slider;
 
 namespace TheIdealShip.Patches;
 
 [HarmonyPatch]
 public static class GameOptionsMenuUIPacth
 {
-    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start)), HarmonyPostfix]
+    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
+    [HarmonyPostfix]
     public static void Start_Postfix()
     {
         var ChatAndSettingsButtonBackground = GameObject.Find("ChatAndSettingsButtonBackground");
@@ -55,10 +51,10 @@ public static class GameOptionsMenuUIPacth
         Text.transform.localPosition += new Vector3(1.6f, 0.9f, Text.transform.localPosition.z); */
 
         var SliderInner = GameObject.Find("GameGroup/SliderInner");
-        for (int i = 0; i < SliderInner.transform.childCount; i++)
+        for (var i = 0; i < SliderInner.transform.childCount; i++)
         {
             var option = SliderInner.transform.GetChild(i);
-            for (int j = 0; j < option.transform.childCount; j++)
+            for (var j = 0; j < option.transform.childCount; j++)
             {
                 var Optionobject = option.transform.GetChild(j);
                 if (Optionobject.name == "Background")

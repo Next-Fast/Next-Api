@@ -1,51 +1,42 @@
-using System.Reflection;
 using System;
-using Il2CppInterop.Runtime.Injection;
+using System.Reflection;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 
 namespace TheIdealShip.Utilities.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class Il2CppRegisterAttribute : Attribute
 {
-    public Type[] Interfaces { get; private set; }
-
     public Il2CppRegisterAttribute()
     {
-        this.Interfaces = Type.EmptyTypes;
+        Interfaces = Type.EmptyTypes;
     }
+
+    public Type[] Interfaces { get; }
 
     public static void Registration(Type type)
     {
-        log.Info("Start Registration","Il2CppRegister");
+        Info("Start Registration", "Il2CppRegister");
 
-            Il2CppRegisterAttribute attribute =
-                CustomAttributeExtensions.GetCustomAttribute<Il2CppRegisterAttribute>(type);
-            if (attribute != null)
-            {
-                registrationForTarget(type, attribute.Interfaces);
-            }
+        var attribute =
+            type.GetCustomAttribute<Il2CppRegisterAttribute>();
+        if (attribute != null) registrationForTarget(type, attribute.Interfaces);
 
-        log.Info("Complete Registration", "Il2CppRegister");
+        Info("Complete Registration", "Il2CppRegister");
     }
 
     private static void registrationForTarget(Type targetType, Type[] interfaces)
     {
-        Type targetBase = targetType.BaseType;
+        var targetBase = targetType.BaseType;
 
         Il2CppRegisterAttribute baseAttribute = null;
 
-        if (targetType != null)
-        {
-            baseAttribute = CustomAttributeExtensions.GetCustomAttribute<Il2CppRegisterAttribute>(targetBase);
-        }
+        if (targetType != null) baseAttribute = targetBase.GetCustomAttribute<Il2CppRegisterAttribute>();
 
-        if (baseAttribute != null)
-        {
-            registrationForTarget(targetBase, baseAttribute.Interfaces);
-        }
+        if (baseAttribute != null) registrationForTarget(targetBase, baseAttribute.Interfaces);
 
-        log.Info($"Registration {targetType}", "Register");
+        Info($"Registration {targetType}", "Register");
 
         if (ClassInjector.IsTypeRegisteredInIl2Cpp(targetType)) return;
 
@@ -62,10 +53,8 @@ public sealed class Il2CppRegisterAttribute : Attribute
         }
         catch (Exception e)
         {
-            string excStr = GeneralExtensions.FullDescription(targetType);
-            log.Error($"Registion Fail!!    Target:{excStr}\n Il2CppError:{e}", "Register");
+            var excStr = targetType.FullDescription();
+            Error($"Registion Fail!!    Target:{excStr}\n Il2CppError:{e}", "Register");
         }
-
     }
-
 }

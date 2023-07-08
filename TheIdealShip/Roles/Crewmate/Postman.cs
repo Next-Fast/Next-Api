@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 
 namespace TheIdealShip.Roles;
 
@@ -7,7 +7,7 @@ public class Postman : RoleBase
     public static SimpleRoleInfo simpleRoleInfo = new
     (
         RoleId.Postman,
-        UnityEngine.Color.blue,
+        Color.blue,
         RoleTeam.Crewmate,
         RoleType.MainRole
     );

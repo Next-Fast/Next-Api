@@ -1,7 +1,6 @@
 ﻿using TheIdealShip.Options;
 using TheIdealShip.Options.OptionValues;
 using TheIdealShip.Utilities.Attributes;
-using UnityEngine;
 
 namespace TheIdealShip.Game.GameModes;
 
@@ -9,10 +8,11 @@ namespace TheIdealShip.Game.GameModes;
 public class GameModeManager
 {
     public static OptionBase GameMode;
+
     public static void CreateOption()
     {
         GameMode = new OptionBase("Game Mode option", 1, optionTab.GameSettings, optionType.String);
-        GameMode.StringOptionValue = new StringOptionValue(new[] {"PropHunter", "ResidentEvil", "BattleRoyale"});
+        GameMode.StringOptionValue = new StringOptionValue(new[] { "PropHunter", "ResidentEvil", "BattleRoyale" });
     }
 }
 

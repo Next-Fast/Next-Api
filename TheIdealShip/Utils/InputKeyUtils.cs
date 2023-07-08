@@ -12,12 +12,13 @@ public static class InputKeyUtils
             Warn($"KeyDown:{keys.Where(k => Input.GetKeyDown(k)).First()} in [{string.Join(",", keys)}]");
             return true;
         }
+
         return false;
     }
 
     public static bool GetKeyDown(KeyCode key)
     {
-        bool has = Input.GetKeyDown(key);
+        var has = Input.GetKeyDown(key);
         Info($"GetKeyDown:{key} : {has} form {MethodUtils.GetClassName()}");
         return has;
     }

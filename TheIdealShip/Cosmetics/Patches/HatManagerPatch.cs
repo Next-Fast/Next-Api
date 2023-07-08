@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HarmonyLib;
-using Innersloth.Assets;
 
 namespace TheIdealShip.Patches;
 
@@ -12,10 +10,11 @@ public static class HatManagerPatch
     public static List<NamePlateViewData> AllCacheNamePlateViewDatas = new();
     public static List<SkinViewData> AllCacheSkinViewDatas = new();
     public static List<VisorViewData> AllCacheVisorViewDatas = new();
-    
+
     public static bool initialized;
-    
-    [HarmonyPatch(nameof(HatManager.Initialize)), HarmonyPostfix]
+
+    [HarmonyPatch(nameof(HatManager.Initialize))]
+    [HarmonyPostfix]
     public static void InitHatCache(HatManager __instance)
     {
         __instance.allHats.Do(n => n.AddToChache());
@@ -27,28 +26,28 @@ public static class HatManagerPatch
 
     public static void AddToChache(this HatData data)
     {
-        AddressableAsset<HatViewData> Asset = data.CreateAddressableAsset();
+        var Asset = data.CreateAddressableAsset();
         if (!Asset.IsLoaded()) Asset.LoadAsync();
         AllCacheHatViewDatas.Add(Asset.GetAsset());
     }
-    
+
     public static void AddToChache(this NamePlateData data)
     {
-        AddressableAsset<NamePlateViewData> Asset = data.CreateAddressableAsset();
+        var Asset = data.CreateAddressableAsset();
         if (!Asset.IsLoaded()) Asset.LoadAsync();
         AllCacheNamePlateViewDatas.Add(Asset.GetAsset());
     }
-    
+
     public static void AddToChache(this VisorData data)
     {
-        AddressableAsset<VisorViewData> Asset = data.CreateAddressableAsset();
+        var Asset = data.CreateAddressableAsset();
         if (!Asset.IsLoaded()) Asset.LoadAsync();
         AllCacheVisorViewDatas.Add(Asset.GetAsset());
     }
-    
+
     public static void AddToChache(this SkinData data)
     {
-        AddressableAsset<SkinViewData> Asset = data.CreateAddressableAsset();
+        var Asset = data.CreateAddressableAsset();
         if (!Asset.IsLoaded()) Asset.LoadAsync();
         AllCacheSkinViewDatas.Add(Asset.GetAsset());
     }

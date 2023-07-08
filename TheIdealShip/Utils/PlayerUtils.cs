@@ -8,12 +8,8 @@ public static class PlayerUtils
     public static PlayerControl GetPlayerForId(byte id)
     {
         foreach (var AP in CachedPlayer.AllPlayers)
-        {
             if (AP.PlayerId == id)
-            {
                 return AP;
-            }
-        }
         return null;
     }
 
@@ -23,18 +19,23 @@ public static class PlayerUtils
         return p;
     }
 
-    public static void setDefaultLook(this PlayerControl target) => target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId, target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+    public static void setDefaultLook(this PlayerControl target)
+    {
+        target.setLook(target.Data.PlayerName, target.Data.DefaultOutfit.ColorId, target.Data.DefaultOutfit.HatId,
+            target.Data.DefaultOutfit.VisorId, target.Data.DefaultOutfit.SkinId, target.Data.DefaultOutfit.PetId);
+    }
 
-    public static void setLook(this PlayerControl target, string playerName, int colorId, string hatId, string visorId, string skinId, string petId)
+    public static void setLook(this PlayerControl target, string playerName, int colorId, string hatId, string visorId,
+        string skinId, string petId)
     {
         target.RawSetColor(colorId);
         target.RawSetHat(hatId, colorId);
         target.RawSetVisor(visorId, colorId);
         target.RawSetName(playerName);
 
-        SkinViewData nextSkin = skinId.GetSkinViewDataById();
+        var nextSkin = skinId.GetSkinViewDataById();
 
-        PlayerPhysics playerPhysics = target.MyPhysics;
+        var playerPhysics = target.MyPhysics;
         AnimationClip clip = null;
         var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
         var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
@@ -46,16 +47,16 @@ public static class PlayerUtils
         if (currentPhysicsAnim == group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
         if (currentPhysicsAnim == group.IdleAnim) clip = nextSkin.IdleAnim;
 
-        float progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        var progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         playerPhysics.myPlayer.cosmetics.skin.skin = nextSkin;
         playerPhysics.myPlayer.cosmetics.skin.UpdateMaterial();
 
-        spriteAnim.Play(clip, 1f);
+        spriteAnim.Play(clip);
         spriteAnim.m_animator.Play("a", 0, progress % 1);
         spriteAnim.m_animator.Update(0f);
 
-        if (target.cosmetics.currentPet) UnityEngine.Object.Destroy(target.cosmetics.currentPet.gameObject);
-        target.cosmetics.currentPet = UnityEngine.Object.Instantiate<PetBehaviour>(petId.GetPetBehaviourById());
+        if (target.cosmetics.currentPet) Object.Destroy(target.cosmetics.currentPet.gameObject);
+        target.cosmetics.currentPet = Object.Instantiate(petId.GetPetBehaviourById());
         target.cosmetics.currentPet.transform.position = target.transform.position;
         target.cosmetics.currentPet.Source = target;
         target.cosmetics.currentPet.Visible = target.Visible;

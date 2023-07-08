@@ -1,53 +1,50 @@
 using HarmonyLib;
-using TheIdealShip.Utilities;
-using Il2CppInterop.Runtime;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
+using UnityEngine;
 
-namespace TheIdealShip.Patches
+namespace TheIdealShip.Patches;
+
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+internal class GameStartManagerUpdatePatch
 {
-    [HarmonyPatch(typeof(GameStartManager),nameof(GameStartManager.Update))]
-    class GameStartManagerUpdatePatch
+    public static void Prefix(GameStartManager __instance)
     {
-        public static void Prefix(GameStartManager __instance)
+        var time = __instance.countDownTimer;
+        if (noGameEnd.getBool())
         {
-            float time = __instance.countDownTimer;
-            if (CustomOptionHolder.noGameEnd.getBool())
-            {
-                __instance.MinPlayers = 1;
-                __instance.countDownTimer = 0;
-            }
-            else
-            {
-                __instance.MinPlayers = 4;
-                __instance.countDownTimer = time;
-            }
+            __instance.MinPlayers = 1;
+            __instance.countDownTimer = 0;
+        }
+        else
+        {
+            __instance.MinPlayers = 4;
+            __instance.countDownTimer = time;
         }
     }
+}
 
-    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
-    class GameStartManagerBeginGamePatch
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
+internal class GameStartManagerBeginGamePatch
+{
+    public static void Prefix()
     {
-        public static void Prefix()
+        if (noGameEnd.getBool() && dummynumber.getSelection() != 0)
         {
-            if (CustomOptionHolder.noGameEnd.getBool() && CustomOptionHolder.dummynumber.getSelection() != 0)
+            var num = dummynumber.getSelection();
+            for (var n = 1; n < num; n++)
             {
-                int num = CustomOptionHolder.dummynumber.getSelection();
-                for (int n = 1; n < num; n++)
-                {
-                    var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-                    var i = playerControl.PlayerId = (byte)GameData.Instance.GetAvailableId();
+                var playerControl = Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
+                var i = playerControl.PlayerId = (byte)GameData.Instance.GetAvailableId();
 
-                    GameData.Instance.AddPlayer(playerControl);
-                    AmongUsClient.Instance.Spawn(playerControl, -2, InnerNet.SpawnFlags.None);
+                GameData.Instance.AddPlayer(playerControl);
+                AmongUsClient.Instance.Spawn(playerControl);
 
-                    playerControl.transform.position = PlayerControl.LocalPlayer.transform.position;
-                    playerControl.GetComponent<DummyBehaviour>().enabled = true;
-                    playerControl.isDummy = true;
-                    playerControl.SetName("假人" + n.ToString());
-                    playerControl.SetColor(i);
+                playerControl.transform.position = PlayerControl.LocalPlayer.transform.position;
+                playerControl.GetComponent<DummyBehaviour>().enabled = true;
+                playerControl.isDummy = true;
+                playerControl.SetName("假人" + n);
+                playerControl.SetColor(i);
 
-                    GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
-                }
+                GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
         }
     }
