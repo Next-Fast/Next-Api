@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
-using TheIdealShip.Utilities.Attribute;
+using TheIdealShip.Utilities.Attributes;
 
 namespace TheIdealShip.UI.Components;
 

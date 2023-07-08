@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Il2CppSystem.Threading.Tasks;
 using TheIdealShip.Utils;
 namespace TheIdealShip.Updates;
 

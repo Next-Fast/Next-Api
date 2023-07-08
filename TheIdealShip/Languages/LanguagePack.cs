@@ -8,6 +8,7 @@ using System.Text.Unicode;
 using AmongUs.Data;
 using TheIdealShip.Manager;
 using csv = TheIdealShip.Languages.LanguageCSV;
+using Exception = System.Exception;
 
 namespace TheIdealShip.Languages;
 
@@ -53,32 +54,6 @@ public class LanguagePack
         var name = lang.Replace("SupportedLangs.", "");
         languageName = name;
         Info("Language:" + name, "Language Pack");
-    }
-
-    // 语言转序号
-    public static int GetLangInt()
-    {
-        var lang = DataManager.Settings.language.CurrentLanguage;
-        return lang switch
-        {
-            SupportedLangs.English => 0,
-            SupportedLangs.Latam => 1,
-            SupportedLangs.Brazilian => 2,
-            SupportedLangs.Portuguese => 3,
-            SupportedLangs.Korean => 4,
-            SupportedLangs.Russian => 5,
-            SupportedLangs.Dutch => 6,
-            SupportedLangs.Filipino => 7,
-            SupportedLangs.French => 8,
-            SupportedLangs.German => 9,
-            SupportedLangs.Italian => 10,
-            SupportedLangs.Japanese => 11,
-            SupportedLangs.Spanish => 12,
-            SupportedLangs.SChinese => 13,
-            SupportedLangs.TChinese => 14,
-            SupportedLangs.Irish => 15,
-            _ => 0
-        };
     }
 
     // 序号转语言英文名
@@ -161,28 +136,19 @@ public class LanguagePack
         language.deserialize(@"Language\" + lang + ".dat");
     }
 
-    public bool deserialize(string path)
-    {
-        try
+    public void deserialize(string path)
+    { 
+        using (var sr = new StreamReader(path, Encoding.GetEncoding("utf-8")))
         {
-            using (var sr = new StreamReader(path, Encoding.GetEncoding("utf-8")))
-            {
-                return deserialize(sr);
-            }
-        }
-        catch (Exception)
-        {
-            return false;
+            deserialize(sr);
         }
     }
 
-    public bool deserialize(StreamReader reader)
+    public void deserialize(StreamReader reader)
     {
-        var result = true;
         try
         {
             string data = "", line;
-
 
             while ((line = reader.ReadLine()) != null)
             {
@@ -192,7 +158,6 @@ public class LanguagePack
                 else
                     data += "," + line;
             }
-
 
             if (!data.Equals(""))
             {
@@ -204,15 +169,11 @@ public class LanguagePack
 
                 var deserialized = JsonSerializer.Deserialize<Dictionary<string, string>>("{ " + data + " }", option);
                 foreach (var entry in deserialized) languageSet[entry.Key] = entry.Value;
-
-                result = true;
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            result = false;
+            Exception(e);
         }
-
-        return result;
     }
 }

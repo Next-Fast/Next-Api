@@ -31,3 +31,11 @@ public static class Language
             pack.Load();
     }
 }
+
+public enum OutputType
+{
+    Csv,
+    Yaml,
+    Json,
+    Txt
+}

@@ -14,26 +14,29 @@ public class OptionBase
     public Color nameColor;
     public optionTab tab;
     public optionType type;
+    public FloatOptionValue FloatOptionValue;
+    public StringOptionValue StringOptionValue;
+    public BooleanOptionValue BooleanOptionValue;
+    public IntOptionValue IntOptionValue;
+    
+    
     public OptionBase
     (
         string name,
         int id,
-        object optionValue,
         optionTab tab,
-        Color color,
         optionType type
     )
     {
         this.name = name;
         this.id = id;
         this.tab = tab;
-        this.nameColor = color;
-        this.optionValue = optionValue;
         this.type = type;
 
         optionInfo = new OptionInfo(name, id, this);
         OptionManager.AllOption.Add(this);
     }
+    
 
     public void AddChildren(OptionInfo info) => optionInfo.AddChildren(info);
     public void RemoveChildren(OptionInfo info) => optionInfo.RemoveChildren(info);

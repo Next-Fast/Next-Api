@@ -4,3 +4,9 @@ public class DownLoadManager
 {
     
 }
+
+public enum DownLoadMode
+{
+    Http,
+    Downloader
+}

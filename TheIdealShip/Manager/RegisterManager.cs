@@ -1,5 +1,5 @@
 using System.Reflection;
-using TheIdealShip.Utilities.Attribute;
+using TheIdealShip.Utilities.Attributes;
 
 namespace TheIdealShip.Manager;
 
@@ -11,6 +11,5 @@ public static class RegisterManager
         Info("Register: Start Registration(开始注册)", filename: "RegisterManager");
 
         foreach (var type in dll.GetTypes()) Il2CppRegisterAttribute.Registration(type);
-        /*             registerList.Do(n => n.Invoke(type)); */
     }
 }

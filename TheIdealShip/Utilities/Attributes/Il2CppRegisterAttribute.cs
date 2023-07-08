@@ -3,10 +3,10 @@ using System;
 using Il2CppInterop.Runtime.Injection;
 using HarmonyLib;
 
-namespace TheIdealShip.Utilities.Attribute;
+namespace TheIdealShip.Utilities.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class Il2CppRegisterAttribute : System.Attribute
+public sealed class Il2CppRegisterAttribute : Attribute
 {
     public Type[] Interfaces { get; private set; }
 

@@ -14,6 +14,7 @@ using TheIdealShip.Languages;
 using TheIdealShip.Patches;
 using TheIdealShip.Manager;
 using TheIdealShip.UI.Components;
+using UnityEngine;
 
 [assembly: AssemblyFileVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
 [assembly: AssemblyInformationalVersionAttribute(TheIdealShip.TheIdealShipPlugin.VersionString)]
@@ -27,6 +28,8 @@ namespace TheIdealShip
         public const string AmongUsVersion = "2023.6.13";
         // 模组名称
         public const string ModName = "The Ideal Ship";
+        // 模组主颜色
+        public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
         // 模组id
         public const string Id = "me.huier.TheIdealShip";
         // 模组版本
@@ -53,6 +56,7 @@ namespace TheIdealShip
         public override void Load()
         {
             TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
+            BepInEx.ConsoleManager.SetConsoleTitle(ModName + "game");
             Instance = this;
             Harmony.PatchAll();
 

@@ -4,12 +4,14 @@ public class StringOptionValue : OptionValue<int>
 {
     public string[] Selection;
     public string StringValue;
+    public bool EnableTranslation;
     public StringOptionValue((int, int, int, int) tuple) : base(tuple)
     {
     }
 
-    public StringOptionValue(string[] selection, int defaultValue, int min = 0, int step = 1 , int max = 0) : base(defaultValue, min, step, max)
+    public StringOptionValue(string[] selection, int defaultValue = 0, int min = 0, int step = 1 , int max = 0, bool enableTranslation = true) : base(defaultValue, min, step, max)
     {
+        EnableTranslation = enableTranslation;
         Selection = selection;
         max = selection.Length;
         StringValue = selection[defaultValue];
