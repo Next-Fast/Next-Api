@@ -47,7 +47,7 @@ public static class RPCHelpers
             foreach (var str in strings)
                 rpcStart.Write(str);
 
-        //        SendValueLength(bytes.Length, ints.Length, bools.Length, floats.Length, strings.Length);
+        SendValueLength(bytes.Length, ints.Length, bools.Length, floats.Length, strings.Length);
 
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }

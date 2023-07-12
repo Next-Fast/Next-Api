@@ -11,8 +11,8 @@ public static class ChatCommands
     {
         public static bool Prefix(ChatController __instance)
         {
-            __instance.TimeSinceLastMessage = 3f;
-            var text = __instance.TextArea.text;
+            __instance.timeSinceLastMessage = 3f;
+            var text = __instance.freeChatField.Text;
             var args = text.Split(' ');
             var canceled = false;
             var cancelVal = "";
@@ -46,9 +46,8 @@ public static class ChatCommands
 
             if (canceled)
             {
-                __instance.TextArea.Clear();
-                __instance.TextArea.SetText(cancelVal);
-                __instance.quickChatMenu.ResetGlyphs();
+                __instance.freeChatField.Clear();
+                __instance.freeChatField.textArea.SetText(cancelVal);
             }
 
             return !canceled;

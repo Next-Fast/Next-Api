@@ -30,9 +30,9 @@ public static class LoveChatPatch
     public static bool LoverSenndChat_Prefix(ChatController __instance)
     {
         if (__instance.name != "LoveChat") return true;
-        var text = __instance.TextArea.text;
+        var text = __instance.freeChatField.textArea.text;
         RPCProcedure.LoverSendChat(PlayerControl.LocalPlayer, text, true);
-        __instance.TextArea.Clear();
+        __instance.freeChatField.textArea.Clear();
         return false;
     }
 
@@ -68,7 +68,7 @@ public static class LoveChatPatch
     {
         var data = PlayerControl.LocalPlayer.Data;
         var data2 = sourcePlayer.Data;
-        var chatBubble = __instance.chatBubPool.Get<ChatBubble>();
+        var chatBubble = __instance.chatBubblePool.Get<ChatBubble>();
         chatBubble.transform.SetParent(__instance.scroller.Inner);
         chatBubble.transform.localScale = Vector3.one;
         var flag = sourcePlayer == PlayerControl.LocalPlayer;
@@ -84,7 +84,7 @@ public static class LoveChatPatch
         chatBubble.AlignChildren();
         __instance.AlignAllBubbles();
         if (!flag)
-            SoundManager.Instance.PlaySound(__instance.MessageSound, false).pitch = 0.5f + sourcePlayer.PlayerId / 15f;
+            SoundManager.Instance.PlaySound(__instance.messageSound, false).pitch = 0.5f + sourcePlayer.PlayerId / 15f;
     }
 
     private static bool CheckForModification(ChatController __instance, PlayerControl sourcePlayer, string chatText)

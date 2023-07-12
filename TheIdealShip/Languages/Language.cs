@@ -1,3 +1,5 @@
+global using static TheIdealShip.Languages.Language;
+
 using System.Collections.Generic;
 using System.IO;
 using csv = TheIdealShip.Languages.LanguageCSV;

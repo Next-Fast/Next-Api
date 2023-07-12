@@ -1,4 +1,4 @@
-namespace TheIdealShip.Options.OptionValues;
+namespace TheIdealShip.Options;
 
 public abstract class OptionValue<T>
 {

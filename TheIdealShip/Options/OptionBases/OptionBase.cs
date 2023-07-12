@@ -1,41 +1,65 @@
 using System.Collections.Generic;
-using TheIdealShip.Options.OptionValues;
 using UnityEngine;
 
 namespace TheIdealShip.Options;
 
-public class OptionBase
+public abstract class OptionBase
 {
-    public BooleanOptionValue BooleanOptionValue;
-    public FloatOptionValue FloatOptionValue;
     public int id;
-    public IntOptionValue IntOptionValue;
-    public string name;
+    public string StringId;
+    public string Title;
     public Color nameColor;
     public OptionInfo optionInfo;
-    public object optionValue;
-    public StringOptionValue StringOptionValue;
     public optionTab tab;
     public optionType type;
+    public OptionBehaviour OptionBehaviour;
+    public bool EnableTranslation;
+    public object OptionValue;
 
 
     public OptionBase
     (
-        string name,
+        string Title,
         int id,
         optionTab tab,
-        optionType type
+        optionType type,
+        bool Translation = true
     )
     {
-        this.name = name;
+        this.Title = Title;
         this.id = id;
         this.tab = tab;
         this.type = type;
+        EnableTranslation = Translation;
 
-        optionInfo = new OptionInfo(name, id, this);
+        optionInfo = new OptionInfo(Title, StringId,id, this);
         OptionManager.AllOption.Add(this);
     }
 
+    public OptionBase
+    (
+        string Title,
+        string stringId,
+        optionTab tab,
+        optionType type,
+        bool Translation = true
+    )
+    {
+        this.Title = Title;
+        this.tab = tab;
+        this.type = type;
+        StringId = stringId;
+        EnableTranslation = Translation;
+
+        optionInfo = new OptionInfo(Title, StringId, id, this);
+        OptionManager.AllOption.Add(this);
+    }
+
+    public void SetId(int Id = -1, string stringId = "")
+    {
+        id = Id;
+        StringId = stringId;
+    }
 
     public void AddChildren(OptionInfo info)
     {
@@ -51,6 +75,18 @@ public class OptionBase
     {
         optionInfo.setParent(info);
     }
+
+    public abstract void Increase();
+
+    public abstract void Decrease();
+    public abstract void GetValue();
+    public abstract void GetValueString();
+
+    public string GetTitleString()
+    {
+        if (EnableTranslation) return GetString(Title);
+        return Title;
+    }
 }
 
 public class OptionInfo : IOptionInfo
@@ -58,6 +94,7 @@ public class OptionInfo : IOptionInfo
     public OptionInfo
     (
         string Name,
+        string stringId,
         int Id,
         OptionBase optionBase,
         int Hierarchy = 0,
@@ -66,6 +103,7 @@ public class OptionInfo : IOptionInfo
     )
     {
         optionName = Name;
+        this.stringId = stringId;
         optionId = Id;
         option = optionBase;
         hierarchy = Hierarchy;
@@ -76,6 +114,7 @@ public class OptionInfo : IOptionInfo
 
     public bool enable { get; set; }
     public string optionName { get; }
+    public string stringId { get; }
     public int optionId { get; }
     public int hierarchy { get; }
     public OptionInfo parent { get; set; }
@@ -109,6 +148,7 @@ public enum optionTab
 
 public enum optionType
 {
+    none,
     Boolean,
     Float,
     String,

@@ -1,6 +1,6 @@
 using System;
 
-namespace TheIdealShip.Options.OptionValues;
+namespace TheIdealShip.Options;
 
 public class IntOptionValue : OptionValue<int>
 {
