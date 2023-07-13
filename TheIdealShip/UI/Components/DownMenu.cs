@@ -10,5 +10,6 @@ public class DownMenu : MonoBehaviour
 
     public void Start()
     {
+        gameObject.AddComponent<DropdownButton>();
     }
 }

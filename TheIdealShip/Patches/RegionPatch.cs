@@ -19,7 +19,6 @@ public static class RegionMenuOpenPatch
     private static GameObject shangButton;
     private static GameObject xiaButton;
     private static readonly Vector3 pos = new(3f, 2.5f, -100f);
-    private static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     public static void Postfix(RegionMenu __instance)
     {
@@ -39,7 +38,7 @@ public static class RegionMenuOpenPatch
             xiaButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
             xiaButtontext.SetText("下一页");
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => xiaButtontext.SetText("下一页"))));
-            xiaButton.gameObject.SetActive(!(serverManager.AvailableRegions.Count <= 6));
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
 
             void ClearAllButtonVoid()
             {
@@ -66,7 +65,7 @@ public static class RegionMenuOpenPatch
             shangButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
             shangButtontext.SetText("上一页");
             __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => shangButtontext.SetText("上一页"))));
-            xiaButton.gameObject.SetActive(!(serverManager.AvailableRegions.Count <= 6));
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
 
             void ClearAllButtonVoid()
             {
@@ -83,33 +82,6 @@ public static class RegionMenuOpenPatch
 
         if (shangButton.transform.position != pos - new Vector3(0.6f, 3f, 0f))
             shangButton.transform.position = pos - new Vector3(0.6f, 3f, 0f);
-    }
-
-    public static void autoAddServer()
-    {
-        IRegionInfo[] regionInfos =
-        {
-            createHttp("au-sh.pafyx.top", "梦服上海(新)", 22000, false),
-            createHttp("au-as.duikbo.at", "Modded Asia (MAS)", 443, true),
-            createHttp("www.aumods.xyz", "Modded NA (MNA)", 443, true),
-            createHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true)
-        };
-
-        if (!TheIdealShipPlugin.isChinese) regionInfos.ToList().RemoveAt(0);
-
-        foreach (var r in regionInfos)
-        {
-            if (serverManager.AvailableRegions.Contains(r)) continue;
-            serverManager.AddOrUpdateRegion(r);
-        }
-    }
-
-    public static IRegionInfo createHttp(string ip, string name, ushort port, bool ishttps)
-    {
-        var serverIp = ishttps ? "https://" : "http://" + ip;
-        var serverInfo = new ServerInfo(name, serverIp, port, false);
-        ServerInfo[] ServerInfo = { serverInfo };
-        return new StaticHttpRegionInfo(name, StringNames.NoTranslation, ip, ServerInfo).CastFast<IRegionInfo>();
     }
 }
 

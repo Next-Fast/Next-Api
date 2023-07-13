@@ -58,6 +58,7 @@ public class TheIdealShipPlugin : BasePlugin
     public static Dictionary<byte, RoleId> PlayerAndRoleIdDic = new();
 
     public static UpdateTask updateTask;
+    public static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色
     public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
@@ -75,7 +76,7 @@ public class TheIdealShipPlugin : BasePlugin
 
         CustomOptionHolder.Load();
         FilesManager.Init();
-        RegionMenuOpenPatch.autoAddServer();
+        ServerPath.autoAddServer();
 
         RegisterManager.Registration(Assembly.GetAssembly(GetType()));
         /*updateTask = AddComponent<UpdateTask>();*/
