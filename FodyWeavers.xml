@@ -3,7 +3,6 @@
     <IncludeAssemblies>
       Csv
       Downloader
-      Reactor
     </IncludeAssemblies>
   </Costura>
 </Weavers>
