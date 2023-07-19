@@ -30,21 +30,21 @@ public static class PingUtils
             stringB.AppendLine(string.Format("往返时间: {0} ", reply.RoundtripTime));
         }
 
-        return new PingInfo(reply.Address.ToString(), reply.Options.Ttl.ToString(), reply.Buffer.Length.ToString(),
-            reply.RoundtripTime.ToString(), stringB);
+        return new PingInfo(reply.Address.ToString(), reply.Options.Ttl, reply.Buffer.Length,
+            reply.RoundtripTime, stringB);
     }
 }
 
 public class PingInfo
 {
     public string ip;
-    public string pingTime;
-    public string roundTripTime;
-    public string size;
+    public int pingTime;
+    public int size;
+    public long roundTripTime;
     public StringBuilder stringB;
 
     public PingInfo
-        (string ip, string pingTime, string size = "", string roundTripTime = "", StringBuilder stringB = null)
+        (string ip, int pingTime, int size = -1, long roundTripTime = -1, StringBuilder stringB = null)
     {
         this.ip = ip;
         this.pingTime = pingTime;

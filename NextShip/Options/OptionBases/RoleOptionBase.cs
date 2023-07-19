@@ -12,22 +12,25 @@ public class RoleOptionBase : OptionBase
 
     public override void Increase()
     {
-        throw new System.NotImplementedException();
     }
 
     public override void Decrease()
     {
-        throw new System.NotImplementedException();
     }
 
-    public override void GetValue()
+    public override int GetInt()
     {
-        throw new System.NotImplementedException();
+        return 1;
     }
 
-    public override void GetValueString()
+    public override float GetFloat()
     {
-        throw new System.NotImplementedException();
+        return 1f;
+    }
+
+    public override string GetValueString()
+    {
+        return "";
     }
 
     public override RoleOptionBase GetBase() => this;

@@ -4,16 +4,25 @@ public class StringOptionBase : OptionBase
 {
     public string[] Selection;
     public string StringValue;
-    
-    public bool EnableTranslation;
+    public IntOptionValue IntOptionValue;
 
-    public StringOptionBase(string name, int id, string stringId, optionTab tab) : base(name, id, tab, optionType.String)
+    public bool StringTranslation;
+
+    public StringOptionBase(string name, int id, string[] selection, optionTab tab) : base(name, id, tab, optionType.String)
     {
-        base.StringId = stringId;
+        IntOptionValue = new IntOptionValue(0, 0, 1, selection.Length);
+        Selection = selection;
     }
-    
-    public override void GetValue()
-    {}
+
+    public override int GetInt()
+    {
+        return IntOptionValue.GetValue();
+    }
+
+    public override float GetFloat()
+    {
+        return 1f;
+    }
 
     public override void Increase()
     {
@@ -25,9 +34,9 @@ public class StringOptionBase : OptionBase
         
     }
 
-    public override void GetValueString()
+    public override string GetValueString()
     {
-        
+        return Selection[IntOptionValue.GetValue()];
     }
 
     public override StringOptionBase GetBase() => this;

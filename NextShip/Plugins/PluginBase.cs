@@ -25,6 +25,7 @@ public abstract class ShipPlugin
     public abstract void Load();
 }
 
+[AttributeUsage(AttributeTargets.Class)]
 public sealed class ShipPluginInfo : Attribute
 {
     public string Id { get;  }

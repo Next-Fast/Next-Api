@@ -14,7 +14,6 @@ public abstract class OptionBase
     public optionType type;
     public OptionBehaviour OptionBehaviour;
     public bool EnableTranslation;
-    public object OptionValue;
 
 
     public OptionBase
@@ -79,8 +78,9 @@ public abstract class OptionBase
     public abstract void Increase();
 
     public abstract void Decrease();
-    public abstract void GetValue();
-    public abstract void GetValueString();
+    public abstract int GetInt();
+    public abstract float GetFloat();
+    public abstract string GetValueString();
     public abstract OptionBase GetBase();
 
     public string GetTitleString()
