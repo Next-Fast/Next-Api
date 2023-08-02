@@ -33,6 +33,7 @@ public class BooleanOptionBase : OptionBase
 
     public override float GetFloat()
     {
+        return 0;
     }
 
     public override string GetValueString()

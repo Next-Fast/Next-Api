@@ -39,12 +39,17 @@ public static class ServerPath
     [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion)), HarmonyPrefix]
     public static bool ConstantsGetBroadcastVersionPatch(ref int __result)
     {
-        if (!Main.serverManager.CurrentRegion.IsVanilla()) return true;
+        if (!CurrentVanillaServer) return true;
 
         __result = Constants.GetVersion(2222, 0, 0, 0);
         return false;
     }
 
-    public static bool IsVanilla(this IRegionInfo regionInfo) => 
+    private static bool IsVanilla(this IRegionInfo regionInfo) => 
         regionInfo.TranslateName is StringNames.ServerAS or StringNames.ServerEU or StringNames.ServerNA or StringNames.ServerSA;
+    
+    public static bool CurrentVanillaServer
+    {
+        get { return Main.serverManager.CurrentRegion.IsVanilla(); }
+    }
 }

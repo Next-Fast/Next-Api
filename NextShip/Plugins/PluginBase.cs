@@ -2,30 +2,23 @@
 
 namespace NextShip.Plugins;
 
-public abstract class ShipPlugin
+[AttributeUsage(AttributeTargets.Class)]
+public abstract class ShipPlugin : Attribute
 {
-    public string Id { get;  }
-    public Version Version { get; }
-    public string Name { get; }
-    
+    public ShipPluginInfo ShipPluginInfo;
     public ShipPlugin(ShipPluginInfo pluginInfo)
     {
-        Id = pluginInfo.Id;
-        Version = pluginInfo.Version;
-        Name = pluginInfo.Name;
+        ShipPluginInfo = pluginInfo;
     }
     
     public ShipPlugin(string Id, Version Version, string Name)
     {
-        this.Id = Id;
-        this.Version = Version;
-        this.Name = Name;
+        ShipPluginInfo = new ShipPluginInfo(Id, Version, Name);
     }
     
     public abstract void Load();
 }
 
-[AttributeUsage(AttributeTargets.Class)]
 public sealed class ShipPluginInfo : Attribute
 {
     public string Id { get;  }

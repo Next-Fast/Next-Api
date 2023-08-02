@@ -24,6 +24,10 @@ public static class RoleManager
 
     public static RoleBase GetRole(this PlayerControl player)
     {
-        return AllRoleBase.Where(n => n.Player == player).FirstOrDefault();
+        return AllRoleBase.FirstOrDefault(n => n.Player == player);
+    }
+
+    public static void Clear()
+    {
     }
 }
