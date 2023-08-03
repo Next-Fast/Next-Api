@@ -1,5 +1,7 @@
-TheIdealShip/obj/
-TheIdealShip/bin/
+*/obj/
+*/bin/
+*/.idea/
+*/.vs/
 .vs/
 .vscode/
 .idea/

@@ -1,4 +1,4 @@
-var target = Argument("target", "Build");
+/* var target = Argument("target", "Build");
 
 var buildId = EnvironmentVariable("GITHUB_RUN_NUMBER");
 
@@ -31,4 +31,4 @@ Task("Build")
     }
 });
 
-RunTarget(target);
+RunTarget(target); */

@@ -3,11 +3,14 @@ name: Build-Release
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'Build-Release.yml'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    if: ${{ github.repository_owner == 'TheIdealShipAU' }}
     steps:
       - uses: actions/cache@v2
         with:
@@ -17,18 +20,33 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
       - uses: actions/checkout@v2
         with:
           submodules: true
+
+      - name: Collect build info
+        id: info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let version = "0.5.0";
+            core.setOutput(ReleaseVersion, version);
 
       - name: install wget
         run: sudo apt install wget
 
       - name: download BepInEx
-        run: wget https://builds.bepinex.dev/projects/bepinex_be/668/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668%2B46e297f.zip
+        run: wget https://builds.bepinex.dev/projects/bepinex_be/672/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.672%2B472e950.zip
 
       - name: BepInEx
-        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.668+46e297f.zip -d ./TheIdealShipRelease/
+        run: unzip BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.672+422e950.zip -d ./TheIdealShipRelease/
+
+      - name: download reactor
+        run: wget https://github.com/NuclearPowered/Reactor/releases/download/2.2.0/Reactor.dll
+
+      - name: mover reactor
+        run: mv ./Reactor.dll ./TheIdealShipRelease/BepInEx/plugins/
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
@@ -41,6 +59,12 @@ jobs:
       - name: path
         run: sudo chmod -R 777 ./TheIdealShipRelease
 
+      - name: zip dll
+        run: zip TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip TheIdealShip/bin/Release/net6.0/TheIdealShip.dll
+
+      - name: upload dll to alist
+        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.dll.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4Njg3NjM3MCwibmJmIjoxNjg2NzAzNTcwLCJpYXQiOjE2ODY3MDM1NzB9.m_u9uKnoFDTo9f0c6Ida3iostaJs2Vc2g0myHoqiY_k'"
+
       - name: upload TheIdealShip
         uses: actions/upload-artifact@v3
         with:
@@ -49,6 +73,12 @@ jobs:
 
       - name: move
         run: mv TheIdealShip/bin/Release/net6.0/TheIdealShip.dll ./TheIdealShipRelease/BepInEx/plugins/
+
+      - name: zip Release
+        run: zip TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip ./TheIdealShipRelease
+
+      - name: upload dll to alist
+        run: "curl -X 'PUT' 'pan.pafyx.top/api/fs/form'  -H 'File-Path: /TIS_Release/TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -F file='@TheIdealShip_${{ steps.info.outputs.ReleaseVersion }}.zip' -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRJUyIsImV4cCI6MTY4Njg3NjM3MCwibmJmIjoxNjg2NzAzNTcwLCJpYXQiOjE2ODY3MDM1NzB9.m_u9uKnoFDTo9f0c6Ida3iostaJs2Vc2g0myHoqiY_k'"
 
       - name: upload TheIdealShip
         uses: actions/upload-artifact@v3

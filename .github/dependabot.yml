@@ -1,4 +1,4 @@
-version: 2
+﻿version: 2
 updates:
   # Enable version updates for npm
   - package-ecosystem: "nuget"
@@ -6,10 +6,10 @@ updates:
     directory: "/"
     # Check the npm registry for updates every day (weekdays)
     schedule:
-      interval: "monthly"
+      interval: "daily"
       time: "17:00"
       timezone: "Asia/Shanghai"
     labels:
       - "Update dependency"
-    target-branch: "dependency"
+    target-branch: "develop"
     open-pull-requests-limit: 10

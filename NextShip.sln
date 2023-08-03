@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextShip", "NextShip\NextShip.csproj", "{EBB2EAFD-92C6-4FC0-9C0B-78923A49CD2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBB2EAFD-92C6-4FC0-9C0B-78923A49CD2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBB2EAFD-92C6-4FC0-9C0B-78923A49CD2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBB2EAFD-92C6-4FC0-9C0B-78923A49CD2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBB2EAFD-92C6-4FC0-9C0B-78923A49CD2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
