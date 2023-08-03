@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using NextShip.Languages;
 using NextShip.Manager;
+using NextShip.Options;
 using NextShip.Patches;
 using NextShip.UI.Components;
 using NextShip.Utilities.Attributes;
@@ -47,11 +49,14 @@ public class Main : BasePlugin
     public const string QQNumber = "815101721";
 
     // 模组构建时间
-/*         public static string BuildTime = "2023.3.8"; */
+    public static string BuildTime = "2023.3.8";
+    
     // 是否为开发版本
     public static bool IsDev = true;
+    
     public static bool isCn;
     public static bool isChinese;
+    
     public static Version Version = Version.Parse(VersionString);
     public static ManualLogSource TISLog;
     public static Main Instance;
@@ -82,9 +87,9 @@ public class Main : BasePlugin
         RegisterManager.Registration(Assembly.GetAssembly(GetType()));
         InitAttribute.Start();
         updateTask = AddComponent<UpdateTask>();
-
-        Language.Init();
-        LanguagePack.Init();
+        updateTask.Start();
+        
+        StartTask(new []{OptionManager.Load, Init, LanguagePack.Init});
     }
 
 
@@ -103,5 +108,14 @@ public class Main : BasePlugin
         Info($"IsChinese:{isChinese.ToString()}", "Const");
         Info($"Support Among Us Version {AmongUsVersion}", "Info");
         Info($"欢迎游玩{ModName}\nWelcome to{ModName}", "Info");
+    }
+
+    public static void StartTask(Action[] actions)
+    {
+        foreach (var action in actions)
+        {
+            Task task = new Task(action);
+            task.Start();
+        }
     }
 }

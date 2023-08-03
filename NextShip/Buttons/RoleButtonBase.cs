@@ -1,5 +1,10 @@
 ﻿namespace NextShip.Buttons;
 
-public class RoleButtonBase
+public abstract class RoleButton : ButtonBase
 {
+    protected RoleButton()
+    {
+        Create();
+    }
+    
 }

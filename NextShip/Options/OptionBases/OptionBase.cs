@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NextShip.Options;
@@ -26,12 +28,12 @@ public abstract class OptionBase
     )
     {
         this.Title = Title;
-        this.id = id;
+        this.id = GetId(id);
         this.tab = tab;
         this.type = type;
         EnableTranslation = Translation;
 
-        optionInfo = new OptionInfo(Title, StringId,id, this);
+        optionInfo = new OptionInfo(Title, String.Empty, id, this);
         OptionManager.AllOption.Add(this);
     }
 
@@ -52,6 +54,22 @@ public abstract class OptionBase
 
         optionInfo = new OptionInfo(Title, StringId, id, this);
         OptionManager.AllOption.Add(this);
+    }
+
+    public int GetId(int Id)
+    {
+        if (Id != -1)
+        {
+            return id;
+        }
+
+        var optionid = 0;
+        while (OptionManager.AllOption.FirstOrDefault(n => n.id == optionid) != null)
+        {
+            optionid += 1;
+        }
+
+        return optionid;
     }
 
     public void SetId(int Id = -1, string stringId = "")
@@ -78,6 +96,7 @@ public abstract class OptionBase
     public abstract void Increase();
 
     public abstract void Decrease();
+
     public abstract int GetInt();
     public abstract float GetFloat();
     public abstract string GetValueString();
@@ -153,5 +172,6 @@ public enum optionType
     Boolean,
     Float,
     String,
-    Int
+    Int,
+    Role
 }

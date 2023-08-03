@@ -12,6 +12,7 @@ public class StringOptionBase : OptionBase
     {
         IntOptionValue = new IntOptionValue(0, 0, 1, selection.Length);
         Selection = selection;
+        OptionManager.AllStringOption.Add(this);    
     }
 
     public override int GetInt()
@@ -21,23 +22,18 @@ public class StringOptionBase : OptionBase
 
     public override float GetFloat()
     {
-        return 1f;
+        return IntOptionValue.GetValue();
     }
-
-    public override void Increase()
-    {
-        
-    }
-
-    public override void Decrease()
-    {
-        
-    }
+    
 
     public override string GetValueString()
     {
         return Selection[IntOptionValue.GetValue()];
     }
+    
+    public override void Increase() => IntOptionValue.increase();
+
+    public override void Decrease() => IntOptionValue.decrease();
 
     public override StringOptionBase GetBase() => this;
 }

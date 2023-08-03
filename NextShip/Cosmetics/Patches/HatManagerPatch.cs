@@ -37,6 +37,7 @@ public static class HatManagerPatch
             initialized = false;
         }
     }
+    
 
     public static void AddToChache(this HatData data)
     {

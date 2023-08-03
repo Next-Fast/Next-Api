@@ -1,38 +1,17 @@
 namespace  NextShip.Options;
 
-public class RoleOptionBase : OptionBase
+public class RoleOptionBase : StringOptionBase
 {
-    public RoleOptionBase(string Title, int id, optionTab tab, optionType type, bool Translation = true) : base(Title, id, tab, type, Translation)
+    public static string[] defaultChances = new []{ "0% ", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
+    public RoleOptionBase(string name, int id, optionTab tab, string[] chances = null) : base(name, id, defaultChances, tab)
     {
+        type = optionType.Role;
+        if (chances != null)
+        {
+            Selection = chances;
+        }
+        OptionManager.AllRoleOption.Add(this);    
     }
-
-    public RoleOptionBase(string Title, string stringId, optionTab tab, optionType type, bool Translation = true) : base(Title, stringId, tab, type, Translation)
-    {
-    }
-
-    public override void Increase()
-    {
-    }
-
-    public override void Decrease()
-    {
-    }
-
-    public override int GetInt()
-    {
-        return 1;
-    }
-
-    public override float GetFloat()
-    {
-        return 1f;
-    }
-
-    public override string GetValueString()
-    {
-        return "";
-    }
-
     public override RoleOptionBase GetBase() => this;
 }
 

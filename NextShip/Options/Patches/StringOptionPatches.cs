@@ -13,10 +13,10 @@ public class StringOptionPatches
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 
-            /*__instance.OnValueChanged = null;
+            __instance.OnValueChanged = null;
             __instance.TitleText.text = option.GetTitleString();
-            __instance.Value = __instance.oldValue = option.GetValue();
-            __instance.ValueText.text = option.GetValueString();*/
+            __instance.Value = __instance.oldValue = option.GetInt();
+            __instance.ValueText.text = option.GetValueString();
 
             return false;
         }

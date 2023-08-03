@@ -1,4 +1,5 @@
-﻿using NextShip.Utilities.Attributes;
+﻿using NextShip.Options;
+using NextShip.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.Roles;
@@ -16,10 +17,12 @@ public class Postman : RoleBase
 
     public Postman(PlayerControl player) : base(player)
     {
+        SimpleRoleInfo = simpleRoleInfo;
     }
     
     [OptionLoad]
     public static void OptionLoad()
     {
+        RoleOptionBase Postman = new RoleOptionBase(simpleRoleInfo.name, -1, optionTab.Crewmate);
     }
 }

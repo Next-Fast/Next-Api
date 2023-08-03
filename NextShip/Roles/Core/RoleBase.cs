@@ -14,7 +14,6 @@ public abstract class RoleBase : IDisposable
         HasTask = true;
 
         Player = player;
-        SimpleRoleInfo.setBase(this);
 
         RoleManager.AllRoleBase.Add(this);
     }

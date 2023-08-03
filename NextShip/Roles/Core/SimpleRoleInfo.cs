@@ -52,11 +52,7 @@ public class SimpleRoleInfo
         this.roleIntId = roleIntId;
         this.color = color;
     }
-
-    public void setBase(RoleBase roleBase)
-    {
-        this.roleBase = roleBase;
-    }
+    
     
     public bool CreateInstance(PlayerControl player)
     {

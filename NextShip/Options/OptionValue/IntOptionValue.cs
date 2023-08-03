@@ -4,9 +4,7 @@ namespace NextShip.Options;
 
 public class IntOptionValue : OptionValue<int>
 {
-    public IntOptionValue((int, int, int, int) tuple) : base(tuple)
-    {
-    }
+
 
     public IntOptionValue(int defaultValue, int min, int step, int max) : base(defaultValue, min, step, max)
     {

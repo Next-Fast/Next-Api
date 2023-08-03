@@ -2,6 +2,8 @@ using AmongUs.Data;
 using HarmonyLib;
 using NextShip.RPC;
 using NextShip.Utilities;
+using Steamworks;
+using TMPro;
 using UnityEngine;
 
 namespace NextShip.Patches;
@@ -69,8 +71,9 @@ public static class LoveChatPatch
         var data = PlayerControl.LocalPlayer.Data;
         var data2 = sourcePlayer.Data;
         var chatBubble = __instance.chatBubblePool.Get<ChatBubble>();
-        chatBubble.transform.SetParent(__instance.scroller.Inner);
-        chatBubble.transform.localScale = Vector3.one;
+        var transform = chatBubble.transform;
+        transform.SetParent(__instance.scroller.Inner);
+        transform.localScale = Vector3.one;
         var flag = sourcePlayer == PlayerControl.LocalPlayer;
         if (flag)
             chatBubble.SetRight();
