@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HarmonyLib;
 using NextShip.Utilities.Attributes;
 
 namespace NextShip.Options;
@@ -16,7 +17,24 @@ public static class OptionManager
     public static void Load()
     {
         OptionLoad.StartOptionLoad();
+        Check();
     }
-    
-    
+
+    public static void Check()
+    {
+        var e = new List<int>();
+        AllOption.Do(check);
+
+        void check(OptionBase @base)
+        {
+            if (e.Contains(@base.id))
+            {
+                Warn($"选项id冲突 id: {@base.id} name: {@base.Title}");
+            }
+            else
+            {
+                e.Add(@base.id);
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@ public class FloatOptionBase : OptionBase
     public FloatOptionBase(string Title, int id, optionTab tab, FloatOptionValue floatOptionValue, bool Translation = true) : base(Title, id, tab, optionType.Float, Translation)
     {
         _floatOptionValue = floatOptionValue;
+        OptionManager.AllFloatOption.Add(this);
     }
     
 
