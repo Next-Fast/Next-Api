@@ -15,14 +15,12 @@ public class Postman : RoleBase
         RoleType.MainRole
     );
 
-    public Postman(PlayerControl player) : base(player)
+    public Postman(PlayerControl player) : base(player, simpleRoleInfo)
     {
-        SimpleRoleInfo = simpleRoleInfo;
     }
-    
+
     [OptionLoad]
     public static void OptionLoad()
     {
-        RoleOptionBase Postman = new RoleOptionBase(simpleRoleInfo.name, -1, optionTab.Crewmate);
     }
 }

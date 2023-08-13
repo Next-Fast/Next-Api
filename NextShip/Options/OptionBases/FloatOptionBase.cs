@@ -4,17 +4,25 @@ namespace NextShip.Options;
 
 public class FloatOptionBase : OptionBase
 {
-    private FloatOptionValue _floatOptionValue;
-    public FloatOptionBase(string Title, int id, optionTab tab, FloatOptionValue floatOptionValue, bool Translation = true) : base(Title, id, tab, optionType.Float, Translation)
+    private readonly FloatOptionValue _floatOptionValue;
+
+    public FloatOptionBase(string Title, int id, optionTab tab, FloatOptionValue floatOptionValue,
+        bool Translation = true) : base(Title, id, tab, optionType.Float, Translation)
     {
         _floatOptionValue = floatOptionValue;
         OptionManager.AllFloatOption.Add(this);
     }
-    
 
-    public override void Increase() => _floatOptionValue.increase();
 
-    public override void Decrease() => _floatOptionValue.decrease();
+    public override void Increase()
+    {
+        _floatOptionValue.increase();
+    }
+
+    public override void Decrease()
+    {
+        _floatOptionValue.decrease();
+    }
 
     public override int GetInt()
     {
@@ -31,5 +39,8 @@ public class FloatOptionBase : OptionBase
         return _floatOptionValue.GetValue().ToString(CultureInfo.CurrentCulture);
     }
 
-    public override OptionBase GetBase() => this;
+    public override OptionBase GetBase()
+    {
+        return this;
+    }
 }

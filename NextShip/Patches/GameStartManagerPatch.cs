@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NextShip.Patches;
 
-[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+/*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
 internal class GameStartManagerUpdatePatch
 {
     public static void Prefix(GameStartManager __instance)
@@ -20,14 +20,14 @@ internal class GameStartManagerUpdatePatch
             __instance.countDownTimer = time;
         }
     }
-}
+}*/
 
 [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
 internal class GameStartManagerBeginGamePatch
 {
     public static void Prefix()
     {
-        if (noGameEnd.getBool() && dummynumber.getSelection() != 0)
+        /*if (noGameEnd.getBool() && dummynumber.getSelection() != 0)
         {
             var num = dummynumber.getSelection();
             for (var n = 1; n < num; n++)
@@ -46,6 +46,6 @@ internal class GameStartManagerBeginGamePatch
 
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
-        }
+        }*/
     }
 }

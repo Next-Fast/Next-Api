@@ -9,16 +9,16 @@ namespace NextShip.Listeners;
 [AttributeUsage(AttributeTargets.Method)]
 public class GameEventListener : Attribute
 {
-    public static List<MethodInfo> AllEventMethodInfos = new List<MethodInfo>();
+    public static List<MethodInfo> AllEventMethodInfos = new();
 
-    public GameEventListener() { }
-
-    public static void Init(Type type) =>
-    AllEventMethodInfos = type.GetMethods().Where(n => n.GetCustomAttribute<GameEventListener>() != null).ToList();
+    public static void Init(Type type)
+    {
+        AllEventMethodInfos = type.GetMethods().Where(n => n.GetCustomAttribute<GameEventListener>() != null).ToList();
+    }
 
     public static void Start(string methodName, params object[] objects)
     {
-        List<MethodInfo> methodInfos = AllEventMethodInfos.Where(n => n.Name == methodName).ToList();
+        var methodInfos = AllEventMethodInfos.Where(n => n.Name == methodName).ToList();
         methodInfos.Do(n => n.Invoke(null, objects));
     }
 }

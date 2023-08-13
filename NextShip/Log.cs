@@ -49,7 +49,7 @@ internal class log
                 logger.LogMessage(log_text);
                 break;
             case LogLevel.Debug:
-                 logger.LogDebug(log_text);
+                logger.LogDebug(log_text);
                 break;
             default:
                 logger.LogWarning("Error:Invalid LogLevel");
@@ -118,6 +118,9 @@ internal class log
     {
         SendToFile(tag, filename, ex.ToString(), LogLevel.Error);
     }
-    
-    public static void Debug(string text, string tag = null, string filename = null) => SendToFile(tag, filename, text, LogLevel.Debug);
+
+    public static void Debug(string text, string tag = null, string filename = null)
+    {
+        SendToFile(tag, filename, text, LogLevel.Debug);
+    }
 }

@@ -2,17 +2,18 @@ namespace NextShip.Options;
 
 public class StringOptionBase : OptionBase
 {
-    public string[] Selection;
-    public string StringValue;
     public IntOptionValue IntOptionValue;
+    public string[] Selection;
 
     public bool StringTranslation;
+    public string StringValue;
 
-    public StringOptionBase(string name, int id, string[] selection, optionTab tab) : base(name, id, tab, optionType.String)
+    public StringOptionBase(string name, int id, string[] selection, optionTab tab) : base(name, id, tab,
+        optionType.String)
     {
         IntOptionValue = new IntOptionValue(0, 0, 1, selection.Length);
         Selection = selection;
-        OptionManager.AllStringOption.Add(this);    
+        OptionManager.AllStringOption.Add(this);
     }
 
     public override int GetInt()
@@ -24,16 +25,25 @@ public class StringOptionBase : OptionBase
     {
         return IntOptionValue.GetValue();
     }
-    
+
 
     public override string GetValueString()
     {
         return Selection[IntOptionValue.GetValue()];
     }
-    
-    public override void Increase() => IntOptionValue.increase();
 
-    public override void Decrease() => IntOptionValue.decrease();
+    public override void Increase()
+    {
+        IntOptionValue.increase();
+    }
 
-    public override StringOptionBase GetBase() => this;
+    public override void Decrease()
+    {
+        IntOptionValue.decrease();
+    }
+
+    public override StringOptionBase GetBase()
+    {
+        return this;
+    }
 }

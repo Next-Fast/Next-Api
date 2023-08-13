@@ -5,7 +5,6 @@ using NextShip.Roles;
 using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
-using static NextShip.Languages.Language;
 
 namespace NextShip.Patches;
 

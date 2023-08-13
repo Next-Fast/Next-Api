@@ -38,10 +38,14 @@ public static class SpriteUtils
             var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
             var assembly = Assembly.GetExecutingAssembly();
             var stream = assembly.GetManifestResourceStream(path);
-            var length = stream.Length;
-            var byteTexture = new Il2CppStructArray<byte>(length);
-            stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int)length));
-            ImageConversion.LoadImage(texture, byteTexture, false);
+            if (stream != null)
+            {
+                var length = stream.Length;
+                var byteTexture = new Il2CppStructArray<byte>(length);
+                var _ = stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int)length));
+                ImageConversion.LoadImage(texture, byteTexture, false);
+            }
+
             return texture;
         }
         catch

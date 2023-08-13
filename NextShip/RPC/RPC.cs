@@ -37,7 +37,6 @@ public static class RPCProcedure
 {
     public static void ResetVariables()
     {
-        HudManagerStartPatch.setCustomButtonCooldowns();
         Main.PlayerAndRoleIdDic.Clear();
     }
 
@@ -158,7 +157,7 @@ public static class RPCProcedure
         }
     }
 
-    public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
+    /*public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
     {
         if (!isSend)
         {
@@ -176,5 +175,5 @@ public static class RPCProcedure
             AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             LoveChatPatch.LoverChat.AddChat(PlayerControl.LocalPlayer, text);
         }
-    }
+    }*/
 }

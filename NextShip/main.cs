@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
@@ -16,7 +15,6 @@ using NextShip.Manager;
 using NextShip.Options;
 using NextShip.Patches;
 using NextShip.UI.Components;
-using NextShip.Utilities.Attributes;
 using UnityEngine;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
@@ -38,7 +36,7 @@ public class Main : BasePlugin
     public const string Id = "cn.MengChu.NextShip";
 
     // 模组版本
-    public const string VersionString = "0.3.6";
+    public const string VersionString = "0.5.0";
 
     // bilibili链接
     public const string bilibiliURL = "https://space.bilibili.com/394107547";
@@ -50,13 +48,13 @@ public class Main : BasePlugin
 
     // 模组构建时间
     public static string BuildTime = "2023.3.8";
-    
+
     // 是否为开发版本
     public static bool IsDev = true;
-    
+
     public static bool isCn;
     public static bool isChinese;
-    
+
     public static Version Version = Version.Parse(VersionString);
     public static ManualLogSource TISLog;
     public static Main Instance;
@@ -76,20 +74,20 @@ public class Main : BasePlugin
         ConsoleManager.SetConsoleTitle(ModName + "game");
         Instance = this;
         Harmony.PatchAll();
-        
+
         if (IsDev) ConsoleTextFC();
         constInit();
-
-        CustomOptionHolder.Load();
+        
         FilesManager.Init();
         ServerPath.autoAddServer();
 
         RegisterManager.Registration(Assembly.GetAssembly(GetType()));
-        InitAttribute.Start();
         updateTask = AddComponent<UpdateTask>();
         updateTask.Start();
-        
-        StartTask(new []{OptionManager.Load, Init, LanguagePack.Init});
+
+        Init();
+        LanguagePack.Init();
+        /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 
 
@@ -108,14 +106,5 @@ public class Main : BasePlugin
         Info($"IsChinese:{isChinese.ToString()}", "Const");
         Info($"Support Among Us Version {AmongUsVersion}", "Info");
         Info($"欢迎游玩{ModName}\nWelcome to{ModName}", "Info");
-    }
-
-    public static void StartTask(Action[] actions)
-    {
-        foreach (var action in actions)
-        {
-            Task task = new Task(action);
-            task.Start();
-        }
     }
 }

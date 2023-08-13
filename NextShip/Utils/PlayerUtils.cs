@@ -1,5 +1,4 @@
 using NextShip.Utilities;
-using UnityEngine;
 
 namespace NextShip.Utils;
 
@@ -32,34 +31,7 @@ public static class PlayerUtils
         target.RawSetHat(hatId, colorId);
         target.RawSetVisor(visorId, colorId);
         target.RawSetName(playerName);
-
-        var nextSkin = skinId.GetSkinViewDataById();
-
-        var playerPhysics = target.MyPhysics;
-        AnimationClip clip = null;
-        var spriteAnim = playerPhysics.myPlayer.cosmetics.skin.animator;
-        var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
-
-        var group = playerPhysics.Animations.group;
-        if (currentPhysicsAnim == group.RunAnim) clip = nextSkin.RunAnim;
-        if (currentPhysicsAnim == group.SpawnAnim) clip = nextSkin.SpawnAnim;
-        if (currentPhysicsAnim == group.EnterVentAnim) clip = nextSkin.EnterVentAnim;
-        if (currentPhysicsAnim == group.ExitVentAnim) clip = nextSkin.ExitVentAnim;
-        if (currentPhysicsAnim == group.IdleAnim) clip = nextSkin.IdleAnim;
-
-        var progress = playerPhysics.Animations.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        playerPhysics.myPlayer.cosmetics.skin.skin = nextSkin;
-        playerPhysics.myPlayer.cosmetics.skin.UpdateMaterial();
-
-        spriteAnim.Play(clip);
-        spriteAnim.m_animator.Play("a", 0, progress % 1);
-        spriteAnim.m_animator.Update(0f);
-
-        if (target.cosmetics.currentPet) Object.Destroy(target.cosmetics.currentPet.gameObject);
-        target.cosmetics.currentPet = Object.Instantiate(petId.GetPetBehaviourById());
-        target.cosmetics.currentPet.transform.position = target.transform.position;
-        target.cosmetics.currentPet.Source = target;
-        target.cosmetics.currentPet.Visible = target.Visible;
-        target.SetPlayerMaterialColors(target.cosmetics.currentPet.rend);
+        target.RawSetSkin(skinId, colorId);
+        target.RawSetPet(petId, colorId);
     }
 }

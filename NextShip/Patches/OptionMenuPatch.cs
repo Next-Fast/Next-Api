@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -39,7 +39,7 @@ internal class OptionMenuPatch
             DownloadS.DestroyTranslator();
             DownloadS.transform.GetChild(0).GetComponent<TMP_Text>().text = "下载源";
             var Dropdown1 = DownloadS.AddComponent<Dropdown>();
-/*                 Dropdown1.image.sprite  */
+/*                 Dropdown1.image.sprite  #1#
             DownloadS.SetActive(TISTabContent.active);
         }
 
@@ -71,4 +71,4 @@ internal class OptionMenuPatch
         for (var i = 0; i < tabs.Count; i++) tabs[i].transform.localScale = new Vector3(0.9f, 1, 1);
         __instance.Tabs = new Il2CppReferenceArray<TabGroup>(tabs.ToArray());
     }
-}
+}*/

@@ -1,19 +1,22 @@
 global using NextShip.Roles.Core;
 using System;
-using NextShip.Utilities;
+using NextShip.Options;
 
 
 namespace NextShip.Roles.Core;
 
 public abstract class RoleBase : IDisposable
 {
-    public RoleBase(PlayerControl player)
+    public RoleBase(PlayerControl player, SimpleRoleInfo simpleRoleInfo)
     {
+        SimpleRoleInfo = simpleRoleInfo;
         CanKill = false;
         CanVent = false;
         HasTask = true;
 
         Player = player;
+        
+        var Option = new RoleOptionBase(simpleRoleInfo, -1);
 
         RoleManager.AllRoleBase.Add(this);
     }
@@ -32,9 +35,12 @@ public abstract class RoleBase : IDisposable
         Player = null;
         RoleManager.AllRoleBase.Remove(this);
     }
-    
 
-    public void setInfo(SimpleRoleInfo info) => SimpleRoleInfo = info;
+
+    public void setInfo(SimpleRoleInfo info)
+    {
+        SimpleRoleInfo = info;
+    }
 
     public virtual void OnDestroy()
     {

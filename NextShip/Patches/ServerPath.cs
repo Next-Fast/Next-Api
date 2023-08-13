@@ -8,7 +8,8 @@ namespace NextShip.Patches;
 [HarmonyPatch]
 public static class ServerPath
 {
-    [HideFromIl2Cpp]
+    public static bool CurrentVanillaServer => Main.serverManager.CurrentRegion.IsVanilla();
+    
     public static void autoAddServer()
     {
         IRegionInfo[] regionInfos =
@@ -35,8 +36,9 @@ public static class ServerPath
         ServerInfo[] ServerInfo = { serverInfo };
         return new StaticHttpRegionInfo(name, StringNames.NoTranslation, ip, ServerInfo).CastFast<IRegionInfo>();
     }
-    
-    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion)), HarmonyPrefix]
+
+    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
+    [HarmonyPrefix]
     public static bool ConstantsGetBroadcastVersionPatch(ref int __result)
     {
         if (!CurrentVanillaServer) return true;
@@ -45,11 +47,9 @@ public static class ServerPath
         return false;
     }
 
-    private static bool IsVanilla(this IRegionInfo regionInfo) => 
-        regionInfo.TranslateName is StringNames.ServerAS or StringNames.ServerEU or StringNames.ServerNA or StringNames.ServerSA;
-    
-    public static bool CurrentVanillaServer
+    private static bool IsVanilla(this IRegionInfo regionInfo)
     {
-        get { return Main.serverManager.CurrentRegion.IsVanilla(); }
+        return regionInfo.TranslateName is StringNames.ServerAS or StringNames.ServerEU or StringNames.ServerNA
+            or StringNames.ServerSA;
     }
 }

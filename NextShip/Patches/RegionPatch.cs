@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,7 +16,9 @@ public static class RegionMenuOpenPatch
     public static int maxye;
     private static GameObject shangButton;
     private static GameObject xiaButton;
-    private static readonly Vector3 pos = new(3f, 2.5f, -100f);
+    private static Vector3 ShangButtonPostion;
+    private static Vector3 XiaButtonPostion;
+    private static readonly Vector3 pos = new(0f, 2.5f, -100f);
 
     public static void Postfix(RegionMenu __instance)
     {
@@ -29,11 +29,10 @@ public static class RegionMenuOpenPatch
 
             xiaButton = Object.Instantiate(tf, __instance.transform);
             xiaButton.name = "xiaButton";
-            xiaButton.transform.position = pos - new Vector3(-0.6f, 3f, 0f);
+            xiaButton.transform.position = XiaButtonPostion = pos - new Vector3(0f, 3f, 0f);
 
             var xiaButtontext = xiaButton.transform.GetChild(0).GetComponent<TMP_Text>();
             var xiaButtonPassiveButton = xiaButton.GetComponent<PassiveButton>();
-            var xiaButtonButtonSprite = xiaButton.GetComponent<SpriteRenderer>();
             xiaButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
             xiaButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
             xiaButtontext.SetText("下一页");
@@ -53,14 +52,13 @@ public static class RegionMenuOpenPatch
         if (shangButton == null || shangButton.gameObject == null)
         {
             var tf = GameObject.Find("NormalMenu/BackButton");
-
+            
             shangButton = Object.Instantiate(tf, __instance.transform);
             shangButton.name = "shangButton";
-            shangButton.transform.position = pos - new Vector3(0.6f, 3f, 0f);
+            shangButton.transform.position = ShangButtonPostion = pos - new Vector3(0f, 2.5f, 0f);
 
             var shangButtontext = shangButton.transform.GetChild(0).GetComponent<TMP_Text>();
             var shangButtonPassiveButton = shangButton.GetComponent<PassiveButton>();
-            var shangButtonButtonSprite = shangButton.GetComponent<SpriteRenderer>();
             shangButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
             shangButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
             shangButtontext.SetText("上一页");
@@ -76,12 +74,9 @@ public static class RegionMenuOpenPatch
                 }
             }
         }
-
-        if (xiaButton.transform.position != pos - new Vector3(-0.6f, 3f, 0f))
-            xiaButton.transform.position = pos - new Vector3(-0.6f, 3f, 0f);
-
-        if (shangButton.transform.position != pos - new Vector3(0.6f, 3f, 0f))
-            shangButton.transform.position = pos - new Vector3(0.6f, 3f, 0f);
+        
+        xiaButton.transform.position = XiaButtonPostion;
+        shangButton.transform.position = ShangButtonPostion;
     }
 }
 

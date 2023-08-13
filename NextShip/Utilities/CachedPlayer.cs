@@ -124,10 +124,7 @@ public static class CachedPlayerPatches
             }
 
             var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
-            if (cached != null)
-            {
-                CachedPlayer.LocalPlayer = cached;
-            }
+            if (cached != null) CachedPlayer.LocalPlayer = cached;
         }
     }
 }

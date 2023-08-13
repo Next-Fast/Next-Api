@@ -3,7 +3,6 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Video;
 using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
 
 
 namespace NextShip.Patches;

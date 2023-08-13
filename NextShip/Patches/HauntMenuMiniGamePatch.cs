@@ -43,7 +43,7 @@ class HauntMenuMiniGameFixedUpdatePatch
     }
 } */
 
-[HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Refresh))]
+/*[HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Refresh))]
 public static class AbilityButtonRefreshPatch
 {
     public static void Postfix(AbilityButton __instance)
@@ -51,7 +51,7 @@ public static class AbilityButtonRefreshPatch
         if (!disableHauntMenu.getBool()) return;
         __instance.gameObject.SetActive(false);
     }
-}
+}*/
 
 [HarmonyPatch(typeof(HauntMenuMinigame), nameof(HauntMenuMinigame.SetFilterText))]
 public static class HauntMenuMinigameSetFilterTextPatch

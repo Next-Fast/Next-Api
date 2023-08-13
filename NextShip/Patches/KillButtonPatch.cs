@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿/*using HarmonyLib;
 using NextShip.Roles;
 
 namespace NextShip.Patches;
@@ -25,8 +25,8 @@ internal class KillButtonPatch
                     RPCHelpers.Create((byte)CustomRPC.SchrodingerSCatTeamChange, bytes: new []{ (byte)STeam });
                     return false;
                 }
- */
+ #1#
             return true;
         }
     }
-}
+}*/

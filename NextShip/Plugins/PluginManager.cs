@@ -11,11 +11,12 @@ namespace NextShip.Plugins;
 public static class PluginManager
 {
     public const string PluginsPath = "./Plugins";
-    public static List<string> PluginPathS = new List<string>();
-    public static List<(Assembly, Type, ShipPluginInfo)> PluginS = new List<(Assembly, Type, ShipPluginInfo)>();
+    public static List<string> PluginPathS = new();
+    public static List<(Assembly, Type, ShipPluginInfo)> PluginS = new();
     public static bool existDirectory;
+
+    public static List<ShipPlugin> Plugins = new();
     
-    [Init]
     public static void Init()
     {
         existDirectory = FilesManager.CreateDirectory(PluginsPath);
@@ -38,15 +39,15 @@ public static class PluginManager
             Info($"{fileName} 疑似不是dll", filename: MethodUtils.GetClassName());
             return;
         }
-        
+
         var assembly = Assembly.LoadFile(path);
         var types = assembly.GetTypes();
         var has = false;
-        var IsInherit = false; 
+        var IsInherit = false;
         types.Do
         (n =>
             {
-                ShipPlugin shipPlugin = n.GetCustomAttribute<ShipPlugin>();
+                var shipPlugin = n.GetCustomAttribute<ShipPlugin>();
                 IsInherit = n.BaseType == typeof(ShipPlugin);
                 if (shipPlugin != null && IsInherit)
                 {
@@ -55,30 +56,22 @@ public static class PluginManager
                 }
             }
         );
-        
-        if (!has)
-        {
-            Info($"{fileName} 未注册插件", filename: MethodUtils.GetClassName());
-        }
 
-        if (!IsInherit)
-        {
-            Info($"{fileName} no Inherit", filename: MethodUtils.GetClassName());
-        }
+        if (!has) Info($"{fileName} 未注册插件", filename: MethodUtils.GetClassName());
+
+        if (!IsInherit) Info($"{fileName} no Inherit", filename: MethodUtils.GetClassName());
     }
 
     public static void Load(this Type type, ShipPluginInfo shipPluginInfo)
     {
         var method = type.GetMethod("Load");
-        if (method == null)
-        {
-            return;
-        }
+        if (method == null) return;
 
         try
         {
-            method.Invoke(null,null);
-            Info($"Name:{shipPluginInfo.Name} . Version:{shipPluginInfo.Version} . Id:{shipPluginInfo.Id} 运行成功 ", filename: MethodUtils.GetClassName());
+            method.Invoke(null, null);
+            Info($"Name:{shipPluginInfo.Name} . Version:{shipPluginInfo.Version} . Id:{shipPluginInfo.Id} 运行成功 ",
+                filename: MethodUtils.GetClassName());
         }
         catch (Exception e)
         {
@@ -88,12 +81,10 @@ public static class PluginManager
 
     public static List<string> FindPlugins()
     {
-        List<string> pluginPaths = new List<string>();
-        DirectoryInfo plugins = new DirectoryInfo(PluginsPath);
-        FileInfo[] fileInfos = plugins.GetFiles();
+        var pluginPaths = new List<string>();
+        var plugins = new DirectoryInfo(PluginsPath);
+        var fileInfos = plugins.GetFiles();
         fileInfos.Do(n => pluginPaths.Add(n.FullName));
         return pluginPaths;
     }
-
-    public static List<ShipPlugin> Plugins = new List<ShipPlugin>();
 }

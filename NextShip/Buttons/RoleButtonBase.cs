@@ -6,5 +6,4 @@ public abstract class RoleButton : ButtonBase
     {
         Create();
     }
-    
 }

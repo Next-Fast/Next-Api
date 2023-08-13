@@ -3,7 +3,6 @@ using InnerNet;
 using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
-using static NextShip.Languages.Language;
 
 //using static NextShip.Languages.LanguageCSV;
 
@@ -14,7 +13,7 @@ public static class CredentialsPatch
 {
     public static string Credentials =
         @$"
-        <size=130%><color=#ff351f>The Ideal Ship</color></size>v{Main.Version.ToString()}
+        <size=130%><color=#ff351f>Next Ship</color></size>v{Main.Version.ToString()}
         <size=60%><color=#a9e3ff>{GetString("Credential")}</color></size>
         ";
 
@@ -63,12 +62,10 @@ public static class CredentialsPatch
         {
             __instance.text.alignment = TextAlignmentOptions.TopRight;
             var text = Credentials;
-
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 __instance.text.text =
-                    $"<size=130%><color=#ff351f>The Ideal Ship</color></size> v{Main.Version.ToString()}\n" +
+                    $"<size=130%><color=#ff351f>Next Ideal Ship</color></size> v{Main.Version.ToString()}\n" +
                     __instance.text.text;
-            if (noGameEnd.getBool()) text += "\n" + GetString("NoGameEnd");
             __instance.text.text = text + __instance.text.text;
         }
     }

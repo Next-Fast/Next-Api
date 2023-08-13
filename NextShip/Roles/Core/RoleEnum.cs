@@ -5,7 +5,6 @@ namespace NextShip.Roles.Core;
 public class RoleEnum
 {
     public static Random rnd = new((int)DateTime.Now.Ticks);
-    
 }
 
 public enum RoleId

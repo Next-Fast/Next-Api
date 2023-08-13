@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using UnityEngine;
 using Color = UnityEngine.Color;
@@ -13,7 +14,10 @@ public static class TextUtils
 
     public static string TextRemove(this string Otext, string[] targetText)
     {
-        foreach (var tt in targetText) Otext.Replace(tt, "");
+        foreach (var tt in targetText)
+        {
+            Otext = Otext.Replace(tt, ""); 
+        }
         return Otext;
     }
 
@@ -37,7 +41,7 @@ public static class TextUtils
     public static string clearColor(this string str)
     {
         var s = str.Replace("</color>", "");
-        var found = s.IndexOf(">");
+        var found = s.IndexOf(">", StringComparison.Ordinal);
         s = s.Substring(found + 1);
         return s;
     }
@@ -54,5 +58,18 @@ public static class TextUtils
         string colorString;
         colorString = "<color=" + ColorTranslator.ToHtml(color) + ">" + text + "<color/>";
         return colorString;
+    }
+
+
+    public static string Get_Key(this string text)
+    {
+        string text2 = string.Empty;
+        bool add = false;
+        foreach (var @char in text)
+        {
+            if (text == "%"){ add = !add; continue;}
+            text2 += @char;
+        }
+        return text2;
     }
 }

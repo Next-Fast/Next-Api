@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace NextShip.Options.Patches;
 
-public class StringOptionPatches
+public class StringOptionPath
 {
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
     public class StringOptionEnablePatch
@@ -29,7 +29,7 @@ public class StringOptionPatches
         {
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
-            
+
             option.Increase();
             return false;
         }
@@ -42,7 +42,7 @@ public class StringOptionPatches
         {
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
-            
+
             option.Decrease();
             return false;
         }

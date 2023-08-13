@@ -50,7 +50,6 @@ internal class HudManagerUpdatePatch
     private static void Postfix(HudManager __instance)
     {
         if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
-        CustomButton.HudUpdate();
         SetNameColors();
         updateVentButton(__instance);
         updateSabotageButton(__instance);

@@ -2,8 +2,4 @@
 
 public class RoleEvent
 {
-    public RoleEvent()
-    {
-        
-    }
 }

@@ -4,12 +4,17 @@ namespace NextShip;
 
 public class TaskState
 {
-    private TaskStateEnum StateEnum;
     private Action Action;
-    public virtual TaskStateEnum Get() => StateEnum;
+    private TaskStateEnum StateEnum;
+
     public TaskState()
     {
         StateEnum = TaskStateEnum.None;
+    }
+
+    public virtual TaskStateEnum Get()
+    {
+        return StateEnum;
     }
 
     public void set(TaskStateEnum @enum)
@@ -27,7 +32,7 @@ public class TaskState
     {
         Action += action;
     }
-    
+
     public void RemoverAction(Action action)
     {
         Action -= action;

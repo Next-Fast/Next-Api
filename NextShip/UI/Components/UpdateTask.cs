@@ -22,8 +22,8 @@ public class UpdateTask : MonoBehaviour
     public void FixedUpdate()
     {
         if (!startd) return;
-        if (Tasks == null) return; 
-        
+        if (Tasks == null) return;
+
         Tasks.Do(UpdateTaskTime);
         Tasks.Where(n => n.Priority == ShipTask.priority.High).Do(StartTask);
     }
@@ -32,19 +32,19 @@ public class UpdateTask : MonoBehaviour
     {
         if (!startd) return;
         if (Tasks == null) return;
-        
+
         Tasks.Do(StartTask);
     }
-    
-    void StartTask(ShipTask task)
+
+    private void StartTask(ShipTask task)
     {
         if (task.Time > 0) return;
-            
+
         task.Task.Invoke();
         Tasks.Remove(task);
     }
-    
-    void UpdateTaskTime(ShipTask Task)
+
+    private void UpdateTaskTime(ShipTask Task)
     {
         if (Task.Time > 1)
             Task.Time -= 1;
@@ -55,11 +55,19 @@ public class UpdateTask : MonoBehaviour
 
 public class ShipTask
 {
+    public enum priority
+    {
+        High = 0,
+        Medium = 1,
+        Low = 2
+    }
+
+    public readonly priority Priority;
+    public readonly Action Task;
     private readonly TaskState TaskState;
     public float Time;
-    public readonly Action Task;
-    public readonly priority Priority;
-    public ShipTask(float time,Action task, priority priority = priority.Low)
+
+    public ShipTask(float time, Action task, priority priority = priority.Low)
     {
         Task = task;
         Time = time;
@@ -68,18 +76,11 @@ public class ShipTask
         Priority = priority;
     }
 
+    public TaskStateEnum GetState => TaskState.Get();
+
     public void register()
     {
         UpdateTask.Tasks.Add(this);
-    }
-
-    public TaskStateEnum GetState => TaskState.Get();
-    
-    public enum priority
-    {
-        High = 0,
-        Medium = 1,
-        Low = 2
     }
 }
 

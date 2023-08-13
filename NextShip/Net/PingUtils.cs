@@ -39,8 +39,8 @@ public class PingInfo
 {
     public string ip;
     public int pingTime;
-    public int size;
     public long roundTripTime;
+    public int size;
     public StringBuilder stringB;
 
     public PingInfo

@@ -5,10 +5,10 @@ public class SimpleRoleInfo
 {
     public Type ClassType;
     public Color color;
-    public int roleIntId;
     public string name;
     public RoleBase roleBase;
     public RoleId roleId;
+    public int roleIntId;
     public string RoleStringId;
     public RoleTeam roleTeam;
     public RoleType roleType;
@@ -32,7 +32,7 @@ public class SimpleRoleInfo
         this.roleIntId = roleIntId;
         this.color = color;
     }
-    
+
     public SimpleRoleInfo
     (
         Type classType,
@@ -52,8 +52,8 @@ public class SimpleRoleInfo
         this.roleIntId = roleIntId;
         this.color = color;
     }
-    
-    
+
+
     public bool CreateInstance(PlayerControl player)
     {
         try

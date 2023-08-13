@@ -20,7 +20,6 @@ public static class RegisterManager
         Il2CppRegisterAttribute.Registration(type);
         LoadAttribute.Registration(type);
         OptionLoad.Registration(type);
-        InitAttribute.Registration(type);
         GameEventListener.Init(type);
     }
 }

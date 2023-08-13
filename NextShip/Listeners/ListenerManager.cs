@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using HarmonyLib;
 using NextShip.Game.GameEvents;
 
 namespace NextShip.Listeners;
@@ -34,7 +30,7 @@ public class ListenerManager
     {
         _RoleEvents.Remove(roleEvent);
     }
-    
+
     public void add(IGameEvent gameEvent)
     {
         _GameEvents.Add(gameEvent);

@@ -4,10 +4,6 @@ namespace NextShip.Game.Info;
 
 public class PlayerInfo
 {
-    public PlayerInfo()
-    {
-        
-    }
 }
 
 [HarmonyPatch(typeof(TaskPanelBehaviour), nameof(TaskPanelBehaviour.SetTaskText))]

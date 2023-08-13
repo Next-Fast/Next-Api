@@ -28,13 +28,13 @@ internal class ShowRolePatch
             } */
     }
 
-    public static bool Prefix(IntroCutscene __instance)
+    /*public static bool Prefix(IntroCutscene __instance)
     {
         if (!activateRoles.getBool()) return true;
         FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(1f,
             new Action<float>(p => { SetRoleTexts(__instance); })));
         return true;
-    }
+    }*/
 }
 
 [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowTeam))]
