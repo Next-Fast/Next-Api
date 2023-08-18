@@ -17,7 +17,7 @@ public static class HistoryInfoManager
         if (!HistoryInfoDc.ContainsKey(player.PlayerId) && number != 0) SerialNumber[player.PlayerId] = 0;
         if (number != 0) SerialNumber[player.PlayerId] = number;
         if (!isRpc)
-            RPCHelpers.Create((byte)CustomRPC.HistorySynchronization,
+            RPCUtils.Create((byte)CustomRPC.HistorySynchronization,
                 new[] { player.PlayerId, (byte)roleId, (byte)team }, new[] { SerialNumber[player.PlayerId] });
         var info = new HistoryInfo(SerialNumber[player.PlayerId], team, roleId, DateTime.Now);
         HistoryInfoDc[player.PlayerId].Add(info);

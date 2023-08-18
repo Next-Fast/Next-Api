@@ -72,3 +72,4 @@ internal class OptionMenuPatch
         __instance.Tabs = new Il2CppReferenceArray<TabGroup>(tabs.ToArray());
     }
 }*/
+

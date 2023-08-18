@@ -1,5 +1,4 @@
-﻿using NextShip.Options;
-using NextShip.Utilities.Attributes;
+﻿using NextShip.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.Roles;

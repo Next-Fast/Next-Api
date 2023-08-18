@@ -31,4 +31,10 @@ public static class GameObjectUtils
         AspectPosition[] aspectPositions = gameObject.GetComponentsInChildren<AspectPosition>(true);
         if (aspectPositions != null) aspectPositions.Do(n => Object.Destroy(n));
     }
+
+    public static void DestroyComponents<T>(this GameObject gameObject) where T : Object
+    {
+        T[] components = gameObject.GetComponentsInChildren<T>(true);
+        if (components != null) components.Do(n => Object.Destroy(n));
+    }
 }

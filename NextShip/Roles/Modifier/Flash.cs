@@ -15,6 +15,5 @@ public static class Flash
 
     public static void OptionLoad()
     {
-
     }
 }

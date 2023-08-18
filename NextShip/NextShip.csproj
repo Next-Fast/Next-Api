@@ -19,9 +19,9 @@
     <ItemGroup>
         <!--nuget.org 的包                                              -->
         <!--        <PackageReference Include="Reactor" Version="2.2.0-ci.229" />-->
-        <PackageReference Include="GitInfo" Version="3.1.0" />
+        <PackageReference Include="GitInfo" Version="2.3.0" />
         <PackageReference Include="Csv" Version="2.0.93" />
-        <PackageReference Include="YamlDotNet" Version="13.1.1" />
+        <PackageReference Include="YamlDotNet" Version="13.2.0" />
         <PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all" />
         <PackageReference Include="Downloader" Version="3.0.6" />
         <!--nuget.bepinex.dev 的包                                       -->
@@ -31,10 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Api\Reactor\Patches\" />
         <Folder Include="Roles\Patches\" />
     </ItemGroup>
 
-    <Target Name="Copy" AfterTargets="Build" Condition="'$(NextShip)' != ''">
-        <Copy SourceFiles="./bin/Debug/net6.0/'$(AssemblyName)'.dll" DestinationFolder="'$(NextShipLast)'/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
+    <Target Name="Copy" AfterTargets="Build" Condition="$(NextShipLast) != ''">
+        <Copy SourceFiles="$(OutputPath)/$(AssemblyName).dll" DestinationFolder="$(NextShipLast)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
     </Target>
 </Project>

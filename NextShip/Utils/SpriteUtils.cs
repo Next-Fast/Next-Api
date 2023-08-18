@@ -42,7 +42,8 @@ public static class SpriteUtils
             {
                 var length = stream.Length;
                 var byteTexture = new Il2CppStructArray<byte>(length);
-                var _ = stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(), (int)length));
+                var _ = stream.Read(new Span<byte>(IntPtr.Add(byteTexture.Pointer, IntPtr.Size * 4).ToPointer(),
+                    (int)length));
                 ImageConversion.LoadImage(texture, byteTexture, false);
             }
 

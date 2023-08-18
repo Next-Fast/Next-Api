@@ -12,7 +12,7 @@ public static class LanguageCSV
     public static void LoadCSV()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var stream = assembly.GetManifestResourceStream("NextShip.Resources.string.csv");
+        var stream = assembly.GetManifestResourceStream("NextShip.Resources.Language.string.csv");
         translateMaps = new Dictionary<string, Dictionary<int, string>>();
 
         var options = new CsvOptions

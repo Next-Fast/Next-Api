@@ -1,7 +1,6 @@
 global using static NextShip.Modules.log;
 global using Main = NextShip.Main;
 global using NextShip.Utils;
-global using NextShip.Modules;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,10 +11,10 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using NextShip.Languages;
 using NextShip.Manager;
-using NextShip.Options;
 using NextShip.Patches;
 using NextShip.UI.Components;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
 [assembly: AssemblyInformationalVersion(Main.VersionString)]
@@ -71,13 +70,13 @@ public class Main : BasePlugin
     public override void Load()
     {
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
-        ConsoleManager.SetConsoleTitle(ModName + "game");
+        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         Instance = this;
         Harmony.PatchAll();
 
         if (IsDev) ConsoleTextFC();
         constInit();
-        
+
         FilesManager.Init();
         ServerPath.autoAddServer();
 
@@ -87,6 +86,7 @@ public class Main : BasePlugin
 
         Init();
         LanguagePack.Init();
+        ObjetUtils.Do(new []{ updateTask });
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 

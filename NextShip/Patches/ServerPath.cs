@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using HarmonyLib;
-using Il2CppInterop.Runtime.Attributes;
 using NextShip.Utilities;
 
 namespace NextShip.Patches;
@@ -9,7 +8,7 @@ namespace NextShip.Patches;
 public static class ServerPath
 {
     public static bool CurrentVanillaServer => Main.serverManager.CurrentRegion.IsVanilla();
-    
+
     public static void autoAddServer()
     {
         IRegionInfo[] regionInfos =

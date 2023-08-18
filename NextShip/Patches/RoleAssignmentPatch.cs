@@ -432,3 +432,4 @@ internal class RoleManagerSelectRolesPatch
         Impostor = 2
     }
 }*/
+

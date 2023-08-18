@@ -9,7 +9,7 @@ public class Camouflager
     public static float cooldown = 30f;
     public static float duration = 10f;
     public static Sprite ButtonSprite;
-    
+
 
     public static Sprite getButtonSprite()
     {

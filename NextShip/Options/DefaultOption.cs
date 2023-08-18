@@ -7,6 +7,5 @@ public class DefaultOption
     [OptionLoad]
     public static void OptionLoad()
     {
-        
     }
 }

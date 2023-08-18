@@ -1,4 +1,6 @@
+using System.Text;
 using HarmonyLib;
+using Il2CppSystem;
 using InnerNet;
 using NextShip.Utilities;
 using TMPro;
@@ -11,12 +13,6 @@ namespace NextShip.Patches;
 [HarmonyPatch]
 public static class CredentialsPatch
 {
-    public static string Credentials =
-        @$"
-        <size=130%><color=#ff351f>Next Ship</color></size>v{Main.Version.ToString()}
-        <size=60%><color=#a9e3ff>{GetString("Credential")}</color></size>
-        ";
-
     [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
     private static class VersionShowerPatch
     {
@@ -36,37 +32,71 @@ public static class CredentialsPatch
     }
 
     [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
-    internal static class PingTrackerPatch
+    public static class PingTrackerPatch
     {
-        public static void modlogo()
-        {
-            var modstamp = GameObject.Find("ModStamp");
-            if (modstamp != null)
-            {
-                modstamp.layer = LayerMask.NameToLayer("UI");
-                var rend = modstamp.AddComponent<SpriteRenderer>();
-                rend.sprite = SpriteUtils.getModStamp();
-                rend.color = new Color(1, 1, 1, 0.5f);
-                modstamp.transform.localScale *= 0.6f;
-                var offset = AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started ? 0.75f : 0f;
-                modstamp.transform.position =
-                    FastDestroyableSingleton<HudManager>.Instance.MapButton.transform.position + Vector3.down * offset;
-            }
-            else
-            {
-                ModManager.Instance.ShowModStamp();
-            }
-        }
-
+        public static PingText pingText = new ();
         private static void Postfix(PingTracker __instance)
         {
-            __instance.text.alignment = TextAlignmentOptions.TopRight;
-            var text = Credentials;
+            pingText.Update();
+            
+            ModManager.Instance.ShowModStamp();
+            
+            StringBuilder stringBuilder = new ();
+            stringBuilder.AppendLine(__instance.text.text.ToColorString(pingText.GetPingColor()));
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
-                __instance.text.text =
-                    $"<size=130%><color=#ff351f>Next Ideal Ship</color></size> v{Main.Version.ToString()}\n" +
-                    __instance.text.text;
-            __instance.text.text = text + __instance.text.text;
+                stringBuilder.AppendLine($"<size=130%><color=#ff351f>The Ideal Ship \n - Next Ship</color></size> v{Main.Version.ToString()}\n");
+
+            stringBuilder.AppendLine($"FPS: {pingText.GetFPS()}".ToColorString(pingText.GetFPSColor()));
+            
+            __instance.text.text = stringBuilder.ToString();
         }
+    }
+
+    public class PingText
+    {
+        private int frequency = 30;
+        private int time;
+        private float deltaTime;
+
+        private int FPS;
+        private int ping = AmongUsClient.Instance.Ping;
+        private Color FPSColor;
+        private Color PingColor;
+        
+        public PingText() {}
+
+        public void Update()
+        {
+            deltaTime += Time.deltaTime;
+            
+            if (time == frequency)
+            {
+                FPS = (int)Mathf.Ceil(frequency / deltaTime);
+                deltaTime = 0;
+                time = 0;
+            }
+            
+            time++;
+
+            if (ping > 60) PingColor = Color.cyan;
+            if (ping > 120) PingColor = Color.green;
+            if (ping > 180) PingColor = Color.blue;
+            if (ping > 240) PingColor = Color.white;
+            if (ping > 300) PingColor = Color.white;
+            if (ping > 500) PingColor = Color.red;
+
+            if (FPS > 200) FPSColor = new Color32(255, 255, 0, Byte.MaxValue);
+            if (FPS <= 200) FPSColor = new Color32(99, 184, 255,Byte.MaxValue);
+            if (FPS <= 120) FPSColor = new Color32(205, 201, 201,Byte.MaxValue);
+            if (FPS <= 90) FPSColor = new Color32(84, 255, 159, Byte.MaxValue);
+            if (FPS <= 60) FPSColor = new Color32(240,248,255, Byte.MaxValue);
+            if (FPS <= 30) FPSColor = new Color32(255, 222 ,173, Byte.MaxValue);
+            if (FPS <= 15) FPSColor = Color.red;
+        }
+
+        public Color GetPingColor() => PingColor;
+        public Color GetFPSColor() => FPSColor;
+        public int GetFPS() => FPS;
+        
     }
 }

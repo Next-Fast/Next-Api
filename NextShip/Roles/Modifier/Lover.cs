@@ -17,6 +17,5 @@ public class Lover
 
     public static void OptionLoad()
     {
-
     }
 }

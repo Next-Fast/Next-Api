@@ -1,7 +1,5 @@
 using System;
-using System.Text.RegularExpressions;
 using Hazel;
-using NextShip.Patches;
 using NextShip.Roles;
 using NextShip.Utilities;
 using static NextShip.Roles.Core.RoleEnum;

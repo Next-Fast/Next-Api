@@ -14,10 +14,7 @@ public static class TextUtils
 
     public static string TextRemove(this string Otext, string[] targetText)
     {
-        foreach (var tt in targetText)
-        {
-            Otext = Otext.Replace(tt, ""); 
-        }
+        foreach (var tt in targetText) Otext = Otext.Replace(tt, "");
         return Otext;
     }
 
@@ -63,13 +60,19 @@ public static class TextUtils
 
     public static string Get_Key(this string text)
     {
-        string text2 = string.Empty;
-        bool add = false;
+        var text2 = string.Empty;
+        var add = false;
         foreach (var @char in text)
         {
-            if (text == "%"){ add = !add; continue;}
+            if (text == "%")
+            {
+                add = !add;
+                continue;
+            }
+
             text2 += @char;
         }
+
         return text2;
     }
 }

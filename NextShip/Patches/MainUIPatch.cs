@@ -1,6 +1,10 @@
 using System;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
+using NextShip.Manager;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.Video;
 using static UnityEngine.UI.Button;
 
@@ -23,9 +27,9 @@ public static class MainUIPatch
     public static Sprite Au_Logo_Sprite;
     public static Sprite TIS_Logo_Sprite;
 
-    public static VideoPlayer BackGround_Video;
-
     public static bool ChangeStyle;
+
+    private static GameObject Video;
 
     private static void InitGameObject()
     {
@@ -40,9 +44,7 @@ public static class MainUIPatch
         TIS_Logo_SpriteRenderer = TIS_Logo.AddComponent<SpriteRenderer>();
 
         Au_Logo_Sprite = Au_Logo_SpriteRenderer.sprite;
-        TIS_Logo_Sprite = SpriteUtils.LoadSpriteFromResources("NextShip.Resources.Banner.png", 300f);
-
-        BackGround_Video = BackGround.AddComponent<VideoPlayer>();
+        TIS_Logo_Sprite = SpriteUtils.LoadSpriteFromResources("NextShip.Resources.Logo.Banner.png", 300f);
     }
 
     private static void Init_SetGameObjectTransform()
@@ -85,21 +87,44 @@ public static class MainUIPatch
     public static void MainMenuManager_Start_Prefix_Patch(MainMenuManager __instance)
     {
         InitGameObject();
+        Info("初始化选项");
+    }
+    
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate))]
+    [HarmonyPostfix]
+    public static void MainMenuManager_Update_Postfix_Patch(MainMenuManager __instance)
+    {
     }
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     [HarmonyPostfix]
     public static void MainMenuManager_Start_Postfix_Patch(MainMenuManager __instance)
     {
-        /*Create();*/
+        __instance.gameObject.SetActive(false);
+        if (!Video)
+        {
+            Video = new GameObject();
+            var videoPlayer = Video.AddComponent<VideoPlayer>();
+            videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
+            videoPlayer.targetCamera = Camera.main;
+            videoPlayer.source = VideoSource.Url;
+            videoPlayer.url = BepInEx.Paths.GameRootPath + "/TIS_Data/TEMP/YuanShen.mp4";
+            videoPlayer.Play();
+            videoPlayer.loopPointReached += (VideoPlayer.EventHandler)EndWithVideoPlay;
+
+            void EndWithVideoPlay(VideoPlayer source)
+            {
+                Video.SetActive(false);
+                __instance.gameObject.SetActive(true);
+            }
+        }
     }
 
-    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.OnSceneLoaded))]
+    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.accountTab.Awake))]
     [HarmonyPrefix]
     public static bool AccountManager_OnSceneLoaded_Prefix_Patch(AccountManager __instance)
     {
-        if (AccountManager._instance.accountTab.gameObject.active)
-            AccountManager._instance.accountTab.gameObject.SetActive(false);
         return false;
     }
+    
 }

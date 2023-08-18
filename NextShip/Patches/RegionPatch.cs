@@ -16,67 +16,70 @@ public static class RegionMenuOpenPatch
     public static int maxye;
     private static GameObject shangButton;
     private static GameObject xiaButton;
-    private static Vector3 ShangButtonPostion;
-    private static Vector3 XiaButtonPostion;
     private static readonly Vector3 pos = new(0f, 2.5f, -100f);
 
     public static void Postfix(RegionMenu __instance)
     {
+        var template = GameObject.Find("NormalMenu/BackButton");
+        if (!template) return;
         if (xiaButton == null || xiaButton.gameObject == null)
         {
-            var tf = GameObject.Find("NormalMenu/BackButton");
-            if (!tf) return;
-
-            xiaButton = Object.Instantiate(tf, __instance.transform);
-            xiaButton.name = "xiaButton";
-            xiaButton.transform.position = XiaButtonPostion = pos - new Vector3(0f, 3f, 0f);
-
-            var xiaButtontext = xiaButton.transform.GetChild(0).GetComponent<TMP_Text>();
-            var xiaButtonPassiveButton = xiaButton.GetComponent<PassiveButton>();
-            xiaButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
-            xiaButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
-            xiaButtontext.SetText("下一页");
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => xiaButtontext.SetText("下一页"))));
-            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
-
-            void ClearAllButtonVoid()
-            {
-                if (ye < maxye)
-                {
-                    ye++;
-                    Menu.shuaXing(__instance);
+            xiaButton = template.CreateButton(
+                "XiaButton", 
+                "下一页", 
+                pos - new Vector3(0f, 3f, 0f), 
+                __instance.transform,
+                () => {
+                    if (ye < maxye)
+                    {
+                        ye++;
+                        Menu.shuaXing(__instance);
+                    }
                 }
-            }
+            );
+            
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
 
         if (shangButton == null || shangButton.gameObject == null)
         {
-            var tf = GameObject.Find("NormalMenu/BackButton");
-            
-            shangButton = Object.Instantiate(tf, __instance.transform);
-            shangButton.name = "shangButton";
-            shangButton.transform.position = ShangButtonPostion = pos - new Vector3(0f, 2.5f, 0f);
-
-            var shangButtontext = shangButton.transform.GetChild(0).GetComponent<TMP_Text>();
-            var shangButtonPassiveButton = shangButton.GetComponent<PassiveButton>();
-            shangButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
-            shangButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
-            shangButtontext.SetText("上一页");
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => shangButtontext.SetText("上一页"))));
-            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
-
-            void ClearAllButtonVoid()
-            {
-                if (ye > 1)
-                {
-                    ye--;
-                    Menu.shuaXing(__instance);
+            shangButton = template.CreateButton(
+                "shangButton", 
+                "上一页", 
+                pos - new Vector3(0f, 2.5f, 0f), 
+                __instance.transform,
+                () => {
+                    if (ye > 1)
+                    {
+                        ye--;
+                        Menu.shuaXing(__instance);
+                    }
                 }
-            }
+            );
+            
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
+    }
+
+    public static GameObject CreateButton(this GameObject template, string name, string text, Vector3 Position, Transform Preant, Action action)
+    {
+        var Button = Object.Instantiate(template, Preant);
+        Button.name = name;
+        Button.transform.position = Position;
         
-        xiaButton.transform.position = XiaButtonPostion;
-        shangButton.transform.position = ShangButtonPostion;
+        Button.DestroyTranslator();
+        Button.DestroyAspectPosition();
+        Button.DestroyComponents<SceneChanger>();
+        Button.DestroyComponents<ButtonRolloverHandler>();
+
+        var ButtonText = Button.transform.GetComponentInChildren<TMP_Text>();
+        var ButtonPassiveButton = Button.GetComponent<PassiveButton>();
+        
+        ButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
+        ButtonPassiveButton.OnClick.AddListener(action);
+        ButtonText.SetText(text);
+
+        return Button;
     }
 }
 

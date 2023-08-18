@@ -1,13 +1,13 @@
+using System;
 using System.Linq;
 using NextShip.Utilities;
-using UnityEngine;
 
 namespace NextShip.Utils;
 
 public static class AssetUtils
 {
-    private static CosmeticsCache _CosmeticsCache = ShipStatus.Instance.CosmeticsCache;
-    private static HatManager _hatManager = FastDestroyableSingleton<HatManager>.Instance;
+    private static readonly CosmeticsCache _CosmeticsCache = ShipStatus.Instance.CosmeticsCache;
+    private static readonly HatManager _hatManager = FastDestroyableSingleton<HatManager>.Instance;
 
     public static PetBehaviour GetPetBehaviour(this string id)
     {
@@ -15,8 +15,9 @@ public static class AssetUtils
         if (asset.Data.ProdId == "pet_EmptyPet" && _hatManager.allPets.FirstOrDefault(n => n.ProdId == id) != null)
         {
             var Asset = _hatManager.GetPetById(id).CreateAddressableAsset();
-            Asset.LoadAsync((System.Action)(() => asset = Asset.GetAsset()));
+            Asset.LoadAsync((Action)(() => asset = Asset.GetAsset()));
         }
+
         return asset;
     }
 
