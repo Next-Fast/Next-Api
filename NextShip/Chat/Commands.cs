@@ -17,6 +17,8 @@ public static class Commands
             var cancelVal = "";
             switch (args[0])
             {
+                case "e":
+                    break;
             }
 
             if (canceled)

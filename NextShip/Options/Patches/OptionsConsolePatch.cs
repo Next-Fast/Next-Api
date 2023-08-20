@@ -13,24 +13,27 @@ public class OptionsConsolePatch
     public static bool AllowNoHostUse = false;
     public static bool IsNextMenu;
 
-    public static GameObject NextMenuParent = new GameObject();
+    public static GameObject NextMenuParent = new GameObject("NextMenuParent");
+    public static GameObject NextMenu;
 
     [HarmonyPatch(typeof(OptionsConsole), nameof(OptionsConsole.Use))]
     [HarmonyPrefix]
     public static bool OptionsConsoleUsePatch(OptionsConsole __instance)
     {
-        if (!AllowNoHostUse) return true;
+        /*if (!AllowNoHostUse) return true;*/
         
         var @object = PlayerControl.LocalPlayer;
         var couldUse = @object.CanMove;
         var canUse =
             couldUse
-            && CanUseMenDictionary[CachedPlayer.LocalPlayer.PlayerId]
+            && (!CanUseMenDictionary.TryGetValue(CachedPlayer.LocalPlayer.PlayerId, out var canUsed) || canUsed)
             && Vector2.Distance(@object.GetTruePosition(), __instance.transform.position) <= __instance.UsableDistance;
 
-        if (canUse && InitNextOptionMenu(__instance)) OpenNextOptionMenu(__instance);
+        var Init = InitNextOptionMenu(__instance);
         
-        if (canUse) OpenVanillaOptionMenu(__instance);
+        if (canUse && Init) OpenNextOptionMenu(__instance);
+        
+        if (canUse && !Init) OpenVanillaOptionMenu(__instance);
 
         return false;
     }
@@ -48,6 +51,7 @@ public class OptionsConsolePatch
     public static bool InitNextOptionMenu(OptionsConsole __instance)
     {
         if (!Camera.main) return false;
+        if (NextMenu) return true;
         var VanillaMenu = __instance.MenuPrefab;
         var _AbstractQuickChatMenuPhrasesPageButton = FastDestroyableSingleton<AbstractQuickChatMenuPhrasesPageButton>.Instance;
         
@@ -57,9 +61,9 @@ public class OptionsConsolePatch
         Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint"), NextMenuParent.transform);
         Object.Instantiate(__instance.MenuPrefab.transform.Find("Background"), NextMenuParent.transform);
             
-        GameObject NextMenu = new GameObject();
+        NextMenu = new GameObject("NextMenu");
         NextMenu.transform.SetParent(NextMenuParent.transform);
-        return false;
+        return true;
     }
 
     public static void OpenNextOptionMenu(OptionsConsole __instance)

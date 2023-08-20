@@ -46,14 +46,14 @@ public static class TextUtils
     public static string ToColorString(this string text, Color color)
     {
         string colorString;
-        colorString = "<color=" + ColorUtility.ToHtmlStringRGB(color) + ">" + text + "<color/>";
+        colorString = "<color=" + ColorUtility.ToHtmlStringRGB(color) + ">" + text + "</color>";
         return colorString;
     }
 
     public static string ToColorString(this string text, System.Drawing.Color color)
     {
         string colorString;
-        colorString = "<color=" + ColorTranslator.ToHtml(color) + ">" + text + "<color/>";
+        colorString = "<color=" + ColorTranslator.ToHtml(color) + ">" + text + "</color>";
         return colorString;
     }
 

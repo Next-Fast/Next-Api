@@ -46,31 +46,30 @@ public class Main : BasePlugin
     public const string QQNumber = "815101721";
 
     // 模组构建时间
-    public static string BuildTime = "2023.3.8";
+    public static string BuildTime = "";
 
     // 是否为开发版本
     public static bool IsDev = true;
 
-    public static bool isCn;
-    public static bool isChinese;
+    internal static bool isCn;
+    internal static bool isChinese;
 
     public static Version Version = Version.Parse(VersionString);
-    public static ManualLogSource TISLog;
+    internal static ManualLogSource TISLog;
     public static Main Instance;
-    public static int OptionPage = 0;
-    public static Dictionary<byte, RoleId> PlayerAndRoleIdDic = new();
 
-    public static UpdateTask updateTask;
-    public static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+    internal static UpdateTask UpdateTask;
+    internal static ControlManager _ControlManager;
+    internal static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色
     public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
-    public Harmony Harmony { get; } = new(Id);
+    internal Harmony Harmony { get; } = new(Id);
 
     public override void Load()
     {
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
-        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
+        ConsoleManager.SetConsoleTitle(("Among Us " + ModName + " Game").ToColorString(ModColor));
         Instance = this;
         Harmony.PatchAll();
 
@@ -81,12 +80,12 @@ public class Main : BasePlugin
         ServerPath.autoAddServer();
 
         RegisterManager.Registration(Assembly.GetAssembly(GetType()));
-        updateTask = AddComponent<UpdateTask>();
-        updateTask.Start();
+        UpdateTask = AddComponent<UpdateTask>();
+        _ControlManager = AddComponent<ControlManager>();
 
         Init();
         LanguagePack.Init();
-        ObjetUtils.Do(new []{ updateTask });
+        ObjetUtils.Do(new Object[]{ UpdateTask });
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 
@@ -99,6 +98,9 @@ public class Main : BasePlugin
 
         var CountryName = RegionInfo.CurrentRegion.EnglishName;
         isCn = CountryName.Contains("China"); //|| CountryName.Contains("Hong Kong") || CountryName.Contains("Taiwan");
+        isChinese = (TranslationController.InstanceExists
+            ? TranslationController.Instance.currentLanguage.languageID
+            : SupportedLangs.English) is SupportedLangs.SChinese or SupportedLangs.TChinese;
 
         Info($"IsDev:{IsDev.ToString()}", "Const");
         Info($"CountryName:{CountryName} | {RegionInfo.CurrentRegion.DisplayName}", "Const");

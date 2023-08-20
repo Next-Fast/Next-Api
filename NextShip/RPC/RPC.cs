@@ -35,7 +35,6 @@ public static class RPCProcedure
 {
     public static void ResetVariables()
     {
-        Main.PlayerAndRoleIdDic.Clear();
     }
 
     public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -76,8 +75,6 @@ public static class RPCProcedure
                 Roles.Illusory.illusory = player;
                 break;
         }
-
-        Main.PlayerAndRoleIdDic.Add(playerId, (RoleId)roleId);
     }
 
     public static void setModifier(byte modifierId, byte playerId, byte flag)

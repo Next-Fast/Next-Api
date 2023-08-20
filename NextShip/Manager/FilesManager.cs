@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace NextShip.Manager;
@@ -45,5 +46,10 @@ public class FilesManager
     public static bool GetCreativityDirectory(string name)
     {
         return CreateDirectory(Path.Combine(CreativityPath, name));
+    }
+    
+    public enum FileType
+    {
+        
     }
 }

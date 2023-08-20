@@ -13,6 +13,12 @@ public static class LanguageCSV
     {
         var assembly = Assembly.GetExecutingAssembly();
         var stream = assembly.GetManifestResourceStream("NextShip.Resources.Language.string.csv");
+        if (stream == null)
+        {
+            Debug("Csv Not Found");
+            return;
+        }
+        
         translateMaps = new Dictionary<string, Dictionary<int, string>>();
 
         var options = new CsvOptions

@@ -13,6 +13,10 @@ public class UpdateTask : MonoBehaviour
     public static List<ShipTask> Tasks;
     public bool startd;
 
+    public UpdateTask()
+    {
+        Start();
+    }
     public void Start()
     {
         Tasks = new List<ShipTask>();
@@ -34,6 +38,7 @@ public class UpdateTask : MonoBehaviour
         if (Tasks == null) return;
 
         Tasks.Do(StartTask);
+        Tasks.Do(CheckTask);
     }
 
     private void StartTask(ShipTask task)
@@ -41,7 +46,24 @@ public class UpdateTask : MonoBehaviour
         if (task.Time > 0) return;
 
         task.Task.Invoke();
-        Tasks.Remove(task);
+    }
+
+    private void CheckTask(ShipTask task)
+    {
+        if (task.LoopEndConditions != null && task.LoopEndConditions.Invoke())
+        {
+            task.StopLoop();
+        }
+
+        if (task.UpdateConditions != null && !task.UpdateConditions.Invoke())
+        {
+            task.RemoveUpdate();
+        }
+        
+        if (task.GetState == TaskStateEnum.Completed)
+        {
+            Tasks.Remove(task);
+        }
     }
 
     private void UpdateTaskTime(ShipTask Task)
@@ -63,9 +85,13 @@ public class ShipTask
     }
 
     public readonly priority Priority;
-    public readonly Action Task;
+    public Action Task;
     private readonly TaskState TaskState;
     public float Time;
+    public bool Loop = false;
+    public bool Update = false;
+    public Func<bool> LoopEndConditions;
+    public Func<bool> UpdateConditions;
 
     public ShipTask(float time, Action task, priority priority = priority.Low)
     {
@@ -74,6 +100,34 @@ public class ShipTask
         TaskState = new TaskState();
         Task += () => TaskState.Completed();
         Priority = priority;
+    }
+
+    public void StartLoop(Func<bool> conditions = null)
+    {
+        Loop = true;
+        LoopEndConditions = conditions;
+        StartUpdate();
+    }
+
+    public void StopLoop()
+    {
+        Loop = false;
+        LoopEndConditions = null;
+        RemoveUpdate();
+    }
+    
+    public void StartUpdate(Func<bool> conditions = null)
+    {
+        Update = true;
+        UpdateConditions = conditions;
+        Task -= () => TaskState.Completed();
+    }
+
+    public void RemoveUpdate()
+    {
+        Update = false;
+        UpdateConditions = null;
+        Task += () => TaskState.Completed();
     }
 
     public TaskStateEnum GetState => TaskState.Get();

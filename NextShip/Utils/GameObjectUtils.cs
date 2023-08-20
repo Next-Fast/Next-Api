@@ -5,6 +5,7 @@ namespace NextShip;
 
 public static class GameObjectUtils
 {
+    public static int GameObjetCount = 0;
     // form TOHE
     /// <summary>
     ///     删除翻译文本（<see cref="TextTranslatorTMP" />）组件
@@ -36,5 +37,19 @@ public static class GameObjectUtils
     {
         T[] components = gameObject.GetComponentsInChildren<T>(true);
         if (components != null) components.Do(n => Object.Destroy(n));
+    }
+
+    public static (GameObject, T) CreateGameObjet<T>(string name = null, Transform  parent = null) where T : Component
+    {
+        var gameObject = CreateGameObject(name, parent);
+        return (gameObject, gameObject.AddComponent<T>());
+    }
+
+    public static GameObject CreateGameObject(string name = null, Transform parent = null)
+    {
+        GameObject gameObject = new GameObject();
+        gameObject.name = name ?? $"NextShip_GameObject_{GameObjetCount}";
+        if (parent != null) gameObject.transform.SetParent(parent);
+        return gameObject;
     }
 }
