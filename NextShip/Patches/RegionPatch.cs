@@ -141,14 +141,9 @@ public static class Menu
             serverListButton.Button.OnClick.RemoveAllListeners();
             serverListButton.Button.OnClick.AddListener((Action)(() => { __instance.ChooseOption(region); }));
             serverListButton.SetSelected(serverManager.CurrentRegion.Name == regionInfo.Name);
-            if (DestroyableSingleton<ServerManager>.Instance.CurrentRegion.Equals(regionInfo))
-                __instance.defaultButtonSelected = serverListButton.Button;
             List.Add(serverListButton.Button);
             num++;
         }
-
-        if (__instance.defaultButtonSelected == null && __instance.controllerSelectable.Count > 0)
-            __instance.defaultButtonSelected = List[0];
 
         List.Do(n => __instance.controllerSelectable.Add(n));
     }

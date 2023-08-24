@@ -1,14 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using HarmonyLib;
-using Il2CppInterop.Runtime.Injection;
-using NextShip.Manager;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.Video;
-using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
+using NextShip.Utils;
 
 
 namespace NextShip.Patches;
@@ -37,6 +32,9 @@ public static class MainUIPatch
 
     private static void InitGameObject()
     {
+        /*Task Init_Find = new Task(ObjetUtils.Init_Find<Sprite>);
+        Init_Find.Start();*/
+        
         BackGround = new GameObject("TIS_BackGround");
         TIS_Logo = new GameObject("TIS_Logo");
 
@@ -62,11 +60,9 @@ public static class MainUIPatch
     private static void Init_DestroyGameObject()
     {
     }
-
+    
     private static void Create()
     {
-        InitGameObject();
-
         Au_Logo.AddComponent<BoxCollider2D>().size = Au_Logo_SpriteRenderer.size;
 
         LeftPanel.DestroyComponents<AspectSize>();
@@ -107,6 +103,10 @@ public static class MainUIPatch
     {
         try
         {
+            InitGameObject();
+            Init_SetGameObjectTransform();
+            Init_DestroyGameObject();
+            
             // 创建主菜单
             Create();
             Info("创建主界面");

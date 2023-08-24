@@ -18,7 +18,7 @@ public static class ServerPath
             createHttp("www.aumods.xyz", "Modded NA (MNA)", 443, true),
             createHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true)
         };
-
+        
         if (!Main.isChinese) regionInfos.ToList().RemoveAt(0);
 
         foreach (var r in regionInfos)
@@ -26,6 +26,8 @@ public static class ServerPath
             if (Main.serverManager.AvailableRegions.Contains(r)) continue;
             Main.serverManager.AddOrUpdateRegion(r);
         }
+        
+        if(Main.IsDev) Main.serverManager.SetRegion(regionInfos[0]);
     }
 
     public static IRegionInfo createHttp(string ip, string name, ushort port, bool ishttps)

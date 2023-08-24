@@ -32,7 +32,9 @@
 
     <ItemGroup>
         <Folder Include="Api\Reactor\Patches\" />
+        <Folder Include="Resources\Asset\" />
         <Folder Include="Roles\Patches\" />
+        <Folder Include="UI\Patches\" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="$(NextShipLast) != ''">

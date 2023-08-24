@@ -13,6 +13,7 @@ namespace NextShip.Patches;
 [HarmonyPatch]
 public static class CredentialsPatch
 {
+    public static PingText pingText = new ();
     [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
     private static class VersionShowerPatch
     {
@@ -21,6 +22,7 @@ public static class CredentialsPatch
         private static void Postfix(VersionShower __instance)
         {
             stringText = __instance.text.text;
+            ModManager.Instance.ShowModStamp();
 #if DEBUG
             stringText += " " + $"{ThisAssembly.Git.Branch} {ThisAssembly.Git.Commit}";
 #endif
@@ -34,19 +36,16 @@ public static class CredentialsPatch
     [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
     public static class PingTrackerPatch
     {
-        public static PingText pingText = new ();
         private static void Postfix(PingTracker __instance)
         {
             pingText.Update();
             
-            ModManager.Instance.ShowModStamp();
-            
             StringBuilder stringBuilder = new ();
-            stringBuilder.AppendLine(__instance.text.text.ToColorString(pingText.GetPingColor()));
+            stringBuilder.AppendLine(TextUtils.cs(pingText.GetPingColor(),__instance.text.text));
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 stringBuilder.AppendLine($"<size=130%><color=#ff351f>The Ideal Ship \n - Next Ship</color></size> v{Main.Version.ToString()}\n");
 
-            stringBuilder.AppendLine($"FPS: {pingText.GetFPS()}".ToColorString(pingText.GetFPSColor()));
+            stringBuilder.AppendLine(TextUtils.cs(pingText.GetFPSColor(),$"FPS: {pingText.GetFPS()}"));
             
             __instance.text.text = stringBuilder.ToString();
         }
@@ -78,7 +77,7 @@ public static class CredentialsPatch
             
             time++;
 
-            if (ping > 60) PingColor = Color.cyan;
+            PingColor = Color.cyan;
             if (ping > 120) PingColor = Color.green;
             if (ping > 180) PingColor = Color.blue;
             if (ping > 240) PingColor = Color.white;

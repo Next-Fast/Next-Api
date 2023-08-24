@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NextShip.UI.Components;
 
-public class ControlManager : MonoBehaviour
+public class ControlManager
 {
     public void Update()
     {

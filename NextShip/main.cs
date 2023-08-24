@@ -4,15 +4,19 @@ global using NextShip.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
 using NextShip.UI.Components;
+using NextShip.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -79,9 +83,10 @@ public class Main : BasePlugin
         FilesManager.Init();
         ServerPath.autoAddServer();
 
-        RegisterManager.Registration(Assembly.GetAssembly(GetType()));
+        var _Assembly = Assembly.GetExecutingAssembly();
+        RegisterManager.Registration(_Assembly);
+        AssetLoader _assetLoader = new AssetLoader(_Assembly);
         UpdateTask = AddComponent<UpdateTask>();
-        _ControlManager = AddComponent<ControlManager>();
 
         Init();
         LanguagePack.Init();
@@ -107,6 +112,7 @@ public class Main : BasePlugin
         Info($"isCn:{isCn.ToString()}", "Const");
         Info($"IsChinese:{isChinese.ToString()}", "Const");
         Info($"Support Among Us Version {AmongUsVersion}", "Info");
-        Info($"欢迎游玩{ModName}\nWelcome to{ModName}", "Info");
+        Info($"Hash: {HashUtils.GetFileMD5Hash(Path.Combine(Paths.PluginPath , $"{ModName}.dll"))}", "Info");
+        Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
     }
 }
