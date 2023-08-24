@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using NextShip.Utilities;
 using UnityEngine;
 using AmongUs.QuickChat;
 using TMPro;
+using Object = UnityEngine.Object;
 
 namespace NextShip.Options.Patches;
 
@@ -67,27 +69,42 @@ public class OptionsConsolePatch
         NextMenu = new GameObject("NextMenu");
         NextMenu.transform.SetParent(NextMenuParent.transform);
         NextMenuParent.SetActive(false);
+        NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
         return true;
 
-        GameObject CreateButton(string Title, string text, string name)
+        GameObject CreateButton(string Title, string text, string name, Action action = null)
         {
             GameObject button = new GameObject(name);
-            button.layer = tint.gameObject.layer;
+            button.transform.localPosition = new(-3.6f, 0, 0);
             button.transform.SetParent(NextMenuParent.transform);
-            button.CreatePassiveButton();
+            button.CreatePassiveButton(onClick:action);
+            
             var backGround = new GameObject("BackGround");
             backGround.transform.SetParent(button.transform);
+            backGround.transform.localPosition = new(0, 0, 0);
+            
             var backGroundSprite = backGround.AddComponent<SpriteRenderer>();
-            backGroundSprite.sprite = ObjetUtils.Find<Sprite>("button");
+            backGroundSprite.sprite = ObjetUtils.Find<Sprite>("buttonClick");
             backGroundSprite.drawMode = SpriteDrawMode.Sliced;
+            backGroundSprite.size = new(2.5f, 1.3f);
+            
             button.AddComponent<BoxCollider2D>().size = backGroundSprite.size;
 
             var titleTextGameObject = new GameObject("TitleText");
             titleTextGameObject.transform.SetParent(button.transform);
-            titleTextGameObject.AddComponent<TextMeshPro>().text = Title;
+            titleTextGameObject.transform.localPosition = new(9.4f, -2.2f, 0);
             
-            /*var SubTextGameObject = Object.Instantiate(TitleGameObject);
-            SubTextGameObject.name = "SubText";*/
+            var textMeshPro = titleTextGameObject.AddComponent<TextMeshPro>();
+            textMeshPro.text = Title;
+            textMeshPro.fontSize = 5; 
+            
+            var SubTextGameObject = Object.Instantiate(titleTextGameObject);
+            SubTextGameObject.name = "SubText";
+            SubTextGameObject.transform.localPosition = new(8, -1.3f, 0);
+            
+            var SubTextMeshPro = SubTextGameObject.GetComponent<TextMeshPro>();
+            SubTextMeshPro.text = text;
+            SubTextMeshPro.fontSize = 3;
             
             return button;
         }
@@ -97,7 +114,10 @@ public class OptionsConsolePatch
     {      
         if (!Camera.main) return;
         PlayerControl.LocalPlayer.NetTransform.Halt();
-        var optionMenu = Object.Instantiate(NextMenuParent, Camera.main.transform, false);
+        GameObject optionMenu;
+        if (!(optionMenu = GameObject.Find("NextMenuParent(Clone)"))) 
+            optionMenu = Object.Instantiate(NextMenuParent, Camera.main.transform, false);
+        
         optionMenu.transform.localPosition = __instance.CustomPosition;
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, optionMenu, null);
         IsNextMenu = true;

@@ -95,4 +95,15 @@ public static class GameObjectUtils
         if (parent != null) gameObject.transform.SetParent(parent);
         return gameObject;
     }
+
+    public static void AllGameObjectDo(this GameObject gameObject, Action<GameObject> action)
+    {
+        action(gameObject);
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            GameObject obj = gameObject.transform.GetChild(i).gameObject;
+            action(obj);
+            obj.AllGameObjectDo(action);
+        }
+    }
 }
