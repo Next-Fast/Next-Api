@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace NextShip;
@@ -105,5 +108,105 @@ public static class GameObjectUtils
             action(obj);
             obj.AllGameObjectDo(action);
         }
+    }
+    
+    public static bool GetGameObjetWithCondition(out GameObject LastgameObject, out List<Transform> allTransform,out List<bool> bools, bool test = false, params string[] stings)
+    {
+        bools = new List<bool>();
+        allTransform = new List<Transform>();
+        LastgameObject = null;
+        for (var i = 0; i < stings.Length; i++)
+        {
+
+            if (i == 0)
+            {
+                LastgameObject = GameObject.Find(stings[i]);
+                bools.Add(LastgameObject);
+                if (LastgameObject)
+                {
+                    allTransform.Add(LastgameObject.transform);
+                }
+
+                if (test)
+                {
+                    var testObj = GameObject.Find(stings[i]);
+                    Info($"test: i,{i} name, string,{stings[i]} bool,{testObj != null}");
+                }
+            }
+            else
+            {
+                if (!LastgameObject) return false;
+                var transform = LastgameObject.transform.Find(stings[i]);
+                bools.Add(transform);
+                LastgameObject = transform.gameObject;
+                allTransform.Add(transform);
+                
+                if (test)
+                {
+                    var testObj = GameObject.Find(stings[i]);
+                    Info($"test: i,{i} name, string,{stings[i]} bool,{testObj != null}");
+                }
+            }
+            
+            Info($"i:{i} name:{stings[i]} bool:{bools.Last()}");
+        }
+        return bools.Last();
+    }
+
+    public static GameObject GetGameObjetFormAll(string name, string[] OptionPaths = null)
+    {
+        var RootGameObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+        
+        if (OptionPaths == null)
+        {
+            return RootGameObjects.FirstOrDefault(n => n.name == name);
+        }
+
+        var list = RootGameObjects.Where(gameObjet => gameObjet.name == name).ToList();
+
+        foreach (var obj in list)
+        {
+            var exist = true;
+            var objList = new List<GameObject>();
+            objList.AddRange(obj.GetAllChild());
+            objList.AddRange(obj.GetAllParent());
+
+            foreach (var path in OptionPaths)
+            {
+                if (objList.Find(n => n.name == path) == null) exist = false;
+            }
+
+            if (exist) return obj;
+        }
+
+        return null;
+    }
+
+    public static IEnumerable<GameObject> GetAllParent(this GameObject gameObject)
+    {
+        var transform = gameObject.transform.parent;
+        var allObject = new List<GameObject>();
+        while (transform)
+        {
+            allObject.Add(transform.gameObject);
+            transform = transform.parent;
+        }
+
+        return allObject;
+    }
+
+    public static IEnumerable<GameObject> GetAllChild(this GameObject gameObject)
+    {
+        var count = gameObject.transform.GetChildCount();
+        var list = new List<GameObject>();
+        
+        for (var i = 0; i < count; i++)
+        {
+            var obj = gameObject.transform.GetChild(i).gameObject;
+            list.Add(obj);
+            list.AddRange(obj.GetAllChild());
+        }
+
+        return list;
     }
 }

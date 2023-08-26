@@ -27,7 +27,7 @@ namespace NextShip;
 
 [BepInPlugin(Id, ModName, VersionString)]
 [BepInProcess("Among Us.exe")]
-public class Main : BasePlugin
+public sealed class Main : BasePlugin
 {
     // Among Us游玩版本
     public const string AmongUsVersion = "2023.7.11";
@@ -63,7 +63,6 @@ public class Main : BasePlugin
     public static Main Instance;
 
     internal static UpdateTask UpdateTask;
-    internal static ControlManager _ControlManager;
     internal static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色

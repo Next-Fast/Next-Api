@@ -32,9 +32,6 @@ public static class MainUIPatch
 
     private static void InitGameObject()
     {
-        /*Task Init_Find = new Task(ObjetUtils.Init_Find<Sprite>);
-        Init_Find.Start();*/
-        
         BackGround = new GameObject("TIS_BackGround");
         TIS_Logo = new GameObject("TIS_Logo");
 
