@@ -11,13 +11,13 @@ public class GameEvent
     public static void AmongUsClient_OnGameEnd(AmongUsClient __instance,
         [HarmonyArgument(0)] EndGameResult endGameResult)
     {
-        GameEventListener.Start(nameof(IGameEvent.OnGameEnd), __instance, endGameResult);
+        ListenerManager.Get().allGameEvents.Do(n => n.OnGameEnd(__instance, endGameResult));
     }
 
     [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
     [HarmonyPostfix]
     public static void GameStartManager_OnGameStart(GameStartManager __instance)
     {
-        GameEventListener.Start(nameof(IGameEvent.OnGameStart), __instance);
+        ListenerManager.Get().allGameEvents.Do(n => n.OnGameStart(__instance));
     }
 }

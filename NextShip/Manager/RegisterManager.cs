@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using NextShip.Listeners;
+using NextShip.Listeners.Attributes;
 using NextShip.Utilities.Attributes;
 
 namespace NextShip.Manager;
@@ -20,6 +21,6 @@ public static class RegisterManager
         Il2CppRegisterAttribute.Registration(type);
         LoadAttribute.Registration(type);
         OptionLoad.Registration(type);
-        GameEventListener.Init(type);
+        EventListener.Registration(type);
     }
 }

@@ -10,7 +10,7 @@ namespace NextShip.Plugins;
 
 public static class PluginManager
 {
-    private const string PluginsPath = "./Plugins";
+    private static string PluginsPath;
     private static List<string> PluginPathS = new();
     private static List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
     public static bool existDirectory;
@@ -19,11 +19,13 @@ public static class PluginManager
 
     public static void Init()
     {
-        existDirectory = FilesManager.CreateDirectory(PluginsPath);
+        PluginsPath = FilesManager.GetCreativityDirectory("Plugins").FullName;
+        existDirectory = Directory.Exists(PluginsPath);
+        
         LoadPlugins();
     }
 
-    public static void LoadPlugins()
+    private static void LoadPlugins()
     {
         PluginPathS = FindPlugins();
         if (PluginPathS == null) return;
@@ -84,7 +86,7 @@ public static class PluginManager
         }
     }
 
-    public static List<string> FindPlugins()
+    private static List<string> FindPlugins()
     {
         var pluginPaths = new List<string>();
         var plugins = new DirectoryInfo(PluginsPath);

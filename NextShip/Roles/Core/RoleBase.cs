@@ -1,48 +1,42 @@
 global using NextShip.Roles.Core;
 using System;
 using NextShip.Options;
+using NextShip.Utilities.Attributes;
 
 
 namespace NextShip.Roles.Core;
 
 public abstract class RoleBase : IDisposable
 {
-    public RoleBase(PlayerControl player, SimpleRoleInfo simpleRoleInfo)
+    protected RoleBase(PlayerControl player)
     {
-        SimpleRoleInfo = simpleRoleInfo;
         CanKill = false;
         CanVent = false;
         HasTask = true;
-
+        WinCheck = () => false;
         Player = player;
-
-        var Option = new RoleOptionBase(simpleRoleInfo, -1);
-
-        RoleManager.AllRoleBase.Add(this);
+        
+        Active = true;
+        RoleManager.Get().AllRoleBases.Add(this);
     }
 
     public PlayerControl Player { get; private set; }
-    public SimpleRoleInfo SimpleRoleInfo { get; set; }
-    public RoleAction RoleAction { get; set; }
-    public RoleEvent RoleEvent { get; set; }
+    
+    public Func<bool> WinCheck { get; }
     public bool CanKill { get; }
     public bool CanVent { get; }
     public bool HasTask { get; }
+    
+    public bool Active { get; }
 
     public void Dispose()
     {
         OnDestroy();
         Player = null;
-        RoleManager.AllRoleBase.Remove(this);
+        RoleManager.Get().AllRoleBases.Remove(this);
     }
 
-
-    public void setInfo(SimpleRoleInfo info)
-    {
-        SimpleRoleInfo = info;
-    }
-
-    public virtual void OnDestroy()
+    protected virtual void OnDestroy()
     {
     }
 }

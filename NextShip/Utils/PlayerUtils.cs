@@ -1,22 +1,12 @@
+using System.Linq;
 using NextShip.Utilities;
 
 namespace NextShip.Utils;
 
 public static class PlayerUtils
 {
-    public static PlayerControl GetPlayerForId(byte id)
-    {
-        foreach (var AP in CachedPlayer.AllPlayers)
-            if (AP.PlayerId == id)
-                return AP;
-        return null;
-    }
-
-    public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile)
-    {
-        var p = GetPlayerForId(exile.PlayerId);
-        return p;
-    }
+    public static PlayerControl GetPlayerForId(byte id) => CachedPlayer.AllPlayers.FirstOrDefault(AP => AP.PlayerId == id);
+    public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile) => GetPlayerForId(exile.PlayerId);
 
     public static void setDefaultLook(this PlayerControl target)
     {

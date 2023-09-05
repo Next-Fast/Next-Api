@@ -2,7 +2,7 @@
 using HarmonyLib;
 using NextShip.Utilities;
 using UnityEngine;
-using NextShip.UI.Components;
+using NextShip.UI;
 using Object = UnityEngine.Object;
 
 namespace NextShip.Options.Patches;

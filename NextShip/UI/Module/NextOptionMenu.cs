@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
-using Il2CppInterop.Runtime;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
-namespace NextShip.UI.Components;
+namespace NextShip.UI;
 
 public class NextOptionMenu
 {
@@ -14,6 +13,7 @@ public class NextOptionMenu
     public OptionsConsole __instance;
     private readonly GameObject  NextMenuParent;
     private GameObject NextMenu;
+    private List<GameObject> AllListButton = new ();
 
     public NextOptionMenu(OptionsConsole __instance, GameObject NextMenuParent)
     {
@@ -26,9 +26,12 @@ public class NextOptionMenu
     public void Init()
     {
         if (Initd) return;
+
+        var BackGround = new GameObject("BackGround");
+        BackGround.transform.SetParent(NextMenuParent.transform);
         
-        var tint = Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint"), NextMenuParent.transform);
-        var background = Object.Instantiate(__instance.MenuPrefab.transform.Find("Background"), NextMenuParent.transform);
+        var tint = Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint").gameObject, BackGround.transform);
+        Object.Instantiate(__instance.MenuPrefab.transform.Find("Background").transform.GetChild(1).gameObject, BackGround.transform);
         
             
         NextMenu = new GameObject("NextMenu");
@@ -65,22 +68,69 @@ public class NextOptionMenu
         scroller.ScrollbarY = ScrollBar_Handle.GetComponent<Scrollbar>();
         scroller.ScrollbarYBounds = new FloatRange(1, 1);
         scroller.ContentYBounds = new FloatRange(1, 1);
+
+        CreateLargeButton("GeneralSettingOption", NextMenuParent.transform, new Vector3(0, 0, 0), "常规设置", "关于设置的选项", () => OpenMenu(MenuIndex.GeneralSetting));
+        CreateLargeButton("RoleSettingOption", NextMenuParent.transform, new Vector3(0, 0, 0), "职业设置", "关于职业的选项设置", () => OpenMenu(MenuIndex.RoleSetting));
+        CreateSmallButton("CloneButton", NextMenuParent.transform, new Vector3(0, 0, 0), "关闭", Close);
         
         var scrollbar = ScrollBar_Handle.GetComponent<Scrollbar>();
         scrollbar.parent = scroller;
         scrollbar.trackGraphic = ScrollBar_Track.GetComponent<SpriteRenderer>();
-
-        var button = CreateButton("abab", "abab", "button", new Vector3(0, 0, 0));
-        button.transform.SetParent(list.transform);
-            
         
         NextMenuParent.SetActive(false);
         NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
         
         Initd = true;
     }
+
+    private void OpenMenu(MenuIndex menu)
+    {
+        
+    }
+
+    private void Close()
+    {
+        
+    }
+
+    private static GameObject CreateSmallButton(string name, Transform Parent, Vector3 position, string Text, Action action = null) =>
+        CreateButton(Text, name, Parent, 
+            new Vector2(2.5f, 1.3f), 
+            action,
+            position,
+            new Vector3(9.4f, -2.2f, 0), 
+            new Vector3(10.4F, -2.8f, 0));
+
+    private static GameObject CreateLargeButton(string name, Transform Parent, Vector3 position, string TitleText, string SubText, Action action = null) =>
+        CreateButton(TitleText, name, Parent, 
+            new Vector2(2.5f, 1.3f),
+            action,
+            position,
+            new Vector3(9.4f, -2.2f, 0),
+            new Vector3(10.4F, -2.8f, 0), 
+            true, SubText);
+
+    private GameObject CreateScrollMenu()
+    {
+        return null;
+    }
     
-    private GameObject CreateButton(string Title, string text, string name, Vector3 LocalPosition, Action action = null)
+    private static GameObject CreateButton
+    (
+        string Title,
+        string name, 
+        Transform Parent,
+        Vector2 BackSpriteSize,
+        Action action,
+        Vector3 LocalPosition,
+        Vector3 TitlePosition,
+        Vector3 SubTextPosition,
+        bool enableSubText = false,
+        string Subtext = "", 
+        int TitleTextSize = 5,
+        int SubTextSize = 3,
+        Sprite ButtonBackSprite = null
+    )
     {
 
         var button = new GameObject(name)
@@ -90,36 +140,42 @@ public class NextOptionMenu
                 localPosition = LocalPosition
             }
         };
-        button.transform.SetParent(NextMenuParent.transform);
-        button.CreatePassiveButton(onClick:action);
-            
+        button.transform.SetParent(Parent);
+        
         var backGround = new GameObject("BackGround");
         backGround.transform.SetParent(button.transform);
         backGround.transform.localPosition = new Vector3(0, 0, -1);
-            
+        
         var backGroundSprite = backGround.AddComponent<SpriteRenderer>();
-        backGroundSprite.sprite = ObjetUtils.Find<Sprite>("buttonClick");
+        backGroundSprite.sprite = ButtonBackSprite ? ButtonBackSprite : ObjetUtils.Find<Sprite>("buttonClick");
         backGroundSprite.drawMode = SpriteDrawMode.Sliced;
-        backGroundSprite.size = new Vector2(2.5f, 1.3f);
-            
-        button.AddComponent<BoxCollider2D>().size = backGroundSprite.size;
+        backGroundSprite.size = BackSpriteSize;
+        
+        button.CreatePassiveButton(action);
 
         var titleTextGameObject = new GameObject("TitleText");
         titleTextGameObject.transform.SetParent(button.transform);
-        titleTextGameObject.transform.localPosition = new Vector3(9.4f, -2.2f, 0);
+        titleTextGameObject.transform.localPosition = TitlePosition;
             
         var textMeshPro = titleTextGameObject.AddComponent<TextMeshPro>();
         textMeshPro.text = Title;
-        textMeshPro.fontSize = 5; 
-            
+        textMeshPro.fontSize = TitleTextSize;
+
+        if (!enableSubText) return button;
         var SubTextGameObject = Object.Instantiate(titleTextGameObject, button.transform);
         SubTextGameObject.name = "SubText";
-        SubTextGameObject.transform.localPosition = new Vector3(10.4F, -2.8f, 0);
-            
+        SubTextGameObject.transform.localPosition = SubTextPosition;
+
         var SubTextMeshPro = SubTextGameObject.GetComponent<TextMeshPro>();
-        SubTextMeshPro.text = text;
-        SubTextMeshPro.fontSize = 3;
-            
+        SubTextMeshPro.text = Subtext;
+        SubTextMeshPro.fontSize = SubTextSize;
+
         return button;
+    }
+    
+    private enum MenuIndex
+    {
+        GeneralSetting = 0,
+        RoleSetting = 1,
     }
 }

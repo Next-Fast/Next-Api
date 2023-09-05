@@ -1,4 +1,5 @@
-using NextShip.Utilities.Attributes;
+using System.Collections.Generic;
+using NextShip.Options;
 using UnityEngine;
 
 namespace NextShip.Roles;
@@ -10,29 +11,17 @@ public class Sheriff : RoleBase
     public static float shootNumber = 5f;
     public static float cooldown = 30f;
     public static PlayerControl currentTarget;
-
-    public static SimpleRoleInfo simpleRoleInfo = new
-    (
-        typeof(Sheriff),
-        RoleId.Sheriff,
-        color,
-        RoleTeam.Crewmate,
-        RoleType.MainRole
-    );
-
-    public Sheriff(PlayerControl player) : base(player, simpleRoleInfo)
+    
+    
+    
+    public Sheriff(PlayerControl player) : base(player)
     {
-        SimpleRoleInfo = simpleRoleInfo;
     }
+    
 
     public static void clearAndReload()
     {
         sheriff = null;
         currentTarget = null;
-    }
-
-    [OptionLoad]
-    public static void OptionLoad()
-    {
     }
 }

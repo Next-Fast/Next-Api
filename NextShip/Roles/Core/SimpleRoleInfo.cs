@@ -1,36 +1,53 @@
 using System;
+using System.Collections.Generic;
+using Il2CppSystem.Linq.Expressions;
+using NextShip.Options;
 using UnityEngine;
+
+namespace NextShip.Roles.Core;
 
 public class SimpleRoleInfo
 {
-    public Type ClassType;
-    public Color color;
-    public string name;
-    public RoleBase roleBase;
+    public Color RoleColor;
+    public string Name;
     public RoleId roleId;
     public int roleIntId;
     public string RoleStringId;
     public RoleTeam roleTeam;
     public RoleType roleType;
-
+    public Func<Role> AddRole;
+    
     public SimpleRoleInfo
     (
-        Type classType,
         RoleId id,
         Color color,
         RoleTeam team,
         RoleType type,
-        string roleName = "",
-        int roleIntId = -1
-    )
+        string roleStringId,
+        string roleName,
+        int roleIntId)
     {
-        ClassType = classType;
-        name = roleName == "" ? roleName : id.ToString();
+        RoleColor = color;
+        Name = roleName;
         roleId = id;
+        this.roleIntId = roleIntId;
+        RoleStringId = roleStringId;
         roleTeam = team;
         roleType = type;
-        this.roleIntId = roleIntId;
-        this.color = color;
+        
+        // Add to RoleManager        
+        
+        RoleManager.Get().AllSimpleRoleInfos.Add(this);
+    }
+    
+    public SimpleRoleInfo
+    (
+        RoleId id,
+        Color color,
+        RoleTeam team,
+        RoleType type,
+        string roleName) : this(id,color, team, type, "", roleName, -1)
+    {
     }
 
     public SimpleRoleInfo
@@ -39,37 +56,9 @@ public class SimpleRoleInfo
         Color color,
         RoleTeam team,
         RoleType type,
-        string roleStringId = "",
-        string roleName = "",
-        int roleIntId = -1
-    )
+        string roleName
+    ) : this(RoleId.none, color, team, type, "", roleName, -1)
     {
-        ClassType = classType;
-        name = roleName == "" ? roleName : roleStringId;
-        RoleStringId = roleStringId;
-        roleTeam = team;
-        roleType = type;
-        this.roleIntId = roleIntId;
-        this.color = color;
     }
-
-
-    public bool CreateInstance(PlayerControl player)
-    {
-        try
-        {
-            var con = ClassType.GetConstructor(new[] { typeof(PlayerControl) });
-            if (con == null) return false;
-
-            roleBase = (RoleBase)con.Invoke(new object[] { player });
-            roleBase.SimpleRoleInfo = this;
-            Info($"创建角色实例成功: {name} : {player.name}");
-            return true;
-        }
-        catch
-        {
-            Warn($"创建角色实例失败: {name}");
-            return false;
-        }
-    }
+    
 }

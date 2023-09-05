@@ -3,23 +3,21 @@ using UnityEngine;
 
 namespace NextShip.Roles;
 
-public class Postman : RoleBase
+public class Postman : Role
 {
-    public static SimpleRoleInfo simpleRoleInfo = new
-    (
-        typeof(Postman),
-        RoleId.Postman,
-        Color.blue,
-        RoleTeam.Crewmate,
-        RoleType.MainRole
-    );
-
-    public Postman(PlayerControl player) : base(player, simpleRoleInfo)
+    public static SimpleRoleInfo PostmanRoleInfo;
+    
+    
+    public Postman()
     {
+        CreateRoleBase = n => new PostmanBase(n);
+        SimpleRoleInfo = PostmanRoleInfo;
     }
-
-    [OptionLoad]
-    public static void OptionLoad()
+    
+    public class PostmanBase : RoleBase
     {
+        public PostmanBase(PlayerControl player) : base(player)
+        {
+        }
     }
 }

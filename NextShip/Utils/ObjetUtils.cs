@@ -13,16 +13,14 @@ public static class ObjetUtils
 
     public static T Find<T>(string name) where T  : Il2CppObjectBase
     {
-        bool find = false;
+        var find = false;
         Object GetObject = null;
         
         foreach (var Obj in Resources.FindObjectsOfTypeAll(Il2CppType.Of<T>()))
         {
-            if (Obj.name == name)
-            {
-                find = true;
-                GetObject = Obj;
-            }
+            if (Obj.name != name) continue;
+            find = true;
+            GetObject = Obj;
         }
         
         

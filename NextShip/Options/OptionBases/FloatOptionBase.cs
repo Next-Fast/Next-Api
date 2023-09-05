@@ -10,7 +10,6 @@ public class FloatOptionBase : OptionBase
         bool Translation = true) : base(Title, id, tab, optionType.Float, Translation)
     {
         _floatOptionValue = floatOptionValue;
-        OptionManager.AllFloatOption.Add(this);
     }
 
 

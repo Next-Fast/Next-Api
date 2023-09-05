@@ -8,7 +8,7 @@ namespace NextShip.Patches;
 [HarmonyPatch]
 public class SaveManagerPatch
 {
-    public static bool SaveToTISInfo = false;
+    private const bool SaveToTISInfo = false;
 
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.FileName), MethodType.Getter)]
     [HarmonyPostfix]

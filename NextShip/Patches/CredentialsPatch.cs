@@ -22,7 +22,6 @@ public static class CredentialsPatch
         private static void Postfix(VersionShower __instance)
         {
             stringText = __instance.text.text;
-            ModManager.Instance.ShowModStamp();
 #if DEBUG
             stringText += " " + $"{ThisAssembly.Git.Branch} {ThisAssembly.Git.Commit}";
 #endif

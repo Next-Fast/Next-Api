@@ -8,7 +8,6 @@ public class IntOptionBase : OptionBase
         base(Title, id, tab, optionType.Int, Translation)
     {
         _intOptionValue = intOptionValue;
-        OptionManager.AllIntOption.Add(this);
     }
 
     public override void Increase()

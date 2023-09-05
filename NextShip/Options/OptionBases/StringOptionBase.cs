@@ -13,7 +13,6 @@ public class StringOptionBase : OptionBase
     {
         IntOptionValue = new IntOptionValue(0, 0, 1, selection.Length);
         Selection = selection;
-        OptionManager.AllStringOption.Add(this);
     }
 
     public override int GetInt()

@@ -46,43 +46,38 @@ public static class GameObjectUtils
         if (components != null) components.Do(n => Object.Destroy(n));
     }
 
-    public static (GameObject, T) CreateGameObjet<T>(string name = null, Transform  parent = null) where T : Component
+    public static (GameObject, T) CreateGameObject<T>(string name = null, Transform  parent = null, Vector3 vector3 = default) where T : Component
     {
-        var gameObject = CreateGameObject(name, parent);
+        var gameObject = CreateGameObject(name, parent, vector3);
         return (gameObject, gameObject.AddComponent<T>());
     }
     
     public static PassiveButton CreatePassiveButton
     (
         this GameObject @object,
-        string text = "",
         Action onClick = null,
-        Color color = default,
         GameObject activeSprite = null,
         GameObject inactiveSprite = null,
         GameObject disabledSprite = null,
         AudioClip ClickSound = null,
         AudioClip HoverSound = null,
-        Action[] OnMouseOut = null,
-        Action[] OnMouseOver = null
+        Action OnMouseOut = null,
+        Action OnMouseOver = null
     )
     {
         var button = @object.AddComponent<PassiveButton>();
         
-        /*if (text != null) button.buttonText.text = text;
-        if (color != default) button.buttonText.color = color;*/
         if (ClickSound) button.ClickSound = ClickSound;
         if (HoverSound) button.HoverSound = HoverSound;
         if (onClick != null) button.AddOnClickListeners(onClick);
-
-        /*if (!@object.GetComponent<SpriteRenderer>()) @object.AddComponent<SpriteRenderer>();
-        if (!@object.GetComponent<BoxCollider2D>()) @object.AddComponent<BoxCollider2D>().size = @object.GetComponent<SpriteRenderer>().size;*/
+        
+        if (!@object.GetComponent<BoxCollider2D>() && @object.GetComponent<SpriteRenderer>()) @object.AddComponent<BoxCollider2D>().size = @object.GetComponent<SpriteRenderer>().size;
         
         button.OnMouseOut = new UnityEvent();
         button.OnMouseOver = new UnityEvent();
 
-        OnMouseOut?.Do(n => button.OnMouseOut.AddListener(n));
-        OnMouseOver?.Do(n => button.OnMouseOver.AddListener(n));        
+        button.OnMouseOut.AddListener(OnMouseOut);
+        button.OnMouseOver.AddListener(OnMouseOver);
         
         button.activeSprites = activeSprite;
         button.inactiveSprites = inactiveSprite;
@@ -91,10 +86,17 @@ public static class GameObjectUtils
         return button;
     }
 
-    public static GameObject CreateGameObject(string name = null, Transform parent = null)
+    public static GameObject CreateGameObject(string name = null, Transform parent = null, Vector3 position = default)
     {
-        GameObject gameObject = new GameObject();
-        gameObject.name = name ?? $"NextShip_GameObject_{GameObjetCount}";
+        var gameObject = new GameObject
+        {
+            name = name ?? $"NextShip_GameObject_{GameObjetCount}",
+            transform =
+            {
+                parent = parent,
+                localPosition = position == default ? Vector3.zero : position
+            }
+        };
         if (parent != null) gameObject.transform.SetParent(parent);
         return gameObject;
     }

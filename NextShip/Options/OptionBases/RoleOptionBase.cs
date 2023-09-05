@@ -6,12 +6,11 @@ public class RoleOptionBase : StringOptionBase
         { "0% ", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
     public RoleOptionBase(SimpleRoleInfo simpleRoleInfo, int id, optionTab RoleTab = default, string[] chances = null) :
-        base(simpleRoleInfo.name, id, defaultChances,
+        base(simpleRoleInfo.Name, id, defaultChances,
             optionTab.other)
     {
         type = optionType.Role;
         if (chances != null) Selection = chances;
-        OptionManager.AllRoleOption.Add(this);
         if (RoleTab != default)
             tab = RoleTab;
         else

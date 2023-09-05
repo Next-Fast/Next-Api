@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Text.Json;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using Il2CppInterop.Runtime;
+using NextShip.Config;
+using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
 using NextShip.UI.Components;
-using NextShip.Utilities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -71,8 +71,9 @@ public sealed class Main : BasePlugin
 
     public override void Load()
     {
+        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
-        ConsoleManager.SetConsoleTitle(("Among Us " + ModName + " Game").ToColorString(ModColor));
+        
         Instance = this;
         Harmony.PatchAll();
 
@@ -84,22 +85,30 @@ public sealed class Main : BasePlugin
 
         var _Assembly = Assembly.GetExecutingAssembly();
         RegisterManager.Registration(_Assembly);
-        AssetLoader _assetLoader = new AssetLoader(_Assembly);
         UpdateTask = AddComponent<UpdateTask>();
 
         Init();
         LanguagePack.Init();
         ObjetUtils.Do(new Object[]{ UpdateTask });
+        
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 
+    static void RegisterRoles()
+    {
+        var roles = new Role[]
+        {
+            
+        };
+        
+        Roles.RoleManager.Get().RegisterRole(roles);
+    }
 
-    public static void constInit()
+    static void constInit()
     {
 #if RELEASE
             IsDev = false;
 #endif
-
         var CountryName = RegionInfo.CurrentRegion.EnglishName;
         isCn = CountryName.Contains("China"); //|| CountryName.Contains("Hong Kong") || CountryName.Contains("Taiwan");
         isChinese = (TranslationController.InstanceExists

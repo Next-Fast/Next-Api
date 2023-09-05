@@ -13,4 +13,9 @@ public class VanillaOptionManager
             GameOptionsManager.Instance.gameOptionsFactory.ToBytes(GameManager.Instance.LogicOptions
                 .currentGameOptions));
     }
+
+    public static void InitVanillaOptions()
+    {
+        
+    }
 }
