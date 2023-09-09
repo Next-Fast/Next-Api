@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 
-namespace NextShip.Patches;
+namespace NextShip.Cosmetics.Patches;
 
 [HarmonyPatch(typeof(HatManager))]
 public static class HatManagerPatch
@@ -16,7 +16,16 @@ public static class HatManagerPatch
         if (initialized) return;
 
         TaskUtils.StartTask(() => initialized = AllCosmeticsCache.StartCache(__instance));
+        /*CustomCosmeticsManager.AddToList(__instance);*/
     }
+
+    /*[HarmonyPatch(nameof(HatManager.GetHatById))]
+    [HarmonyPatch(nameof(HatManager.GetUnlocked))]
+    [HarmonyPrefix]
+    public static void AddToListPatch_HatManager(HatManager __instance)
+    {
+        CustomCosmeticsManager.AddToList(__instance);
+    }*/
 }
 
 public static class AllCosmeticsCache

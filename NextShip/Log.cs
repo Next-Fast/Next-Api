@@ -4,7 +4,7 @@ using System.Text;
 using BepInEx.Logging;
 using NextShip.Manager;
 
-namespace NextShip.Modules;
+namespace NextShip;
 
 internal class log
 {
@@ -13,7 +13,7 @@ internal class log
 
     public static void ConsoleTextFC()
     {
-        if (System.Console.OutputEncoding != Encoding.UTF8) System.Console.OutputEncoding = Encoding.UTF8;
+        if (!System.Console.OutputEncoding.Equals(Encoding.UTF8)) System.Console.OutputEncoding = Encoding.UTF8;
     }
 
     private static void SendToFile(string tag, string filename, string text, LogLevel level = LogLevel.Info)

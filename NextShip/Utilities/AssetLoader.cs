@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
 using SystemFile = System.IO;
 using Il2cppFile = Il2CppSystem.IO.File;
@@ -41,15 +40,5 @@ public class AssetLoader
         Asset = AssetBundle.LoadFromMemory(Stream.ReadFully());
         loaded = true;
         return this;
-    }
-}
-
-public static class StreamUtils
-{
-    public static byte[] ReadFully(this SystemFile.Stream input)
-    {
-        using var ms = new SystemFile.MemoryStream();
-        input.CopyTo(ms);
-        return ms.ToArray();
     }
 }

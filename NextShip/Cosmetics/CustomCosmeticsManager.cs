@@ -1,23 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using HarmonyLib;
+using Il2CppInterop.Runtime.Attributes;
 using NextShip.Config;
 using NextShip.Cosmetics.Loaders;
 using NextShip.Manager;
+using UnityEngine;
 
 namespace NextShip.Cosmetics;
 
-public class CustomCosmeticsManager
+public static class CustomCosmeticsManager
 {
-    public static List<string> AllCustomCosmeticId = new();
+    public static Dictionary<string, CosmeticsInfo> AllCustomCosmeticNameAndInfo = new();
     public static Dictionary<string, CosmeticRepoType> AllCosmeticRepoRepo = new ();
 
-    public static CosmeticsLoader _Loaders;
+    public static HashSet<Sprite> AllCustomCosmeticSprites = new ();
+    public static HashSet<string> AllCosmeticId = new();
+    
+    public static Dictionary<string, HatViewData> AllCustomHatViewData = new();
+    public static List<SkinViewData> AllCustomSkinViewData = new();
+    public static List<VisorViewData> AllCustomVisorViewData = new();
+    public static List<NamePlateViewData> AllCustomNamePlateViewData = new();
+
+
+    private static CosmeticsLoader _Loaders;
     public static List<CosmeticsLoader> AllLoaders = new();
 
     public const string RepoFile = "CosmeticRepo";
-    public static readonly string RepoFilePath = Path.Combine(FilesManager.CreativityPath, RepoFile.Is(FilesManager.FileType.Json));
+    internal static readonly string RepoFilePath = Path.Combine(FilesManager.CreativityPath, RepoFile.Is(FilesManager.FileType.Json));
+
+    private static readonly CosmeticsConfig[] ModConfig = {
+        
+    };
+
+    public static Sprite GetSprite(string name) => AllCustomCosmeticSprites.FirstOrDefault(n => n.name == name);
+    
+    public static void LoadHat()
+    {
+        var configs = new List<CosmeticsConfig>();
+        configs.AddRange(ModConfig);
+        configs.AddRange(ReadRepoFile());
+        if (configs.Count == 0) return;
+        
+        try
+        {
+            foreach (var config in from config in configs let regex = new Regex(@"/https?\/\/:[-a-z0-9]+(\.[-a-z0-9])*\.(com|cn|edu|uk)\/[-a-z0-9_:@&?=+,.!/~*'%$]*/ig") where regex.IsMatch(config.RepoURL) select config)
+            {
+                Load(config.CosmeticRepoType);
+                _ = _Loaders?.LoadFormOnRepo(config);
+            }
+        }
+        catch (Exception e)
+        {
+            Exception(e);
+        }
+    }
 
     public static List<CosmeticsConfig> ReadRepoFile()
     {
@@ -33,16 +75,31 @@ public class CustomCosmeticsManager
         textWriter.Write(text);
     }
 
-    public static void Load(CosmeticRepoType cosmeticRepoType)
+    private static void Load(CosmeticRepoType cosmeticRepoType)
     {
         _Loaders = cosmeticRepoType switch
         {
-            CosmeticRepoType.TOR => null,
+            CosmeticRepoType.TOR => new TORCosmeticsLoader(),
             CosmeticRepoType.EXR => null,
             CosmeticRepoType.NOS => null,
             CosmeticRepoType.TIS => null,
             _ => null
         };
+        
+        if (_Loaders != null)
+            AllLoaders.Add(_Loaders);
+    }
+
+    public static void AddToList(HatManager __instance)
+    {
+        foreach (var vaLoader in AllLoaders)
+        {
+            if (vaLoader.AddToList) continue;
+            var list = new List<HatData>();
+            list.AddRange(__instance.allHats);
+            vaLoader.Hats.Values.Do(n => n.Keys.Do(data =>  list.Add(data)));
+            __instance.allHats = list.ToArray();
+        }
     }
 }
 

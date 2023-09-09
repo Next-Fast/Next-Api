@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -74,5 +76,12 @@ public static class TextUtils
         }
 
         return text2;
+    }
+
+    public static string CombinePath(this string path, params string[] Paths)
+    {
+        var paths = new List<string> { path };
+        paths.AddRange(Paths);
+        return Path.Combine(paths.ToArray());
     }
 }

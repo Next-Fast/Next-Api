@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Reflection;
 using HarmonyLib;
 using YamlDotNet;
 using YamlDotNet.RepresentationModel;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace NextShip.Utilities;
 
@@ -14,30 +17,16 @@ public class YamlLoader
     private readonly string FileName;
     public bool loaded = false;
     private YamlStream YamlStream;
-    private YamlMappingNode mapping;
+    private string YamlTexts;
     
     public YamlLoader(string fileName)
     {
         FileName = fileName;
+        YamlStream = new YamlStream();
+        YamlTexts = string.Empty;
     }
-    
-    /*// form https://github.com/CognifyDev/ClashOfGods/blob/main/COG/Utils/Yaml.cs
-    public void Load()
-    {
-        if (loaded) return;
-        
-        var rootNode = YamlStream.Documents[0].RootNode;
 
-        if (rootNode is YamlMappingNode yamlMappingNode)
-        {
-            foreach (var nodeChild in  yamlMappingNode.Children)
-            {
-            }
-        }
-        
-    }*/
-
-    public YamlLoader LoadFromDisk(string path = null)
+    public YamlLoader LoadFromDisk(string? path = null)
     {
         var FilePath = path ?? Path.Combine(Languages.LanguagePack.PPath, $"{FileName}.yaml");
         
@@ -45,7 +34,7 @@ public class YamlLoader
         {
             YamlStream = new YamlStream();
             var textReader = new StreamReader(fs);
-            
+            YamlTexts = textReader.ReadToEnd();
             YamlStream.Load(textReader);
         }
         
@@ -59,56 +48,111 @@ public class YamlLoader
         if (string.IsNullOrEmpty(yaml)) return this;
         var stream = assembly.GetManifestResourceStream(yaml);
         var textReader = new StreamReader(stream!);
+        YamlTexts = textReader.ReadToEnd();
         YamlStream.Load(textReader);
         
         loaded = true;
         return this;
     }
+
+    public YamlLoader LoadFromString(string yamlString)
+    {
+        YamlTexts = yamlString;
+        var stream = new StringReader(yamlString);
+        YamlStream.Load(stream);
+        loaded = true;
+        return this;
+    }
+    
+    // https://github.com/CognifyDev/ClashOfGods/blob/main/COG/Utils/Yaml.cs
+    /// <summary>
+    ///     获取Int值
+    /// </summary>
+    /// <param name="location">路径，例如: GetInt("abab.sb"),"."表示下级</param>
+    /// <returns>Int值</returns>
+    public int? GetInt(string location)
+    {
+        int? result = null;
+        var str = GetString(location);
+        if (str != null && int.TryParse(str, out var i)) result = i;
+
+        return result;
+    }
+
+    public List<string>? GetStringList(string location)
+    {
+        var locations = location.Contains('.') ? location.Split(".") : new[] { location };
+        var rootNode = (YamlMappingNode)YamlStream.Documents[0].RootNode;
+
+        if (locations.Length < 1) return new List<string>();
+
+        YamlNode? valueNode = rootNode;
+        foreach (var loc in locations)
+            try
+            {
+                if (valueNode is YamlMappingNode mappingNode)
+                {
+                    var keyNode = new YamlScalarNode(loc);
+                    if (mappingNode.Children.TryGetValue(keyNode, out valueNode))
+                        // 继续向下查找
+                        continue;
+                }
+
+                // 如果找不到对应的键或节点不是一个映射节点，则返回空列表
+                return null;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+
+        // 如果值节点是一个列表节点，则将列表中的值添加到结果列表中
+        if (valueNode is not YamlSequenceNode sequenceNode) return new List<string>();
+        var result = new List<string>();
+        foreach (var item in sequenceNode.Children)
+            if (item is YamlScalarNode { Value: not null } scalarNode)
+                result.Add(scalarNode.Value);
+        return result;
+
+        // 如果值节点不是列表节点，则返回空列表
+    }
+
+    public byte? GetByte(string location)
+    {
+        var str = GetString(location);
+        if (str == null) return null;
+        if (byte.TryParse(str, out var result)) return result;
+
+        return null;
+    }
+
+    public string? GetString(string location)
+    {
+        var locations = location.Contains('.') ? location.Split(".") : new[] { location };
+        var rootNode = (YamlMappingNode)YamlStream.Documents[0].RootNode;
+
+        if (locations.Length < 1) return null;
+
+        YamlNode? valueNode = rootNode;
+        foreach (var loc in locations)
+            try
+            {
+                if (valueNode is YamlMappingNode mappingNode)
+                {
+                    var keyNode = new YamlScalarNode(loc);
+                    if (mappingNode.Children.TryGetValue(keyNode, out valueNode))
+                        // 继续向下查找
+                        continue;
+                }
+
+                // 如果找不到对应的键或节点不是一个映射节点，则返回 null
+                return null;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
+
+        return $"{valueNode}";
+    }
 }
-
-/*public class yamlNode
-{
-    private static List<yamlNode> AllYamlNodes;
-    public static List<yamlNode> GetAllYamlNodes() => AllYamlNodes ??= new List<yamlNode>();
-
-    public List<string> node;
-    public string Key;
-    public readonly object Value;
-
-    public readonly List<yamlNode> ChildNode = new ();
-    public yamlNode ParentNode;
-    
-    public yamlNode(string key, object value, yamlNode parent = null)
-    {
-        ParentNode = parent;
-        parent?.ChildNode.Add(this);
-        node = new List<string>();
-        Key = key;
-        if (parent != null)
-        {
-            node = parent.node;
-        }
-        
-        node.Add(key);
-
-        Value = value;
-        GetAllYamlNodes().Add(this);
-    }
-
-    public static void LoadMode()
-    {
-        
-    }
-    
-    public bool TryGetValue<T>(out T value)
-    {
-        if (Value == null)
-        {
-            value = default(T);
-            return false;
-        }
-
-        value = (T)Value;
-        return true;
-    }
-}*/

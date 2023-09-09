@@ -1,4 +1,4 @@
-global using static NextShip.Modules.log;
+global using static NextShip.log;
 global using Main = NextShip.Main;
 global using NextShip.Utils;
 using System;
@@ -90,7 +90,8 @@ public sealed class Main : BasePlugin
         Init();
         LanguagePack.Init();
         ObjetUtils.Do(new Object[]{ UpdateTask });
-        
+        CustomCosmeticsManager.LoadHat();
+
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 

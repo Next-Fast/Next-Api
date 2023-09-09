@@ -19,7 +19,8 @@ public abstract class RoleBase : IDisposable
         Active = true;
         RoleManager.Get().AllRoleBases.Add(this);
     }
-
+    
+    public Role ParentRole { get; private set; }
     public PlayerControl Player { get; private set; }
     
     public Func<bool> WinCheck { get; }
@@ -35,6 +36,17 @@ public abstract class RoleBase : IDisposable
         Player = null;
         RoleManager.Get().AllRoleBases.Remove(this);
     }
+    
+    public virtual void OnStart() {}
+    
+    public virtual void OnUpdate() {}
+
+    public virtual void OnTeamShow() {}
+    
+    public virtual void OnRoleShow() {}
+    public virtual void OnMeetingStart() {}
+    public virtual void OnExile() {}
+    public virtual void OnExileEnd() {}
 
     protected virtual void OnDestroy()
     {

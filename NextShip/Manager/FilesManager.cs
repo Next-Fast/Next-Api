@@ -8,6 +8,7 @@ public static class FilesManager
     public const string TIS_DataPath = "./TIS_Data";
     public const string CreativityPath = "./Creativity";
     public const string TIS_TempPath = "./TIS_Data/TEMP";
+    public const string TIS_ConfigPath = TIS_DataPath + "/Config";
 
 
     public static void Init()
@@ -15,6 +16,7 @@ public static class FilesManager
         CreateDirectory(TIS_DataPath);
         CreateDirectory(CreativityPath);
         CreateDirectory(TIS_TempPath);
+        CreateDirectory(TIS_ConfigPath);
     }
 
     public static DirectoryInfo CreateDirectory(string path)
@@ -48,6 +50,24 @@ public static class FilesManager
     public static DirectoryInfo GetCreativityDirectory(string name)
     {
         return CreateDirectory(Path.Combine(CreativityPath, name));
+    }
+    
+    public static DirectoryInfo GetConfigDirectory(string name)
+    {
+        return CreateDirectory(Path.Combine(CreativityPath, "Config",  name));
+    }
+
+    public static DirectoryInfo GetCosmeticsCacheDirectory(Cosmetics.CosmeticType type)
+    {
+        var directoryName = type switch
+        {
+            Cosmetics.CosmeticType.NamePlate => "CacheNamePlate",
+            Cosmetics.CosmeticType.Visor => "CacheVisor",
+            Cosmetics.CosmeticType.Skin => "CacheSkin",
+            Cosmetics.CosmeticType.Hat => "CacheHat",
+            _ => string.Empty
+        };
+        return CreateDirectory(Path.Combine(CreativityPath, directoryName));
     }
     
     public enum FileType

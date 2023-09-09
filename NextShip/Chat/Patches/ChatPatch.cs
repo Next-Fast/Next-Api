@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace NextShip.Chat.Patches;
 public static class ChatPatch
 {
     private static GameObject CommandPromptBox;
+    private static List<GameObject> AllButton = new ();
     
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake)), HarmonyPostfix]
     public static void ChatController_Awake_Postfix(ChatController __instance)
@@ -25,7 +27,7 @@ public static class ChatPatch
         InitCommandPromptBox(__instance);
         var text = __instance.freeChatField.Text;
         CommandPromptBox.SetActive(text.StartsWith("/"));
-        if (text.StartsWith("/")) UpdateCommandPromptBox(text.Remove(1).Split(" "));
+        if (text.StartsWith("/")) UpdateCommandPromptBox(text.Replace("/", "").Split(""));
     }
 
     private static void InitCommandPromptBox(ChatController __instance)
@@ -46,20 +48,47 @@ public static class ChatPatch
 
     private static void UpdateCommandPromptBox(string[] text)
     {
+        var BoxSR = CommandPromptBox.GetComponent<SpriteRenderer>();
+        var list = Command.GetCommands(text);
+        if (list == null || list.Count == 0)
+        {
+            BoxSR.size = new Vector2(6.4f, 0.5f);
+            AllButton.Do(n => n.Destroy());
+            return;
+        }
+
+        var buttonSprite = ObjetUtils.Find<Sprite>("smallButtonBorder");
+        var count = 1;
+        Vector3 vector3 = new(-0.0017f, -0.12f, -1);
         foreach (var command in Command.GetCommands(text))
         {
-            var button = new GameObject(command.key.ToString());
+            if (count == 5) break;
+            var button = new GameObject($"Button {text[0]}");
             button.transform.SetParent(CommandPromptBox.transform);
             var SR = button.AddComponent<SpriteRenderer>();
-            SR.sprite = ObjetUtils.Find<Sprite>("smallButtonBorder");
+            SR.sprite = buttonSprite;
             SR.drawMode = SpriteDrawMode.Sliced;
-            button.CreatePassiveButton(OnMouseOut: () => SR.color = new Color(0.962f, 1, 1, 0.298f), OnMouseOver: () => SR.color = Palette.White);
+            SR.size = new Vector2(6.4f, 0.25f);
+            button.transform.localPosition = vector3;;
+            vector3.y += 0.2f;
 
             var ButtonText = new GameObject("text");
             ButtonText.transform.SetParent(button.transform);
+            ButtonText.transform.localPosition = new Vector3(6.85f, -2.34f, -1);
             var TMP = ButtonText.AddComponent<TextMeshPro>();
             TMP.text = command.GetText();
+            TMP.fontSize = 3;
+            TMP.color = new Color(0.962f, 1, 1, 0.298f);
+            
+            button.CreatePassiveButton(onClick: command.CommandEvent,OnMouseOut: () =>
+            {
+                TMP.color = new Color(0.962f, 1, 1, 0.298f);
+                SR.color = new Color(0, 0, 0, 0);
+            }, OnMouseOver: () => SR.color = TMP.color = Palette.White);
 
+            BoxSR.size = new Vector2(6.4f, count * 0.08f); 
+            count++;
+            AllButton.Add(button);
         }
         
         CommandPromptBox.AllGameObjectDo(n => n.layer = LayerUtils.GetUILayer());
@@ -125,7 +154,7 @@ public class Command
     {
         var Commands = AllCommand.Where(n => n.Compare(keys)).ToList();
         Commands.Sort((x, y) => x.KeyCount.CompareTo(y.KeyCount));
-        if (Commands.First().KeyCount > Commands.Last().KeyCount) Commands.Reverse();
+        /*if (Commands.First().KeyCount > Commands.Last().KeyCount) Commands.Reverse();*/
 
         return Commands;
     }

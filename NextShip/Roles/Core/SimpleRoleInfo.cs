@@ -15,7 +15,8 @@ public class SimpleRoleInfo
     public string RoleStringId;
     public RoleTeam roleTeam;
     public RoleType roleType;
-    public Func<Role> AddRole;
+    public Role ParentRole { get; private set; }
+    
     
     public SimpleRoleInfo
     (

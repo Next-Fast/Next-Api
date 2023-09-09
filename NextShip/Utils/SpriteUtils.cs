@@ -55,17 +55,20 @@ public static class SpriteUtils
         return null;
     }
 
+    public static Texture2D LoadTextureFromByte(Il2CppStructArray<byte> bytes)
+    {
+        var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+        var byteTexture = bytes;
+        ImageConversion.LoadImage(texture, byteTexture, false);
+        return texture;
+    }
+
     public static Texture2D LoadTextureFromDisk(string path)
     {
         try
         {
             if (File.Exists(path))
-            {
-                var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
-                var byteTexture = Il2CppSystem.IO.File.ReadAllBytes(path);
-                ImageConversion.LoadImage(texture, byteTexture, false);
-                return texture;
-            }
+                return LoadTextureFromByte(Il2CppSystem.IO.File.ReadAllBytes(path));
         }
         catch
         {
