@@ -10,6 +10,7 @@ public class StringOptionPath
     {
         public static bool Prefix(StringOption __instance)
         {
+            if (OptionsConsolePatch.IsNextMenu) return false;
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 
@@ -27,6 +28,7 @@ public class StringOptionPath
     {
         public static bool Prefix(StringOption __instance)
         {
+            if (OptionsConsolePatch.IsNextMenu) return false;
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 
@@ -40,6 +42,7 @@ public class StringOptionPath
     {
         public static bool Prefix(StringOption __instance)
         {
+            if (OptionsConsolePatch.IsNextMenu) return false;
             var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
             if (option == null) return true;
 

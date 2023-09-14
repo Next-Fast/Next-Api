@@ -69,15 +69,18 @@ public static class GameObjectUtils
         
         if (ClickSound) button.ClickSound = ClickSound;
         if (HoverSound) button.HoverSound = HoverSound;
-        if (onClick != null) button.AddOnClickListeners(onClick);
-        
-        if (!@object.GetComponent<BoxCollider2D>() && @object.GetComponent<SpriteRenderer>()) @object.AddComponent<BoxCollider2D>().size = @object.GetComponent<SpriteRenderer>().size;
+        if (onClick != null) button.OnClick.AddListener(onClick);
+
+        if (!@object.GetComponent<BoxCollider2D>() && @object.GetComponentInChildren<SpriteRenderer>())
+        {
+            @object.AddComponent<BoxCollider2D>().size = @object.GetComponentInChildren<SpriteRenderer>().size;
+        }
         
         button.OnMouseOut = new UnityEvent();
         button.OnMouseOver = new UnityEvent();
 
-        button.OnMouseOut.AddListener(OnMouseOut);
-        button.OnMouseOver.AddListener(OnMouseOver);
+        if (OnMouseOut != null)button.OnMouseOut.AddListener(OnMouseOut);
+        if (OnMouseOver　!= null) button.OnMouseOver.AddListener(OnMouseOver);
         
         button.activeSprites = activeSprite;
         button.inactiveSprites = inactiveSprite;

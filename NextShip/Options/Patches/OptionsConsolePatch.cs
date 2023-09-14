@@ -11,8 +11,10 @@ namespace NextShip.Options.Patches;
 public class OptionsConsolePatch
 {
     public static Dictionary<int, bool> CanUseMenDictionary = new();
+    
     public static bool AllowNoHostUse = false;
     public static bool IsNextMenu;
+    public static bool EnablenNextOption;
     public static NextOptionMenu NextOptionMenu;
 
     private static readonly GameObject NextMenuParent = new ("NextMenuParent");
@@ -49,7 +51,7 @@ public class OptionsConsolePatch
     {
         if (!Camera.main) return;
         PlayerControl.LocalPlayer.NetTransform.Halt();
-        var optionMenu = Object.Instantiate(__instance.MenuPrefab, Camera.main.transform, false);
+        var optionMenu = Object.Instantiate(__instance.MenuPrefab, Camera.main!.transform, false);
         optionMenu.transform.localPosition = __instance.CustomPosition;
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, optionMenu.gameObject, null);
         IsNextMenu = false;
@@ -57,15 +59,9 @@ public class OptionsConsolePatch
 
 
     private static void OpenNextOptionMenu(OptionsConsole __instance)
-    {      
+    {   
         if (!Camera.main) return;
-        PlayerControl.LocalPlayer.NetTransform.Halt();
-        GameObject optionMenu;
-        if (!(optionMenu = GameObject.Find("NextMenuParent(Clone)"))) 
-            optionMenu = Object.Instantiate(NextMenuParent, Camera.main.transform, false);
-        
-        optionMenu.transform.localPosition = __instance.CustomPosition;
-        FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, optionMenu, null);
-        IsNextMenu = true;
+        IsNextMenu = NextOptionMenu.Instance.OpenMenu(__instance.CustomPosition);
+        if (!IsNextMenu) OpenVanillaOptionMenu(__instance);
     }
 }

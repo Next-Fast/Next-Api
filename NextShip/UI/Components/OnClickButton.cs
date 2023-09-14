@@ -1,10 +1,12 @@
 ﻿using System;
 using NextShip.UI.UIManager;
+using NextShip.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NextShip.UI.Components;
 
+[Il2CppRegister]
 public class OnClickButton : MonoBehaviour
 {
     public BoxCollider2D[] BoxCollider2Ds;
@@ -13,10 +15,7 @@ public class OnClickButton : MonoBehaviour
     
     public void Start()
     {
-        if (BoxCollider2Ds == null)
-        {
-            BoxCollider2Ds = GetComponents<BoxCollider2D>();
-        }
+        BoxCollider2Ds ??= GetComponents<BoxCollider2D>();
         
         if (!ButtonSpriteRenderer)
         {
@@ -30,9 +29,9 @@ public class OnClickButton : MonoBehaviour
             BoxCollider2Ds = new[] { box };
         }
 
-        if (!OnClickButtonManager.AllOnClickButtons.Contains(this))
+        if (!OnClickButtonManager.Get().AllOnClickButtons.Contains(this))
         {
-            this.Register();
+            OnClickButtonManager.Instance.Register(this);
         }
     }
 

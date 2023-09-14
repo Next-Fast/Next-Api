@@ -11,11 +11,11 @@ namespace NextShip.Utils;
 public static class ObjetUtils
 {
     public static List<Object> AllObjects = new ();
+    private static Il2CppSystem.Collections.Generic.Dictionary<string, Object> CacheFindObject = new();
 
-    public static T Find<T>(string name) where T  : Il2CppObjectBase
+    public static T Find<T>(string name, bool cache = true) where T  : Il2CppObjectBase
     {
-        var cacheObj = AllObjects.FirstOrDefault(n => n.name == name);
-        if (cacheObj != null)
+        if (CacheFindObject.TryGetValue(name, out var cacheObj))
         {
             Info($"Cache: {name} type {nameof(T)}");
             return cacheObj.CastFast<T>();
@@ -29,12 +29,15 @@ public static class ObjetUtils
             if (Obj.name != name) continue;
             find = true;
             GetObject = Obj;
-            
-            GetObject.DontDestroyAndUnload();
-            AllObjects.Add(GetObject);
+            break;
         }
-        
-        
+
+        if (cache)
+        {
+            GetObject.DontDestroyAndUnload();
+            CacheFindObject.Add(name, GetObject);
+        }
+
         Info($"ObjectUtils.Find return isnull:{find} Find<{typeof(T).Name}> Get:{name}");
         return find ? GetObject.CastFast<T>() : null ;
     }
