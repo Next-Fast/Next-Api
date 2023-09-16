@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace NextShip.UI.Components;
 
+[Il2CppRegister]
 public class NextMenuOption : MonoBehaviour
 {
     public Transform List;
@@ -18,16 +19,8 @@ public class NextMenuOption : MonoBehaviour
     public void Start()
     {
         CreateOption();
-        OpenMenu();
     }
     
-    public void OpenMenu()
-    {
-        if(!ControllerManager.Instance || Open) return;
-        ControllerManager.Instance.OpenOverlayMenu(name, __OptionMenu.CloneButton.GetComponent<PassiveButton>());
-        Open = true;
-    }
-
     public void CreateOption()
     {
     }
@@ -36,8 +29,15 @@ public class NextMenuOption : MonoBehaviour
     {
     }
     
+
     public void OnDestroy()
     {
-        ControllerManager.Instance.CloseOverlayMenu(name);
+        NextOptionMenu.Instance.Initd = false;
+        NextOptionMenu.Instance = null;
+    }
+
+    public void CreateOptionButton()
+    {
+        
     }
 }

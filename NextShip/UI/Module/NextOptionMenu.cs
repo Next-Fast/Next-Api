@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using NextShip.UI.Components;
 using NextShip.Utilities;
 using TMPro;
@@ -9,6 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace NextShip.UI;
 
+[HarmonyPatch]
 public class NextOptionMenu
 {
     public bool Initd;
@@ -37,37 +39,47 @@ public class NextOptionMenu
     {
         if (Initd) return;
 
-        var BackGround = new GameObject("BackGround");
-        BackGround.transform.SetParent(NextMenuParent.transform);
-        
-        var tint = Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint").gameObject, BackGround.transform);
-        Object.Instantiate(__instance.MenuPrefab.transform.Find("Background").transform.GetChild(1).gameObject, BackGround.transform);
+        try
+        {
+            var BackGround = new GameObject("BackGround");
+            BackGround.transform.SetParent(NextMenuParent.transform);
+            
+            var tint = Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint").gameObject, BackGround.transform);
+            Object.Instantiate(__instance.MenuPrefab.transform.Find("Background").transform.GetChild(1).gameObject, BackGround.transform);
 
-        /*var ScrollMenu = CreateScrollMenu
-        (
-            "NextScrollMenu", 
-            NextMenuParent.transform, 
-            new Vector3(0, 0, -5f),
-            new Vector3(0, 0, -5f),
-            new Vector2(0.03f, 6),
-            default,
-            new FloatRange(1, 1),
-            new FloatRange(1, 1)
+            var ScrollMenu = CreateScrollMenu
+            (
+                "NextScrollMenu", 
+                NextMenuParent.transform, 
+                new Vector3(1.6f, 2.9f, -5),
+                new Vector3(0, 0, -5f),
+                new Vector3(0, 0, -5f),
+                new Vector2(0.03f, 6),
+                new Vector2(0.05f, 1),
+                new FloatRange(-5.4f, 0.5f),
+                new FloatRange(-1, 1)
             );
-        List = ScrollMenu.Item2;*/
-        
+            List = ScrollMenu.Item2;
+            
 
-        GeneralSettingOption = CreateLargeButton("GeneralSettingOption", NextMenuParent.transform, new Vector3(-3.5f, 1.5f, 0), "常规设置", "关于设置的选项", () => OpenOptionMenu(MenuIndex.GeneralSetting));
-        RoleSettingOption = CreateLargeButton("RoleSettingOption", NextMenuParent.transform, new Vector3(-3.5f, 0, 0), "职业设置", "关于职业的选项设置", () => OpenOptionMenu(MenuIndex.RoleSetting));
-        CloneButton = CreateSmallButton("CloneButton", NextMenuParent.transform, new Vector3(-3.5f, -1.1f, 0), "关闭", CloseMenu);
-        
-        NextMenuParent.SetActive(false);
-        NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
+            GeneralSettingOption = CreateLargeButton("GeneralSettingOption", NextMenuParent.transform, new Vector3(-3.5f, 1.5f, 0), "常规设置", "关于设置的选项", () => OpenOptionMenu(MenuIndex.GeneralSetting));
+            RoleSettingOption = CreateLargeButton("RoleSettingOption", NextMenuParent.transform, new Vector3(-3.5f, 0, 0), "职业设置", "关于职业的选项设置", () => OpenOptionMenu(MenuIndex.RoleSetting));
+            CloneButton = CreateSmallButton("CloneButton", NextMenuParent.transform, new Vector3(-3.5f, -1.1f, 0), "关闭", CloseMenu);
+            
+            NextMenuParent.SetActive(false);
+            NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
 
-        /*var component = NextMenuParent.AddComponent<NextMenuOption>();
-        component.__OptionMenu = this;*/
-        
-        Initd = true;
+            NextMenuParent.AddComponent<NextMenuOption>().__OptionMenu = this;
+            
+            
+            Initd = true;
+        }
+        catch (Exception e)
+        {
+            Exception(e);
+            Error("生成错误");
+            Initd = false;
+        }
     }
 
     private void OpenOptionMenu(MenuIndex menu)
@@ -75,7 +87,7 @@ public class NextOptionMenu
         Info("Open OptionMenu");
     }
 
-    private void CloseMenu(MenuIndex menu)
+    private void CloseOptionMenu(MenuIndex menu)
     {
         
     }
@@ -87,7 +99,7 @@ public class NextOptionMenu
         PlayerControl.LocalPlayer.NetTransform.Halt();
         NextMenuParent.transform.localPosition = pos;
         NextMenuParent.transform.SetParent(Camera.main!.transform, false);
-        ControllerManager.Instance.OpenOverlayMenu(NextMenuParent.name, NextOptionMenu.Instance.CloneButton.GetComponent<UiElement>(), null, NextOptionMenu.Instance.UiElements);
+        ControllerManager.Instance.OpenOverlayMenu(NextMenuParent.name, Instance.CloneButton.GetComponent<UiElement>(), null, Instance.UiElements);
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, NextMenuParent, null);
         return true;
     }
@@ -120,6 +132,7 @@ public class NextOptionMenu
     (
         string Name, 
         Transform Parent, 
+        Vector3 vector3,
         Vector3 ScrollBar_TrackVector3,
         Vector3 ScrollBar_HandleVector3,
         Vector2 ScrollBar_TrackSize,
@@ -136,24 +149,39 @@ public class NextOptionMenu
         
         var MenuScroll = new GameObject(Name + "_Scroll");
         MenuScroll.transform.SetParent(ScrollMenu.transform);
+        MenuScroll.transform.localPosition = vector3;
         
-
         var Scroll = GameObject.Find("ChatUi").transform.Find("QuickChatMenu").transform
             .Find("Container").transform.Find("Pages").transform.Find("PhrasesPage").transform.Find("Scroller");
 
-        var tem_Handle = Scroll.transform.Find("ScrollBar_Handle");
-        var tem_Track = Scroll.transform.Find("ScrollBar_Track");
+        var tem_Handle = Scroll.transform.Find("ScrollBar_Handle").gameObject;
+        var tem_Track = Scroll.transform.Find("ScrollBar_Track").gameObject;
+            
+        tem_Handle.GetComponent<SpriteRenderer>().sprite.CaChe("Handle_Sprite");
+        tem_Track.GetComponent<SpriteRenderer>().sprite.CaChe("Track_Sprite");
         
-        var ScrollBar_Handle = Object.Instantiate(tem_Handle, MenuScroll.transform);
-        var ScrollBar_Track = Object.Instantiate(tem_Track, MenuScroll.transform);
+        var ScrollBar_Handle = Object.Instantiate(tem_Handle, MenuScroll.transform, true);
+        ScrollBar_Handle.name = "ScrollBar_Handle";
+        var ScrollBar_Track = Object.Instantiate(tem_Track, MenuScroll.transform, true);
+        ScrollBar_Track.name = "ScrollBar_Track";
+
+        var tra = ScrollBar_Track.GetComponent<SpriteRenderer>();
+        
+        var bar = ScrollBar_Handle.GetComponent<Scrollbar>();
+        var barSp = ScrollBar_Handle.GetComponent<SpriteRenderer>();
+        bar.graphic = barSp;
+        bar.trackGraphic = tra;
+
+        bar.OnMouseOut = new UnityEvent();
+        bar.OnMouseOver = new UnityEvent();
 
         if (ScrollBar_HandleVector3 != default) ScrollBar_Handle.transform.localPosition = ScrollBar_HandleVector3;
-        if (ScrollBar_HandleSize != default) ScrollBar_Handle.GetComponent<SpriteRenderer>().size = ScrollBar_HandleSize;
-        if (HandleSprite) ScrollBar_Handle.GetComponent<SpriteRenderer>().sprite = HandleSprite;
+        if (ScrollBar_HandleSize != default) barSp.size = ScrollBar_HandleSize;
+        if (HandleSprite) barSp.sprite = HandleSprite;
 
         if (ScrollBar_TrackVector3 != default) ScrollBar_Track.transform.localPosition = ScrollBar_TrackVector3;
-        if (ScrollBar_TrackSize != default) ScrollBar_Track.GetComponent<SpriteRenderer>().size = ScrollBar_TrackSize;
-        if (trackSprite) ScrollBar_Track.GetComponent<SpriteRenderer>().sprite = trackSprite;
+        if (ScrollBar_TrackSize != default) tra.size = ScrollBar_TrackSize;
+        if (trackSprite) tra.sprite = trackSprite;
 
         var list = new GameObject("List");
         list.transform.SetParent(ScrollMenu.transform);
@@ -170,16 +198,17 @@ public class NextOptionMenu
         scroller.Inner = list.transform;
         
         if (YorX) 
-            scroller.ScrollbarY = ScrollBar_Handle.GetComponent<Scrollbar>();
+            scroller.ScrollbarY = bar;
         else
-            scroller.ScrollbarX = ScrollBar_Handle.GetComponent<Scrollbar>();
+            scroller.ScrollbarX = bar;
+
+        bar.parent = scroller;
         
         scroller.ScrollbarYBounds = BarRange;
         scroller.ContentYBounds = contentRange;
         
-        var scrollbar = ScrollBar_Handle.GetComponent<Scrollbar>();
-        scrollbar.parent = scroller;
-        scrollbar.trackGraphic = ScrollBar_Track.GetComponent<SpriteRenderer>();
+        Instance.UiElements.Add(scroller);
+        Instance.UiElements.Add(bar);
         
         return (ScrollMenu, list.transform);
     }
@@ -220,8 +249,7 @@ public class NextOptionMenu
         backGroundSprite.drawMode = SpriteDrawMode.Sliced;
         backGroundSprite.size = BackSpriteSize;
 
-        var onclick = backGround.CreatePassiveButton();
-        onclick.OnClick.AddListener(action);
+        var onclick = backGround.CreatePassiveButton(action);
         Instance.UiElements.Add(onclick);
 
         var titleTextGameObject = new GameObject("TitleText");

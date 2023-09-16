@@ -15,9 +15,8 @@ public class OptionsConsolePatch
     public static bool AllowNoHostUse = false;
     public static bool IsNextMenu;
     public static bool EnablenNextOption;
-    public static NextOptionMenu NextOptionMenu;
 
-    private static readonly GameObject NextMenuParent = new ("NextMenuParent");
+    private static GameObject NextMenuParent;
 
     [HarmonyPatch(typeof(OptionsConsole), nameof(OptionsConsole.Use))]
     [HarmonyPrefix]
@@ -34,12 +33,14 @@ public class OptionsConsolePatch
 
         if (!canUse) return false;
         
-        NextOptionMenu ??= new NextOptionMenu(__instance, NextMenuParent);
-        NextOptionMenu.__instance = __instance;
-
-        if (!NextOptionMenu.Initd) NextOptionMenu.Init();
         
-        if (NextOptionMenu.Initd) 
+        var nextOptionMenu = NextOptionMenu.Instance;
+        nextOptionMenu ??= new NextOptionMenu(__instance, NextMenuParent);
+        nextOptionMenu.__instance = __instance;
+
+        if (!nextOptionMenu.Initd) nextOptionMenu.Init();
+        
+        if (nextOptionMenu.Initd) 
             OpenNextOptionMenu(__instance);
         else
             OpenVanillaOptionMenu(__instance);
@@ -64,4 +65,7 @@ public class OptionsConsolePatch
         IsNextMenu = NextOptionMenu.Instance.OpenMenu(__instance.CustomPosition);
         if (!IsNextMenu) OpenVanillaOptionMenu(__instance);
     }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start)), HarmonyPostfix]
+    public static void OnHudManagerStart() => NextMenuParent = new GameObject("NextMenuParent");
 }

@@ -94,12 +94,13 @@ public abstract class OptionBase
     public abstract float GetFloat();
     public abstract string GetValueString();
     public abstract OptionBase GetBase();
+    
+    // 设置OptionBehaviour隐性转换
+    public static explicit operator OptionBehaviour(OptionBase @base) => @base.OptionBehaviour;
+    public static explicit operator string (OptionBase @base) => @base.GetValueString();
+    
 
-    public string GetTitleString()
-    {
-        if (EnableTranslation) return GetString(Title);
-        return Title;
-    }
+    public string GetTitleString() => EnableTranslation ? GetString(Title) : Title;
 }
 
 public class OptionInfo : IOptionInfo

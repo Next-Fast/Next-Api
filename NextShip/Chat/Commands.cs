@@ -1,4 +1,6 @@
+using System.Linq;
 using HarmonyLib;
+using NextShip.Chat.Patches;
 
 namespace NextShip.Chat;
 
@@ -21,13 +23,16 @@ public static class Commands
                     break;
             }
 
-            if (canceled)
+            if (Command.AllCommand.Any(command => command.GetText() == text))
             {
-                __instance.freeChatField.Clear();
-                __instance.freeChatField.textArea.SetText(cancelVal);
+                canceled = true;
             }
 
-            return !canceled;
+            if (!canceled) return true;
+            __instance.freeChatField.Clear();
+            __instance.freeChatField.textArea.SetText(cancelVal);
+
+            return false;
         }
     }
 }

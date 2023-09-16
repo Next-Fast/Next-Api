@@ -56,10 +56,11 @@ public class OptionManager
         Check();
     }
 
-    public static void Check()
+    private static void Check()
     {
         var e = new List<int>();
         AllOption.Do(check);
+        return;
 
         void check(OptionBase @base)
         {

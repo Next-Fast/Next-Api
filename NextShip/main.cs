@@ -18,7 +18,6 @@ using NextShip.Manager;
 using NextShip.Patches;
 using NextShip.UI.Components;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
 [assembly: AssemblyInformationalVersion(Main.VersionString)]
@@ -48,6 +47,7 @@ public sealed class Main : BasePlugin
         "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OqTfMLjm7lMD5OMV68Rs9JLnbcXc-fDR&authKey=8tt0sNVVsfsGvOBFLNmtDA8CD7fweh%2Bbe1%2FMq2j62zGNWJ17Q%2FNXfG4c7r6JlN1S&noverify=0&group_code=815101721";
 
     public const string QQNumber = "815101721";
+    public static readonly string HashCode = HashUtils.GetFileMD5Hash(Paths.PluginPath.CombinePath($"{ModName}.dll"));
 
     // 模组构建时间
     public static string BuildTime = "";
@@ -89,7 +89,7 @@ public sealed class Main : BasePlugin
 
         Init();
         LanguagePack.Init();
-        ObjetUtils.Do(new Object[]{ UpdateTask });
+        ObjetUtils.Do(UpdateTask);
         CustomCosmeticsManager.LoadHat();
 
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
@@ -121,7 +121,7 @@ public sealed class Main : BasePlugin
         Info($"isCn:{isCn.ToString()}", "Const");
         Info($"IsChinese:{isChinese.ToString()}", "Const");
         Info($"Support Among Us Version {AmongUsVersion}", "Info");
-        Info($"Hash: {HashUtils.GetFileMD5Hash(Path.Combine(Paths.PluginPath , $"{ModName}.dll"))}", "Info");
+        Info($"Hash: {HashCode}", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
     }
 }

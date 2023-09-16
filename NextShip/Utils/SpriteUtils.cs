@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace NextShip.Utils;
 
@@ -11,6 +13,27 @@ public static class SpriteUtils
 {
     private static Sprite ModStamp;
     public static Dictionary<string, Sprite> CachedSprites = new();
+    public static HashSet<Sprite> CacheSprite = new();
+
+    public static void CaChe(this Sprite sprite, string name = "")
+    {
+        if (name != "") sprite.name = name;
+
+        sprite.DontDestroyAndUnload();
+        CacheSprite.Add(sprite);
+    }
+
+    public static Sprite GetCache(string name, bool NoCache = false)
+    {
+        var sprite = CacheSprite.FirstOrDefault(n => n.name == name);
+        if (sprite == null || sprite == default) return null;
+        if (!NoCache) return sprite;
+        
+        sprite.hideFlags |= HideFlags.None;
+        CacheSprite.Remove(sprite);
+
+        return sprite;
+    }
 
     public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit)
     {

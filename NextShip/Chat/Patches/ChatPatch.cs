@@ -27,7 +27,7 @@ public static class ChatPatch
         InitCommandPromptBox(__instance);
         var text = __instance.freeChatField.Text;
         CommandPromptBox.SetActive(text.StartsWith("/"));
-        if (text.StartsWith("/")) UpdateCommandPromptBox(text.Replace("/", "").Split(""));
+        if (text.StartsWith("/")) UpdateCommandPromptBox(text.Replace("/", "").Split(""), __instance);
     }
 
     private static void InitCommandPromptBox(ChatController __instance)
@@ -46,7 +46,7 @@ public static class ChatPatch
         SR.color = new Color(0.962f, 1, 1, 0.298f);
     }
 
-    private static void UpdateCommandPromptBox(string[] text)
+    private static void UpdateCommandPromptBox(string[] text, ChatController __instance)
     {
         var BoxSR = CommandPromptBox.GetComponent<SpriteRenderer>();
         var list = Command.GetCommands(text);
@@ -80,11 +80,15 @@ public static class ChatPatch
             TMP.fontSize = 3;
             TMP.color = new Color(0.962f, 1, 1, 0.298f);
             
-            button.CreatePassiveButton(onClick: command.CommandEvent,OnMouseOut: () =>
+            button.CreatePassiveButton(onClick: () => __instance.freeChatField.textArea.SetText(command.GetText()), 
+                OnMouseOut: () =>
             {
                 TMP.color = new Color(0.962f, 1, 1, 0.298f);
                 SR.color = new Color(0, 0, 0, 0);
-            }, OnMouseOver: () => SR.color = TMP.color = Palette.White);
+            }, 
+                OnMouseOver: () => 
+                    SR.color = TMP.color = Palette.White
+                    );
 
             BoxSR.size = new Vector2(6.4f, count * 0.08f); 
             count++;
@@ -101,6 +105,7 @@ public class Command
 
     public string[] key;
     public Action CommandEvent;
+    public int count;
     private int KeyCount => key.Length;
 
     static Command()
@@ -112,13 +117,14 @@ public class Command
     {
         this.CommandEvent = CommandEvent;
         this.key = key;
+        count = AllCommand == null ? 0 : AllCommand.Last().count++;
         
-        AllCommand.Add(this);
+        AllCommand!.Add(this);
     }
 
     public string GetText()
     {
-        var text = "/ ";
+        var text = "/";
         foreach (var k in key)
         {
             text += k;
