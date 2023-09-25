@@ -18,12 +18,15 @@ public class YamlLoader
     public bool loaded = false;
     private YamlStream YamlStream;
     private string YamlTexts;
+
+    public static readonly List<YamlLoader> YamlLoaders = new();
     
     public YamlLoader(string fileName)
     {
         FileName = fileName;
         YamlStream = new YamlStream();
         YamlTexts = string.Empty;
+        YamlLoaders.Add(this);
     }
 
     public YamlLoader LoadFromDisk(string? path = null)

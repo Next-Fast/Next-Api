@@ -22,5 +22,6 @@ public static class RegisterManager
         LoadAttribute.Registration(type);
         OptionLoad.Registration(type);
         EventListener.Registration(type);
+        TranslateTag.Registration(type);
     }
 }

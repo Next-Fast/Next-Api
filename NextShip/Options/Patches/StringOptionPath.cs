@@ -1,53 +1,53 @@
 ﻿using System.Linq;
 using HarmonyLib;
+using Il2CppSystem;
 
 namespace NextShip.Options.Patches;
 
+[HarmonyPatch(typeof(StringOption))]
 public class StringOptionPath
 {
-    [HarmonyPatch(typeof(StringOption), nameof(StringOption.OnEnable))]
-    public class StringOptionEnablePatch
+    [HarmonyPatch(nameof(StringOption.OnEnable)), HarmonyPrefix]
+    public static bool StringOptionEnablePatch_Prefix(StringOption __instance)
     {
-        public static bool Prefix(StringOption __instance)
-        {
-            if (OptionsConsolePatch.IsNextMenu) return false;
-            var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
-            if (option == null) return true;
+        if (OptionsConsolePatch.IsNextMenu) return false;
+        var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
+        if (option == null) return true;
 
-            __instance.OnValueChanged = null;
-            __instance.TitleText.text = option.GetTitleString();
-            __instance.Value = __instance.oldValue = option.GetInt();
-            __instance.ValueText.text = option.GetValueString();
-
-            return false;
-        }
+        __instance.OnValueChanged = null;
+        OnOptionUpdate(__instance, option);
+        return false;
     }
+    
 
-    [HarmonyPatch(typeof(StringOption), nameof(StringOption.Increase))]
-    public class StringOptionIncreasePatch
+    [HarmonyPatch(nameof(StringOption.Increase)), HarmonyPrefix]
+    public static bool StringOptionIncreasePatch_Prefix(StringOption __instance)
     {
-        public static bool Prefix(StringOption __instance)
-        {
-            if (OptionsConsolePatch.IsNextMenu) return false;
-            var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
-            if (option == null) return true;
+        if (OptionsConsolePatch.IsNextMenu) return false;
+        var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
+        if (option == null) return true;
 
-            option.Increase();
-            return false;
-        }
+        option.Increase();
+        OnOptionUpdate(__instance, option);
+        return false;
     }
 
     [HarmonyPatch(typeof(StringOption), nameof(StringOption.Decrease))]
-    public class StringOptionDecreasePatch
+    public static bool StringOptionDecreasePatch_Prefix(StringOption __instance)
     {
-        public static bool Prefix(StringOption __instance)
-        {
-            if (OptionsConsolePatch.IsNextMenu) return false;
-            var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
-            if (option == null) return true;
+        if (OptionsConsolePatch.IsNextMenu) return false;
+        var option = OptionManager.AllOption.FirstOrDefault(option => option.OptionBehaviour == __instance);
+        if (option == null) return true;
 
-            option.Decrease();
-            return false;
-        }
+        option.Decrease();
+        OnOptionUpdate(__instance, option);
+        return false;
+    }
+
+    private static void OnOptionUpdate(StringOption __instance, OptionBase option)
+    {
+        __instance.TitleText.text = option.GetTitleString();
+        __instance.Value = __instance.oldValue = option.GetInt();
+        __instance.ValueText.text = option.GetValueString();
     }
 }

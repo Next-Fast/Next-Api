@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
 using NextShip.Utilities;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace NextShip.Utils;
 
@@ -13,7 +15,7 @@ public static class ObjetUtils
     public static List<Object> AllObjects = new ();
     private static Il2CppSystem.Collections.Generic.Dictionary<string, Object> CacheFindObject = new();
 
-    public static T Find<T>(string name, bool cache = true) where T  : Il2CppObjectBase
+    public static T Find<T>(string name, bool cache = true , Func<Object, bool> @Bool = null) where T  : Il2CppObjectBase
     {
         if (CacheFindObject.TryGetValue(name, out var cacheObj))
         {
@@ -27,6 +29,7 @@ public static class ObjetUtils
         foreach (var Obj in Resources.FindObjectsOfTypeAll(Il2CppType.Of<T>()))
         {
             if (Obj.name != name) continue;
+            if (@Bool != null && !@Bool(Obj)) continue;
             find = true;
             GetObject = Obj;
             break;
@@ -40,6 +43,23 @@ public static class ObjetUtils
 
         Info($"ObjectUtils.Find return isnull:{find} Find<{typeof(T).Name}> Get:{name}");
         return find ? GetObject.CastFast<T>() : null ;
+    }
+    
+    public static List<T> FindAll<T>(string name) where T  : Il2CppObjectBase
+    {
+        var find = false;
+        var list = new List<T>();
+        
+        foreach (var Obj in Resources.FindObjectsOfTypeAll(Il2CppType.Of<T>()))
+        {
+            if (Obj.name != name) continue;
+            find = true;
+            list.Add(Obj.CastFast<T>());
+            break;
+        }
+
+        Info($"ObjectUtils.Find return isnull:{find} Find<{typeof(T).Name}> Get:{name}");
+        return find ? list : null ;
     }
     
     /// <summary>

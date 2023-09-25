@@ -51,7 +51,13 @@ public static class GameObjectUtils
         var gameObject = CreateGameObject(name, parent, vector3);
         return (gameObject, gameObject.AddComponent<T>());
     }
+
+    public static GameObject CreateGGameObject<T>(string name = null, Transform parent = null, Vector3 vector3 = default)
+        where T : Component => CreateGameObject<T>(name, parent, vector3).Item1;
     
+    public static T CreateCGameObject<T>(string name = null, Transform parent = null, Vector3 vector3 = default)
+        where T : Component => CreateGameObject<T>(name, parent, vector3).Item2;
+
     public static PassiveButton CreatePassiveButton
     (
         this GameObject @object,
@@ -100,6 +106,7 @@ public static class GameObjectUtils
                 localPosition = position == default ? Vector3.zero : position
             }
         };
+        GameObjetCount++;
         if (parent != null) gameObject.transform.SetParent(parent);
         return gameObject;
     }

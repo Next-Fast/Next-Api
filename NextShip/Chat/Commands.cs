@@ -23,9 +23,10 @@ public static class Commands
                     break;
             }
 
-            if (Command.AllCommand.Any(command => command.GetText() == text))
+            if (Command.TryGetCommandEvent(text, out var action))
             {
                 canceled = true;
+                action();
             }
 
             if (!canceled) return true;

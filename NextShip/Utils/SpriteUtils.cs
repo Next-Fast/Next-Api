@@ -14,6 +14,14 @@ public static class SpriteUtils
     private static Sprite ModStamp;
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static HashSet<Sprite> CacheSprite = new();
+    
+    public static readonly Sprite NextShipText_Sprite;
+    public static readonly Sprite ButtonBorder;
+
+    static SpriteUtils()
+    {
+        NextShipText_Sprite = LoadSpriteFromResources("NextShip.Resources.Logo.NextShipText.png", 100f);
+    }
 
     public static void CaChe(this Sprite sprite, string name = "")
     {
@@ -26,6 +34,8 @@ public static class SpriteUtils
     public static Sprite GetCache(string name, bool NoCache = false)
     {
         var sprite = CacheSprite.FirstOrDefault(n => n.name == name);
+        if (sprite == null || sprite == default)
+            sprite = CachedSprites[name];
         if (sprite == null || sprite == default) return null;
         if (!NoCache) return sprite;
         
@@ -52,6 +62,33 @@ public static class SpriteUtils
         }
 
         return null;
+    }
+    
+    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, Vector2 pivot, uint extrude, SpriteMeshType meshType, Vector4 border)
+    {
+        try
+        {
+            if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+            var texture = LoadTextureFromResources(path);
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot,
+                pixelsPerUnit, extrude, meshType, border);
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+            return CachedSprites[path + pixelsPerUnit] = sprite;
+        }
+        catch
+        {
+            Warn("加载图片失败路径:" + path, filename: "Helpers");
+        }
+
+        return null;
+    }
+
+    public static Sprite ToFullRect(this Sprite sprite, string name = "")
+    {
+        var FullRectSprite = Sprite.Create(sprite.texture, sprite.textureRect, new Vector2(0.5f, 0.5f),
+            sprite.pixelsPerUnit, 0, SpriteMeshType.FullRect, sprite.border);
+        if (name != "") FullRectSprite.name = name;
+        return FullRectSprite;
     }
 
     public static unsafe Texture2D LoadTextureFromResources(string path)

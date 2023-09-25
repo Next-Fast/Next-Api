@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using NextShip.Manager;
+using NextShip.Utilities.Attributes;
 
 namespace NextShip.Plugins;
 
@@ -17,6 +18,7 @@ public static class PluginManager
 
     public static List<ShipPlugin> Plugins = new();
 
+    [Load]
     public static void Init()
     {
         PluginsPath = FilesManager.GetCreativityDirectory("Plugins").FullName;

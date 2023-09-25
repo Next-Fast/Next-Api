@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using NextShip.Utilities;
 using UnityEngine;
-using Object = System.Object;
 using SystemFile = System.IO;
 
 namespace NextShip.Utils;
@@ -68,15 +68,5 @@ public static class AssetUtils
         }
 
         return assetArray;
-    }
-}
-
-public static class StreamUtils
-{
-    public static byte[] ReadFully(this SystemFile.Stream input)
-    {
-        using var ms = new SystemFile.MemoryStream();
-        input.CopyTo(ms);
-        return ms.ToArray();
     }
 }

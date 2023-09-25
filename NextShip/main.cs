@@ -1,17 +1,10 @@
-global using static NextShip.log;
-global using Main = NextShip.Main;
-global using NextShip.Utils;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
-using System.Text.Json;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
-using NextShip.Config;
 using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
@@ -91,10 +84,24 @@ public sealed class Main : BasePlugin
         LanguagePack.Init();
         ObjetUtils.Do(UpdateTask);
         CustomCosmeticsManager.LoadHat();
-
+        RegisterRoles();
+        
+        Application.add_quitting( (Il2CppSystem.Action)(() => OnQuit()));
+        VanillaManager.Load();
         /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
     }
 
+    public override bool Unload()
+    {
+        OutputTISLog();
+        return base.Unload();
+    }
+
+    private static void OnQuit()
+    {
+        OutputTISLog();
+    }
+    
     static void RegisterRoles()
     {
         var roles = new Role[]

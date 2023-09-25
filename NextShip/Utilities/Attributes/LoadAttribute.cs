@@ -1,26 +1,57 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
+using NextShip.Manager;
 
 namespace NextShip.Utilities.Attributes;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public sealed class LoadAttribute : Attribute
 {
     internal static void Registration(Type type)
     {
         Info("Start Registration", filename: MethodUtils.GetClassName());
-        if (type.GetCustomAttribute<LoadAttribute>() == null) return;
         ConstructorInfo constructor;
-        if ((constructor = type.GetConstructor
-            (
-                BindingFlags.Public |
-                BindingFlags.Static |
-                BindingFlags.NonPublic,
-                Array.Empty<Type>()
-            ))
-            == null) return;
+        if (
+            type.GetCustomAttribute<LoadAttribute>() != null
+            &&
+            (constructor = type.GetConstructor
+                (
+                    BindingFlags.Public |
+                    BindingFlags.Static |
+                    BindingFlags.NonPublic,
+                    Array.Empty<Type>()
+                )
+            )
+            != null)
+        {
+            constructor.Invoke(null, null);
+        }
 
-        constructor.Invoke(null, null);
+        foreach (var variableMethodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+        {
+            
+            if (variableMethodInfo.Name is "CoLoad" or "Load" 
+                 && 
+                 (
+                     type.IsDefined(typeof(LoadAttribute))
+                     || 
+                     variableMethodInfo.IsDefined(typeof(LoadAttribute))
+                 )
+                 &&
+                 variableMethodInfo.ReturnType == typeof(IEnumerator)
+                )
+            {
+                LoadManager.AllLoad.Add(variableMethodInfo.Invoke(null, null) as IEnumerator);
+                continue;
+            }
+
+            if (variableMethodInfo.GetCustomAttribute<LoadAttribute>() != null)
+            {
+                variableMethodInfo.Invoke(null, null);
+            }
+        }
+        
         Info($"Statically Initialized Class {type}", "LoadAttribute");
     }
 }

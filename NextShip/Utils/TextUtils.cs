@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -84,4 +85,8 @@ public static class TextUtils
         paths.AddRange(Paths);
         return Path.Combine(paths.ToArray());
     }
+
+    public static string ToStringText(this char c) => $"{c}";
+    public static string ToText(this IEnumerable<string> strings) => strings.Aggregate("", (current, s) => current + s);
+    public static string ToText(this IEnumerable<char> chars) => chars.Aggregate("", (current, c) => current + c);
 }

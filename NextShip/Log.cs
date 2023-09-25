@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using BepInEx.Logging;
@@ -51,6 +52,11 @@ internal class log
             case LogLevel.Debug:
                 logger.LogDebug(log_text);
                 break;
+            case LogLevel.None:
+                logger.LogInfo(log_text);
+                break;
+            case LogLevel.All:
+                break;
             default:
                 logger.LogWarning("Error:Invalid LogLevel");
                 logger.LogInfo(log_text);
@@ -62,8 +68,11 @@ internal class log
 
     public static void OutputTISLog()
     {
+        var logName = FilesManager.TIS_DataPath +
+                      $"/log/TISLog_{DateTime.Now.ToString(CultureInfo.InvariantCulture)}.ShipLog";
         FilesManager.CreateDirectory(FilesManager.TIS_DataPath + "/log");
-        File.WriteAllText(FilesManager.TIS_DataPath + $"/log/TISLog_{DateTime.Now.ToString()}.txt", stringB.ToString());
+        if (!File.Exists(logName)) File.Create(logName);
+        File.WriteAllText(logName, stringB.ToString());
         Msg("输出日志成功", "LogOutToData", "Log");
     }
 

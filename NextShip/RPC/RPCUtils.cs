@@ -1,10 +1,9 @@
-﻿using HarmonyLib;
-using Hazel;
+﻿using Hazel;
 using NextShip.Utilities;
 
 namespace NextShip.RPC;
 
-public class RPCUtils
+public static class RPCUtils
 {
     public static void Create(byte rpc, byte[] bytes = null, int[] ints = null, float[] floats = null,
         bool[] bools = null, string[] strings = null)
@@ -146,6 +145,57 @@ public class RPCUtils
 
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }
+    
+    public static void StartRPC(byte rpc, MessageReader reader)
+    {
+        switch (rpc)
+        {
+            case (byte)CustomRPC.ResetVariables:
+                RPCProcedure.ResetVariables();
+                break;
+
+            case (byte)CustomRPC.WorkaroundSetRoles:
+                RPCProcedure.WorkaroundSetRoles(reader.ReadByte(), reader);
+                break;
+
+            case (byte)CustomRPC.SetRole:
+                RPCProcedure.setRole(reader.ReadByte(), reader.ReadByte());
+                break;
+
+            case (byte)CustomRPC.SetModifier:
+                RPCProcedure.setModifier(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                break;
+
+            case (byte)CustomRPC.setDead:
+                RPCProcedure.setDead(reader.ReadByte(), reader.ReadBoolean());
+                break;
+
+            case (byte)CustomRPC.SheriffKill:
+                RPCProcedure.SheriffKill(reader.ReadByte());
+                break;
+
+            case (byte)CustomRPC.RestoreRole:
+                var RestoreRoleId = reader.ReadByte();
+                RPCProcedure.RestoreRole(RestoreRoleId);
+                break;
+
+            case (byte)CustomRPC.RestorePlayerLook:
+                RPCProcedure.RestorePlayerLook();
+                break;
+
+            case (byte)CustomRPC.ChangeRole:
+                RPCProcedure.ChangeRole(reader.ReadByte(), reader.ReadByte());
+                break;
+
+            case (byte)CustomRPC.Camouflager:
+                RPCProcedure.Camouflager();
+                break;
+
+            case (byte)CustomRPC.Illusory:
+                RPCProcedure.Illusory();
+                break;
+        }
+    }
 }
 
 public static class ReadRPCValue
@@ -183,50 +233,4 @@ public enum ReadType
     Bool,
     Float,
     String
-}
-
-public class FastWriter
-{
-    private MessageWriter _writer;
-
-    public FastWriter()
-    {
-        _writer ??= MessageWriter.Get();
-    }
-
-    public FastWriter(MessageWriter writer) => _writer = writer;
-
-    public void Write(bool value) => _writer.Write(value);
-    public void Write(int value) => _writer.Write(value);
-    public void Write(float value) => _writer.Write(value);
-    public void Write(string value) => _writer.Write(value);
-    public void Write(byte value) => _writer.Write(value);
-}
-
-public class FastReader
-{
-    public MessageReader ParentReader = new MessageReader();
-    public MessageReader _Reader;
-
-    public FastReader()
-    {
-        _Reader = MessageReader.Get(ParentReader);
-    }
-
-    public FastReader(MessageReader reader)
-    {
-        _Reader = reader;
-    }
-
-    public bool ReadBool() => _Reader.ReadBoolean();
-    public int ReadInt() => _Reader.ReadInt32();
-    public float ReadFloat() => _Reader.ReadSingle();
-    public string ReadString() => _Reader.ReadString();
-    public byte ReadByte() => _Reader.ReadByte();
-    
-    [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.HandleGameDataInner)), HarmonyPostfix]
-    public void InnerNet_ReaderPath([HarmonyArgument(0)]MessageReader reader)
-    {
-        if (reader.Tag == 2) ParentReader = reader;
-    }
 }
