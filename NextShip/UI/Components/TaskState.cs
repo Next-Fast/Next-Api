@@ -1,6 +1,6 @@
 using System;
 
-namespace NextShip;
+namespace NextShip.UI.Components;
 
 public class TaskState
 {

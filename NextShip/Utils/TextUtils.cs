@@ -86,7 +86,18 @@ public static class TextUtils
         return Path.Combine(paths.ToArray());
     }
 
-    public static string ToStringText(this char c) => $"{c}";
-    public static string ToText(this IEnumerable<string> strings) => strings.Aggregate("", (current, s) => current + s);
-    public static string ToText(this IEnumerable<char> chars) => chars.Aggregate("", (current, c) => current + c);
+    public static string ToStringText(this char c)
+    {
+        return $"{c}";
+    }
+
+    public static string ToText(this IEnumerable<string> strings)
+    {
+        return strings.Aggregate("", (current, s) => current + s);
+    }
+
+    public static string ToText(this IEnumerable<char> chars)
+    {
+        return chars.Aggregate("", (current, c) => current + c);
+    }
 }

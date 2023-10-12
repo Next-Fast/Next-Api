@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NextShip.Utils;
 
@@ -11,16 +6,22 @@ namespace NextShip.Utils;
 
 public static class LayerUtils
 {
-    private static int? defaultLayer = null;
-    private static int? shortObjectsLayer = null;
-    private static int? objectsLayer = null;
-    private static int? uiLayer = null;
-    private static int? shipLayer = null;
-    private static int? shadowLayer = null;
+    private static int? defaultLayer;
+    private static int? shortObjectsLayer;
+    private static int? objectsLayer;
+    private static int? uiLayer;
+    private static int? shipLayer;
+    private static int? shadowLayer;
 
-    public static int GetFormName(this string name) => LayerMask.NameToLayer(name);
-    
-    public static string GetName(this int layer) => LayerMask.LayerToName(layer);
+    public static int GetFormName(this string name)
+    {
+        return LayerMask.NameToLayer(name);
+    }
+
+    public static string GetName(this int layer)
+    {
+        return LayerMask.LayerToName(layer);
+    }
 
     public static int GetDefaultLayer()
     {
@@ -62,5 +63,4 @@ public static class LayerUtils
     {
         return 30;
     }
-
 }

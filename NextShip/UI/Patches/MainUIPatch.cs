@@ -1,15 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
-using NextShip.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
-using Object = UnityEngine.Object;
-using Random = System.Random;
 
 namespace NextShip.UI.Patches;
 
@@ -41,7 +33,6 @@ public static class MainUIPatch
     public static int time = 0;
 
 
-
     private static void InitGameObject()
     {
         BackGround = new GameObject("TIS_BackGround");
@@ -71,13 +62,13 @@ public static class MainUIPatch
         LeftPanel.DestroyComponents<AspectPosition>();
         RightPanel.DestroyComponents<AspectPosition>();
     }
-    
+
     private static void Create(MainMenuManager __instance)
     {
         Au_Logo.AddComponent<BoxCollider2D>().size = Au_Logo_SpriteRenderer.size;
 
         var auLogoPassiveButton = Au_Logo.AddComponent<PassiveButton>();
-        
+
         auLogoPassiveButton.OnClick.AddListener((UnityAction)Au_Logo_OnClick);
         auLogoPassiveButton.OnMouseOut = new UnityEvent();
         auLogoPassiveButton.OnMouseOver = new UnityEvent();
@@ -89,17 +80,17 @@ public static class MainUIPatch
 
         Main_Button = new GameObject("Main_Button");
         Main_Button.transform.SetParent(GameObject.Find("MainUI").transform);
-        
+
         var standardActiveSprite = __instance.newsButton.activeSprites.GetComponent<SpriteRenderer>().sprite;
         var minorActiveSprite = __instance.quitButton.activeSprites.GetComponent<SpriteRenderer>().sprite;
-        
+
         List<(List<PassiveButton>, Color)> mainButtons = new()
         {
             (new List<PassiveButton> {__instance.playButton, __instance.inventoryButton, __instance.shopButton}, new Color(1f, 0.524f, 0.549f, 0.8f)),
             (new List<PassiveButton> {__instance.newsButton, __instance.myAccountButton, __instance.settingsButton}, new Color(1f, 0.825f, 0.686f, 0.8f)),
             (new List<PassiveButton> {__instance.creditsButton, __instance.quitButton}, new Color(0.526f, 1f, 0.792f, 0.8f)),
         };
-        
+
         mainButtons.Do(CreateButton);
         Main_Button.SetActive(false);
         */
@@ -107,7 +98,7 @@ public static class MainUIPatch
         TIS_Logo.transform.position = new Vector3(2f, -0.2f, 0);
         TIS_Logo.transform.localScale = new Vector3(1.1f, 1.5f, 1);
         TIS_Logo_SpriteRenderer.sprite = TIS_Logo_Sprite;
-        
+
 
         /*BackGround_SpriteRenderer.sprite = TOHE_Sprite;
         BackGround.SetActive(false);*/
@@ -158,7 +149,7 @@ public static class MainUIPatch
         {
             InitGameObject();
             Init_DestroyGameObject();
-            
+
             // 创建主菜单
             Create(__instance);
             Info("创建主界面");
@@ -186,24 +177,20 @@ public static class MainUIPatch
         time = 0;
     }*/
 
-    [
-        HarmonyPatch(typeof(MainMenuManager)),
-        HarmonyPatch(nameof(MainMenuManager.OpenGameModeMenu)),
-        HarmonyPatch(nameof(MainMenuManager.OpenAccountMenu)),
-        HarmonyPatch(nameof(MainMenuManager.OpenCredits)),
-        HarmonyPostfix
-    ]
+    [HarmonyPatch(typeof(MainMenuManager))]
+    [HarmonyPatch(nameof(MainMenuManager.OpenGameModeMenu))]
+    [HarmonyPatch(nameof(MainMenuManager.OpenAccountMenu))]
+    [HarmonyPatch(nameof(MainMenuManager.OpenCredits))]
+    [HarmonyPostfix]
     public static void OpenMenuPostfix()
     {
         if (TIS_Logo) TIS_Logo.SetActive(false);
     }
-    
 
-    [
-        HarmonyPatch(typeof(MainMenuManager)),
-        HarmonyPatch(nameof(MainMenuManager.ResetScreen)), 
-        HarmonyPostfix
-    ]
+
+    [HarmonyPatch(typeof(MainMenuManager))]
+    [HarmonyPatch(nameof(MainMenuManager.ResetScreen))]
+    [HarmonyPostfix]
     public static void ResetScreenPostfix()
     {
         if (TIS_Logo) TIS_Logo.SetActive(false);

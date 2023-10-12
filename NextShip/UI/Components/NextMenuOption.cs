@@ -1,34 +1,32 @@
-﻿using System;
-using Il2CppInterop.Runtime.Attributes;
-using NextShip.Options;
+﻿using NextShip.Options;
+using NextShip.UI.Interface;
 using NextShip.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
 
 [Il2CppRegister]
-public class NextMenuOption : MonoBehaviour
+public class NextMenuOption : MonoBehaviour, INextUI
 {
     public Transform List;
+    public bool Open;
     public OptionManager __OptionManager;
     public NextOptionMenu __OptionMenu;
-    public bool Open = false;
 
-    public void Awake() => __OptionManager = OptionManager.Get();
-    
+    public void Awake()
+    {
+        __OptionManager = OptionManager.Get();
+    }
+
     public void Start()
     {
         CreateOption();
-    }
-    
-    public void CreateOption()
-    {
     }
 
     public void Update()
     {
     }
-    
+
 
     public void OnDestroy()
     {
@@ -36,8 +34,11 @@ public class NextMenuOption : MonoBehaviour
         NextOptionMenu.Instance = null;
     }
 
+    public void CreateOption()
+    {
+    }
+
     public void CreateOptionButton()
     {
-        
     }
 }

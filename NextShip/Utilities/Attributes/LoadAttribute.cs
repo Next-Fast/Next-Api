@@ -24,34 +24,37 @@ public sealed class LoadAttribute : Attribute
                 )
             )
             != null)
-        {
             constructor.Invoke(null, null);
-        }
 
-        foreach (var variableMethodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+        foreach (var variableMethodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic |
+                                                           BindingFlags.Public))
         {
-            
-            if (variableMethodInfo.Name is "CoLoad" or "Load" 
-                 && 
-                 (
-                     type.IsDefined(typeof(LoadAttribute))
+            if (variableMethodInfo.Name is "CoLoad" or "Load")
+            {
+                if 
+                (
+                    (
+                     type.IsDefined(typeof(LoadAttribute)) 
                      || 
                      variableMethodInfo.IsDefined(typeof(LoadAttribute))
-                 )
-                 &&
-                 variableMethodInfo.ReturnType == typeof(IEnumerator)
-                )
-            {
-                LoadManager.AllLoad.Add(variableMethodInfo.Invoke(null, null) as IEnumerator);
-                continue;
+                     ) 
+                    && 
+                    variableMethodInfo.ReturnType == typeof(IEnumerator)) 
+                {
+                    LoadManager.AllLoad.Add(variableMethodInfo.Invoke(null, null) as IEnumerator);
+                    continue;
+                }
+
+                if (type.IsDefined(typeof(LoadAttribute)))
+                {
+                    variableMethodInfo.Invoke(null, null);
+                    continue;
+                }
             }
 
-            if (variableMethodInfo.GetCustomAttribute<LoadAttribute>() != null)
-            {
-                variableMethodInfo.Invoke(null, null);
-            }
+            if (variableMethodInfo.GetCustomAttribute<LoadAttribute>() != null) variableMethodInfo.Invoke(null, null);
         }
-        
+
         Info($"Statically Initialized Class {type}", "LoadAttribute");
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using HarmonyLib;
-using Il2CppSystem;
 
 namespace NextShip.Options.Patches;
 
 [HarmonyPatch(typeof(StringOption))]
 public class StringOptionPath
 {
-    [HarmonyPatch(nameof(StringOption.OnEnable)), HarmonyPrefix]
+    [HarmonyPatch(nameof(StringOption.OnEnable))]
+    [HarmonyPrefix]
     public static bool StringOptionEnablePatch_Prefix(StringOption __instance)
     {
         if (OptionsConsolePatch.IsNextMenu) return false;
@@ -18,9 +18,10 @@ public class StringOptionPath
         OnOptionUpdate(__instance, option);
         return false;
     }
-    
 
-    [HarmonyPatch(nameof(StringOption.Increase)), HarmonyPrefix]
+
+    [HarmonyPatch(nameof(StringOption.Increase))]
+    [HarmonyPrefix]
     public static bool StringOptionIncreasePatch_Prefix(StringOption __instance)
     {
         if (OptionsConsolePatch.IsNextMenu) return false;

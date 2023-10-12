@@ -17,6 +17,7 @@ public class UpdateTask : MonoBehaviour
     {
         Start();
     }
+
     public void Start()
     {
         Tasks = new List<ShipTask>();
@@ -50,20 +51,11 @@ public class UpdateTask : MonoBehaviour
 
     private void CheckTask(ShipTask task)
     {
-        if (task.LoopEndConditions != null && task.LoopEndConditions.Invoke())
-        {
-            task.StopLoop();
-        }
+        if (task.LoopEndConditions != null && task.LoopEndConditions.Invoke()) task.StopLoop();
 
-        if (task.UpdateConditions != null && !task.UpdateConditions.Invoke())
-        {
-            task.RemoveUpdate();
-        }
-        
-        if (task.GetState == TaskStateEnum.Completed)
-        {
-            Tasks.Remove(task);
-        }
+        if (task.UpdateConditions != null && !task.UpdateConditions.Invoke()) task.RemoveUpdate();
+
+        if (task.GetState == TaskStateEnum.Completed) Tasks.Remove(task);
     }
 
     private void UpdateTaskTime(ShipTask Task)
@@ -85,12 +77,12 @@ public class ShipTask
     }
 
     public readonly priority Priority;
-    public Action Task;
     private readonly TaskState TaskState;
-    public float Time;
-    public bool Loop = false;
-    public bool Update = false;
+    public bool Loop;
     public Func<bool> LoopEndConditions;
+    public Action Task;
+    public float Time;
+    public bool Update;
     public Func<bool> UpdateConditions;
 
     public ShipTask(float time, Action task, priority priority = priority.Low)
@@ -101,6 +93,8 @@ public class ShipTask
         Task += () => TaskState.Completed();
         Priority = priority;
     }
+
+    public TaskStateEnum GetState => TaskState.Get();
 
     public void StartLoop(Func<bool> conditions = null)
     {
@@ -115,7 +109,7 @@ public class ShipTask
         LoopEndConditions = null;
         RemoveUpdate();
     }
-    
+
     public void StartUpdate(Func<bool> conditions = null)
     {
         Update = true;
@@ -129,8 +123,6 @@ public class ShipTask
         UpdateConditions = null;
         Task += () => TaskState.Completed();
     }
-
-    public TaskStateEnum GetState => TaskState.Get();
 
     public void register()
     {

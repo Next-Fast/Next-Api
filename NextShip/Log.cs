@@ -75,6 +75,8 @@ internal class log
         File.WriteAllText(logName, stringB.ToString());
         Msg("输出日志成功", "LogOutToData", "Log");
     }
+    
+    
 
     /*
         各消息作用:

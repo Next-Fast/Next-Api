@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using HarmonyLib;
-using NextShip.Listeners;
 using NextShip.Listeners.Attributes;
 using NextShip.Utilities.Attributes;
 

@@ -1,26 +1,21 @@
 ﻿#nullable enable
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using YamlDotNet;
+using NextShip.Languages;
 using YamlDotNet.RepresentationModel;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace NextShip.Utilities;
 
 public class YamlLoader
 {
+    public static readonly List<YamlLoader> YamlLoaders = new();
     private readonly string FileName;
-    public bool loaded = false;
+    public bool loaded;
     private YamlStream YamlStream;
     private string YamlTexts;
 
-    public static readonly List<YamlLoader> YamlLoaders = new();
-    
     public YamlLoader(string fileName)
     {
         FileName = fileName;
@@ -31,8 +26,8 @@ public class YamlLoader
 
     public YamlLoader LoadFromDisk(string? path = null)
     {
-        var FilePath = path ?? Path.Combine(Languages.LanguagePack.PPath, $"{FileName}.yaml");
-        
+        var FilePath = path ?? Path.Combine(LanguagePack.PPath, $"{FileName}.yaml");
+
         using (var fs = new FileStream(FilePath, FileMode.Open, FileAccess.Read))
         {
             YamlStream = new YamlStream();
@@ -40,7 +35,7 @@ public class YamlLoader
             YamlTexts = textReader.ReadToEnd();
             YamlStream.Load(textReader);
         }
-        
+
         loaded = true;
         return this;
     }
@@ -53,7 +48,7 @@ public class YamlLoader
         var textReader = new StreamReader(stream!);
         YamlTexts = textReader.ReadToEnd();
         YamlStream.Load(textReader);
-        
+
         loaded = true;
         return this;
     }
@@ -66,7 +61,7 @@ public class YamlLoader
         loaded = true;
         return this;
     }
-    
+
     // https://github.com/CognifyDev/ClashOfGods/blob/main/COG/Utils/Yaml.cs
     /// <summary>
     ///     获取Int值

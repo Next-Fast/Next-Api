@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using NextShip.Chat.Patches;
 
 namespace NextShip.Chat;
@@ -9,11 +8,10 @@ namespace NextShip.Chat;
 public class Command
 {
     public static readonly List<Command> AllCommand;
-
-    public string[] key;
     public Action CommandEvent;
     public int count;
-    private int KeyCount => key.Length;
+
+    public string[] key;
 
     static Command()
     {
@@ -25,9 +23,11 @@ public class Command
         this.CommandEvent = CommandEvent;
         count = AllCommand.Count;
         this.key = key;
-        
+
         AllCommand!.Add(this);
     }
+
+    private int KeyCount => key.Length;
 
     public string GetText()
     {
@@ -42,15 +42,15 @@ public class Command
         return text;
     }
 
-    public static bool TryGetCommandEvent(string text,out Action action)
+    public static bool TryGetCommandEvent(string text, out Action action)
     {
         action = null;
         var command = AllCommand.Find(n => n.Compare(text));
         if (command == null) return false;
         action = command.CommandEvent;
-        return true;        
+        return true;
     }
-    
+
     private bool Compare(string text)
     {
         return GetText() == text;
@@ -84,7 +84,7 @@ public class Command
         Info($"{"Compare: " + TKey + " - " + VKey}");
         return VKey.Contains(TKey);
     }
-    
+
     public static List<Command> GetCommands(string[] keys)
     {
         var Commands = AllCommand.Where(n => n.Compare(keys)).ToList();

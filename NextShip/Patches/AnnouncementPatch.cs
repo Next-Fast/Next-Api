@@ -11,59 +11,52 @@ namespace NextShip.Patches;
 public class AnnouncementPatch
 {
     //https://github.com/Dolly1016/Nebula/blob/master/Nebula/Module/ModUpdater.cs
-    public static List<Announcement> modUpdateAn;
+    public static List<Announcement> ModUpdateAnnouncements = new();
 
     [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements))]
     [HarmonyPrefix]
     public static void SetModAnnouncements(PlayerAnnouncementData __instance,
         [HarmonyArgument(0)] ref Il2CppReferenceArray<Announcement> aRange)
     {
-        if (modUpdateAn == null) return;
+        if (ModUpdateAnnouncements == null || ModUpdateAnnouncements.Count == 0) return;
         List<Announcement> list = new(aRange.ToList());
-        list.AddRange(modUpdateAn);
-
-        list.Sort((a1, a2) => AnCompare(a1, a2));
+        list.AddRange(ModUpdateAnnouncements);
+        list.Sort(AnCompare);
         aRange = list.ToArray();
     }
 
     public static void AddAnnouncement(Announcement an)
     {
-        if (modUpdateAn.Count >= 5) modUpdateAn.RemoveAt(0);
-        modUpdateAn.Add(an);
+        while (ModUpdateAnnouncements.Count > 5) ModUpdateAnnouncements.RemoveAt(0);
+        ModUpdateAnnouncements.Add(an);
     }
 
-    public static int AnCompare(Announcement an1, Announcement an2)
+    private static int AnCompare(Announcement an1, Announcement an2)
     {
         var time1 = an1.Date.Split('-');
         var time2 = an2.Date.Split('-');
-        int Sort;
+        var Sort = 0;
         for (var i = 0; i < 3; i++)
         {
             var t1 = int.Parse(time1[i]);
             var t2 = int.Parse(time2[i]);
 
+            if (t1 == t2) continue;
+
             if (t1 > t2)
-            {
                 Sort = 1;
-                return Sort;
-            }
 
             if (t1 < t2)
-            {
                 Sort = -1;
-                return Sort;
-            }
-
-            if (t1 == t2) continue;
         }
 
-        return 0;
+        return Sort;
     }
 }
 
 public class ModAnnouncement
 {
-    public uint langid;
+    public uint LanguageId;
     public string ShortTitle;
     public string SubTitle;
     public string text;
@@ -77,12 +70,12 @@ public class ModAnnouncement
         string Time,
         string SubTitle = "",
         string ShortTitle = "",
-        uint langid = 13
+        uint LanguageId = 13
     )
     {
         this.text = text;
         this.Title = Title;
-        this.langid = langid;
+        this.LanguageId = LanguageId;
         this.SubTitle = SubTitle;
         this.ShortTitle = ShortTitle;
         this.Time = Time.Replace('.', '-');
@@ -90,17 +83,19 @@ public class ModAnnouncement
 
     public Announcement ToAn(ModAnnouncement modAn)
     {
-        var an = new Announcement();
-        an.Id = "mod";
-        an.Language = modAn.langid;
-        an.Number = AnnouncementPatch.modUpdateAn != null
-            ? AnnouncementPatch.modUpdateAn[AnnouncementPatch.modUpdateAn.Count].Number + 1
-            : 1000;
-        an.Text = modAn.text;
-        an.SubTitle = modAn.SubTitle;
-        an.ShortTitle = modAn.ShortTitle;
-        an.Title = modAn.Title;
-        an.Date = modAn.Time;
+        var an = new Announcement
+        {
+            Id = "mod",
+            Language = modAn.LanguageId,
+            Number = AnnouncementPatch.ModUpdateAnnouncements != null
+                ? AnnouncementPatch.ModUpdateAnnouncements[AnnouncementPatch.ModUpdateAnnouncements.Count].Number + 1
+                : 1000,
+            Text = modAn.text,
+            SubTitle = modAn.SubTitle,
+            ShortTitle = modAn.ShortTitle,
+            Title = modAn.Title,
+            Date = modAn.Time
+        };
         return an;
     }
 }

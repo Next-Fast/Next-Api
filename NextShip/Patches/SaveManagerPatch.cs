@@ -12,8 +12,11 @@ namespace NextShip.Patches;
 [HarmonyPatch]
 public class SaveManagerPatch
 {
-    private static readonly string AUDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "LOW", "Innersloth", "Among Us");
-    private static bool SaveToTISInfo = false;
+    private static readonly string AUDataPath =
+        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "LOW", "Innersloth",
+            "Among Us");
+
+    private static readonly bool SaveToTISInfo = false;
 
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.FileName), MethodType.Getter)]
     [HarmonyPostfix]
@@ -31,7 +34,8 @@ public class SaveManagerPatch
         __result += "_TIS";
     }
 
-    [HarmonyPatch(typeof(AbstractSaveData), nameof(AbstractSaveData.TrySaveToJsonFile)), HarmonyPostfix]
+    [HarmonyPatch(typeof(AbstractSaveData), nameof(AbstractSaveData.TrySaveToJsonFile))]
+    [HarmonyPostfix]
     public static void OnJsonSaveDPatch([HarmonyArgument(1)] string filename)
     {
         var path = FilesManager.CreateDirectory(FilesManager.TIS_ConfigPath).FullName + $"/{filename}";
@@ -40,8 +44,9 @@ public class SaveManagerPatch
         if (!File.Exists(path)) File.Create(path);
         File.Copy(sourcePath, path, true);
     }
-    
-    [HarmonyPatch(typeof(AbstractUserSaveData), nameof(AbstractUserSaveData.HandleLoad)), HarmonyPrefix]
+
+    [HarmonyPatch(typeof(AbstractUserSaveData), nameof(AbstractUserSaveData.HandleLoad))]
+    [HarmonyPrefix]
     public static void OnJsonLoadPatch(AbstractUserSaveData __instance)
     {
         var filename = __instance.GetFileName();
@@ -49,7 +54,7 @@ public class SaveManagerPatch
         var DestPath = AUDataPath.CombinePath(filename);
         if (!File.Exists(sourcePath) || !File.Exists(DestPath)) return;
         Info($"name {filename} path1 {sourcePath}, path2 {DestPath}");
-        
+
         File.Copy(sourcePath, DestPath, true);
     }
 }

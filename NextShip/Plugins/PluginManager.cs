@@ -13,7 +13,7 @@ public static class PluginManager
 {
     private static string PluginsPath;
     private static List<string> PluginPathS = new();
-    private static List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
+    private static readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
     public static bool existDirectory;
 
     public static List<ShipPlugin> Plugins = new();
@@ -23,7 +23,7 @@ public static class PluginManager
     {
         PluginsPath = FilesManager.GetCreativityDirectory("Plugins").FullName;
         existDirectory = Directory.Exists(PluginsPath);
-        
+
         LoadPlugins();
     }
 
@@ -32,7 +32,7 @@ public static class PluginManager
         PluginPathS = FindPlugins();
         if (PluginPathS == null) return;
         PluginPathS.Do(Load);
-        
+
         PluginCreateS.Do(n => n.Load());
     }
 
@@ -54,17 +54,17 @@ public static class PluginManager
             {
                 IsInherit = true;
                 has = true;
-                
+
                 var plugin = (ShipPlugin)assembly.CreateInstance(n.FullName!);
                 if (plugin?.ShipPluginInfo == null)
                 {
                     var shipPluginInfo = n.GetCustomAttribute<ShipPluginInfo>();
                     plugin!.ShipPluginInfo = shipPluginInfo;
                 }
-                
+
                 var Compatibilities = n.GetCustomAttributes<PluginCompatibility>();
                 plugin.PluginCompatibilities = Compatibilities.ToList();
-                
+
                 PluginCreateS.Add((assembly, n, plugin));
             }
         );
@@ -78,7 +78,7 @@ public static class PluginManager
         var shipPluginInfo = pluginTuple.Item3.ShipPluginInfo;
         try
         {
-            pluginTuple.Item3.Load();            
+            pluginTuple.Item3.Load();
             Info($"Name:{shipPluginInfo.Name} . Version:{shipPluginInfo.Version} . Id:{shipPluginInfo.Id} 运行成功 ",
                 filename: MethodUtils.GetClassName());
         }

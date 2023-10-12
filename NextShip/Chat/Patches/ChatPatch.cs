@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AmongUs.QuickChat;
+﻿using System.Collections.Generic;
 using HarmonyLib;
-using Il2CppInterop.Runtime;
-using NextShip.Utilities;
+using Il2CppSystem;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
-using Object = UnityEngine.Object;
 
 namespace NextShip.Chat.Patches;
 
@@ -16,13 +10,14 @@ namespace NextShip.Chat.Patches;
 public static class ChatPatch
 {
     private static GameObject CommandPromptBox;
-    private static List<GameObject> AllButton = new ();
+    private static readonly List<GameObject> AllButton = new();
     public static string CurrentText;
-    
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake)), HarmonyPostfix]
+
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
+    [HarmonyPostfix]
     public static void ChatController_Awake_Postfix(ChatController __instance)
     {
-        __instance.freeChatField.OnChangedEvent +=  (Il2CppSystem.Action)(() => OnChatChanged(__instance));
+        __instance.freeChatField.OnChangedEvent += (Action)(() => OnChatChanged(__instance));
         new Command(new[] { "h" }, () => Info("h"));
         new Command(new[] { "abab", "text" }, () => Info("ababaa"));
     }
@@ -42,7 +37,6 @@ public static class ChatPatch
         var strings = new List<string>();
         var AllStrings = new List<string>();
         foreach (var c in text)
-        {
             switch (c)
             {
                 case '/':
@@ -57,22 +51,22 @@ public static class ChatPatch
                     strings.Add(c.ToStringText());
                     break;
             }
-        }
-        
+
         Info($"GetString : {AllStrings.ToText()}");
         return AllStrings.ToArray();
     }
-    
+
     private static void InitCommandPromptBox(ChatController __instance)
     {
         if (CommandPromptBox) return;
-        
+
         CommandPromptBox = new GameObject("CommandPromptBox");
         CommandPromptBox.transform.SetParent(__instance.freeChatField.transform);
         CommandPromptBox.transform.localPosition = new Vector3(0.0031f, 0.559f, -1);
         var border = ObjetUtils.Find<Sprite>("smallButtonBorder");
-        Sprite.Create(border.texture, new Rect(383, 272, 64 , 64), new Vector2(0.5f, 0.5f), border.pixelsPerUnit, 0 , SpriteMeshType.FullRect, border.border).CaChe("PromptBorder");
-        
+        Sprite.Create(border.texture, new Rect(383, 272, 64, 64), new Vector2(0.5f, 0.5f), border.pixelsPerUnit, 0,
+            SpriteMeshType.FullRect, border.border).CaChe("PromptBorder");
+
         var background = ObjetUtils.Find<Sprite>("blank");
         var SR = CommandPromptBox.AddComponent<SpriteRenderer>();
         SR.drawMode = SpriteDrawMode.Sliced;
@@ -80,8 +74,8 @@ public static class ChatPatch
         SR.size = new Vector2(6.4f, 0.5f);
         SR.color = new Color(0.962f, 1, 1, 0.298f);
     }
-    
-    
+
+
     private static void UpdateCommandPromptBox(string[] text, ChatController __instance)
     {
         var BoxSR = CommandPromptBox.GetComponent<SpriteRenderer>();
@@ -92,7 +86,7 @@ public static class ChatPatch
             BoxSR.size = new Vector2(6.4f, 0.5f);
             return;
         }
-        
+
         var count = 1;
         Vector3 vector3 = new(-0.0017f, -0.12f, -1);
         foreach (var command in Command.GetCommands(text))
@@ -105,7 +99,8 @@ public static class ChatPatch
             SR.drawMode = SpriteDrawMode.Sliced;
             SR.size = new Vector2(6.4f, 0.25f);
             SR.color = new Color(0, 0, 0, 0);
-            button.transform.localPosition = vector3;;
+            button.transform.localPosition = vector3;
+            ;
             vector3.y += 0.2f;
 
             var ButtonText = new GameObject("text");
@@ -115,17 +110,17 @@ public static class ChatPatch
             TMP.text = command.GetText();
             TMP.fontSize = 3;
             TMP.color = new Color(0.962f, 1, 1, 0.298f);
-                
-            button.CreatePassiveButton(onClick: () => __instance.freeChatField.textArea.SetText(command.GetText()), 
+
+            button.CreatePassiveButton(() => __instance.freeChatField.textArea.SetText(command.GetText()),
                 OnMouseOut: () =>
                 {
                     TMP.color = new Color(0.962f, 1, 1, 0.298f);
                     SR.color = new Color(0, 0, 0, 0);
-                }, 
-                OnMouseOver: () => 
+                },
+                OnMouseOver: () =>
                     SR.color = TMP.color = Palette.White
             );
-            
+
             count++;
             AllButton.Add(button);
         }

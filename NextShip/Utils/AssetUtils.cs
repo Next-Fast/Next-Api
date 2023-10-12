@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using NextShip.Utilities;
 using UnityEngine;
 using SystemFile = System.IO;
@@ -49,13 +48,13 @@ public static class AssetUtils
         var asset = _CosmeticsCache.GetNameplate(id);
         return asset;
     }
-    
-    
+
+
     public static T LoadAsset<T>(this AssetBundle bundle, string name) where T : Il2CppObjectBase
     {
         return bundle.LoadAsset(name, Il2CppType.Of<T>()).Cast<T>();
     }
-    
+
     public static T[] LoadAllAsset<T>(this AssetBundle bundle) where T : Il2CppObjectBase
     {
         var assets = bundle.LoadAllAssets(Il2CppType.Of<T>());

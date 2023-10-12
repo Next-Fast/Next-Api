@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using NextShip.Utilities.Attributes;
@@ -8,21 +7,20 @@ namespace NextShip.Options;
 public class OptionManager
 {
     public static OptionManager _OptionManager;
-    
+
     public static List<OptionBase> AllOption = new();
     public static List<OptionInfo> AllOptionInfo = new();
+    public List<BooleanOptionBase> AllBooleanOption = new();
+    public List<FloatOptionBase> AllFloatOption = new();
+    public List<IntOptionBase> AllIntOption = new();
     public List<RoleOptionBase> AllRoleOption = new();
     public List<StringOptionBase> AllStringOption = new();
-    public List<BooleanOptionBase> AllBooleanOption = new();
-    public List<IntOptionBase> AllIntOption = new();
-    public List<FloatOptionBase> AllFloatOption = new();
 
     public OptionManager()
     {
         if ((AllBooleanOption.Count | AllRoleOption.Count | AllStringOption.Count | AllIntOption.Count |
              AllFloatOption.Count) != 0) return;
         foreach (var optionBase in AllOption)
-        {
             switch (optionBase.type)
             {
                 case optionType.none:
@@ -31,25 +29,27 @@ public class OptionManager
                     AllBooleanOption.Add(optionBase as BooleanOptionBase);
                     break;
                 case optionType.Float:
-                    AllFloatOption.Add(optionBase as FloatOptionBase);                    
+                    AllFloatOption.Add(optionBase as FloatOptionBase);
                     break;
                 case optionType.String:
                     AllStringOption.Add(optionBase as StringOptionBase);
                     break;
                 case optionType.Int:
-                    AllIntOption.Add(optionBase as IntOptionBase);                    
+                    AllIntOption.Add(optionBase as IntOptionBase);
                     break;
                 case optionType.Role:
-                    AllRoleOption.Add(optionBase as RoleOptionBase);                    
+                    AllRoleOption.Add(optionBase as RoleOptionBase);
                     break;
                 default:
                     continue;
             }
-        }
     }
 
-    public static OptionManager Get() => _OptionManager ?? new OptionManager();
-    
+    public static OptionManager Get()
+    {
+        return _OptionManager ?? new OptionManager();
+    }
+
     public static void Load()
     {
         OptionLoad.StartOptionLoad();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -25,11 +24,12 @@ public static class RegionMenuOpenPatch
         if (xiaButton == null || xiaButton.gameObject == null)
         {
             xiaButton = template.CreateButton(
-                "XiaButton", 
-                "下一页", 
-                pos - new Vector3(0f, 3f, 0f), 
+                "XiaButton",
+                "下一页",
+                pos - new Vector3(0f, 3f, 0f),
                 __instance.transform,
-                () => {
+                () =>
+                {
                     if (ye < maxye)
                     {
                         ye++;
@@ -37,18 +37,19 @@ public static class RegionMenuOpenPatch
                     }
                 }
             );
-            
+
             xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
 
         if (shangButton == null || shangButton.gameObject == null)
         {
             shangButton = template.CreateButton(
-                "shangButton", 
-                "上一页", 
-                pos - new Vector3(0f, 2.5f, 0f), 
+                "shangButton",
+                "上一页",
+                pos - new Vector3(0f, 2.5f, 0f),
                 __instance.transform,
-                () => {
+                () =>
+                {
                     if (ye > 1)
                     {
                         ye--;
@@ -56,17 +57,18 @@ public static class RegionMenuOpenPatch
                     }
                 }
             );
-            
+
             xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
     }
 
-    public static GameObject CreateButton(this GameObject template, string name, string text, Vector3 Position, Transform Preant, Action action)
+    public static GameObject CreateButton(this GameObject template, string name, string text, Vector3 Position,
+        Transform Preant, Action action)
     {
         var Button = Object.Instantiate(template, Preant);
         Button.name = name;
         Button.transform.position = Position;
-        
+
         Button.DestroyTranslator();
         Button.DestroyAspectPosition();
         Button.DestroyComponents<SceneChanger>();
@@ -74,7 +76,7 @@ public static class RegionMenuOpenPatch
 
         var ButtonText = Button.transform.GetComponentInChildren<TMP_Text>();
         var ButtonPassiveButton = Button.GetComponent<PassiveButton>();
-        
+
         ButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
         ButtonPassiveButton.OnClick.AddListener(action);
         ButtonText.SetText(text);

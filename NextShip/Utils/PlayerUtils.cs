@@ -5,8 +5,15 @@ namespace NextShip.Utils;
 
 public static class PlayerUtils
 {
-    public static PlayerControl GetPlayerForId(byte id) => CachedPlayer.AllPlayers.FirstOrDefault(AP => AP.PlayerId == id);
-    public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile) => GetPlayerForId(exile.PlayerId);
+    public static PlayerControl GetPlayerForId(byte id)
+    {
+        return CachedPlayer.AllPlayers.FirstOrDefault(AP => AP.PlayerId == id);
+    }
+
+    public static PlayerControl GetPlayerForExile(this GameData.PlayerInfo exile)
+    {
+        return GetPlayerForId(exile.PlayerId);
+    }
 
     public static void setDefaultLook(this PlayerControl target)
     {

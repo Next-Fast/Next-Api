@@ -9,8 +9,12 @@ using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
+using NextShip.Roles;
 using NextShip.UI.Components;
+using NextShip.UI.UIManager;
 using UnityEngine;
+using Action = Il2CppSystem.Action;
+using Object = UnityEngine.Object;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
 [assembly: AssemblyInformationalVersion(Main.VersionString)]
@@ -56,6 +60,7 @@ public sealed class Main : BasePlugin
     public static Main Instance;
 
     internal static UpdateTask UpdateTask;
+    internal static NextUIManager _nextUIManager;
     internal static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色
@@ -64,55 +69,49 @@ public sealed class Main : BasePlugin
 
     public override void Load()
     {
+        if (IsDev) 
+            ConsoleTextFC();
+        
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
-        
+
         Instance = this;
         Harmony.PatchAll();
-
-        if (IsDev) ConsoleTextFC();
-        constInit();
 
         FilesManager.Init();
         ServerPath.autoAddServer();
 
         var _Assembly = Assembly.GetExecutingAssembly();
         RegisterManager.Registration(_Assembly);
+        
         UpdateTask = AddComponent<UpdateTask>();
+        _nextUIManager ??= AddComponent<NextUIManager>();
 
         Init();
         LanguagePack.Init();
-        ObjetUtils.Do(UpdateTask);
+        
+        Object.DontDestroyOnLoad(UpdateTask);
+        Object.DontDestroyOnLoad(_nextUIManager);
+        
         CustomCosmeticsManager.LoadHat();
+        
         RegisterRoles();
         
-        Application.add_quitting( (Il2CppSystem.Action)(() => OnQuit()));
         VanillaManager.Load();
-        /*TaskUtils.StartTask(new[] { OptionManager.Load});*/
-    }
-
-    public override bool Unload()
-    {
-        OutputTISLog();
-        return base.Unload();
-    }
-
-    private static void OnQuit()
-    {
-        OutputTISLog();
     }
     
-    static void RegisterRoles()
+
+    private static void RegisterRoles()
     {
         var roles = new Role[]
         {
-            
+            new Postman()
         };
-        
+
         Roles.RoleManager.Get().RegisterRole(roles);
     }
 
-    static void constInit()
+    private static void constInit()
     {
 #if RELEASE
             IsDev = false;

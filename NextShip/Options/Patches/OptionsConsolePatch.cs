@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
+using NextShip.UI;
 using NextShip.Utilities;
 using UnityEngine;
-using NextShip.UI;
-using Object = UnityEngine.Object;
 
 namespace NextShip.Options.Patches;
 
@@ -11,7 +10,7 @@ namespace NextShip.Options.Patches;
 public class OptionsConsolePatch
 {
     public static Dictionary<int, bool> CanUseMenDictionary = new();
-    
+
     public static bool AllowNoHostUse = false;
     public static bool IsNextMenu;
     public static bool EnablenNextOption;
@@ -23,7 +22,7 @@ public class OptionsConsolePatch
     public static bool OptionsConsoleUsePatch(OptionsConsole __instance)
     {
         /*if (!AllowNoHostUse) return true;*/
-        
+
         var @object = PlayerControl.LocalPlayer;
         var couldUse = @object.CanMove;
         var canUse =
@@ -32,15 +31,15 @@ public class OptionsConsolePatch
             && Vector2.Distance(@object.GetTruePosition(), __instance.transform.position) <= __instance.UsableDistance;
 
         if (!canUse) return false;
-        
-        
+
+
         var nextOptionMenu = NextOptionMenu.Instance;
         nextOptionMenu ??= new NextOptionMenu(__instance, NextMenuParent);
         nextOptionMenu.__instance = __instance;
 
         if (!nextOptionMenu.Initd) nextOptionMenu.Init();
-        
-        if (nextOptionMenu.Initd) 
+
+        if (nextOptionMenu.Initd)
             OpenNextOptionMenu(__instance);
         else
             OpenVanillaOptionMenu(__instance);
@@ -60,12 +59,16 @@ public class OptionsConsolePatch
 
 
     private static void OpenNextOptionMenu(OptionsConsole __instance)
-    {   
+    {
         if (!Camera.main) return;
         IsNextMenu = NextOptionMenu.Instance.OpenMenu(__instance.CustomPosition);
         if (!IsNextMenu) OpenVanillaOptionMenu(__instance);
     }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start)), HarmonyPostfix]
-    public static void OnHudManagerStart() => NextMenuParent = new GameObject("NextMenuParent");
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPostfix]
+    public static void OnHudManagerStart()
+    {
+        NextMenuParent = new GameObject("NextMenuParent");
+    }
 }

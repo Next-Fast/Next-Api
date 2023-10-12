@@ -1,20 +1,20 @@
-﻿using NextShip.Utilities.Attributes;
-using UnityEngine;
-
-namespace NextShip.Roles;
+﻿namespace NextShip.Roles;
 
 public class Postman : Role
 {
-    public static SimpleRoleInfo PostmanRoleInfo;
-    
-    
+    private static readonly SimpleRoleInfo PostmanRoleInfo = new SimpleRoleInfo
+    {
+        
+    };
+
+
     public Postman()
     {
         CreateRoleBase = n => new PostmanBase(n);
         SimpleRoleInfo = PostmanRoleInfo;
     }
-    
-    public class PostmanBase : RoleBase
+
+    private class PostmanBase : RoleBase
     {
         public PostmanBase(PlayerControl player) : base(player)
         {

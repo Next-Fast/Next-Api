@@ -18,7 +18,7 @@ public static class LanguageCSV
             Debug("Csv Not Found");
             return;
         }
-        
+
         translateMaps = new Dictionary<string, Dictionary<int, string>>();
 
         var options = new CsvOptions

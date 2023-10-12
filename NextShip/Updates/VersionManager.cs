@@ -68,6 +68,7 @@ public static class VersionManager
 
     public static void VersionCheck()
     {
+        
     }
 
     // 使用Github检查更新
@@ -107,12 +108,14 @@ public static class VersionManager
 
     public static Dictionary<Download, PingInfo> GetDownLoadUrlPingInfo()
     {
-        var pingInfos = new Dictionary<Download, PingInfo>();
-        pingInfos.Add(Download.Github, PingUtils.Ping("github.com"));
-        pingInfos.Add(Download.Gitee, PingUtils.Ping("Gitee.com"));
-        pingInfos.Add(Download.Alist, PingUtils.Ping("pan.pafyx.top"));
-        pingInfos.Add(Download.Nightly, PingUtils.Ping("nightly.link"));
-        pingInfos.Add(Download.Jsdelivr, PingUtils.Ping("jsdelivr.net"));
+        var pingInfos = new Dictionary<Download, PingInfo>
+        {
+            { Download.Github, PingUtils.Ping("github.com") },
+            { Download.Gitee, PingUtils.Ping("Gitee.com") },
+            { Download.Alist, PingUtils.Ping("pan.pafyx.top") },
+            { Download.Nightly, PingUtils.Ping("nightly.link") },
+            { Download.Jsdelivr, PingUtils.Ping("jsdelivr.net") }
+        };
         return pingInfos;
     }
 }

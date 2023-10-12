@@ -11,7 +11,7 @@ public static class TaskUtils
         actions.Do(
             StartTask);
     }
-    
+
     public static void StartTask(Action action)
     {
         var task = new Task(action);

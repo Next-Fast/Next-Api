@@ -145,7 +145,7 @@ public static class RPCUtils
 
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }
-    
+
     public static void StartRPC(byte rpc, MessageReader reader)
     {
         switch (rpc)

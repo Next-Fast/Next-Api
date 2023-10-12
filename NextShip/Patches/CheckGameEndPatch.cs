@@ -8,6 +8,7 @@ internal class CheckGameEndPatch
 {
     public static bool Prefix(ShipStatus __instance)
     {
+        return false;
         if (!GameData.Instance) return false;
         if (CheckAndEndGameForJesterWin(__instance)) return false;
         return true;

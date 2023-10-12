@@ -2,6 +2,7 @@ using NextShip.Cosmetics;
 
 namespace NextShip.Config;
 
+
 public class CosmeticsConfig
 {
     public CosmeticRepoType CosmeticRepoType { get; set; }

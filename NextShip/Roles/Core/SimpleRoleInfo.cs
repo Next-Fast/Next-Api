@@ -1,22 +1,19 @@
 using System;
-using System.Collections.Generic;
-using Il2CppSystem.Linq.Expressions;
-using NextShip.Options;
 using UnityEngine;
 
 namespace NextShip.Roles.Core;
 
-public class SimpleRoleInfo
+public sealed class SimpleRoleInfo
 {
-    public Color RoleColor;
     public string Name;
+    public Color RoleColor;
     public RoleId roleId;
     public int roleIntId;
     public string RoleStringId;
     public RoleTeam roleTeam;
     public RoleType roleType;
-    public Role ParentRole { get; private set; }
     
+    public SimpleRoleInfo() {}
     
     public SimpleRoleInfo
     (
@@ -35,19 +32,19 @@ public class SimpleRoleInfo
         RoleStringId = roleStringId;
         roleTeam = team;
         roleType = type;
-        
+
         // Add to RoleManager        
-        
+
         RoleManager.Get().AllSimpleRoleInfos.Add(this);
     }
-    
+
     public SimpleRoleInfo
     (
         RoleId id,
         Color color,
         RoleTeam team,
         RoleType type,
-        string roleName) : this(id,color, team, type, "", roleName, -1)
+        string roleName) : this(id, color, team, type, "", roleName, -1)
     {
     }
 
@@ -61,5 +58,6 @@ public class SimpleRoleInfo
     ) : this(RoleId.none, color, team, type, "", roleName, -1)
     {
     }
-    
+
+    public Role ParentRole { get; }
 }

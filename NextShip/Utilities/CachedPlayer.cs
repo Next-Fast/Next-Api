@@ -36,11 +36,17 @@ public class CachedPlayer
     {
         return player.PlayerPhysics;
     }
+    
 }
 
 [HarmonyPatch]
 public static class CachedPlayerPatches
 {
+    public static bool CanAssaign(this CachedPlayer player)
+    {
+        return player != null && player.Data != null;
+    }
+    
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
     [HarmonyPostfix]
     public static void CachePlayerPatch(PlayerControl __instance)

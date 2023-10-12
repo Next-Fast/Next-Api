@@ -8,9 +8,4 @@ public class RoleAction
 {
     public List<ButtonBase> Buttons { get; set; }
     public List<Action> Actions { get; set; }
-    
-    public RoleAction()
-    {
-        
-    }
 }

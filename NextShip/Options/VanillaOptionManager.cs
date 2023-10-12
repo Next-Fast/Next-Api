@@ -16,6 +16,5 @@ public class VanillaOptionManager
 
     public static void InitVanillaOptions()
     {
-        
     }
 }

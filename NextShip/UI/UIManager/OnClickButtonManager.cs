@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using NextShip.UI.Components;
@@ -11,12 +10,13 @@ namespace NextShip.UI.UIManager;
 public class OnClickButtonManager
 {
     public static OnClickButtonManager Instance;
-    
-    public readonly List<OnClickButton> AllOnClickButtons = new ();
-    private List<BoxCollider2D> BoxCollider2DCache = new ();
-    private List<Box> _boxs = new ();
-        
-    [HarmonyPatch(typeof(PassiveButtonManager), nameof(PassiveButtonManager.Update)), HarmonyPostfix]
+
+    public readonly List<OnClickButton> AllOnClickButtons = new();
+    private readonly List<Box> _boxs = new();
+    private List<BoxCollider2D> BoxCollider2DCache = new();
+
+    [HarmonyPatch(typeof(PassiveButtonManager), nameof(PassiveButtonManager.Update))]
+    [HarmonyPostfix]
     public static void ManagerUpdate(PassiveButtonManager __instance)
     {
         Get().CacheBox();
@@ -67,11 +67,20 @@ public class OnClickButtonManager
         }
     }
 
-    private void Start(BoxCollider2D box) => _boxs.FirstOrDefault(n => n.BoxCollider2D == box)!.Button.OnClick.Invoke();
+    private void Start(BoxCollider2D box)
+    {
+        _boxs.FirstOrDefault(n => n.BoxCollider2D == box)!.Button.OnClick.Invoke();
+    }
 
-    internal void Register(OnClickButton button) => AllOnClickButtons.Add(button);
+    internal void Register(OnClickButton button)
+    {
+        AllOnClickButtons.Add(button);
+    }
+
+    public static OnClickButtonManager Get()
+    {
+        return Instance ??= new OnClickButtonManager();
+    }
 
     private record Box(BoxCollider2D BoxCollider2D, OnClickButton Button);
-
-    public static OnClickButtonManager Get() => Instance ??= new OnClickButtonManager();
 }

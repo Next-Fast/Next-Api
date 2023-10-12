@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using HarmonyLib;
 using NextShip.Game.GameEvents;
-using NextShip.Manager;
 
 namespace NextShip.Listeners.Attributes;
 
@@ -21,17 +18,17 @@ public class EventListener : Attribute
                 ListenerManager.Get().RegisterGameEvent(MethodInfo.Invoke(null, null) as IGameEvent);
                 continue;
             }
-            
+
             if (!MethodInfo.Name.Contains("On")) continue;
-            
+
             ListenerManager.Get().RegisterMethod(MethodInfo);
         }
 
-        if (type.GetCustomAttribute<EventListener>() == null) return; 
+        if (type.GetCustomAttribute<EventListener>() == null) return;
         foreach (var variableInterface in type.GetInterfaces())
         {
             if (variableInterface != typeof(IGameEvent)) continue;
-            
+
             var gameEvent = type.Assembly.CreateInstance(type.FullName!) as IGameEvent;
             ListenerManager.Get().RegisterGameEvent(gameEvent);
         }

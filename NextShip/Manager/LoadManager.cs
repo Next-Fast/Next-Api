@@ -1,33 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using NextShip.Languages;
 using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NextShip.Manager;
 
 [HarmonyPatch]
 public static class LoadManager
 {
-    public static bool Loaded = false;
-    private static bool Started = false;
+    public static bool Loaded;
+    private static bool Started;
+    private static bool HasError;
 
-    public static List<IEnumerator> AllLoad = new ();
+    public static List<IEnumerator> AllLoad = new();
 
-    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update)), HarmonyPrefix]
+    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
+    [HarmonyPrefix]
     public static bool SplashManager_Update_Patch_Load(SplashManager __instance)
     {
-        if (Loaded || Started || !__instance.doneLoadingRefdata || !(Time.time - __instance.startTime > __instance.minimumSecondsBeforeSceneChange)) return Loaded;
+        if (Loaded || Started || !__instance.doneLoadingRefdata ||
+            !(Time.time - __instance.startTime > __instance.minimumSecondsBeforeSceneChange)) return Loaded;
         __instance.StartCoroutine(Load(__instance));
         Started = true;
         return Loaded;
     }
 
-    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start)), HarmonyPostfix]
+    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Start))]
+    [HarmonyPostfix]
     public static void SplashManager_InitializeRefdata_Patch_OnVanillaManagerLoaded(SplashManager __instance)
     {
         Loaded = false;
@@ -38,7 +41,7 @@ public static class LoadManager
         if (AllLoad.Count == 0 || AllLoad == null)
         {
             Loaded = true;
-            yield break;  
+            yield break;
         }
         
         float t = 1;
@@ -56,7 +59,7 @@ public static class LoadManager
         text.text = "Loading.....";
         text.alignment = TextAlignmentOptions.Center;
         text.fontSize = 4.5f;
-        
+
         while (t > 0)
         {
             t -= 0.01f;
@@ -64,14 +67,22 @@ public static class LoadManager
             yield return null;
         }
 
-        foreach (var co in AllLoad.Select(load => new StackFullCoroutine(load)))
+        var Co = new StackFullCoroutine(AllLoad.GetEnumerator());
+
+        while (Co.CanMove())
         {
-            while (co.MoveNext()) yield return null;
+            try { Co.MoveNext(); }
+            catch (Exception e)
+            { HasError = true; StartErrorScreen(e); yield break; }
+
+            yield return null;
         }
+
+        if (HasError) yield break;
         
         t = 1;
         text.text = "Load Complete";
-        
+
         while (t > 0)
         {
             t -= 0.01f;
@@ -82,7 +93,13 @@ public static class LoadManager
         Loaded = true;
     }
 
-    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake)), HarmonyPostfix]
+    private static void StartErrorScreen(Exception exception)
+    {
+        
+    }
+
+    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake))]
+    [HarmonyPostfix]
     public static void AccountManager_Awake_Patch()
     {
         var fill = GameObject.Find("BlockFill");

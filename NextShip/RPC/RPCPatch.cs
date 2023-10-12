@@ -10,9 +10,14 @@ public class RPCPatch
     public class RPCHandlerPatch
     {
         private static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
-            => RPCUtils.StartRPC(callId, reader);
+        {
+            RPCUtils.StartRPC(callId, reader);
+        }
 
-        private static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader) 
-            => RPCCheck.CheckRpc(__instance, callId, reader);
+        private static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId,
+            [HarmonyArgument(1)] MessageReader reader)
+        {
+            return RPCCheck.CheckRpc(__instance, callId, reader);
+        }
     }
 }

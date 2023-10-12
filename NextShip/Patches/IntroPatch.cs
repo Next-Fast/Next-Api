@@ -43,7 +43,7 @@ internal class ShowTeamPatch
             var LocalP = CachedPlayer.LocalPlayer.PlayerControl;
             var teamText = RoleHelpers.GetRoleTeam(LocalP);
             __instance.TeamTitle.text = teamText;
-        } */ /* 
+        } */ /*
         public static bool Prefix(IntroCutscene __instance)
         {
             if (!CustomOptionHolder.activateRoles.getBool()) return true;

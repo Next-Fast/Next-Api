@@ -8,11 +8,8 @@ public static class ListUtils
 {
     public static List<T> GetLists<T>(this List<T> list, int count)
     {
-        var l =  new List<T>();
-        for (var i = 0; i < count; i++)
-        {
-            l.Add(list[i]);
-        }
+        var l = new List<T>();
+        for (var i = 0; i < count; i++) l.Add(list[i]);
 
         return l;
     }
@@ -24,7 +21,8 @@ public static class ListUtils
             case 1:
                 return list;
             case 2:
-                list.Reverse(); return list;
+                list.Reverse();
+                return list;
         }
 
         var list2 = new List<T>();
@@ -43,9 +41,8 @@ public static class ListUtils
     {
         var b = true;
         foreach (var o in objects2)
-        {
-            if (!objects2.Contains(o)) b = false;
-        }
+            if (!objects2.Contains(o))
+                b = false;
 
         return b;
     }

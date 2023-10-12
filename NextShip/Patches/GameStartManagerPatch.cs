@@ -2,26 +2,17 @@ using HarmonyLib;
 
 namespace NextShip.Patches;
 
-/*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
 internal class GameStartManagerUpdatePatch
 {
     public static void Prefix(GameStartManager __instance)
     {
-        var time = __instance.countDownTimer;
-        if (noGameEnd.getBool())
-        {
-            __instance.MinPlayers = 1;
-            __instance.countDownTimer = 0;
-        }
-        else
-        {
-            __instance.MinPlayers = 4;
-            __instance.countDownTimer = time;
-        }
+        __instance.MinPlayers = 1;
+        __instance.countDownTimer = 0;
     }
-}*/
+}
 
-[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
+/*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
 internal class GameStartManagerBeginGamePatch
 {
     public static void Prefix()
@@ -45,6 +36,6 @@ internal class GameStartManagerBeginGamePatch
 
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
-        }*/
+        }#1#
     }
-}
+}*/

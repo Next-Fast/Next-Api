@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace NextShip.Utilities;
 
 // form Nebula
@@ -14,15 +13,25 @@ public class StackFullCoroutine
         stack.Add(enumerator);
     }
 
-    public bool MoveNext() {
+    public bool CanMove()
+    {
         if (stack.Count == 0) return false;
 
+        return stack.Count > 0;
+    }
+
+    public void MoveNext()
+    {
         var current = stack[^1];
         if (!current.MoveNext())
             stack.RemoveAt(stack.Count - 1);
         else if (current.Current is IEnumerator child)
             stack.Add(child);
+    }
 
-        return stack.Count > 0;
+    public bool Move()
+    {
+        Move();
+        return CanMove();
     }
 }

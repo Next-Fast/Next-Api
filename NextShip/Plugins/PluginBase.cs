@@ -5,10 +5,13 @@ namespace NextShip.Plugins;
 
 public abstract class ShipPlugin
 {
+    public List<PluginCompatibility> PluginCompatibilities = new();
     public ShipPluginInfo ShipPluginInfo;
-    public List<PluginCompatibility> PluginCompatibilities = new ();
-    
-    public ShipPlugin(){}
+
+    public ShipPlugin()
+    {
+    }
+
     public ShipPlugin(ShipPluginInfo pluginInfo)
     {
         ShipPluginInfo = pluginInfo;
@@ -20,13 +23,13 @@ public abstract class ShipPlugin
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class PluginCompatibility : Attribute
 {
-    public string PluginName;
     public CompatibilityLevel Compatibility;
+    public string PluginName;
 
     public PluginCompatibility(string pluginName, CompatibilityLevel compatibility = CompatibilityLevel.Compatible)
     {
         PluginName = pluginName;
-        Compatibility = compatibility;        
+        Compatibility = compatibility;
     }
 }
 

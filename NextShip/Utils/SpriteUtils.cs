@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace NextShip.Utils;
 
@@ -14,7 +13,7 @@ public static class SpriteUtils
     private static Sprite ModStamp;
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static HashSet<Sprite> CacheSprite = new();
-    
+
     public static readonly Sprite NextShipText_Sprite;
     public static readonly Sprite ButtonBorder;
 
@@ -38,7 +37,7 @@ public static class SpriteUtils
             sprite = CachedSprites[name];
         if (sprite == null || sprite == default) return null;
         if (!NoCache) return sprite;
-        
+
         sprite.hideFlags |= HideFlags.None;
         CacheSprite.Remove(sprite);
 
@@ -63,8 +62,9 @@ public static class SpriteUtils
 
         return null;
     }
-    
-    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, Vector2 pivot, uint extrude, SpriteMeshType meshType, Vector4 border)
+
+    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, Vector2 pivot, uint extrude,
+        SpriteMeshType meshType, Vector4 border)
     {
         try
         {

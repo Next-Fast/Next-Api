@@ -7,7 +7,7 @@ namespace NextShip.Game.GameModes;
 public class GameModeManager
 {
     public static OptionBase GameModeOption;
-    
+
     public static void CreateOption()
     {
         /*var stringvalue = new StringOptionValue(new[]

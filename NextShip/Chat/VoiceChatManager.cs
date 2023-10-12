@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
-using NextShip.Chat.Patches;
 using NextShip.Utilities;
 
 namespace NextShip.Chat;
@@ -8,15 +7,18 @@ namespace NextShip.Chat;
 public sealed class VoiceChatManager
 {
     private static VoiceChatManager Instance;
-    public PlayerControl LocalPlayer = CachedPlayer.LocalPlayer;
-
-    public static VoiceChatManager Get() => Instance ??= new VoiceChatManager();
 
     public List<VoiceClient> AllClient = new();
-    public VoiceConnectType VoiceConnectType;
+    public PlayerControl LocalPlayer = CachedPlayer.LocalPlayer;
 
     public TcpClient TcpClient;
     public UdpClient UdpClient;
+    public VoiceConnectType VoiceConnectType;
+
+    public static VoiceChatManager Get()
+    {
+        return Instance ??= new VoiceChatManager();
+    }
 }
 
 public enum VoiceConnectType

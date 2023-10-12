@@ -8,12 +8,10 @@ namespace NextShip.Utilities.Attributes;
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class Il2CppRegisterAttribute : Attribute
 {
-    public Il2CppRegisterAttribute()
-    {
-        Interfaces = Type.EmptyTypes;
-    }
+    public Type[] Interfaces { get; private set; }
 
-    public Type[] Interfaces { get; }
+    public Il2CppRegisterAttribute(params Type[] interfaces) { Interfaces = interfaces; }
+    public Il2CppRegisterAttribute(){}
 
     public static void Registration(Type type)
     {
@@ -32,7 +30,7 @@ public sealed class Il2CppRegisterAttribute : Attribute
 
         Il2CppRegisterAttribute baseAttribute = null;
 
-        if (targetType != null) baseAttribute = targetBase.GetCustomAttribute<Il2CppRegisterAttribute>();
+        if (targetBase != null) baseAttribute = targetBase.GetCustomAttribute<Il2CppRegisterAttribute>();
 
         if (baseAttribute != null) registrationForTarget(targetBase, baseAttribute.Interfaces);
 
