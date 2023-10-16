@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 namespace NextShip.UI.Components;
 
-[Il2CppRegister]
 public class OnClickButton : MonoBehaviour, INextUI
 {
     public BoxCollider2D[] BoxCollider2Ds;

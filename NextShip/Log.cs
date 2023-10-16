@@ -69,12 +69,13 @@ internal class log
     public static void OutputTISLog()
     {
         var logName = FilesManager.TIS_DataPath +
-                      $"/log/TISLog_{DateTime.Now.ToString(CultureInfo.InvariantCulture)}.ShipLog";
+                      $"/log/{GetNowTime()}.log";
         FilesManager.CreateDirectory(FilesManager.TIS_DataPath + "/log");
-        if (!File.Exists(logName)) File.Create(logName);
-        File.WriteAllText(logName, stringB.ToString());
+        File.WriteAllText(logName.Replace("/", "\\"), stringB.ToString(), Encoding.UTF8);
         Msg("输出日志成功", "LogOutToData", "Log");
     }
+
+    public static string GetNowTime() => DateTime.Now.ToString("g").Replace("/", "-").Replace(":", "-");
     
     
 

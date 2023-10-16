@@ -157,6 +157,27 @@ public static class SpriteUtils
         return null;
     }
 
+    public static Sprite LoadSpriteFromResources(string FileName)
+    {
+        var TheAssembly = Assembly.GetExecutingAssembly();
+        var names = TheAssembly.GetManifestResourceNames();
+        var name = names.FirstOrDefault(isFile);
+        if (name is null or "") return null;
+        var TextureByte = TheAssembly.GetManifestResourceStream(name).ReadFully();
+        var texture = LoadTextureFromByte(TextureByte);
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
+            100f);
+
+        bool isFile(string name)
+        {
+            if (name.EndsWith(FileName)) return true;
+
+            var strings = name.Split(".");
+            var str = names[strings.Length - 2];
+            return name == str;
+        }
+    }
+
     public static Sprite getModStamp()
     {
         if (ModStamp) return ModStamp;

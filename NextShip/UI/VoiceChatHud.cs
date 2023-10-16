@@ -54,10 +54,7 @@ public class VoiceChatHud
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPostfix]
     public static void HudManagerUpdatePatch_Postfix(HudManager __instance)
     {
-        if (!VCClinetTem)
-        {
-            
-        }
+        if (!VCClinetTem) return;
         
         
         UpdatePlayer(__instance);

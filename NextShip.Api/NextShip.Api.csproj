@@ -5,6 +5,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>NextShip.Api</RootNamespace>
+        <PackageVersion>0.1.0</PackageVersion>
+        <PackageProjectUrl></PackageProjectUrl>
+        <PackageReadmeFile>APIReadme.md</PackageReadmeFile>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="APIReadme.md" Pack="true" PackagePath="\" />
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.672" Private="false" ExcludeAssets="runtime;native"/>
+        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.7.11" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime"/>
+    </ItemGroup>
 
 </Project>

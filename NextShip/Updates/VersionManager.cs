@@ -48,8 +48,8 @@ public static class VersionManager
         (alistUrl, Download.Alist)
     };
 
-    public static Version lastVersion;
-    public static Version NowVersion;
+    public static ShipVersion lastVersion;
+    public static ShipVersion NowVersion;
 
     private static string KApi_addId(this string URL)
     {

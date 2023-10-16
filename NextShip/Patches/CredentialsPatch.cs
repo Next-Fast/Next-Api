@@ -25,7 +25,7 @@ public static class CredentialsPatch
             stringText += " " + $"{ThisAssembly.Git.Branch} {ThisAssembly.Git.Commit}";
 #endif
 
-            stringText += "" + $"作者:天寸梦初  ver{Main.AmongUsVersion}";
+            stringText += "" + $"作者:天寸梦初  ver{Main.SupportVersion}";
 
             __instance.text.text = stringText;
         }

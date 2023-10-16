@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace NextShip.UI.Components;
 
-[Il2CppRegister]
 public class UpdateTask : MonoBehaviour
 {
     public static List<ShipTask> Tasks;

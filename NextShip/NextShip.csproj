@@ -32,6 +32,7 @@
 
 
 
+
     <Target Name="Copy" AfterTargets="Build" Condition="$(NextShipLast) != ''">
         <Copy SourceFiles="$(OutputPath)/$(AssemblyName).dll" DestinationFolder="$(NextShipLast)/BepInEx/plugins/" UseSymboliclinksIfPossible="true"/>
     </Target>

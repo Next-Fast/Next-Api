@@ -45,7 +45,7 @@ public enum CompatibilityLevel
 [AttributeUsage(AttributeTargets.Class)]
 public sealed class ShipPluginInfo : Attribute
 {
-    public ShipPluginInfo(string Id, Version Version, string Name)
+    public ShipPluginInfo(string Id, ShipVersion Version, string Name)
     {
         this.Id = Id;
         this.Version = Version;
@@ -53,6 +53,6 @@ public sealed class ShipPluginInfo : Attribute
     }
 
     public string Id { get; }
-    public Version Version { get; }
+    public ShipVersion Version { get; }
     public string Name { get; }
 }

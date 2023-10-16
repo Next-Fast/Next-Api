@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
@@ -26,7 +28,11 @@ namespace NextShip;
 public sealed class Main : BasePlugin
 {
     // Among Us游玩版本
-    public const string AmongUsVersion = "2023.7.11";
+    public static readonly AmongUsVersion SupportVersion = new AmongUsVersion(2023, 7, 21);
+    public static readonly AmongUsVersion[] AmongUsSupportVersions = new[]
+    {
+        new AmongUsVersion(2023, 7, 21) 
+    };
 
     // 模组名称
     public const string ModName = "NextShip";
@@ -67,8 +73,15 @@ public sealed class Main : BasePlugin
     public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
     internal Harmony Harmony { get; } = new(Id);
 
+    private static void AddQuit()
+    {
+        Process.GetCurrentProcess().Exited += (sender, args) => OnGameQuit();
+        Application.add_quitting((Action)(() => OnGameQuit()));
+    }
     public override void Load()
     {
+        AddQuit();
+        
         if (IsDev) 
             ConsoleTextFC();
         
@@ -126,8 +139,13 @@ public sealed class Main : BasePlugin
         Info($"CountryName:{CountryName} | {RegionInfo.CurrentRegion.DisplayName}", "Const");
         Info($"isCn:{isCn.ToString()}", "Const");
         Info($"IsChinese:{isChinese.ToString()}", "Const");
-        Info($"Support Among Us Version {AmongUsVersion}", "Info");
+        Info($"Support Among Us Version {SupportVersion}", "Info");
         Info($"Hash: {HashCode}", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
+    }
+
+    private static void OnGameQuit()
+    {
+        OutputTISLog();
     }
 }

@@ -51,8 +51,6 @@ public class NextOptionMenu
             var Templates = new GameObject("Templates");
             Templates.transform.SetParent(NextMenuParent.transform);
 
-            var border = ObjetUtils.Find<Sprite>("smallButtonBorder");
-
 
             var ScrollMenu = CreateScrollMenu
             (
@@ -63,7 +61,7 @@ public class NextOptionMenu
                 new Vector3(0, 0, -5f),
                 new Vector2(0.03f, 6),
                 new Vector2(0.05f, 1),
-                new FloatRange(-5.4f, 0.5f),
+                new FloatRange(-5.4f, 0.4f),
                 new FloatRange(-1, 1)
             );
             List = ScrollMenu.Item2;
@@ -75,6 +73,8 @@ public class NextOptionMenu
                 new Vector3(-3.5f, 0, 0), "职业设置", "关于职业的选项设置", () => OpenOptionMenu(MenuIndex.RoleSetting));
             CloneButton = CreateSmallButton("CloneButton", NextMenuParent.transform, new Vector3(-3.5f, -1.1f, 0), "关闭",
                 CloseMenu);
+
+            ShipOptionBehaviour.GenerateOption(List);
 
             NextMenuParent.SetActive(false);
             NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
@@ -111,6 +111,7 @@ public class NextOptionMenu
         ControllerManager.Instance.OpenOverlayMenu(NextMenuParent.name, Instance.CloneButton.GetComponent<UiElement>(),
             null, Instance.UiElements);
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, NextMenuParent, null);
+        DestroyableSingleton<HudManager>.Instance.menuNavigationPrompts.SetActive(false);
         return true;
     }
 
