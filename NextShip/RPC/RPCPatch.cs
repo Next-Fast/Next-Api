@@ -1,6 +1,5 @@
 using HarmonyLib;
 using Hazel;
-using InnerNet;
 
 namespace NextShip.RPC;
 
@@ -12,20 +11,13 @@ public class RPCPatch
     {
         private static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            var packetId = callId;
-            RPCHelpers.StartRPC(packetId, reader);
+            RPCUtils.StartRPC(callId, reader);
         }
 
-        private static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId,
+        private static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId,
             [HarmonyArgument(1)] MessageReader reader)
         {
-        }
-    }
-
-    public class rpc : InnerNetObject
-    {
-        public override void HandleRpc(byte callId, MessageReader reader)
-        {
+            return RPCCheck.CheckRpc(__instance, callId, reader);
         }
     }
 }

@@ -9,50 +9,51 @@ namespace NextShip.Listeners;
 
 public class ListenerManager
 {
-    public static ListenerManager _ListenerManager;
-    public List<IGameEvent> _GameEvents;
-    public List<IRoleEvent> _RoleEvents;
+    private static ListenerManager _ListenerManager;
+    public readonly List<IGameEvent> allGameEvents = new();
+    private readonly List<MethodInfo> allMethodInfos = new();
 
-    public ListenerManager()
+    private ListenerManager()
     {
         _ListenerManager = this;
-        Init();
     }
 
-    public void Init()
+    internal void RegisterMethod(MethodInfo methodInfo)
     {
-        _GameEvents = new List<IGameEvent>();
-        _RoleEvents = new List<IRoleEvent>();
+        allMethodInfos.Add(methodInfo);
     }
 
-    public void add(IRoleEvent roleEvent)
+    internal void RegisterGameEvent(IGameEvent gameEvent)
     {
-        _RoleEvents.Add(roleEvent);
+        allGameEvents.Add(gameEvent);
     }
 
-    public void remove(IRoleEvent roleEvent)
+    internal void URegisterGameEvent(IGameEvent gameEvent)
     {
-        _RoleEvents.Remove(roleEvent);
-    }
-    
-    public void add(IGameEvent gameEvent)
-    {
-        _GameEvents.Add(gameEvent);
+        allGameEvents.Remove(gameEvent);
     }
 
-    public void remove(IGameEvent gameEvent)
+    internal bool Start(string name, object Target, params object[] objects)
     {
-        _GameEvents.Add(gameEvent);
-    }
+        var method = allMethodInfos.Find(n => n.Name == name);
+        if (method == null) return false;
 
-    public List<IRoleEvent> GetRoleEvents()
-    {
-        return _RoleEvents;
-    }
+        var list = new List<MethodInfo>();
+        foreach (var varMethod in allMethodInfos.Where(n =>
+                     n.Name == name && n.GetGenericArguments().Contains((Type[])objects))) list.Add(varMethod);
 
-    public List<IGameEvent> GetGameEvents()
-    {
-        return _GameEvents;
+        if (list.Count == 0) return false;
+
+        try
+        {
+            list.Do(n => n.Invoke(Target, objects));
+            return true;
+        }
+        catch (Exception e)
+        {
+            Exception(e);
+            return false;
+        }
     }
 
     public static ListenerManager Get()

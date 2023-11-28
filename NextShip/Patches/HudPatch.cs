@@ -1,9 +1,7 @@
-using AmongUs.Data;
+/*using AmongUs.Data;
 using HarmonyLib;
 using NextShip.RPC;
 using NextShip.Utilities;
-using Steamworks;
-using TMPro;
 using UnityEngine;
 
 namespace NextShip.Patches;
@@ -17,10 +15,8 @@ public static class LoveChatPatch
     [HarmonyPostfix]
     public static void LoverChat_Postfix(HudManager __instance)
     {
-        if (noGameEnd.getBool())
-            if (!__instance.Chat.isActiveAndEnabled)
+        if (!__instance.Chat.isActiveAndEnabled)
                 __instance.Chat.SetVisible(true);
-        if (!CachedPlayer.LocalPlayer.PlayerControl.IsLover()) return;
         if (MeetingHud.Instance)
             LoverChat.transform.position = __instance.Chat.transform.position + new Vector3(-0.5f, 0, 0);
         else
@@ -96,4 +92,5 @@ public static class LoveChatPatch
 
         return false;
     }
-}
+}*/
+

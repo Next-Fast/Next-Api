@@ -50,8 +50,6 @@ internal class ExileControllerWrapUp
                         Jester.triggerJesterWin = true;
                     } */
             }
-
-            CustomButton.MeetingEndedUpdate();
         }
     }
 }

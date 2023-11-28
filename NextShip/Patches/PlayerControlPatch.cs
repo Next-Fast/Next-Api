@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
 using NextShip.Roles;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -149,14 +148,6 @@ public static class PlayerControlFixedUpdatePatch
         if (p == Flash.flash && Flash.flash != null) p.MyPhysics.Speed = Flash.speed;
     }
 
-    public static void GhostSpeedUpdate()
-    {
-        if (CustomOptionHolder.PlayerOption.getBool())
-            for (var i = 0; i < PlayerControl.AllPlayerControls.Count; i++)
-                CachedPlayer.AllPlayers[i].PlayerControl.MyPhysics.GhostSpeed =
-                    PlayerGhostSpeed.getFloat();
-    }
-
     public static void Postfix(PlayerControl __instance)
     {
         if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
@@ -171,7 +162,6 @@ public static class PlayerControlFixedUpdatePatch
             impostorSetTarget();
 
             speedUpdate();
-            GhostSpeedUpdate();
         }
     }
 }

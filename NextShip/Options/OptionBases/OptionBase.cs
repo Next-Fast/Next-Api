@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,15 +6,15 @@ namespace NextShip.Options;
 
 public abstract class OptionBase
 {
-    public int id;
-    public string StringId;
-    public string Title;
-    public Color nameColor;
-    public OptionInfo optionInfo;
-    public optionTab tab;
-    public optionType type;
-    public OptionBehaviour OptionBehaviour;
     public bool EnableTranslation;
+    public int id;
+    public Color nameColor;
+    public OptionBehaviour OptionBehaviour;
+    public OptionInfo optionInfo;
+    public string StringId;
+    public optionTab tab;
+    public string Title;
+    public optionType type;
 
 
     public OptionBase
@@ -33,7 +32,7 @@ public abstract class OptionBase
         this.type = type;
         EnableTranslation = Translation;
 
-        optionInfo = new OptionInfo(Title, String.Empty, id, this);
+        optionInfo = new OptionInfo(Title, string.Empty, id, this);
         OptionManager.AllOption.Add(this);
     }
 
@@ -58,16 +57,10 @@ public abstract class OptionBase
 
     public int GetId(int Id)
     {
-        if (Id != -1)
-        {
-            return id;
-        }
+        if (Id != -1) return id;
 
         var optionid = 0;
-        while (OptionManager.AllOption.FirstOrDefault(n => n.id == optionid) != null)
-        {
-            optionid += 1;
-        }
+        while (OptionManager.AllOption.FirstOrDefault(n => n.id == optionid) != null) optionid += 1;
 
         return optionid;
     }
@@ -102,10 +95,21 @@ public abstract class OptionBase
     public abstract string GetValueString();
     public abstract OptionBase GetBase();
 
+    // 设置OptionBehaviour隐性转换
+    public static explicit operator OptionBehaviour(OptionBase @base)
+    {
+        return @base.OptionBehaviour;
+    }
+
+    public static explicit operator string(OptionBase @base)
+    {
+        return @base.GetValueString();
+    }
+
+
     public string GetTitleString()
     {
-        if (EnableTranslation) return GetString(Title);
-        return Title;
+        return EnableTranslation ? GetString(Title) : Title;
     }
 }
 
@@ -132,9 +136,10 @@ public class OptionInfo : IOptionInfo
         OptionManager.AllOptionInfo.Add(this);
     }
 
+    public string stringId { get; }
+
     public bool enable { get; set; }
     public string optionName { get; }
-    public string stringId { get; }
     public int optionId { get; }
     public int hierarchy { get; }
     public OptionInfo parent { get; set; }

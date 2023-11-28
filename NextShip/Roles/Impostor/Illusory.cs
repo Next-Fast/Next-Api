@@ -20,16 +20,9 @@ public class Illusory
     public static void clearAndReload()
     {
         illusory = null;
-        duration = illusoryDuration.getFloat();
-        cooldown = illusoryCooldown.getFloat();
     }
 
     public static void OptionLoad()
     {
-        illusorySpawnRate = CustomOption.Create(60, Types.Impostor, cs(color, "Illusory"), rates, null, true);
-        illusoryCooldown = CustomOption.Create(61, Types.Impostor, "Illusory Cooldown", 30f, 10f, 60f, 2.5f,
-            illusorySpawnRate);
-        illusoryDuration =
-            CustomOption.Create(62, Types.Impostor, "Illusory Duration", 10f, 5f, 20f, 1f, illusorySpawnRate);
     }
 }

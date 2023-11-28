@@ -11,12 +11,9 @@ public static class Flash
     public static void clearAndReload()
     {
         flash = null;
-        speed = flashSpeed.getFloat();
     }
 
     public static void OptionLoad()
     {
-        flashSpawnRate = CustomOption.Create(100, Types.Modifier, cs(color, "Flash"), rates, null, true);
-        flashSpeed = CustomOption.Create(101, Types.Modifier, "Speed", 5f, 1f, 10f, 0.5f, flashSpawnRate);
     }
 }

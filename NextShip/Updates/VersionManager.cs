@@ -1,12 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NextShip.Net;
 
 namespace NextShip.Updates;
 
 public static class VersionManager
 {
+    public enum Download
+    {
+        Github,
+        Gitee,
+        Jsdelivr,
+        Nightly,
+        Alist
+    }
+
     // Github链接
     public const string GithubUrl = "https://github.com/NextShipAU/NextShip";
 
@@ -39,8 +46,8 @@ public static class VersionManager
         (alistUrl, Download.Alist)
     };
 
-    public static Version lastVersion;
-    public static Version NowVersion;
+    public static ShipVersion lastVersion;
+    public static ShipVersion NowVersion;
 
     private static string KApi_addId(this string URL)
     {
@@ -88,36 +95,24 @@ public static class VersionManager
             (n1, n2) =>
             {
                 if (n1.pingTime > n2.pingTime)
-                {
                     return -1;
-                }
-                else
-                {
-                    return 1;
-                }
+                return 1;
             }
-            );
+        );
 
         return pingInfos.First(n => n.Value == values[0]).Key;
     }
 
     public static Dictionary<Download, PingInfo> GetDownLoadUrlPingInfo()
     {
-        Dictionary<Download, PingInfo> pingInfos = new Dictionary<Download, PingInfo>();
-        pingInfos.Add(Download.Github, PingUtils.Ping("github.com"));
-        pingInfos.Add(Download.Gitee, PingUtils.Ping("Gitee.com"));
-        pingInfos.Add(Download.Alist, PingUtils.Ping("pan.pafyx.top"));
-        pingInfos.Add(Download.Nightly, PingUtils.Ping("nightly.link"));
-        pingInfos.Add(Download.Jsdelivr, PingUtils.Ping("jsdelivr.net"));
+        var pingInfos = new Dictionary<Download, PingInfo>
+        {
+            { Download.Github, PingUtils.Ping("github.com") },
+            { Download.Gitee, PingUtils.Ping("Gitee.com") },
+            { Download.Alist, PingUtils.Ping("pan.pafyx.top") },
+            { Download.Nightly, PingUtils.Ping("nightly.link") },
+            { Download.Jsdelivr, PingUtils.Ping("jsdelivr.net") }
+        };
         return pingInfos;
-    }
-    
-    public enum Download
-    {
-        Github,
-        Gitee,
-        Jsdelivr,
-        Nightly,
-        Alist
     }
 }

@@ -1,22 +1,17 @@
-global using static NextShip.Modules.log;
-global using Main = NextShip.Main;
-global using NextShip.Utils;
-global using NextShip.Modules;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
-using NextShip.Options;
 using NextShip.Patches;
+using NextShip.Roles;
 using NextShip.UI.Components;
-using NextShip.Utilities.Attributes;
+using NextShip.UI.UIManager;
 using UnityEngine;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
@@ -26,11 +21,8 @@ namespace NextShip;
 
 [BepInPlugin(Id, ModName, VersionString)]
 [BepInProcess("Among Us.exe")]
-public class Main : BasePlugin
+public sealed class Main : BasePlugin
 {
-    // Among Us游玩版本
-    public const string AmongUsVersion = "2023.7.11";
-
     // 模组名称
     public const string ModName = "NextShip";
 
@@ -38,7 +30,7 @@ public class Main : BasePlugin
     public const string Id = "cn.MengChu.NextShip";
 
     // 模组版本
-    public const string VersionString = "0.3.6";
+    public const string VersionString = "0.5.0";
 
     // bilibili链接
     public const string bilibiliURL = "https://space.bilibili.com/394107547";
@@ -48,74 +40,100 @@ public class Main : BasePlugin
 
     public const string QQNumber = "815101721";
 
+    // Among Us游玩版本
+    public static readonly AmongUsVersion SupportVersion = new(2023, 7, 21);
+
+    public static readonly AmongUsVersion[] AmongUsSupportVersions =
+    {
+        SupportVersion
+    };
+
+    public static readonly string HashCode = HashUtils.GetFileMD5Hash(Paths.PluginPath.CombinePath($"{ModName}.dll"));
+
     // 模组构建时间
-    public static string BuildTime = "2023.3.8";
-    
+    public static string BuildTime = "";
+
     // 是否为开发版本
     public static bool IsDev = true;
-    
-    public static bool isCn;
-    public static bool isChinese;
-    
-    public static Version Version = Version.Parse(VersionString);
-    public static ManualLogSource TISLog;
-    public static Main Instance;
-    public static int OptionPage = 0;
-    public static Dictionary<byte, RoleId> PlayerAndRoleIdDic = new();
 
-    public static UpdateTask updateTask;
-    public static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+    internal static bool isCn;
+    internal static bool isChinese;
+
+    public static readonly ShipVersion ShipVersion = new ShipVersion().Parse(VersionString);
+    public static Version Version = Version.Parse(VersionString);
+    internal static ManualLogSource TISLog;
+    public static Main Instance;
+
+    internal static UpdateTask UpdateTask;
+    internal static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色
     public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
-    public Harmony Harmony { get; } = new(Id);
+    internal Harmony Harmony { get; } = new(Id);
+
 
     public override void Load()
     {
+        if (IsDev)
+            ConsoleTextFC();
+
+        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
-        ConsoleManager.SetConsoleTitle(ModName + "game");
-        Instance = this;
-        Harmony.PatchAll();
-        
-        if (IsDev) ConsoleTextFC();
+
         constInit();
 
-        CustomOptionHolder.Load();
+        Instance = this;
+        Harmony.PatchAll();
+
         FilesManager.Init();
         ServerPath.autoAddServer();
 
-        RegisterManager.Registration(Assembly.GetAssembly(GetType()));
-        InitAttribute.Start();
-        updateTask = AddComponent<UpdateTask>();
-        updateTask.Start();
-        
-        StartTask(new []{OptionManager.Load, Init, LanguagePack.Init});
+        var _Assembly = Assembly.GetExecutingAssembly();
+        RegisterManager.Registration(_Assembly);
+
+        UpdateTask = AddComponent<UpdateTask>();
+        AddComponent<NextUIManager>();
+
+        Init();
+        LanguagePack.Init();
+
+        UpdateTask.DontDestroyOnLoad();
+
+        CustomCosmeticsManager.LoadHat();
+
+        RegisterRoles();
+
+        VanillaManager.Load();
     }
 
 
-    public static void constInit()
+    private static void RegisterRoles()
+    {
+        var roles = new Role[]
+        {
+            new Postman()
+        };
+
+        Api.Roles.RoleManager.Get().RegisterRole(roles);
+    }
+
+    private static void constInit()
     {
 #if RELEASE
             IsDev = false;
 #endif
-
         var CountryName = RegionInfo.CurrentRegion.EnglishName;
         isCn = CountryName.Contains("China"); //|| CountryName.Contains("Hong Kong") || CountryName.Contains("Taiwan");
+        isChinese = (TranslationController.InstanceExists
+            ? TranslationController.Instance.currentLanguage.languageID
+            : SupportedLangs.English) is SupportedLangs.SChinese or SupportedLangs.TChinese;
 
         Info($"IsDev:{IsDev.ToString()}", "Const");
         Info($"CountryName:{CountryName} | {RegionInfo.CurrentRegion.DisplayName}", "Const");
         Info($"isCn:{isCn.ToString()}", "Const");
         Info($"IsChinese:{isChinese.ToString()}", "Const");
-        Info($"Support Among Us Version {AmongUsVersion}", "Info");
-        Info($"欢迎游玩{ModName}\nWelcome to{ModName}", "Info");
-    }
-
-    public static void StartTask(Action[] actions)
-    {
-        foreach (var action in actions)
-        {
-            Task task = new Task(action);
-            task.Start();
-        }
+        Info($"Support Among Us Version {SupportVersion}", "Info");
+        Info($"Hash: {HashCode}", "Info");
+        Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
     }
 }

@@ -1,4 +1,4 @@
-﻿using NextShip.Utilities.Attributes;
+﻿using NextShip.Api.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
@@ -6,10 +6,7 @@ namespace NextShip.UI.Components;
 [Il2CppRegister]
 public class DownMenu : MonoBehaviour
 {
-    public GameObject GameObject;
-
     public void Start()
     {
-        gameObject.AddComponent<DropdownButton>();
     }
 }

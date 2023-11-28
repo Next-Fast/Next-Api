@@ -115,17 +115,6 @@ public class LanguagePack
         return language?.languageSet.ContainsKey(key) ?? true;
     }
 
-    public static void AddDefaultKey(string key, string format)
-    {
-        defaultLanguageSet.Add(key, format);
-        if (!CheckValidKey(key)) language.languageSet.Add(key, format);
-    }
-
-    public static void LoadDefaultKey()
-    {
-        AddDefaultKey("option.empty", "");
-    }
-
     public static void Load()
     {
         var lang = languageName;
@@ -158,17 +147,15 @@ public class LanguagePack
                     data += "," + line;
             }
 
-            if (!data.Equals(""))
+            if (data.Equals("")) return;
+            var option = new JsonSerializerOptions
             {
-                var option = new JsonSerializerOptions
-                {
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                    WriteIndented = true
-                };
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                WriteIndented = true
+            };
 
-                var deserialized = JsonSerializer.Deserialize<Dictionary<string, string>>("{ " + data + " }", option);
-                foreach (var entry in deserialized) languageSet[entry.Key] = entry.Value;
-            }
+            var deserialized = JsonSerializer.Deserialize<Dictionary<string, string>>("{ " + data + " }", option);
+            foreach (var entry in deserialized) languageSet[entry.Key] = entry.Value;
         }
         catch (Exception e)
         {

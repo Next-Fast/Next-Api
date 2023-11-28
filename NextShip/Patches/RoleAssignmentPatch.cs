@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using AmongUs.GameOptions;
@@ -29,7 +29,6 @@ internal class RoleOptionsDataGetNumPerGamePatch
 {
     public static void Postfix(ref int __result)
     {
-        if (activateRoles.getBool()) __result = 0;
     }
 }
 
@@ -416,7 +415,7 @@ internal class RoleManagerSelectRolesPatch
         byte playerId;
 
         var crewPlayer = new List<PlayerControl>(playerList);
-        /*  crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || RoleInfo.getRoleInfoForPlayer(x).Any(r => r.type == RoleInfo.RoleType.Neutral)); */
+        /*  crewPlayer.RemoveAll(x => x.Data.Role.IsImpostor || RoleInfo.getRoleInfoForPlayer(x).Any(r => r.type == RoleInfo.RoleType.Neutral)); #1#
 
         foreach (var modifier in modifiers)
         {
@@ -432,4 +431,5 @@ internal class RoleManagerSelectRolesPatch
         Neutral = 1,
         Impostor = 2
     }
-}
+}*/
+

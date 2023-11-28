@@ -1,28 +1,20 @@
-﻿using NextShip.Options;
-using NextShip.Utilities.Attributes;
-using UnityEngine;
+﻿namespace NextShip.Roles;
 
-namespace NextShip.Roles;
-
-public class Postman : RoleBase
+public class Postman : Role
 {
-    public static SimpleRoleInfo simpleRoleInfo = new
-    (
-        typeof(Postman),
-        RoleId.Postman,
-        Color.blue,
-        RoleTeam.Crewmate,
-        RoleType.MainRole
-    );
+    private static readonly SimpleRoleInfo PostmanRoleInfo = new();
 
-    public Postman(PlayerControl player) : base(player)
+
+    public Postman()
     {
-        SimpleRoleInfo = simpleRoleInfo;
+        CreateRoleBase = n => new PostmanBase(n);
+        SimpleRoleInfo = PostmanRoleInfo;
     }
-    
-    [OptionLoad]
-    public static void OptionLoad()
+
+    private class PostmanBase : RoleBase
     {
-        RoleOptionBase Postman = new RoleOptionBase(simpleRoleInfo.name, -1, optionTab.Crewmate);
+        public PostmanBase(PlayerControl player) : base(player)
+        {
+        }
     }
 }

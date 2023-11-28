@@ -4,6 +4,12 @@ namespace NextShip.Buttons;
 
 public class ButtonsManager
 {
-    public static List<ButtonBase> _AllButtons = new List<ButtonBase>();
-    public static List<RoleButton> _AllRoleButton = new List<RoleButton>();
+    public List<ButtonBase> _AllButtons = new();
+    public List<RoleButton> _AllRoleButton = new();
+    public static ButtonsManager Instance { get; private set; }
+
+    public static ButtonsManager Get()
+    {
+        return Instance ??= new ButtonsManager();
+    }
 }

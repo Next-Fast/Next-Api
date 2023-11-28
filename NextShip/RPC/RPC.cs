@@ -1,10 +1,7 @@
 using System;
-using System.Text.RegularExpressions;
 using Hazel;
-using NextShip.Patches;
 using NextShip.Roles;
-using NextShip.Utilities;
-using static NextShip.Roles.Core.RoleEnum;
+using static NextShip.Api.Roles.RoleEnum;
 
 namespace NextShip.RPC;
 
@@ -37,8 +34,6 @@ public static class RPCProcedure
 {
     public static void ResetVariables()
     {
-        HudManagerStartPatch.setCustomButtonCooldowns();
-        Main.PlayerAndRoleIdDic.Clear();
     }
 
     public static void WorkaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -79,8 +74,6 @@ public static class RPCProcedure
                 Roles.Illusory.illusory = player;
                 break;
         }
-
-        Main.PlayerAndRoleIdDic.Add(playerId, (RoleId)roleId);
     }
 
     public static void setModifier(byte modifierId, byte playerId, byte flag)
@@ -110,7 +103,7 @@ public static class RPCProcedure
     public static void SheriffKill(byte targetId)
     {
         var player = PlayerUtils.GetPlayerForId(targetId);
-        Sheriff.sheriff.MurderPlayer(player);
+        Sheriff.sheriff.MurderPlayer(player, MurderResultFlags.Succeeded);
     }
 
     public static void RestoreRole(byte id)
@@ -158,7 +151,7 @@ public static class RPCProcedure
         }
     }
 
-    public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
+    /*public static void LoverSendChat(PlayerControl player, string text, bool isSend = false)
     {
         if (!isSend)
         {
@@ -176,5 +169,5 @@ public static class RPCProcedure
             AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             LoveChatPatch.LoverChat.AddChat(PlayerControl.LocalPlayer, text);
         }
-    }
+    }*/
 }

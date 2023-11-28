@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -18,70 +15,73 @@ public static class RegionMenuOpenPatch
     public static int maxye;
     private static GameObject shangButton;
     private static GameObject xiaButton;
-    private static readonly Vector3 pos = new(3f, 2.5f, -100f);
+    private static readonly Vector3 pos = new(0f, 2.5f, -100f);
 
     public static void Postfix(RegionMenu __instance)
     {
+        var template = GameObject.Find("NormalMenu/BackButton");
+        if (!template) return;
         if (xiaButton == null || xiaButton.gameObject == null)
         {
-            var tf = GameObject.Find("NormalMenu/BackButton");
-            if (!tf) return;
-
-            xiaButton = Object.Instantiate(tf, __instance.transform);
-            xiaButton.name = "xiaButton";
-            xiaButton.transform.position = pos - new Vector3(-0.6f, 3f, 0f);
-
-            var xiaButtontext = xiaButton.transform.GetChild(0).GetComponent<TMP_Text>();
-            var xiaButtonPassiveButton = xiaButton.GetComponent<PassiveButton>();
-            var xiaButtonButtonSprite = xiaButton.GetComponent<SpriteRenderer>();
-            xiaButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
-            xiaButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
-            xiaButtontext.SetText("下一页");
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => xiaButtontext.SetText("下一页"))));
-            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
-
-            void ClearAllButtonVoid()
-            {
-                if (ye < maxye)
+            xiaButton = template.CreateButton(
+                "XiaButton",
+                "下一页",
+                pos - new Vector3(0f, 3f, 0f),
+                __instance.transform,
+                () =>
                 {
-                    ye++;
-                    Menu.shuaXing(__instance);
+                    if (ye < maxye)
+                    {
+                        ye++;
+                        Menu.shuaXing(__instance);
+                    }
                 }
-            }
+            );
+
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
 
         if (shangButton == null || shangButton.gameObject == null)
         {
-            var tf = GameObject.Find("NormalMenu/BackButton");
-
-            shangButton = Object.Instantiate(tf, __instance.transform);
-            shangButton.name = "shangButton";
-            shangButton.transform.position = pos - new Vector3(0.6f, 3f, 0f);
-
-            var shangButtontext = shangButton.transform.GetChild(0).GetComponent<TMP_Text>();
-            var shangButtonPassiveButton = shangButton.GetComponent<PassiveButton>();
-            var shangButtonButtonSprite = shangButton.GetComponent<SpriteRenderer>();
-            shangButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
-            shangButtonPassiveButton.OnClick.AddListener((UnityAction)ClearAllButtonVoid);
-            shangButtontext.SetText("上一页");
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>(p => shangButtontext.SetText("上一页"))));
-            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
-
-            void ClearAllButtonVoid()
-            {
-                if (ye > 1)
+            shangButton = template.CreateButton(
+                "shangButton",
+                "上一页",
+                pos - new Vector3(0f, 2.5f, 0f),
+                __instance.transform,
+                () =>
                 {
-                    ye--;
-                    Menu.shuaXing(__instance);
+                    if (ye > 1)
+                    {
+                        ye--;
+                        Menu.shuaXing(__instance);
+                    }
                 }
-            }
+            );
+
+            xiaButton.gameObject.SetActive(!(Main.serverManager.AvailableRegions.Count <= 6));
         }
+    }
 
-        if (xiaButton.transform.position != pos - new Vector3(-0.6f, 3f, 0f))
-            xiaButton.transform.position = pos - new Vector3(-0.6f, 3f, 0f);
+    public static GameObject CreateButton(this GameObject template, string name, string text, Vector3 Position,
+        Transform Preant, Action action)
+    {
+        var Button = Object.Instantiate(template, Preant);
+        Button.name = name;
+        Button.transform.position = Position;
 
-        if (shangButton.transform.position != pos - new Vector3(0.6f, 3f, 0f))
-            shangButton.transform.position = pos - new Vector3(0.6f, 3f, 0f);
+        Button.DestroyTranslator();
+        Button.DestroyAspectPosition();
+        Button.DestroyComponents<SceneChanger>();
+        Button.DestroyComponents<ButtonRolloverHandler>();
+
+        var ButtonText = Button.transform.GetComponentInChildren<TMP_Text>();
+        var ButtonPassiveButton = Button.GetComponent<PassiveButton>();
+
+        ButtonPassiveButton.OnClick = new Button.ButtonClickedEvent();
+        ButtonPassiveButton.OnClick.AddListener(action);
+        ButtonText.SetText(text);
+
+        return Button;
     }
 }
 
@@ -143,14 +143,9 @@ public static class Menu
             serverListButton.Button.OnClick.RemoveAllListeners();
             serverListButton.Button.OnClick.AddListener((Action)(() => { __instance.ChooseOption(region); }));
             serverListButton.SetSelected(serverManager.CurrentRegion.Name == regionInfo.Name);
-            if (DestroyableSingleton<ServerManager>.Instance.CurrentRegion.Equals(regionInfo))
-                __instance.defaultButtonSelected = serverListButton.Button;
             List.Add(serverListButton.Button);
             num++;
         }
-
-        if (__instance.defaultButtonSelected == null && __instance.controllerSelectable.Count > 0)
-            __instance.defaultButtonSelected = List[0];
 
         List.Do(n => __instance.controllerSelectable.Add(n));
     }

@@ -1,5 +1,4 @@
 global using static NextShip.Languages.Language;
-
 using System.Collections.Generic;
 using System.IO;
 using csv = NextShip.Languages.LanguageCSV;

@@ -1,5 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
 
 namespace NextShip.Patches;
 
@@ -8,26 +7,17 @@ internal class GameStartManagerUpdatePatch
 {
     public static void Prefix(GameStartManager __instance)
     {
-        var time = __instance.countDownTimer;
-        if (noGameEnd.getBool())
-        {
-            __instance.MinPlayers = 1;
-            __instance.countDownTimer = 0;
-        }
-        else
-        {
-            __instance.MinPlayers = 4;
-            __instance.countDownTimer = time;
-        }
+        __instance.MinPlayers = 1;
+        __instance.countDownTimer = 0;
     }
 }
 
-[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
+/*[HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
 internal class GameStartManagerBeginGamePatch
 {
     public static void Prefix()
     {
-        if (noGameEnd.getBool() && dummynumber.getSelection() != 0)
+        /*if (noGameEnd.getBool() && dummynumber.getSelection() != 0)
         {
             var num = dummynumber.getSelection();
             for (var n = 1; n < num; n++)
@@ -46,6 +36,6 @@ internal class GameStartManagerBeginGamePatch
 
                 GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
             }
-        }
+        }#1#
     }
-}
+}*/

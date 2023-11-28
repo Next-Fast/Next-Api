@@ -6,10 +6,10 @@ namespace NextShip.Buttons;
 
 public class ButtonBase
 {
-    public string name;
     public Action Action;
     public ActionButton ActionButton;
     public GameObject ButtonGameObject;
+    public string name;
     public string text;
 
     public ButtonBase()
@@ -17,23 +17,15 @@ public class ButtonBase
         ButtonGameObject = new GameObject(base.ToString());
     }
 
-    public ButtonBase Create(string name = "", GameObject clonetarget = null,ActionButton ActionButton = null, Action action = null)
+    public ButtonBase Create(string name = "", GameObject clonetarget = null, ActionButton ActionButton = null,
+        Action action = null)
     {
         this.name = name;
-        if (clonetarget != null)
-        {
-            ButtonGameObject = Object.Instantiate(clonetarget);
-        }
+        if (clonetarget != null) ButtonGameObject = Object.Instantiate(clonetarget);
 
-        if (action != null)
-        {
-            Action = action;
-        }
+        if (action != null) Action = action;
 
-        if (ActionButton != null)
-        {
-            this.ActionButton = ActionButton;
-        }
+        if (ActionButton != null) this.ActionButton = ActionButton;
         return this;
     }
 }

@@ -12,7 +12,13 @@ public static class LanguageCSV
     public static void LoadCSV()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var stream = assembly.GetManifestResourceStream("NextShip.Resources.string.csv");
+        var stream = assembly.GetManifestResourceStream("NextShip.Resources.Language.string.csv");
+        if (stream == null)
+        {
+            Debug("Csv Not Found");
+            return;
+        }
+
         translateMaps = new Dictionary<string, Dictionary<int, string>>();
 
         var options = new CsvOptions
@@ -22,7 +28,7 @@ public static class LanguageCSV
         };
         foreach (var line in CsvReader.ReadFromStream(stream, options))
         {
-            if (line.Values[0][0] == '#') continue;
+            if (line.Values[0][0] is '#' or '#' or '/' or '、') continue;
 
             try
             {
@@ -53,7 +59,7 @@ public static class LanguageCSV
             (!dic.TryGetValue((int)langId, out res) || res == "")) //strに該当する&無効なlangIdかresが空
             res = $"{dic[0]}";
 
-        if (res == null || res == "") res = $"*{str}";
+        if (string.IsNullOrEmpty(res)) res = $"*{str}";
 
         return res;
     }

@@ -1,10 +1,5 @@
 namespace NextShip.Game.Info;
 
-public class HostInfo
+public sealed class HostInfo : ShipInfo
 {
-    public HostInfo()
-    {
-        
-    }
 }
-
