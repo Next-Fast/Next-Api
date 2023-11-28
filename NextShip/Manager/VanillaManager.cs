@@ -1,4 +1,4 @@
-using NextShip.Utilities.Attributes;
+using NextShip.Api.Utilities.Attributes;
 
 namespace NextShip.Manager;
 

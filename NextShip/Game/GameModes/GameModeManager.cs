@@ -1,5 +1,5 @@
-﻿using NextShip.Options;
-using NextShip.Utilities.Attributes;
+﻿using NextShip.Api.Utilities.Attributes;
+using NextShip.Options;
 
 namespace NextShip.Game.GameModes;
 

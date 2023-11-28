@@ -1,5 +1,4 @@
 ﻿using Hazel;
-using NextShip.Utilities;
 
 namespace NextShip.RPC;
 

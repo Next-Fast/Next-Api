@@ -1,13 +1,11 @@
 ﻿using System;
-using NextShip.UI.Interface;
 using NextShip.UI.UIManager;
-using NextShip.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NextShip.UI.Components;
 
-public class OnClickButton : MonoBehaviour, INextUI
+public class OnClickButton : MonoBehaviour
 {
     public BoxCollider2D[] BoxCollider2Ds;
     public Button.ButtonClickedEvent OnClick = new();

@@ -27,7 +27,7 @@ public class ListenerManager
     {
         allGameEvents.Add(gameEvent);
     }
-    
+
     internal void URegisterGameEvent(IGameEvent gameEvent)
     {
         allGameEvents.Remove(gameEvent);

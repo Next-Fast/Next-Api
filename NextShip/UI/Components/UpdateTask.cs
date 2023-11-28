@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using NextShip.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.UI.Components;

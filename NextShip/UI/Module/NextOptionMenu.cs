@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using NextShip.UI.Components;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -42,6 +41,10 @@ public class NextOptionMenu
         {
             var BackGround = new GameObject("BackGround");
             BackGround.transform.SetParent(NextMenuParent.transform);
+            var BackGroundBaffle =
+                GameObjectUtils.CreateCGameObject<BoxCollider2D>("BackGroundBaffle", BackGround.transform);
+            BackGroundBaffle.size = new Vector2(13f, 9);
+            BackGroundBaffle.gameObject.CreatePassiveButton();
 
             var tint = Object.Instantiate(__instance.MenuPrefab.transform.Find("Tint").gameObject,
                 BackGround.transform);
@@ -66,6 +69,16 @@ public class NextOptionMenu
             );
             List = ScrollMenu.Item2;
 
+            var tempOption =
+                Object.Instantiate(Object.FindObjectOfType<StringOption>().gameObject, List, true);
+            tempOption.AddComponent<ShipOptionBehaviour>();
+            tempOption.DestroyComponents<StringOption>();
+            tempOption.DestroyComponents<UIScrollbarHelper>();
+            tempOption.DestroyComponents<ButtonRolloverHandler>();
+            tempOption.GetComponentInChildren<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
+            var text = tempOption.GetComponentInChildren<TextMeshPro>();
+            text.text = "text";
+
 
             GeneralSettingOption = CreateLargeButton("GeneralSettingOption", NextMenuParent.transform,
                 new Vector3(-3.5f, 1.5f, 0), "常规设置", "关于设置的选项", () => OpenOptionMenu(MenuIndex.GeneralSetting));
@@ -73,8 +86,6 @@ public class NextOptionMenu
                 new Vector3(-3.5f, 0, 0), "职业设置", "关于职业的选项设置", () => OpenOptionMenu(MenuIndex.RoleSetting));
             CloneButton = CreateSmallButton("CloneButton", NextMenuParent.transform, new Vector3(-3.5f, -1.1f, 0), "关闭",
                 CloseMenu);
-
-            ShipOptionBehaviour.GenerateOption(List);
 
             NextMenuParent.SetActive(false);
             NextMenuParent.AllGameObjectDo(n => n.layer = tint.gameObject.layer);
@@ -111,7 +122,6 @@ public class NextOptionMenu
         ControllerManager.Instance.OpenOverlayMenu(NextMenuParent.name, Instance.CloneButton.GetComponent<UiElement>(),
             null, Instance.UiElements);
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, NextMenuParent, null);
-        DestroyableSingleton<HudManager>.Instance.menuNavigationPrompts.SetActive(false);
         return true;
     }
 

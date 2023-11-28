@@ -10,9 +10,9 @@ namespace NextShip.UI.UIManager;
 public class OnClickButtonManager
 {
     public static OnClickButtonManager Instance;
+    private readonly List<Box> _boxs = new();
 
     public readonly List<OnClickButton> AllOnClickButtons = new();
-    private readonly List<Box> _boxs = new();
     private List<BoxCollider2D> BoxCollider2DCache = new();
 
     [HarmonyPatch(typeof(PassiveButtonManager), nameof(PassiveButtonManager.Update))]

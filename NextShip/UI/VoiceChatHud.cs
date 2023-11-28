@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using NextShip.Utilities;
 using UnityEngine;
 
 namespace NextShip.UI;
@@ -9,13 +8,14 @@ namespace NextShip.UI;
 [HarmonyPatch]
 public class VoiceChatHud
 {
-    private static List<GameObject> AllPlayer = new();
+    private static readonly List<GameObject> AllPlayer = new();
     private static GameObject VCHud;
     private static GameObject VCClinetTem;
     private static Vector3 POS;
     private static GameObject AllPlayerList;
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start)), HarmonyPostfix]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    [HarmonyPostfix]
     public static void HudManager_Start_Postfix(HudManager __instance)
     {
         return;
@@ -51,12 +51,13 @@ public class VoiceChatHud
         Buttons.transform.Find("BottomRight").localPosition = new Vector3(4.85f, -2.3f, -9);
     }
 
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPostfix]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
     public static void HudManagerUpdatePatch_Postfix(HudManager __instance)
     {
         if (!VCClinetTem) return;
-        
-        
+
+
         UpdatePlayer(__instance);
     }
 

@@ -1,6 +1,6 @@
 using System.Collections;
 using System.IO;
-using NextShip.Utilities.Attributes;
+using NextShip.Api.Utilities.Attributes;
 
 namespace NextShip.Cosmetics;
 
@@ -13,16 +13,15 @@ public static class CosmeticsChecks
     private static readonly string ExtremeHatFolderName = "ExtremeHat";
 
     public static IEnumerator CheckCosmetics()
-    { 
+    {
         yield return null;
     }
-        
+
     public static bool TORCheck()
     {
         if (!Directory.Exists(GetPatch(TORFolderName))) return false;
         TORHatStrings = Directory.GetFiles(GetPatch(TORFolderName), ".png");
         return true;
-
     }
 
     public static bool ExtremeCheck()
@@ -30,7 +29,6 @@ public static class CosmeticsChecks
         if (!Directory.Exists(GetPatch(ExtremeHatFolderName))) return false;
         var EXHats = Directory.GetDirectories(GetPatch(ExtremeHatFolderName));
         return true;
-
     }
 
     private static string GetPatch(string name)

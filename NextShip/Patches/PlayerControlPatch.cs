@@ -4,7 +4,6 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
 using NextShip.Roles;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
 

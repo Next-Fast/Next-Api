@@ -1,6 +1,5 @@
 using HarmonyLib;
 using InnerNet;
-using NextShip.Utilities;
 using UnityEngine;
 
 namespace NextShip.Patches;

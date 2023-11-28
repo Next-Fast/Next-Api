@@ -1,29 +1,23 @@
 using System;
+using NextShip.Api.Utilities.Attributes;
 using NextShip.Options;
-using NextShip.UI.Interface;
-using NextShip.Utilities.Attributes;
 using TMPro;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
 
 [Il2CppRegister]
-public class ShipOptionBehaviour : MonoBehaviour, INextUI
+public class ShipOptionBehaviour : MonoBehaviour
 {
     public SpriteRenderer BackGround_Sprite;
     public TextMeshPro ValueText;
     public TextMeshPro TitleText;
     public PassiveButton PreviousButton;
     public PassiveButton NextButton;
-    public OptionBase OptionBase { private set; get; }
-    
-    public Action<ShipOptionBehaviour> OnOptionValueChanged;
 
-    public void SetOptionBase(OptionBase optionBase)
-    {
-        OptionBase = optionBase;        
-    }
-    
+    public Action<ShipOptionBehaviour> OnOptionValueChanged;
+    public OptionBase OptionBase { private set; get; }
+
     public void FixedUpdate()
     {
     }
@@ -34,8 +28,13 @@ public class ShipOptionBehaviour : MonoBehaviour, INextUI
         TitleText.text = OptionBase.GetTitleString();
         ValueText.text = OptionBase.GetValueString();
     }
-    
-    internal static GameObject GenerateOption(Transform Parent, string Name = "Temp")
+
+    public void SetOptionBase(OptionBase optionBase)
+    {
+        OptionBase = optionBase;
+    }
+
+    /*internal static GameObject GenerateOption(Transform Parent, string Name = "Temp")
     {
         var Option = new GameObject(Name);
         Option.transform.SetParent(Parent);
@@ -45,20 +44,20 @@ public class ShipOptionBehaviour : MonoBehaviour, INextUI
         var BackGroundObj = new GameObject("BackGround");
         var BackGround = behaviour.BackGround_Sprite = BackGroundObj.AddComponent<SpriteRenderer>();
         BackGround.sprite = ObjetUtils.Find<Sprite>("smallButtonBorder");
-        
+
         var ValueText = behaviour.ValueText = new GameObject("ValueText").AddComponent<TextMeshPro>();
         var TitleText = behaviour.TitleText = new GameObject("TitleText").AddComponent<TextMeshPro>();
 
         ValueText.text = "ValueText";
         TitleText.text = "TitleText";
-        
+
         ValueText.transform.SetParent(Option.transform);
         TitleText.transform.SetParent(Option.transform);
         BackGround.transform.SetParent(Option.transform);
 
         var leftButtonSprite = SpriteUtils.LoadSpriteFromResources("left.png");
         var rightButtonSprite = SpriteUtils.LoadSpriteFromResources("right.png");
-        
+
         var LeftButton = new GameObject("LeftButton");
         LeftButton.transform.SetParent(Option.transform);
         var LeftButton_Sprite = LeftButton.AddComponent<SpriteRenderer>();
@@ -68,7 +67,7 @@ public class ShipOptionBehaviour : MonoBehaviour, INextUI
             behaviour.OptionBase.Decrease();
             behaviour.OnOptionValueChanged(behaviour);
         });
-        
+
         var RightButton = new GameObject("RightButton");
         RightButton.transform.SetParent(Option.transform);
         var RightButton_Sprite = RightButton.AddComponent<SpriteRenderer>();
@@ -77,9 +76,8 @@ public class ShipOptionBehaviour : MonoBehaviour, INextUI
         {
             behaviour.OptionBase.Increase();
             behaviour.OnOptionValueChanged(behaviour);
-        });        
+        });
 
         return Option;
-    }
-    
+    }*/
 }

@@ -52,12 +52,12 @@ public static class CredentialsPatch
 
     public class PingText
     {
+        private readonly int frequency = 30;
+        private readonly int ping = AmongUsClient.Instance.Ping;
         private float deltaTime;
 
         private int FPS;
         private Color FPSColor;
-        private readonly int frequency = 30;
-        private readonly int ping = AmongUsClient.Instance.Ping;
         private Color PingColor;
         private int time;
 

@@ -1,12 +1,11 @@
-﻿using NextShip.Options;
-using NextShip.UI.Interface;
-using NextShip.Utilities.Attributes;
+﻿using NextShip.Api.Utilities.Attributes;
+using NextShip.Options;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
 
 [Il2CppRegister]
-public class NextMenuOption : MonoBehaviour, INextUI
+public class NextMenuOption : MonoBehaviour
 {
     public Transform List;
     public bool Open;

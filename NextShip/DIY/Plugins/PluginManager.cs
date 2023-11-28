@@ -4,22 +4,27 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using NextShip.Api.Utilities.Attributes;
 using NextShip.Manager;
-using NextShip.Utilities.Attributes;
 
 namespace NextShip.Plugins;
 
-public static class PluginManager
+public class PluginManager : Manager<PluginManager>
 {
-    private static string PluginsPath;
-    private static List<string> PluginPathS = new();
-    private static readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
-    public static bool existDirectory;
+    private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
+    public bool existDirectory;
+    private List<string> PluginPathS = new();
 
-    public static List<ShipPlugin> Plugins = new();
+    public List<ShipPlugin> Plugins = new();
+    private string PluginsPath;
 
     [Load]
     public static void Init()
+    {
+        Get().Load();
+    }
+
+    private void Load()
     {
         PluginsPath = FilesManager.GetCreativityDirectory("Plugins").FullName;
         existDirectory = Directory.Exists(PluginsPath);
@@ -27,16 +32,16 @@ public static class PluginManager
         LoadPlugins();
     }
 
-    private static void LoadPlugins()
+    private void LoadPlugins()
     {
         PluginPathS = FindPlugins();
         if (PluginPathS == null) return;
-        PluginPathS.Do(Load);
 
-        PluginCreateS.Do(n => n.Load());
+        PluginPathS.Do(Load);
+        PluginCreateS.Do(Load);
     }
 
-    public static void Load(this string path)
+    private void Load(string path)
     {
         var fileName = Path.GetFileName(path);
         if (!path.Contains(".dll"))
@@ -73,7 +78,7 @@ public static class PluginManager
         if (!IsInherit) Info($"{fileName} no Inherit", filename: MethodUtils.GetClassName());
     }
 
-    private static void Load(this (Assembly, Type, ShipPlugin) pluginTuple)
+    private static void Load((Assembly, Type, ShipPlugin) pluginTuple)
     {
         var shipPluginInfo = pluginTuple.Item3.ShipPluginInfo;
         try
@@ -88,7 +93,7 @@ public static class PluginManager
         }
     }
 
-    private static List<string> FindPlugins()
+    private List<string> FindPlugins()
     {
         var pluginPaths = new List<string>();
         var plugins = new DirectoryInfo(PluginsPath);

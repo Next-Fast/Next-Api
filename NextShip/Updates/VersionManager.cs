@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NextShip.Net;
 
 namespace NextShip.Updates;
 
@@ -68,7 +66,6 @@ public static class VersionManager
 
     public static void VersionCheck()
     {
-        
     }
 
     // 使用Github检查更新

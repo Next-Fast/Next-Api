@@ -1,8 +1,7 @@
 using System;
 using Hazel;
 using NextShip.Roles;
-using NextShip.Utilities;
-using static NextShip.Roles.Core.RoleEnum;
+using static NextShip.Api.Roles.RoleEnum;
 
 namespace NextShip.RPC;
 
@@ -104,7 +103,7 @@ public static class RPCProcedure
     public static void SheriffKill(byte targetId)
     {
         var player = PlayerUtils.GetPlayerForId(targetId);
-        Sheriff.sheriff.MurderPlayer(player);
+        Sheriff.sheriff.MurderPlayer(player, MurderResultFlags.Succeeded);
     }
 
     public static void RestoreRole(byte id)

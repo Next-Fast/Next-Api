@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
@@ -15,8 +13,6 @@ using NextShip.Roles;
 using NextShip.UI.Components;
 using NextShip.UI.UIManager;
 using UnityEngine;
-using Action = Il2CppSystem.Action;
-using Object = UnityEngine.Object;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
 [assembly: AssemblyInformationalVersion(Main.VersionString)]
@@ -27,13 +23,6 @@ namespace NextShip;
 [BepInProcess("Among Us.exe")]
 public sealed class Main : BasePlugin
 {
-    // Among Us游玩版本
-    public static readonly AmongUsVersion SupportVersion = new AmongUsVersion(2023, 7, 21);
-    public static readonly AmongUsVersion[] AmongUsSupportVersions = new[]
-    {
-        new AmongUsVersion(2023, 7, 21) 
-    };
-
     // 模组名称
     public const string ModName = "NextShip";
 
@@ -50,6 +39,15 @@ public sealed class Main : BasePlugin
         "http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=OqTfMLjm7lMD5OMV68Rs9JLnbcXc-fDR&authKey=8tt0sNVVsfsGvOBFLNmtDA8CD7fweh%2Bbe1%2FMq2j62zGNWJ17Q%2FNXfG4c7r6JlN1S&noverify=0&group_code=815101721";
 
     public const string QQNumber = "815101721";
+
+    // Among Us游玩版本
+    public static readonly AmongUsVersion SupportVersion = new(2023, 7, 21);
+
+    public static readonly AmongUsVersion[] AmongUsSupportVersions =
+    {
+        SupportVersion
+    };
+
     public static readonly string HashCode = HashUtils.GetFileMD5Hash(Paths.PluginPath.CombinePath($"{ModName}.dll"));
 
     // 模组构建时间
@@ -61,32 +59,28 @@ public sealed class Main : BasePlugin
     internal static bool isCn;
     internal static bool isChinese;
 
+    public static readonly ShipVersion ShipVersion = new ShipVersion().Parse(VersionString);
     public static Version Version = Version.Parse(VersionString);
     internal static ManualLogSource TISLog;
     public static Main Instance;
 
     internal static UpdateTask UpdateTask;
-    internal static NextUIManager _nextUIManager;
     internal static readonly ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
 
     // 模组主颜色
     public readonly Color ModColor = "#90c2f4".HTMLColorTo32();
     internal Harmony Harmony { get; } = new(Id);
 
-    private static void AddQuit()
-    {
-        Process.GetCurrentProcess().Exited += (sender, args) => OnGameQuit();
-        Application.add_quitting((Action)(() => OnGameQuit()));
-    }
+
     public override void Load()
     {
-        AddQuit();
-        
-        if (IsDev) 
+        if (IsDev)
             ConsoleTextFC();
-        
+
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         TISLog = BepInEx.Logging.Logger.CreateLogSource(ModName.RemoveBlank());
+
+        constInit();
 
         Instance = this;
         Harmony.PatchAll();
@@ -96,23 +90,22 @@ public sealed class Main : BasePlugin
 
         var _Assembly = Assembly.GetExecutingAssembly();
         RegisterManager.Registration(_Assembly);
-        
+
         UpdateTask = AddComponent<UpdateTask>();
-        _nextUIManager ??= AddComponent<NextUIManager>();
+        AddComponent<NextUIManager>();
 
         Init();
         LanguagePack.Init();
-        
-        Object.DontDestroyOnLoad(UpdateTask);
-        Object.DontDestroyOnLoad(_nextUIManager);
-        
+
+        UpdateTask.DontDestroyOnLoad();
+
         CustomCosmeticsManager.LoadHat();
-        
+
         RegisterRoles();
-        
+
         VanillaManager.Load();
     }
-    
+
 
     private static void RegisterRoles()
     {
@@ -121,7 +114,7 @@ public sealed class Main : BasePlugin
             new Postman()
         };
 
-        Roles.RoleManager.Get().RegisterRole(roles);
+        Api.Roles.RoleManager.Get().RegisterRole(roles);
     }
 
     private static void constInit()
@@ -142,10 +135,5 @@ public sealed class Main : BasePlugin
         Info($"Support Among Us Version {SupportVersion}", "Info");
         Info($"Hash: {HashCode}", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
-    }
-
-    private static void OnGameQuit()
-    {
-        OutputTISLog();
     }
 }

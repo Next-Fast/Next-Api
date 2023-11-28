@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
-using NextShip.Utilities;
 
 namespace NextShip.Chat;
 

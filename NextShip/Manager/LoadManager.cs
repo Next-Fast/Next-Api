@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
-using NextShip.Utilities;
 using TMPro;
 using UnityEngine;
 
@@ -43,7 +42,7 @@ public static class LoadManager
             Loaded = true;
             yield break;
         }
-        
+
         float t = 1;
         var c2 = Color.white;
         c2.a = 0;
@@ -54,7 +53,7 @@ public static class LoadManager
         logo.gameObject.transform.localPosition = new Vector3(0, 0, -5);
         text.gameObject.transform.localPosition = new Vector3(0.2f, -0.9f, -5);
 
-        logo.sprite = SpriteUtils.NextShipText_Sprite;
+        /*logo.sprite = SpriteUtils.NextShipText_Sprite;*/
 
         text.text = "Loading.....";
         text.alignment = TextAlignmentOptions.Center;
@@ -71,15 +70,22 @@ public static class LoadManager
 
         while (Co.CanMove())
         {
-            try { Co.MoveNext(); }
+            try
+            {
+                Co.MoveNext();
+            }
             catch (Exception e)
-            { HasError = true; StartErrorScreen(e); yield break; }
+            {
+                HasError = true;
+                StartErrorScreen(e);
+                yield break;
+            }
 
             yield return null;
         }
 
         if (HasError) yield break;
-        
+
         t = 1;
         text.text = "Load Complete";
 
@@ -95,7 +101,6 @@ public static class LoadManager
 
     private static void StartErrorScreen(Exception exception)
     {
-        
     }
 
     [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake))]

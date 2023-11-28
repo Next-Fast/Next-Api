@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
 using HarmonyLib;
+using NextShip.Api.Utilities.Attributes;
 using NextShip.Listeners.Attributes;
-using NextShip.Utilities.Attributes;
 
 namespace NextShip.Manager;
 

@@ -2,10 +2,7 @@
 
 public class Postman : Role
 {
-    private static readonly SimpleRoleInfo PostmanRoleInfo = new SimpleRoleInfo
-    {
-        
-    };
+    private static readonly SimpleRoleInfo PostmanRoleInfo = new();
 
 
     public Postman()
