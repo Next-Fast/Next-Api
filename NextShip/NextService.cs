@@ -6,25 +6,14 @@ namespace NextShip;
 
 public class NextService : INextService
 {
+    private ServiceCollection _collection = new();
     public IServiceProvider _Provider { get; private set; }
 
-    private ServiceCollection _collection = new ();
-    
     private bool BuildCompleted { get; set; }
 
-    public NextService Set(ServiceCollection collection)
-    {
-        _collection = collection;
-        return this;
-    }
-
-    public T Get<T>() => _Provider.GetService<T>();
-
-    public object Get(Type type) => _Provider.GetService(type); 
-        
     public void Build()
     {
-        if(BuildCompleted) return;
+        if (BuildCompleted) return;
 
         if (_collection.Count != 0)
         {
@@ -36,7 +25,7 @@ public class NextService : INextService
 
         _Provider = collection.BuildServiceProvider();
     }
-    
+
 
     public void Rebuild()
     {
@@ -49,6 +38,22 @@ public class NextService : INextService
         _collection.Clear();
         _Provider = null;
         BuildCompleted = false;
+    }
+
+    public NextService Set(ServiceCollection collection)
+    {
+        _collection = collection;
+        return this;
+    }
+
+    public T Get<T>()
+    {
+        return _Provider.GetService<T>();
+    }
+
+    public object Get(Type type)
+    {
+        return _Provider.GetService(type);
     }
 
     public static NextService Build(ServiceCollection collection)

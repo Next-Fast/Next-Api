@@ -2,11 +2,21 @@ namespace NextShip.Api.Plugins;
 
 public interface INextPlugin
 {
-    public void OnLoad() {}
+    public void OnLoad()
+    {
+    }
 
-    public virtual bool OnEnable() => true;
-    
-    public virtual bool OnDisable() => true;
+    public bool OnEnable()
+    {
+        return true;
+    }
 
-    public void OnUnload() {}
+    public bool OnDisable()
+    {
+        return true;
+    }
+
+    public void OnUnload()
+    {
+    }
 }

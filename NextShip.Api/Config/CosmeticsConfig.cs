@@ -1,10 +1,9 @@
-using NextShip.Api.Enums;
-
 namespace NextShip.Api.Config;
 
 public class CosmeticsConfig
 {
-    public CosmeticsConfig(CosmeticRepoType cosmeticRepoType, CosmeticType cosmeticType, CosmeticLoadType cosmeticLoadType, string repoName, string repoURL)
+    public CosmeticsConfig(CosmeticRepoType cosmeticRepoType, CosmeticType cosmeticType,
+        CosmeticLoadType cosmeticLoadType, string repoName, string repoURL)
     {
         CosmeticRepoType = cosmeticRepoType;
         CosmeticType = cosmeticType;

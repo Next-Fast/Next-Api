@@ -9,7 +9,6 @@ using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
 using NextShip.UI.UIManager;
-
 using BepInExLogger = BepInEx.Logging.Logger;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
@@ -32,12 +31,12 @@ public sealed class NextShip : BasePlugin
 
     // Among Us游玩版本
     public static readonly AmongUsVersion SupportVersion = new(2023, 10, 24);
-    
-    
+
+
     internal static ManualLogSource TISLog;
-    
+
     public static NextShip Instance;
-    
+
     internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
     private Harmony Harmony { get; } = new(Id);
 
@@ -55,13 +54,13 @@ public sealed class NextShip : BasePlugin
 
         FilesManager.Init();
         ServerPath.autoAddServer();
-        
+
         RegisterManager.Registration();
-        
+
         AddComponent<NextUIManager>();
-        
+
         LanguagePack.Init();
-        
+
         CustomCosmeticsManager.LoadHat();
     }
 
@@ -70,9 +69,9 @@ public sealed class NextShip : BasePlugin
         Info("IsDev:{}", "Const");
         Info($"CountryName:| {RegionInfo.CurrentRegion.DisplayName}", "Const");
         Info("isCn:", "Const");
-        Info($"IsChinese:", "Const");
+        Info("IsChinese:", "Const");
         Info($"Support Among Us Version {SupportVersion}", "Info");
-        Info($"Hash: ", "Info");
+        Info("Hash: ", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
     }
 }

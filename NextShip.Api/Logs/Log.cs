@@ -5,11 +5,9 @@ namespace NextShip.Api.Logs;
 
 public sealed class log
 {
-    public ManualLogSource LogSource { get; private set; }
+    public static bool CreateEd;
 
     public readonly TextWriter Writer = null!;
-
-    public static bool CreateEd;
 
     static log()
     {
@@ -22,6 +20,8 @@ public sealed class log
         Instance = this;
     }
 
+    public ManualLogSource LogSource { get; private set; }
+
     public static log Instance { get; set; }
 
     public static log Get(ManualLogSource logSource)
@@ -31,7 +31,7 @@ public sealed class log
             Instance.Set(logSource);
             return Instance;
         }
-        
+
         var _log = new log(logSource);
         CreateEd = true;
         return _log;

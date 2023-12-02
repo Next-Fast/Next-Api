@@ -21,7 +21,7 @@ public sealed class SimpleRoleInfo
         string roleStringId,
         string roleName,
         int roleIntId
-        )
+    )
     {
         RoleColor = color;
         Name = roleName;

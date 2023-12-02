@@ -4,7 +4,6 @@ using Il2CppInterop.Runtime.Attributes;
 using Il2CppInterop.Runtime.Injection;
 using Il2CppInterop.Runtime.InteropTypes;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using NextShip.Api.Attributes;
 using SeekOrigin = Il2CppSystem.IO.SeekOrigin;
 
 namespace NextShip.Api.Utils;

@@ -31,7 +31,7 @@ public class LanguagePack
     private static readonly Dictionary<string, string> defaultLanguageSet = new();
 
     public Dictionary<string, string> languageSet;
-    
+
 
     //初始化
     public static void Init()

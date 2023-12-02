@@ -8,7 +8,7 @@ namespace NextShip.Manager;
 public class EventManager : IEventManager
 {
     private readonly List<INextEvent> RegisterEvents = new();
-    
+
     public void RegisterEvent(INextEvent @event)
     {
         @event.OnRegister(this);
@@ -37,7 +37,7 @@ public class EventManager : IEventManager
     {
         return (T)RegisterEvents.FirstOrDefault(n => n is T);
     }
-    
+
     public INextEvent GetEvent(Type type)
     {
         return RegisterEvents.FirstOrDefault(n => n.GetType() == type);

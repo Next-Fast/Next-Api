@@ -1,5 +1,4 @@
 ﻿using NextShip.Api.Attributes;
-using NextShip.Api.Utilities.Attributes;
 using UnityEngine;
 
 namespace NextShip.UI.Components;

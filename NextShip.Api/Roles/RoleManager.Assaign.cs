@@ -34,7 +34,7 @@ public class RoleAssigner
 
         return role != null;
     }
-    
+
 
     public void Restore()
     {

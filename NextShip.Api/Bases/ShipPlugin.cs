@@ -1,6 +1,5 @@
 namespace NextShip.Api.Bases;
 
-
 public abstract class ShipPlugin
 {
     public List<PluginCompatibility> PluginCompatibilities = new();

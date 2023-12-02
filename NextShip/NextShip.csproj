@@ -38,8 +38,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Events\" />
-      <Folder Include="Game\" />
+        <Folder Include="Events\"/>
+        <Folder Include="Game\"/>
     </ItemGroup>
 
 

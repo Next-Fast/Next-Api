@@ -65,9 +65,9 @@ public class PluginManager : Manager<PluginManager>
                 var plugin = (ShipPlugin)assembly.CreateInstance(n.FullName!);
                 if (plugin == null)
                     return;
-                
+
                 var shipPluginInfo = n.GetCustomAttribute<ShipPluginInfo>();
-                if (shipPluginInfo != null) 
+                if (shipPluginInfo != null)
                     plugin.ShipPluginInfo = shipPluginInfo;
 
                 var Compatibilities = n.GetCustomAttributes<PluginCompatibility>();
