@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using NextShip.Api.Attributes;
+using NextShip.Api.Bases;
 using NextShip.Api.Utilities.Attributes;
 using NextShip.Manager;
 
-namespace NextShip.Plugins;
+namespace NextShip.DIY.Plugins;
 
 public class PluginManager : Manager<PluginManager>
 {
@@ -61,11 +63,12 @@ public class PluginManager : Manager<PluginManager>
                 has = true;
 
                 var plugin = (ShipPlugin)assembly.CreateInstance(n.FullName!);
-                if (plugin?.ShipPluginInfo == null)
-                {
-                    var shipPluginInfo = n.GetCustomAttribute<ShipPluginInfo>();
-                    plugin!.ShipPluginInfo = shipPluginInfo;
-                }
+                if (plugin == null)
+                    return;
+                
+                var shipPluginInfo = n.GetCustomAttribute<ShipPluginInfo>();
+                if (shipPluginInfo != null) 
+                    plugin.ShipPluginInfo = shipPluginInfo;
 
                 var Compatibilities = n.GetCustomAttributes<PluginCompatibility>();
                 plugin.PluginCompatibilities = Compatibilities.ToList();

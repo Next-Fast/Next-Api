@@ -3,26 +3,44 @@ using BepInEx.Logging;
 
 namespace NextShip.Api.Logs;
 
-public abstract class log
+public sealed class log
 {
-    public readonly ManualLogSource LogSource;
+    public ManualLogSource LogSource { get; private set; }
+
+    public readonly TextWriter Writer = null!;
+
+    public static bool CreateEd;
 
     static log()
     {
-        ConsoleTextFC();
+        System.Console.OutputEncoding = Encoding.UTF8;
     }
 
-    public log(ManualLogSource logSource)
+    private log(ManualLogSource logSource)
     {
         LogSource = logSource;
         Instance = this;
     }
 
-    public static log? Instance { get; set; }
+    public static log Instance { get; set; }
 
-    public static void ConsoleTextFC()
+    public static log Get(ManualLogSource logSource)
     {
-        if (!System.Console.OutputEncoding.Equals(Encoding.UTF8)) System.Console.OutputEncoding = Encoding.UTF8;
+        if (CreateEd)
+        {
+            Instance.Set(logSource);
+            return Instance;
+        }
+        
+        var _log = new log(logSource);
+        CreateEd = true;
+        return _log;
+    }
+
+    private void Set(ManualLogSource logSource)
+    {
+        if (logSource != LogSource)
+            LogSource = logSource;
     }
 
     private void SendToFile(string? tag, string? filename, string text, LogLevel level = LogLevel.Info)

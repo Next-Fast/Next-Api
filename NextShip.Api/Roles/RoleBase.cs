@@ -13,8 +13,7 @@ public abstract class RoleBase : IDisposable
         Active = true;
         RoleManager.Get().AllRoleBases.Add(this);
     }
-
-    public Role ParentRole { get; protected set; } = null!;
+    
     public PlayerControl? Player { get; private set; }
 
     public Func<bool> WinCheck { get; }

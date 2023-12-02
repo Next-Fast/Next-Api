@@ -31,12 +31,7 @@ public class LanguagePack
     private static readonly Dictionary<string, string> defaultLanguageSet = new();
 
     public Dictionary<string, string> languageSet;
-
-
-    public LanguagePack()
-    {
-        languageSet = new Dictionary<string, string>(defaultLanguageSet);
-    }
+    
 
     //初始化
     public static void Init()
@@ -126,10 +121,8 @@ public class LanguagePack
 
     public void deserialize(string path)
     {
-        using (var sr = new StreamReader(path, Encoding.GetEncoding("utf-8")))
-        {
-            deserialize(sr);
-        }
+        using var sr = new StreamReader(path, Encoding.GetEncoding("utf-8"));
+        deserialize(sr);
     }
 
     public void deserialize(StreamReader reader)

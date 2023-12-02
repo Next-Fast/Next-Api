@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using NextShip.Config;
+using NextShip.Api.Config;
+using NextShip.Api.Enums;
 using UnityEngine;
 
 namespace NextShip.Cosmetics.Loaders;

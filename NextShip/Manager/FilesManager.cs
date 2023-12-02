@@ -1,17 +1,10 @@
 using System.IO;
+using NextShip.Api.Enums;
 
 namespace NextShip.Manager;
 
 public static class FilesManager
 {
-    public enum FileType
-    {
-        Csv,
-        Json,
-        Yaml,
-        Txt
-    }
-
     public const string TIS_DataPath = "./TIS_Data";
     public const string CreativityPath = "./Creativity";
     public const string TIS_TempPath = "./TIS_Data/TEMP";
@@ -64,14 +57,14 @@ public static class FilesManager
         return CreateDirectory(Path.Combine(CreativityPath, "Config", name));
     }
 
-    public static DirectoryInfo GetCosmeticsCacheDirectory(Cosmetics.CosmeticType type)
+    public static DirectoryInfo GetCosmeticsCacheDirectory(CosmeticsTypes type)
     {
         var directoryName = type switch
         {
-            Cosmetics.CosmeticType.NamePlate => "CacheNamePlate",
-            Cosmetics.CosmeticType.Visor => "CacheVisor",
-            Cosmetics.CosmeticType.Skin => "CacheSkin",
-            Cosmetics.CosmeticType.Hat => "CacheHat",
+            CosmeticsTypes.NamePlate => "CacheNamePlate",
+            CosmeticsTypes.Visor => "CacheVisor",
+            CosmeticsTypes.Skin => "CacheSkin",
+            CosmeticsTypes.Hat => "CacheHat",
             _ => string.Empty
         };
         return CreateDirectory(Path.Combine(CreativityPath, directoryName));

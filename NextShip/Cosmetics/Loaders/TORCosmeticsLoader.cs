@@ -8,7 +8,8 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using NextShip.Config;
+using NextShip.Api.Config;
+using NextShip.Api.Enums;
 using NextShip.Manager;
 using UnityEngine;
 
@@ -120,7 +121,7 @@ public class TORCosmeticsLoader : CosmeticsLoader
         var hatStrings = new List<string>();
         var md5 = MD5.Create();
 
-        var directoryPath = FilesManager.GetCosmeticsCacheDirectory(CosmeticType.Hat).FullName;
+        var directoryPath = FilesManager.GetCosmeticsCacheDirectory(CosmeticsTypes.Hat).FullName;
 
         foreach (var info in infos)
         {

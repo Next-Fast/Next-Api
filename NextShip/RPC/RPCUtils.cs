@@ -29,8 +29,6 @@ public static class RPCUtils
             foreach (var str in strings)
                 rpcStart.Write(str);
 
-        SendValueLength(bytes.Length, ints.Length, bools.Length, floats.Length, strings.Length);
-
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
     }
 
@@ -100,17 +98,14 @@ public static class RPCUtils
         ReadValue(reader);
     }
 
-    public static void SendValueLength(int byteL = 0, int intL = 0, int boolL = 0, int FloatL = 0, int StringL = 0)
+    /*public static void SendValueLength(int byteL = 0, int intL = 0, int boolL = 0, int FloatL = 0, int StringL = 0)
     {
-        var rpcStart = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId,
-            (byte)CustomRPC.RpcValueHandshake, SendOption.Reliable);
         var Length = 0;
         if (byteL != 0) Length++;
         if (intL != 0) Length++;
         if (boolL != 0) Length++;
         if (FloatL != 0) Length++;
         if (StringL != 0) Length++;
-        rpcStart.Write(Length);
 
         if (byteL != 0)
         {
@@ -143,9 +138,9 @@ public static class RPCUtils
         }
 
         AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
-    }
+    }*/
 
-    public static void StartRPC(byte rpc, MessageReader reader)
+    /*public static void StartRPC(byte rpc, MessageReader reader)
     {
         switch (rpc)
         {
@@ -194,7 +189,7 @@ public static class RPCUtils
                 RPCProcedure.Illusory();
                 break;
         }
-    }
+    }*/
 }
 
 public static class ReadRPCValue

@@ -12,10 +12,6 @@ public sealed class SimpleRoleInfo
     public RoleTeam roleTeam;
     public RoleType roleType;
 
-    public SimpleRoleInfo()
-    {
-    }
-
     public SimpleRoleInfo
     (
         RoleId id,
@@ -24,7 +20,8 @@ public sealed class SimpleRoleInfo
         RoleType type,
         string roleStringId,
         string roleName,
-        int roleIntId)
+        int roleIntId
+        )
     {
         RoleColor = color;
         Name = roleName;
@@ -59,6 +56,4 @@ public sealed class SimpleRoleInfo
     ) : this(RoleId.none, color, team, type, "", roleName, -1)
     {
     }
-
-    public Role ParentRole { get; }
 }

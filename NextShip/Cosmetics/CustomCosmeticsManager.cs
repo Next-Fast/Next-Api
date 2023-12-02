@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using HarmonyLib;
-using NextShip.Config;
+using NextShip.Api.Config;
+using NextShip.Api.Enums;
 using NextShip.Cosmetics.Loaders;
 using NextShip.Manager;
 using UnityEngine;
@@ -31,7 +32,7 @@ public static class CustomCosmeticsManager
     public static List<CosmeticsLoader> AllLoaders = new();
 
     internal static readonly string RepoFilePath =
-        Path.Combine(FilesManager.CreativityPath, RepoFile.Is(FilesManager.FileType.Json));
+        Path.Combine(FilesManager.CreativityPath, RepoFile.Is(FileType.Json));
 
     private static readonly CosmeticsConfig[] ModConfig =
     {
@@ -111,27 +112,4 @@ public static class CustomCosmeticsManager
             __instance.allHats = list.ToArray();
         }
     }
-}
-
-public enum CosmeticRepoType
-{
-    TOR,
-    EXR,
-    NOS,
-    TIS
-}
-
-public enum CosmeticType
-{
-    Hat,
-    NamePlate,
-    Visor,
-    Skin
-}
-
-public enum CosmeticLoadType
-{
-    Repo,
-    Disk,
-    Resources
 }

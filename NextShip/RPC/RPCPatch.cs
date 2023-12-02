@@ -11,7 +11,7 @@ public class RPCPatch
     {
         private static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
         {
-            RPCUtils.StartRPC(callId, reader);
+            /*RPCUtils.StartRPC(callId, reader);*/
         }
 
         private static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId,

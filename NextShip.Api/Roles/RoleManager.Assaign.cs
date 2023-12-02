@@ -7,7 +7,6 @@ public partial class RoleManager
     public IEnumerator<RoleBase?> GetAssignRole(PlayerControl player)
     {
         Assign:
-        Assigner.AssignRole();
 
         if (!Assigner.Get(player, out var role))
             goto Assign;
@@ -35,28 +34,7 @@ public class RoleAssigner
 
         return role != null;
     }
-
-    public void AssignRole()
-    {
-        var Roles = RoleManager.Get().Roles.Where(n => n.EnableAssign).ToList();
-
-        foreach (var @base in from player in CachedPlayer.AllPlayers
-                 where
-                     player.CanAssaign()
-                     &&
-                     Get(player, out _)
-                 let role = Roles[GetValue()]
-                 select
-                     role.CreateRoleBase(player))
-            AllAssigns.Add(@base);
-
-        return;
-
-        int GetValue()
-        {
-            return Random.Next(0, Roles.Count - 1);
-        }
-    }
+    
 
     public void Restore()
     {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 
 namespace NextShip.Patches;
 
@@ -17,16 +16,15 @@ public static class ServerPath
             createHttp("www.aumods.xyz", "Modded NA (MNA)", 443, true),
             createHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true)
         };
-
-        if (!Main.isChinese) regionInfos.ToList().RemoveAt(0);
+        
+        
 
         foreach (var r in regionInfos)
         {
             if (Main.serverManager.AvailableRegions.Contains(r)) continue;
             Main.serverManager.AddOrUpdateRegion(r);
         }
-
-        if (Main.IsDev) Main.serverManager.SetRegion(regionInfos[0]);
+        
     }
 
     public static IRegionInfo createHttp(string ip, string name, ushort port, bool ishttps)
@@ -36,16 +34,7 @@ public static class ServerPath
         ServerInfo[] ServerInfo = { serverInfo };
         return new StaticHttpRegionInfo(name, StringNames.NoTranslation, ip, ServerInfo).CastFast<IRegionInfo>();
     }
-
-    [HarmonyPatch(typeof(Constants), nameof(Constants.GetBroadcastVersion))]
-    [HarmonyPrefix]
-    public static bool ConstantsGetBroadcastVersionPatch(ref int __result)
-    {
-        if (!CurrentVanillaServer) return true;
-
-        __result = Constants.GetVersion(2222, 0, 0, 0);
-        return false;
-    }
+    
 
     private static bool IsVanilla(this IRegionInfo regionInfo)
     {

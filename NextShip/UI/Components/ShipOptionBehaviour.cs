@@ -1,4 +1,5 @@
 using System;
+using NextShip.Api.Attributes;
 using NextShip.Api.Utilities.Attributes;
 using NextShip.Options;
 using TMPro;
