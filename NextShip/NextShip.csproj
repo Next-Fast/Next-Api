@@ -28,7 +28,7 @@
         <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098" PrivateAssets="all"/>
         <PackageReference Include="Downloader" Version="3.0.6"/>
         <!--nuget.bepinex.dev 的包                                       -->
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.674" Private="false" ExcludeAssets="runtime;native"/>
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.679" Private="false" ExcludeAssets="runtime;native"/>
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.11.28" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" PrivatPeAssets="all" ExcludeAssets="runtime"/>
     </ItemGroup>
@@ -36,12 +36,6 @@
     <ItemGroup>
         <ProjectReference Include="..\NextShip.Api\NextShip.Api.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Events\"/>
-        <Folder Include="Game\"/>
-    </ItemGroup>
-
 
     <Target Name="Copy" AfterTargets="Build" Condition="$(NextShipLast) != ''">
         <Copy SourceFiles="$(OutputPath)/$(AssemblyName).dll" DestinationFolder="$(NextShipLast)/BepInEx/plugins/" UseSymboliclinksIfPossible="true"/>
