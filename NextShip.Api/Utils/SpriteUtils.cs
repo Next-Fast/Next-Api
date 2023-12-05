@@ -50,7 +50,7 @@ public static class SpriteUtils
         return null;
     }
 
-    public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit, Vector2 pivot, uint extrude,
+    public static Sprite? LoadSpriteFromResources(string path, float pixelsPerUnit, Vector2 pivot, uint extrude,
         SpriteMeshType meshType, Vector4 border)
     {
         try
@@ -78,7 +78,7 @@ public static class SpriteUtils
         return FullRectSprite;
     }
 
-    public static unsafe Texture2D LoadTextureFromResources(string path)
+    public static unsafe Texture2D? LoadTextureFromResources(string path)
     {
         try
         {
@@ -102,7 +102,7 @@ public static class SpriteUtils
         return null;
     }
 
-    public static Texture2D LoadTextureFromByte(Il2CppStructArray<byte> bytes)
+    public static Texture2D? LoadTextureFromByte(Il2CppStructArray<byte> bytes)
     {
         var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
         var byteTexture = bytes;
@@ -110,7 +110,7 @@ public static class SpriteUtils
         return texture;
     }
 
-    public static Texture2D LoadTextureFromDisk(string path)
+    public static Texture2D? LoadTextureFromDisk(string path)
     {
         try
         {
@@ -125,7 +125,7 @@ public static class SpriteUtils
         return null;
     }
 
-    public static Sprite LoadSpriteFromDisk(string path, float pixelsPerUnit)
+    public static Sprite? LoadSpriteFromDisk(string path, float pixelsPerUnit)
     {
         try
         {
@@ -144,7 +144,7 @@ public static class SpriteUtils
         return null;
     }
 
-    public static Sprite LoadSpriteFromResources(string FileName)
+    public static Sprite? LoadSpriteFromResources(string FileName)
     {
         var TheAssembly = Assembly.GetExecutingAssembly();
         var names = TheAssembly.GetManifestResourceNames();

@@ -17,7 +17,7 @@ public static class StreamUtils
 
 
     // form reactor
-    public static byte[] ReadFully(this Stream input)
+    public static byte[] ReadFully(this Stream? input)
     {
         using var ms = new MemoryStream();
         input.CopyTo(ms);

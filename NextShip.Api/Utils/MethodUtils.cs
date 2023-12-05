@@ -9,7 +9,7 @@ public class MethodUtils
     /// </summary>
     public static string GetNamespace()
     {
-        return MethodBase.GetCurrentMethod()?.DeclaringType?.Namespace;
+        return MethodBase.GetCurrentMethod()?.DeclaringType?.Namespace ?? string.Empty;
     }
 
     /// <summary>
