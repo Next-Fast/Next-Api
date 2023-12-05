@@ -59,7 +59,8 @@ public static class CachedPlayerPatches
         CachedPlayer.PlayerIntPtrS[__instance.Pointer] = player;
 
 #if DEBUG
-        foreach (var cachedPlayer in CachedPlayer.AllPlayers.Where(cachedPlayer => !cachedPlayer?.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform ||
+        foreach (var cachedPlayer in CachedPlayer.AllPlayers.Where(cachedPlayer => !cachedPlayer?.PlayerControl ||
+                     !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform ||
                      !cachedPlayer.transform))
             Error($"CachedPlayer {cachedPlayer?.PlayerControl.name} has null fields");
 #endif

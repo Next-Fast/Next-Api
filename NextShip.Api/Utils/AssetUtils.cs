@@ -14,7 +14,7 @@ public static class AssetUtils
         var asset = _CosmeticsCache.GetPet(id);
         if (asset.Data.ProdId != "pet_EmptyPet" ||
             _hatManager.allPets.FirstOrDefault(n => n.ProdId == id) == null) return asset;
-        
+
         var Asset = _hatManager.GetPetById(id).CreateAddressableAsset();
         Asset.LoadAsync((Action)(() => asset = Asset.GetAsset()));
 

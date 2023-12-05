@@ -8,9 +8,9 @@ public sealed class log
 {
     public static bool CreateEd;
 
-    public StreamWriter? DiskWriter;
-
     public TextWriter? ConsoleWriter;
+
+    public StreamWriter? DiskWriter;
 
     static log()
     {
@@ -23,6 +23,10 @@ public sealed class log
         ConsoleWriter = ConsoleManager.ConsoleStream;
         Instance = this;
     }
+
+    public ManualLogSource LogSource { get; private set; }
+
+    public static log? Instance { get; set; }
 
 
     public void CreateDiskLog(string name, string? path = null)
@@ -44,37 +48,33 @@ public sealed class log
         }
 
         path ??= string.Empty;
-        
+
         var FilePath = path + name;
-        
+
         if (!File.Exists(FilePath))
             return File.Create(FilePath);
 
         Stream stream;
         var count = 0;
-        
+
         while (true)
         {
             count++;
             FilePath = path + name + $"_{count}";
-            
+
             if (!File.Exists(FilePath))
             {
                 stream = File.Create(FilePath);
                 break;
             }
-            
+
             stream = File.Open(FilePath, FileMode.Open);
             if (stream.Length == 0)
                 break;
         }
-        
+
         return stream;
     }
-
-    public ManualLogSource LogSource { get; private set; }
-
-    public static log? Instance { get; set; }
 
     public static log? Get(ManualLogSource logSource)
     {
@@ -98,19 +98,19 @@ public sealed class log
     internal void SendToFile(string? tag, string? filename, string text, LogLevel level = LogLevel.Info)
     {
         var logger = Instance?.LogSource;
-        
+
         var t = DateTime.Now.ToString("HH:mm:ss");
-        
+
         var log_text = $"[{t}]";
-        
-        if (tag != null) 
+
+        if (tag != null)
             log_text += $"[{tag}]";
-        
-        if (filename != null) 
+
+        if (filename != null)
             log_text += $"[{filename}]";
-        
+
         log_text += text;
-        
+
         switch (level)
         {
             case LogLevel.Info:
