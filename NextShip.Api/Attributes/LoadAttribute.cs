@@ -7,12 +7,12 @@ namespace NextShip.Api.Attributes;
 public sealed class LoadAttribute : Attribute
 {
     public readonly LoadMode Mode;
-    
+
     public LoadAttribute(LoadMode mode = LoadMode.Load)
     {
         Mode = mode;
     }
-    
+
     public static void Registration(Type type)
     {
         Info("Start Registration", filename: MethodUtils.GetClassName());

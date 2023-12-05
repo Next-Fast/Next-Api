@@ -85,7 +85,7 @@ public class YamlLoader
             try
             {
                 if (valueNode is not YamlMappingNode mappingNode) return null;
-                
+
                 var keyNode = new YamlScalarNode(loc);
                 if (mappingNode.Children.TryGetValue(keyNode, out valueNode))
                     // 继续向下查找
@@ -131,7 +131,7 @@ public class YamlLoader
             try
             {
                 if (valueNode is not YamlMappingNode mappingNode) return null;
-                
+
                 var keyNode = new YamlScalarNode(loc);
                 if (mappingNode.Children.TryGetValue(keyNode, out valueNode))
                     // 继续向下查找

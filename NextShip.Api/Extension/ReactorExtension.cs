@@ -15,12 +15,12 @@ namespace NextShip.Api.Extension;
 [Harmony]
 public static class ReactorExtension
 {
-    public static readonly HashSet<Mod> HashSet_Mods = new ();
+    public static readonly HashSet<Mod> HashSet_Mods = new();
 
-    public static readonly Dictionary<int, HashSet<Mod>> All_Mod = new ();
+    public static readonly Dictionary<int, HashSet<Mod>> All_Mod = new();
 
     public static bool ReactorHandshake;
-    
+
     public static void UseReactorHandshake()
     {
         ReactorHandshake = true;
@@ -28,13 +28,15 @@ public static class ReactorExtension
         _Harmony.PatchAll(typeof(ReactorExtension));
     }
 
-    public static void DisableReactorHandshake() => ReactorHandshake = false;
-    
+    public static void DisableReactorHandshake()
+    {
+        ReactorHandshake = false;
+    }
+
     public static void GetHandshakeInfo()
     {
-        
     }
-    
+
     private static void OnPluginLoad(PluginInfo pluginInfo, BasePlugin plugin)
     {
         var pluginType = plugin.GetType();
@@ -48,18 +50,18 @@ public static class ReactorExtension
 
         HashSet_Mods.Add(mod);
     }
-    
+
     public static void UseModList()
     {
-        foreach (var existingPlugin in IL2CPPChainloader.Instance.Plugins.Values.Where(existingPlugin => existingPlugin.Instance != null))
-        {
-            OnPluginLoad(existingPlugin, (BasePlugin) existingPlugin.Instance);
-        }
+        foreach (var existingPlugin in IL2CPPChainloader.Instance.Plugins.Values.Where(existingPlugin =>
+                     existingPlugin.Instance != null))
+            OnPluginLoad(existingPlugin, (BasePlugin)existingPlugin.Instance);
 
         IL2CPPChainloader.Instance.PluginLoad += (pluginInfo, _, plugin) => OnPluginLoad(pluginInfo, plugin);
     }
-    
-    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetConnectionData)), HarmonyPostfix]
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetConnectionData))]
+    [HarmonyPostfix]
     public static void GetConnectionData_Postfix(ref Il2CppStructArray<byte> __result)
     {
         if (!ReactorHandshake) return;
@@ -67,7 +69,7 @@ public static class ReactorExtension
 
         // 写入原本握手内容
         handshakeWriter.Write(__result);
-            
+
         // 写入反应堆握手版本
         handshakeWriter.Write(((ulong)0x72656163746f72 << 8) | 2);
 
@@ -77,31 +79,34 @@ public static class ReactorExtension
         {
             handshakeWriter.Write(varMod.Id);
             handshakeWriter.Write(varMod.Version);
-            handshakeWriter.Write((ushort) varMod.Flags);
-            if (varMod.Flags.HasFlag(ModFlags.RequireOnAllClients)) 
+            handshakeWriter.Write((ushort)varMod.Flags);
+            if (varMod.Flags.HasFlag(ModFlags.RequireOnAllClients))
                 handshakeWriter.Write(varMod.Name);
         }
 
         __result = handshakeWriter.ToByteArray(true);
         handshakeWriter.Recycle();
     }
-    
-    [HarmonyPatch(typeof(InnerNetClient._HandleGameDataInner_d__39), nameof(InnerNetClient._HandleGameDataInner_d__39.MoveNext)), HarmonyPrefix]
-    public static bool _HandleGameDataInner_d__39_Prefix(InnerNetClient._HandleGameDataInner_d__39 __instance, ref bool __result)
+
+    [HarmonyPatch(typeof(InnerNetClient._HandleGameDataInner_d__39),
+        nameof(InnerNetClient._HandleGameDataInner_d__39.MoveNext))]
+    [HarmonyPrefix]
+    public static bool _HandleGameDataInner_d__39_Prefix(InnerNetClient._HandleGameDataInner_d__39 __instance,
+        ref bool __result)
     {
         if (!ReactorHandshake) return true;
-        
+
         var innerNetClient = __instance.__4__this;
         var reader = __instance.reader;
 
         if (__instance.__1__state != 0 || reader.Tag != InnerNetClient.SceneChangeFlag) return true;
-        
+
         var clientId = reader.ReadPackedInt32();
         var clientData = innerNetClient.FindClientById(clientId);
         var sceneName = reader.ReadString();
 
         if (clientData == null || string.IsNullOrWhiteSpace(sceneName)) return true;
-        
+
         if (reader.BytesRemaining >= sizeof(ulong) && Read(reader))
         {
             var modCount = reader.ReadPackedInt32();
@@ -111,7 +116,7 @@ public static class ReactorExtension
             {
                 var id = reader.ReadString();
                 var version = reader.ReadString();
-                var flags = (ModFlags) reader.ReadUInt16();
+                var flags = (ModFlags)reader.ReadUInt16();
                 var name = (flags & ModFlags.RequireOnAllClients) != 0 ? reader.ReadString() : null;
 
                 mods.Add(new Mod(id, version, flags, name));
@@ -119,32 +124,29 @@ public static class ReactorExtension
 
             All_Mod[clientId] = mods;
         }
-        
+
         if (innerNetClient.AmHost)
-        {
             innerNetClient.StartCoroutine(innerNetClient.CoOnPlayerChangedScene(clientData, sceneName));
-        }
         else
-        {
             reader.Recycle();
-        }
 
         __result = false;
         return false;
-        
+
         bool Read(MessageReader _reader)
         {
             var value = _reader.ReadUInt64();
             var magic = value >> 8;
-            var version = (byte) (value & 0xFF);
+            var version = (byte)(value & 0xFF);
             return magic == 0x72656163746f72 && version == 2;
         }
     }
 
-    [
-        HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.DisconnectInternal)),
-        HarmonyPatch(typeof(EndGameResult), nameof(EndGameResult.Create)),
-        HarmonyPostfix
-    ]
-    public static void Clear_Postfix() => All_Mod.Clear();
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.DisconnectInternal))]
+    [HarmonyPatch(typeof(EndGameResult), nameof(EndGameResult.Create))]
+    [HarmonyPostfix]
+    public static void Clear_Postfix()
+    {
+        All_Mod.Clear();
+    }
 }

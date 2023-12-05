@@ -7,7 +7,7 @@ public class ModUpdater
 {
     // HUdate=HasUpdate 判断是否有更新
     public static bool HUpdate = VersionManager.HasUpdate;
-    
+
     public static ConfigEntry<bool> AutoUpdate;
 
     // 模组下载链接
