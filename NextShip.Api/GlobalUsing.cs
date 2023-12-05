@@ -5,4 +5,5 @@ global using NextShip.Api.Utilities;
 global using NextShip.Api.Enums;
 global using NextShip.Api.Bases;
 global using NextShip.Api.Attributes;
-global using static NextShip.Api.Logs.log;
+global using NextShip.Api.Logs;
+global using static NextShip.Api.Logs.FastLog;

@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using NextShip.Api.Attributes;
-using NextShip.Api.Utilities.Attributes;
 
 namespace NextShip.Manager;
 

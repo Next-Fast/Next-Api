@@ -6,7 +6,6 @@ using System.Reflection;
 using HarmonyLib;
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
-using NextShip.Api.Utilities.Attributes;
 using NextShip.Manager;
 
 namespace NextShip.DIY.Plugins;

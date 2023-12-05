@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Reflection;
 
-namespace NextShip.Api.Utilities.Attributes;
+namespace NextShip.Api.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public sealed class LoadAttribute : Attribute
 {
+    public readonly LoadMode Mode;
+    
+    public LoadAttribute(LoadMode mode = LoadMode.Load)
+    {
+        Mode = mode;
+    }
+    
     public static void Registration(Type type)
     {
         Info("Start Registration", filename: MethodUtils.GetClassName());
