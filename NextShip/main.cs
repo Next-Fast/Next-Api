@@ -1,9 +1,13 @@
 using System.Globalization;
+using System.Net.Http;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Microsoft.Extensions.DependencyInjection;
+using NextShip.Api.Interfaces;
+using NextShip.Api.Services;
 using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
@@ -27,40 +31,40 @@ public sealed class NextShip : BasePlugin
     public const string Id = "cn.MengChu.NextShip";
 
     // 模组版本
-    public const string VersionString = "100.0";
+    public const string VersionString = "1.0.0";
 
     // Among Us游玩版本
     public static readonly AmongUsVersion SupportVersion = new(2023, 10, 24);
+    
+    public static NextService _Service  { get; private set; }
 
-
-    internal static ManualLogSource TISLog;
-
-    public static NextShip Instance;
+    public static NextShip Instance { get; private set; }
 
     internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
+    
+    private ManualLogSource TISLog;
+    
     private Harmony Harmony { get; } = new(Id);
 
 
     public override void Load()
     {
-        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
+        Instance = this;
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
-
+        Harmony.PatchAll();
+        
         Init();
         Get(TISLog);
-
-        Instance = this;
-        Harmony.PatchAll();
-
-        FilesManager.Init();
-        ServerPath.autoAddServer();
-
+        CreateService();
+        
+        ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
 
-        AddComponent<NextUIManager>();
-
+        AddComponent<NextManager>().DontDestroyOnLoad();
+        
+        FilesManager.Init();
+        ServerPath.autoAddServer();
         LanguagePack.Init();
-
         CustomCosmeticsManager.LoadHat();
     }
 
@@ -73,5 +77,21 @@ public sealed class NextShip : BasePlugin
         Info($"Support Among Us Version {SupportVersion}", "Info");
         Info("Hash: ", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
+    }
+
+
+    private static void CreateService()
+    {
+        var builder = new ServiceBuilder();
+        builder.CreateService();
+        builder._collection.AddLogging();
+        builder._collection.AddSingleton<IRoleManager, NextRoleManager>();
+        builder._collection.AddSingleton<IEventManager, EventManager>();
+        builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
+        builder.AddTransient<HttpClient>();
+        builder.Add<DownloadService>();
+        builder.Add<MetadataService>();
+        
+        _Service = NextService.Build(builder);
     }
 }

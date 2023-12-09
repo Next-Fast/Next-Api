@@ -7,4 +7,6 @@ public interface INextEvent
     public void OnRegister(IEventManager eventManager);
 
     public void OnUnRegister(IEventManager eventManager);
+
+    public void Call(INextEvent @event);
 }

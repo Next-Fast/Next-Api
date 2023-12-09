@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using NextShip.Api.Interfaces;
 
@@ -6,20 +7,34 @@ namespace NextShip;
 
 public class NextService : INextService
 {
-    private ServiceCollection _collection = new();
+    public static readonly HashSet<NextService> Services = new ();
+
+    public NextService()
+    {
+        Services.Add(this);
+    }
+    
+    public NextService(IServiceProvider provider) : this()
+    {
+        _Provider = provider;
+        BuildCompleted = true;
+    }
+
     public IServiceProvider _Provider { get; private set; }
 
     private bool BuildCompleted { get; set; }
 
+    public static NextService Build(IServiceBuilder builder)
+    {
+        var service = builder.Build();
+        service.Build();
+        
+        return (NextService)service;
+    }
+
     public void Build()
     {
         if (BuildCompleted) return;
-
-        if (_collection.Count != 0)
-        {
-            _Provider = _collection.BuildServiceProvider();
-            return;
-        }
 
         var collection = new ServiceCollection();
 
@@ -35,15 +50,8 @@ public class NextService : INextService
 
     public void Reset()
     {
-        _collection.Clear();
         _Provider = null;
         BuildCompleted = false;
-    }
-
-    public NextService Set(ServiceCollection collection)
-    {
-        _collection = collection;
-        return this;
     }
 
     public T Get<T>()
@@ -58,8 +66,6 @@ public class NextService : INextService
 
     public static NextService Build(ServiceCollection collection)
     {
-        var _Service = new NextService().Set(collection);
-        _Service.Build();
-        return _Service;
+        return (NextService)new ServiceBuilder().Set(collection).Build();
     }
 }

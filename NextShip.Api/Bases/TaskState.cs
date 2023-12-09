@@ -1,18 +1,11 @@
-using System;
+namespace NextShip.Api.Bases;
 
-namespace NextShip.UI.Components;
-
-public class TaskState
+public sealed class TaskState
 {
-    private Action Action;
-    private TaskStateEnum StateEnum;
+    private Action? Action;
+    private TaskStateEnum StateEnum = TaskStateEnum.None;
 
-    public TaskState()
-    {
-        StateEnum = TaskStateEnum.None;
-    }
-
-    public virtual TaskStateEnum Get()
+    public TaskStateEnum Get()
     {
         return StateEnum;
     }
@@ -25,7 +18,7 @@ public class TaskState
     public void Completed()
     {
         StateEnum = TaskStateEnum.Completed;
-        Action();
+        Action?.Invoke();
     }
 
     public void AddAction(Action action)
@@ -35,15 +28,7 @@ public class TaskState
 
     public void RemoverAction(Action action)
     {
+        if (Action == null) return;
         Action -= action;
     }
-}
-
-public enum TaskStateEnum
-{
-    None,
-    Waiting,
-    Processing,
-    Completed,
-    Failed
 }
