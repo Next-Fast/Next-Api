@@ -8,7 +8,7 @@ namespace NextShip.Manager;
 public class EventManager : IEventManager
 {
     public static EventManager _eventManager = Main._Service.Get<EventManager>();
-    
+
     private readonly List<INextEvent> RegisterEvents = new();
 
     public void RegisterEvent(INextEvent @event)
@@ -25,10 +25,7 @@ public class EventManager : IEventManager
 
     public void Call(INextEvent @event)
     {
-        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName))
-        {
-            @event.Call(_event);
-        }
+        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName)) @event.Call(_event);
     }
 
     public bool TryGetEvent(string eventName, out INextEvent @event)

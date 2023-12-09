@@ -1,4 +1,3 @@
-using System;
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 using UnityEngine;
@@ -9,8 +8,6 @@ namespace NextShip;
 public class NextManager : MonoBehaviour
 {
     private static NextManager _instance;
-    
-    public static NextManager Instance => _instance ??= Main.Instance.AddComponent<NextManager>();
 
     public UpdateTasker _Tasker;
 
@@ -20,9 +17,10 @@ public class NextManager : MonoBehaviour
         _instance = this;
     }
 
+    public static NextManager Instance => _instance ??= Main.Instance.AddComponent<NextManager>();
+
     public void Update()
     {
-        
     }
 
     public void FixedUpdate()

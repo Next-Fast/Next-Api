@@ -7,13 +7,13 @@ namespace NextShip;
 
 public class NextService : INextService
 {
-    public static readonly HashSet<NextService> Services = new ();
+    public static readonly HashSet<NextService> Services = new();
 
     public NextService()
     {
         Services.Add(this);
     }
-    
+
     public NextService(IServiceProvider provider) : this()
     {
         _Provider = provider;
@@ -23,14 +23,6 @@ public class NextService : INextService
     public IServiceProvider _Provider { get; private set; }
 
     private bool BuildCompleted { get; set; }
-
-    public static NextService Build(IServiceBuilder builder)
-    {
-        var service = builder.Build();
-        service.Build();
-        
-        return (NextService)service;
-    }
 
     public void Build()
     {
@@ -52,6 +44,14 @@ public class NextService : INextService
     {
         _Provider = null;
         BuildCompleted = false;
+    }
+
+    public static NextService Build(IServiceBuilder builder)
+    {
+        var service = builder.Build();
+        service.Build();
+
+        return (NextService)service;
     }
 
     public T Get<T>()

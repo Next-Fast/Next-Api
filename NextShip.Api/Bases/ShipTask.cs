@@ -2,7 +2,6 @@ namespace NextShip.Api.Bases;
 
 public class ShipTask
 {
-
     public readonly TaskPriority TaskPriority;
     private readonly TaskState TaskState;
     public bool Loop;

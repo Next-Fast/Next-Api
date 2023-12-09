@@ -4,7 +4,7 @@ public record NextInfo
 {
     public int clientId;
 
-    public RoleBase Role;
+    public string FriendCode;
 
     public PlayerControl PlayerControl;
 
@@ -12,5 +12,5 @@ public record NextInfo
 
     public string PUID;
 
-    public string FriendCode;
+    public RoleBase Role;
 }

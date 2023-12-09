@@ -12,7 +12,6 @@ using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
-using NextShip.UI.UIManager;
 using BepInExLogger = BepInEx.Logging.Logger;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
@@ -35,15 +34,15 @@ public sealed class NextShip : BasePlugin
 
     // Among Us游玩版本
     public static readonly AmongUsVersion SupportVersion = new(2023, 10, 24);
-    
-    public static NextService _Service  { get; private set; }
+
+    internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
+
+    private ManualLogSource TISLog;
+
+    public static NextService _Service { get; private set; }
 
     public static NextShip Instance { get; private set; }
 
-    internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
-    
-    private ManualLogSource TISLog;
-    
     private Harmony Harmony { get; } = new(Id);
 
 
@@ -52,16 +51,16 @@ public sealed class NextShip : BasePlugin
         Instance = this;
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
-        
+
         Init();
         Get(TISLog);
         CreateService();
-        
+
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
 
         AddComponent<NextManager>().DontDestroyOnLoad();
-        
+
         FilesManager.Init();
         ServerPath.autoAddServer();
         LanguagePack.Init();
@@ -91,7 +90,7 @@ public sealed class NextShip : BasePlugin
         builder.AddTransient<HttpClient>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
-        
+
         _Service = NextService.Build(builder);
     }
 }
