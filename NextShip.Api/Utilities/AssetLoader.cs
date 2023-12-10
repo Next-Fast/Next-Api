@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes;
+using NextShip.Api.Managers;
 using UnityEngine;
 using SystemFile = System.IO;
 using Il2cppFile = Il2CppSystem.IO.File;
@@ -37,17 +38,17 @@ public sealed class AssetLoader
         return Asset.LoadAllAsset<T>().ToList();
     }
 
-    /*public AssetLoader LoadFromDisk()
+    public AssetLoader LoadFromDisk()
     {
         if (FileName is "" or null) return this;
-
-        var directory = FilesManager.GetDataDirectory("/Assets");
-        var bytes = Il2cppFile.ReadAllBytes(SystemFile.Path.Combine(directory.FullName, "Assets", FileName));
+        
+        var directory = GetDir("Assets");
+        var bytes = Il2cppFile.ReadAllBytes(Path.Combine(directory.FullName, FileName));
         Asset = AssetBundle.LoadFromMemory(bytes);
         loaded = true;
         AssetManager.Get().Add(Asset);
         return this;
-    }*/
+    }
 
     public AssetLoader LoadFromResources(Assembly assembly)
     {
@@ -62,7 +63,7 @@ public sealed class AssetLoader
         return this;
     }
 
-    public void Add()
+    private void Add()
     {
         AssetManager.Get().Add(this);
     }
@@ -70,48 +71,5 @@ public sealed class AssetLoader
     public void Remove()
     {
         AssetManager.Get().Remove(this);
-    }
-}
-
-public class AssetManager
-{
-    public static AssetManager? Instance;
-    private readonly List<AssetBundle?> _assetBundles = new();
-
-    private readonly List<AssetLoader?> _assetLoaders = new();
-
-    public static AssetManager Get()
-    {
-        return Instance ??= new AssetManager();
-    }
-
-    public IReadOnlyList<AssetLoader?> GetLoaders()
-    {
-        return _assetLoaders;
-    }
-
-    public IReadOnlyList<AssetBundle?> GetAssetS()
-    {
-        return _assetBundles;
-    }
-
-    public void Add(AssetLoader? assetLoader)
-    {
-        _assetLoaders.Add(assetLoader);
-    }
-
-    public void Add(AssetBundle? assetBundle)
-    {
-        _assetBundles.Add(assetBundle);
-    }
-
-    public void Remove(AssetLoader? assetLoader)
-    {
-        _assetLoaders.Remove(assetLoader);
-    }
-
-    public AssetLoader? GetLoader(string name)
-    {
-        return _assetLoaders.Find(n => name == n.FileName || name == n.LoaderName);
     }
 }

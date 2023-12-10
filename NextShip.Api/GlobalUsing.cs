@@ -6,5 +6,6 @@ global using NextShip.Api.Enums;
 global using NextShip.Api.Bases;
 global using NextShip.Api.Attributes;
 global using NextShip.Api.Logs;
+global using static NextShip.Api.Utils.StreamUtils;
 global using static NextShip.Api.APIHarmony;
 global using static NextShip.Api.Logs.FastLog;

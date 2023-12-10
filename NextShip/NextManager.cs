@@ -1,5 +1,6 @@
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
+using NextShip.Api.UI;
 using UnityEngine;
 
 namespace NextShip;
@@ -21,6 +22,7 @@ public class NextManager : MonoBehaviour
 
     public void Update()
     {
+        NextUIManager.Instance.Update();
     }
 
     public void FixedUpdate()

@@ -10,6 +10,12 @@ namespace NextShip.Api.Utils;
 
 public static class StreamUtils
 {
+    public static DirectoryInfo GetDir(string name)
+    {
+        var path = $"./{name}";
+        return Directory.Exists(path) ? new DirectoryInfo(path) : Directory.CreateDirectory(path);
+    }
+    
     public static Stream? GetStreamFormRes(this Assembly assembly, params string[] path)
     {
         return assembly.GetManifestResourceStream(string.Join(".", path));
@@ -20,7 +26,7 @@ public static class StreamUtils
     public static byte[] ReadFully(this Stream? input)
     {
         using var ms = new MemoryStream();
-        input.CopyTo(ms);
+        input?.CopyTo(ms);
         return ms.ToArray();
     }
 

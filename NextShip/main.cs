@@ -6,6 +6,7 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
+using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
 using NextShip.Api.Services;
 using NextShip.Cosmetics;
@@ -55,6 +56,9 @@ public sealed class NextShip : BasePlugin
         Init();
         Get(TISLog);
         CreateService();
+        
+        SteamExtension.UseSteamIdFile();
+        ReactorExtension.UseReactorHandshake();
 
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
