@@ -3,7 +3,7 @@ namespace NextShip.Api.Extension;
 public static class DevExtension
 {
     private static bool Start;
-    
+
     public static void UseDevExtension()
     {
         if (Start)
@@ -17,20 +17,18 @@ public static class DevExtension
         {
             Exception(e);
         }
-        
     }
 
     public static void DisableDev()
     {
         try
         {
-
         }
         catch (Exception e)
         {
             Exception(e);
         }
-        
+
         Start = false;
     }
 }

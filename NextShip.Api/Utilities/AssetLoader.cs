@@ -41,7 +41,7 @@ public sealed class AssetLoader
     public AssetLoader LoadFromDisk()
     {
         if (FileName is "" or null) return this;
-        
+
         var directory = GetDir("Assets");
         var bytes = Il2cppFile.ReadAllBytes(Path.Combine(directory.FullName, FileName));
         Asset = AssetBundle.LoadFromMemory(bytes);

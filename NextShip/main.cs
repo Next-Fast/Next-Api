@@ -56,7 +56,7 @@ public sealed class NextShip : BasePlugin
         Init();
         Get(TISLog);
         CreateService();
-        
+
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
 

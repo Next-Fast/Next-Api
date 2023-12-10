@@ -15,7 +15,7 @@ public static class StreamUtils
         var path = $"./{name}";
         return Directory.Exists(path) ? new DirectoryInfo(path) : Directory.CreateDirectory(path);
     }
-    
+
     public static Stream? GetStreamFormRes(this Assembly assembly, params string[] path)
     {
         return assembly.GetManifestResourceStream(string.Join(".", path));
