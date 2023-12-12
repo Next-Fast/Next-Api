@@ -6,6 +6,7 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
+using NextShip.Api.Attributes;
 using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
 using NextShip.Api.Services;
@@ -43,6 +44,8 @@ public sealed class NextShip : BasePlugin
     public static NextService _Service { get; private set; }
 
     public static NextShip Instance { get; private set; }
+    
+    public static Assembly RootAssembly { get; private set; }
 
     private Harmony Harmony { get; } = new(Id);
 
@@ -50,6 +53,7 @@ public sealed class NextShip : BasePlugin
     public override void Load()
     {
         Instance = this;
+        RootAssembly = Assembly.GetExecutingAssembly();
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
 
@@ -96,5 +100,6 @@ public sealed class NextShip : BasePlugin
         builder.Add<MetadataService>();
 
         _Service = NextService.Build(builder);
+        ServiceAddAttribute.Registration(_Service._Provider, RootAssembly);
     }
 }

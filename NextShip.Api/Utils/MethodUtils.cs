@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace NextShip.Api.Utils;
 
-public class MethodUtils
+public static class MethodUtils
 {
     /// <summary>
     ///     获取运行方法命名空间
@@ -27,5 +27,25 @@ public class MethodUtils
     public static string? GetClassName()
     {
         return MethodBase.GetCurrentMethod()?.DeclaringType?.Name;
+    }
+
+    public static bool Is<T>(this MemberInfo info) where T : Attribute => info.GetCustomAttribute<T>() != null;
+
+    public static bool IsD(this MemberInfo info, Type type) => info.IsDefined(type);
+
+    public static bool IsD<T>(this MemberInfo info) => info.IsD(typeof(T));
+
+    public static IEnumerable<T> GetMembers<T>(this Type type, Func<T, bool>? Is)
+    {
+        var memberInfos = type.GetMembers();
+        
+        return Is == null ? memberInfos.OfType<T>() : memberInfos.OfType<T>().Where(Is);
+    }
+
+    public static List<FieldInfo> GetFieldInfos(this Assembly assembly)
+    {
+        var types = assembly.GetTypes();
+
+        return types.SelectMany(varType => varType.GetFields()).ToList();
     }
 }

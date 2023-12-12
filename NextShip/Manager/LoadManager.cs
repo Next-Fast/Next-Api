@@ -15,7 +15,7 @@ public static class LoadManager
     private static bool Started;
     private static bool HasError;
 
-    public static List<IEnumerator> AllLoad = new();
+    public static readonly List<IEnumerator> AllLoad = new();
 
     [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
     [HarmonyPrefix]

@@ -4,23 +4,26 @@ using System.Reflection;
 namespace NextShip.Api.Attributes;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
-public sealed class LoadAttribute : Attribute
+public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
 {
-    public readonly LoadMode Mode;
+    public LoadMode Mode = mode;
 
-    public LoadAttribute(LoadMode mode = LoadMode.Load)
-    {
-        Mode = mode;
-    }
+    public IEnumerator? Enumerator;
 
+    public static List<LoadAttribute> Loads = new();
+
+    public static string[] MethodNames = EnumHelper.GetAllNames<LoadMode>();
+    
     public static void Registration(Type type)
     {
         Info("Start Registration", filename: MethodUtils.GetClassName());
+
+        if (type.GetCustomAttribute<LoadAttribute>() == null) return;
+        
         ConstructorInfo? constructor;
         if (
-            type.GetCustomAttribute<LoadAttribute>() != null
-            &&
-            (constructor = type.GetConstructor
+            (
+                constructor = type.GetConstructor
                 (
                     BindingFlags.Public |
                     BindingFlags.Static |
@@ -28,34 +31,34 @@ public sealed class LoadAttribute : Attribute
                     Array.Empty<Type>()
                 )
             )
-            != null)
+            != null && constructor.Is<LoadAttribute>())
             constructor.Invoke(null, null);
 
-        foreach (var variableMethodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic |
-                                                           BindingFlags.Public))
+        foreach (var MethodInfo in type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
         {
-            if (variableMethodInfo.Name is "CoLoad" or "Load")
-            {
-                if
-                    (
-                        (
-                            type.IsDefined(typeof(LoadAttribute))
-                            ||
-                            variableMethodInfo.IsDefined(typeof(LoadAttribute))
-                        )
-                        &&
-                        variableMethodInfo.ReturnType == typeof(IEnumerator))
-                    /*LoadManager.AllLoad.Add(variableMethodInfo.Invoke(null, null) as IEnumerator);*/
-                    continue;
+            if (MethodInfo.ReturnType != typeof(IEnumerator))
+                continue;
+            
+            var load = MethodInfo.GetCustomAttribute<LoadAttribute>();
+            LoadMode? mode = null;
+            if (Enum.TryParse(MethodInfo.Name, out LoadMode OutMode))
+                mode = OutMode;
 
-                if (type.IsDefined(typeof(LoadAttribute)))
-                {
-                    variableMethodInfo.Invoke(null, null);
-                    continue;
-                }
+            if (load != null)
+            {
+                load.Enumerator = MethodInfo.Invoke(null, null) as IEnumerator;
+                Loads.Add(load);
+                continue;
             }
 
-            if (variableMethodInfo.GetCustomAttribute<LoadAttribute>() != null) variableMethodInfo.Invoke(null, null);
+            if (mode != null )
+            {
+                Loads.Add(new LoadAttribute
+                {
+                    Mode = (LoadMode)mode,
+                    Enumerator = MethodInfo.Invoke(null, null) as IEnumerator
+                });
+            }
         }
 
         Info($"Statically Initialized Class {type}", "LoadAttribute");
