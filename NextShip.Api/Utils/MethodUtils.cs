@@ -29,16 +29,25 @@ public static class MethodUtils
         return MethodBase.GetCurrentMethod()?.DeclaringType?.Name;
     }
 
-    public static bool Is<T>(this MemberInfo info) where T : Attribute => info.GetCustomAttribute<T>() != null;
+    public static bool Is<T>(this MemberInfo info) where T : Attribute
+    {
+        return info.GetCustomAttribute<T>() != null;
+    }
 
-    public static bool IsD(this MemberInfo info, Type type) => info.IsDefined(type);
+    public static bool IsD(this MemberInfo info, Type type)
+    {
+        return info.IsDefined(type);
+    }
 
-    public static bool IsD<T>(this MemberInfo info) => info.IsD(typeof(T));
+    public static bool IsD<T>(this MemberInfo info)
+    {
+        return info.IsD(typeof(T));
+    }
 
     public static IEnumerable<T> GetMembers<T>(this Type type, Func<T, bool>? Is)
     {
         var memberInfos = type.GetMembers();
-        
+
         return Is == null ? memberInfos.OfType<T>() : memberInfos.OfType<T>().Where(Is);
     }
 

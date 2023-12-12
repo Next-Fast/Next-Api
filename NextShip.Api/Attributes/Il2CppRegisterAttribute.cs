@@ -10,7 +10,7 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
     public Il2CppRegisterAttribute() : this(Type.EmptyTypes)
     {
     }
-    
+
 
     public Type[] Interfaces { get; } = interfaces;
 
@@ -20,7 +20,7 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
 
         var attribute =
             type?.GetCustomAttribute<Il2CppRegisterAttribute>();
-        
+
         if (attribute != null) registrationForTarget(type, attribute.Interfaces);
 
         Info("Complete Registration", "Il2CppRegister");
@@ -32,10 +32,10 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
 
         Il2CppRegisterAttribute? baseAttribute = null;
 
-        if (targetBase != null) 
+        if (targetBase != null)
             baseAttribute = targetBase.GetCustomAttribute<Il2CppRegisterAttribute>();
 
-        if (baseAttribute != null) 
+        if (baseAttribute != null)
             registrationForTarget(targetBase, baseAttribute.Interfaces);
 
         Debug($"Registration {targetType}", "Register");

@@ -2,7 +2,6 @@
 
 public static class ListUtils
 {
-    
     public static List<T> GetLists<T>(this List<T> list, int count)
     {
         var l = new List<T>();

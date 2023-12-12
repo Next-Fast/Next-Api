@@ -44,7 +44,7 @@ public sealed class NextShip : BasePlugin
     public static NextService _Service { get; private set; }
 
     public static NextShip Instance { get; private set; }
-    
+
     public static Assembly RootAssembly { get; private set; }
 
     private Harmony Harmony { get; } = new(Id);

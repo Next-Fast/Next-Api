@@ -6,20 +6,19 @@ namespace NextShip.Api.Attributes;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
 {
-    public LoadMode Mode = mode;
-
-    public IEnumerator? Enumerator;
-
     public static List<LoadAttribute> Loads = new();
 
     public static string[] MethodNames = EnumHelper.GetAllNames<LoadMode>();
-    
+
+    public IEnumerator? Enumerator;
+    public LoadMode Mode = mode;
+
     public static void Registration(Type type)
     {
         Info("Start Registration", filename: MethodUtils.GetClassName());
 
         if (type.GetCustomAttribute<LoadAttribute>() == null) return;
-        
+
         ConstructorInfo? constructor;
         if (
             (
@@ -38,7 +37,7 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
         {
             if (MethodInfo.ReturnType != typeof(IEnumerator))
                 continue;
-            
+
             var load = MethodInfo.GetCustomAttribute<LoadAttribute>();
             LoadMode? mode = null;
             if (Enum.TryParse(MethodInfo.Name, out LoadMode OutMode))
@@ -51,14 +50,12 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
                 continue;
             }
 
-            if (mode != null )
-            {
+            if (mode != null)
                 Loads.Add(new LoadAttribute
                 {
                     Mode = (LoadMode)mode,
                     Enumerator = MethodInfo.Invoke(null, null) as IEnumerator
                 });
-            }
         }
 
         Info($"Statically Initialized Class {type}", "LoadAttribute");
