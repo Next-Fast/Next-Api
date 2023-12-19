@@ -3,7 +3,7 @@ using NextShip.Api.Bases;
 using NextShip.Api.UI;
 using UnityEngine;
 
-namespace NextShip;
+namespace NextShip.Manager;
 
 [Il2CppRegister]
 public class NextManager : MonoBehaviour

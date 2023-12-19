@@ -13,4 +13,8 @@ public record NextInfo
     public string PUID;
 
     public RoleBase Role;
+
+    public float GhostSpeed;
+
+    public float BodySpeed;
 }

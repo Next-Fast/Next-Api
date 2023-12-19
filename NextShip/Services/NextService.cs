@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using NextShip.Api.Interfaces;
 
-namespace NextShip;
+namespace NextShip.Services;
 
 public class NextService : INextService
 {

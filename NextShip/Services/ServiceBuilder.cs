@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using NextShip.Api.Interfaces;
 
-namespace NextShip;
+namespace NextShip.Services;
 
 public class ServiceBuilder : IServiceBuilder
 {

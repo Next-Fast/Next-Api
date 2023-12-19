@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using NextShip.Api.Interfaces;
 
 namespace NextShip.Manager;
@@ -9,7 +10,9 @@ public class EventManager : IEventManager
 {
     public static EventManager _eventManager = Main._Service.Get<EventManager>();
 
-    private readonly List<INextEvent> RegisterEvents = new();
+    private readonly List<INextEvent> RegisterEvents = [];
+
+    private readonly HashSet<IEventListener> EventListeners = [];
 
     public void RegisterEvent(INextEvent @event)
     {
@@ -23,10 +26,19 @@ public class EventManager : IEventManager
         RegisterEvents.Remove(@event);
     }
 
-    public void Call(INextEvent @event)
+    public void RegisterListener(IEventListener listener) => EventListeners.Add(listener);
+
+    public void UnRegisterListener(IEventListener listener) => EventListeners.Remove(listener);
+
+    public void CallEvent(INextEvent @event)
     {
-        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName)) @event.Call(_event);
+        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName))
+            @event.Call(_event);
     }
+
+    public void CallListener(string name) => EventListeners.Do(n => n.On(name));
+    
+    public void CallListener(INextEvent @event) => EventListeners.Do(n => n.On(@event));
 
     public bool TryGetEvent(string eventName, out INextEvent @event)
     {

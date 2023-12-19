@@ -14,6 +14,7 @@ using NextShip.Cosmetics;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
+using NextShip.Services;
 using BepInExLogger = BepInEx.Logging.Logger;
 
 [assembly: AssemblyFileVersion(Main.VersionString)]
