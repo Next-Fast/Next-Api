@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace NextShip.Api.Roles;
 
-public sealed class SimpleRoleInfo(RoleId id,
+public sealed class SimpleRoleInfo(
+    RoleId id,
     Color color,
     RoleTeam team,
     RoleType type,

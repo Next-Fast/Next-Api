@@ -10,9 +10,9 @@ public class EventManager : IEventManager
 {
     public static EventManager _eventManager = Main._Service.Get<EventManager>();
 
-    private readonly List<INextEvent> RegisterEvents = [];
-
     private readonly HashSet<IEventListener> EventListeners = [];
+
+    private readonly List<INextEvent> RegisterEvents = [];
 
     public void RegisterEvent(INextEvent @event)
     {
@@ -26,9 +26,15 @@ public class EventManager : IEventManager
         RegisterEvents.Remove(@event);
     }
 
-    public void RegisterListener(IEventListener listener) => EventListeners.Add(listener);
+    public void RegisterListener(IEventListener listener)
+    {
+        EventListeners.Add(listener);
+    }
 
-    public void UnRegisterListener(IEventListener listener) => EventListeners.Remove(listener);
+    public void UnRegisterListener(IEventListener listener)
+    {
+        EventListeners.Remove(listener);
+    }
 
     public void CallEvent(INextEvent @event)
     {
@@ -36,9 +42,15 @@ public class EventManager : IEventManager
             @event.Call(_event);
     }
 
-    public void CallListener(string name) => EventListeners.Do(n => n.On(name));
-    
-    public void CallListener(INextEvent @event) => EventListeners.Do(n => n.On(@event));
+    public void CallListener(string name)
+    {
+        EventListeners.Do(n => n.On(name));
+    }
+
+    public void CallListener(INextEvent @event)
+    {
+        EventListeners.Do(n => n.On(@event));
+    }
 
     public bool TryGetEvent(string eventName, out INextEvent @event)
     {

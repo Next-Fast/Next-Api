@@ -16,7 +16,9 @@ public static class Language
             : SupportedLangs.English;
         var str = "";
         str = File.Exists(@"Language\" + pack.languageName + ".dat") ? pack.GetPString(s) : csv.GetCString(s, langId);
-        return replacementDic == null ? str : replacementDic.Aggregate(str, (current, rd) => current.Replace(rd.Key, rd.Value));
+        return replacementDic == null
+            ? str
+            : replacementDic.Aggregate(str, (current, rd) => current.Replace(rd.Key, rd.Value));
     }
 
     public static void Init()
@@ -27,4 +29,3 @@ public static class Language
             pack.Load();
     }
 }
-

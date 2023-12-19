@@ -2,7 +2,6 @@
 using Il2CppInterop.Runtime.InteropTypes;
 using NextShip.Api.Managers;
 using UnityEngine;
-using SystemFile = System.IO;
 using Il2cppFile = Il2CppSystem.IO.File;
 
 namespace NextShip.Api.Utilities;

@@ -2,9 +2,12 @@ namespace NextShip.Api.Bases;
 
 public record NextInfo
 {
+    public float BodySpeed;
     public int clientId;
 
     public string FriendCode;
+
+    public float GhostSpeed;
 
     public PlayerControl PlayerControl;
 
@@ -13,8 +16,4 @@ public record NextInfo
     public string PUID;
 
     public RoleBase Role;
-
-    public float GhostSpeed;
-
-    public float BodySpeed;
 }
