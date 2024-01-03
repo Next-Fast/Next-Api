@@ -2,9 +2,9 @@ using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Hazel;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using InnerNet;
 using NextShip.Api.Config;
+using NextShip.Api.Patches;
 
 namespace NextShip.Api.Extension;
 
@@ -19,12 +19,13 @@ public static class ReactorExtension
 
     public static readonly Dictionary<int, HashSet<Mod>> All_Mod = new();
 
-    public static bool ReactorHandshake;
+    public static bool ReactorHandshake { get; private set; }
 
     public static void UseReactorHandshake()
     {
         ReactorHandshake = true;
         UseModList();
+        _Harmony.PatchAll(typeof(InnerNetClientPatch));
         _Harmony.PatchAll(typeof(ReactorExtension));
     }
 
@@ -35,6 +36,22 @@ public static class ReactorExtension
 
     public static void GetHandshakeInfo()
     {
+    }
+
+    public static void MessageWrite(ref MessageWriter handshakeWriter)
+    {
+        handshakeWriter.Write(((ulong)0x72656163746f72 << 8) | 2);
+
+        // 写入握手模组信息
+        handshakeWriter.WritePacked(HashSet_Mods.Count);
+        foreach (var varMod in HashSet_Mods)
+        {
+            handshakeWriter.Write(varMod.Id);
+            handshakeWriter.Write(varMod.Version);
+            handshakeWriter.Write((ushort)varMod.Flags);
+            if (varMod.Flags.HasFlag(ModFlags.RequireOnAllClients))
+                handshakeWriter.Write(varMod.Name);
+        }
     }
 
     private static void OnPluginLoad(PluginInfo pluginInfo, BasePlugin plugin)
@@ -51,41 +68,13 @@ public static class ReactorExtension
         HashSet_Mods.Add(mod);
     }
 
-    public static void UseModList()
+    private static void UseModList()
     {
         foreach (var existingPlugin in IL2CPPChainloader.Instance.Plugins.Values.Where(existingPlugin =>
                      existingPlugin.Instance != null))
             OnPluginLoad(existingPlugin, (BasePlugin)existingPlugin.Instance);
 
         IL2CPPChainloader.Instance.PluginLoad += (pluginInfo, _, plugin) => OnPluginLoad(pluginInfo, plugin);
-    }
-
-    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetConnectionData))]
-    [HarmonyPostfix]
-    public static void GetConnectionData_Postfix(ref Il2CppStructArray<byte> __result)
-    {
-        if (!ReactorHandshake) return;
-        var handshakeWriter = new MessageWriter(1000);
-
-        // 写入原本握手内容
-        handshakeWriter.Write(__result);
-
-        // 写入反应堆握手版本
-        handshakeWriter.Write(((ulong)0x72656163746f72 << 8) | 2);
-
-        // 写入握手模组信息
-        handshakeWriter.WritePacked(HashSet_Mods.Count);
-        foreach (var varMod in HashSet_Mods)
-        {
-            handshakeWriter.Write(varMod.Id);
-            handshakeWriter.Write(varMod.Version);
-            handshakeWriter.Write((ushort)varMod.Flags);
-            if (varMod.Flags.HasFlag(ModFlags.RequireOnAllClients))
-                handshakeWriter.Write(varMod.Name);
-        }
-
-        __result = handshakeWriter.ToByteArray(true);
-        handshakeWriter.Recycle();
     }
 
     [HarmonyPatch(typeof(InnerNetClient._HandleGameDataInner_d__39),

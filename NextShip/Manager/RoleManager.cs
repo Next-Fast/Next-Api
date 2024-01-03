@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using NextShip.Api.Interfaces;
+using NextShip.Roles;
 
 namespace NextShip.Manager;
 
+#nullable enable
 public sealed class NextRoleManager : IRoleManager
 {
-    public readonly HashSet<IRoleCreator> RoleCreators = new();
-    public readonly List<IRole> Roles = new();
-
-
+    public IRoleCreator? CurrentCreator { get; private set; }
+    
+    public readonly List<IRole> Roles = [];
+    
     public void Register(IRole role)
     {
         Roles.Add(role);
@@ -20,28 +22,40 @@ public sealed class NextRoleManager : IRoleManager
         Roles.Remove(role);
     }
 
-    public void AddCreator(IRoleCreator creator)
+    public FastCreator FastGetCreator()
     {
-        RoleCreators.Add(creator);
+        if (CurrentCreator is FastCreator creator)
+            return creator;
+        
+        var newCreator = new FastCreator();
+        SetCreator(newCreator);
+
+        return newCreator;
+    }
+    
+
+    public void AssignRole(PlayerControl player, IRole role)
+    {
     }
 
-    public void RemoveCreator(IRoleCreator creator)
+    public void Clear()
     {
-        RoleCreators.Remove(creator);
     }
 
-    public T GetRole<T>() where T : IRole
+    public void SetCreator(IRoleCreator creator)
     {
-        return (T)Roles.FirstOrDefault(n => n is T);
+        CurrentCreator?.Dispose();
+        CurrentCreator = null;
+        CurrentCreator = creator;
+    }
+
+    public T? GetRole<T>() where T : class, IRole
+    {
+        return Roles.FirstOrDefault(n => n is T) as T;
     }
 
     public IEnumerable<T> GetRoles<T>() where T : IRole
     {
         return Roles.FindAll(n => n is T).Select(n =>　(T)n);
-    }
-
-    public T GetCreator<T>() where T : IRoleCreator
-    {
-        return (T)RoleCreators.FirstOrDefault(n => n is T);
     }
 }

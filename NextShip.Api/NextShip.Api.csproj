@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <DebugType>embedded</DebugType>
         <RootNamespace>NextShip.Api</RootNamespace>
         <PackageVersion>1.0.0</PackageVersion>
@@ -15,7 +14,7 @@
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.679" Private="false" ExcludeAssets="runtime;native"/>
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.11.28" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" PrivatPeAssets="all" ExcludeAssets="runtime"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.0-2.final"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>

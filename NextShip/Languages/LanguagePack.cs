@@ -78,13 +78,10 @@ public class LanguagePack
     // 创建文件夹
     private static void CTT()
     {
-        FilesManager.CreateDirectory(FPath);
-        if (!(Directory.GetDirectories(FPath).Length > 0 || Directory.GetFiles(FPath).Length > 0) ||
-            !File.Exists(LPath) || !File.Exists(PPath))
-        {
-            CreateTT();
-            Msg("正在创建语言模板", "Language Pack");
-        }
+        if ((Directory.GetDirectories(FPath).Length > 0 || Directory.GetFiles(FPath).Length > 0) &&
+            File.Exists(LPath) && File.Exists(PPath)) return;
+        CreateTT();
+        Msg("正在创建语言模板", "Language Pack");
     }
 
     // 创建语言模板

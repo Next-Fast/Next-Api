@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using BepInEx;
@@ -11,6 +12,7 @@ using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
 using NextShip.Api.Services;
 using NextShip.Cosmetics;
+using NextShip.DIY.Plugins;
 using NextShip.Languages;
 using NextShip.Manager;
 using NextShip.Patches;
@@ -44,7 +46,7 @@ public sealed class NextShip : BasePlugin
 
     public static NextService _Service { get; private set; }
 
-    public static NextShip Instance { get; private set; }
+    public static Main Instance { get; private set; }
 
     public static Assembly RootAssembly { get; private set; }
 
@@ -58,6 +60,8 @@ public sealed class NextShip : BasePlugin
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
 
+        PluginManager.Get().Load();
+        
         Init();
         Get(TISLog);
         CreateService();
@@ -69,8 +73,7 @@ public sealed class NextShip : BasePlugin
         RegisterManager.Registration();
 
         AddComponent<NextManager>().DontDestroyOnLoad();
-
-        FilesManager.Init();
+        
         ServerPath.autoAddServer();
         LanguagePack.Init();
         CustomCosmeticsManager.LoadHat();
@@ -96,11 +99,22 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IRoleManager, NextRoleManager>();
         builder._collection.AddSingleton<IEventManager, EventManager>();
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
+        builder._collection.AddSingleton<IPlayerManager, NextPlayerManager>();
         builder.AddTransient<HttpClient>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
+        builder.Add<HatService>();
+        builder.Add<DataService>();
+        ServiceAdd(builder, RootAssembly);
 
         _Service = NextService.Build(builder);
         ServiceAddAttribute.Registration(_Service._Provider, RootAssembly);
+    }
+
+    private static void ServiceAdd(IServiceBuilder builder, Assembly addAssembly)
+    {
+        var types = addAssembly.GetTypes().Where(n => n.IsDefined(typeof(INextServiceAdd)))
+            .Select(AccessTools.CreateInstance).Select(n => (INextServiceAdd)n);
+        foreach (var varType in types) varType.ServiceAdd(builder);
     }
 }

@@ -92,4 +92,16 @@ public static class TextUtils
     {
         return chars.Aggregate("", (current, c) => current + c);
     }
+    
+    public static string Is(this string text, FileType type)
+    {
+        return text += type switch
+        {
+            FileType.Csv => ".csv",
+            FileType.Json => ".json",
+            FileType.Yaml => ".yaml",
+            FileType.Txt => ".txt",
+            _ => ""
+        };
+    }
 }

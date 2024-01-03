@@ -7,10 +7,10 @@ namespace NextShip.Cosmetics;
 [Load]
 public static class CosmeticsChecks
 {
-    private static readonly string TORFolderName = "TheOtherHats";
+    private const string TORFolderName = "TheOtherHats";
     public static string[] TORHatStrings;
 
-    private static readonly string ExtremeHatFolderName = "ExtremeHat";
+    private const string ExtremeHatFolderName = "ExtremeHat";
 
     public static IEnumerator CheckCosmetics()
     {

@@ -6,7 +6,9 @@ public interface IRoleManager
 
     public void UnRegister(IRole role);
 
-    public void AddCreator(IRoleCreator creator);
+    public void AssignRole(PlayerControl player, IRole role);
 
-    public void RemoveCreator(IRoleCreator creator);
+    public void Clear();
+
+    public void SetCreator(IRoleCreator creator);
 }

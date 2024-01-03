@@ -12,24 +12,13 @@ namespace NextShip.DIY.Plugins;
 
 public class PluginManager : Manager<PluginManager>
 {
-    private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = new();
-    public bool existDirectory;
-    private List<string> PluginPathS = new();
+    private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = [];
+    private List<string> PluginPathS = [];
 
-    public List<ShipPlugin> Plugins = new();
-    private string PluginsPath;
+    public List<ShipPlugin> Plugins = [];
 
-    [Load]
-    public static void Init()
+    public void Load()
     {
-        Get().Load();
-    }
-
-    private void Load()
-    {
-        PluginsPath = FilesManager.GetCreativityDirectory("Plugins").FullName;
-        existDirectory = Directory.Exists(PluginsPath);
-
         LoadPlugins();
     }
 
@@ -98,7 +87,7 @@ public class PluginManager : Manager<PluginManager>
     private List<string> FindPlugins()
     {
         var pluginPaths = new List<string>();
-        var plugins = new DirectoryInfo(PluginsPath);
+        var plugins = new DirectoryInfo(NextPaths.TIS_PluginsPath);
         var fileInfos = plugins.GetFiles();
         fileInfos.Do(n => pluginPaths.Add(n.FullName));
         return pluginPaths;
