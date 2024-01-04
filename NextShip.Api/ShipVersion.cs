@@ -19,7 +19,7 @@ public class ShipVersion
     public int Minor { get; protected set; }
     public int Info { get; protected set; }
 
-    public string? StringText { get; protected set; }
+    public string StringText { get; protected set; }
 
     public void set(int major, int minor, int info)
     {
@@ -41,7 +41,7 @@ public class AmongUsVersion : ShipVersion
     {
     }
 
-    internal AmongUsVersion()
+    private AmongUsVersion()
     {
     }
 

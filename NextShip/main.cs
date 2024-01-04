@@ -99,15 +99,16 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IRoleManager, NextRoleManager>();
         builder._collection.AddSingleton<IEventManager, EventManager>();
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
-        builder._collection.AddSingleton<IPlayerManager, NextPlayerManager>();
         builder.AddTransient<HttpClient>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
         builder.Add<HatService>();
         builder.Add<DataService>();
+        builder.Add<DependentService>();
         ServiceAdd(builder, RootAssembly);
 
         _Service = NextService.Build(builder);
+        _Service.Get<DependentService>().Init();
         ServiceAddAttribute.Registration(_Service._Provider, RootAssembly);
     }
 

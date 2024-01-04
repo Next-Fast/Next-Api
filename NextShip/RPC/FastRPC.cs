@@ -9,54 +9,7 @@ namespace NextShip.RPC;
 
 public class FastRPC
 {
-    public readonly FastReader Reader;
-    public readonly FastWriter Writer;
-
-    public FastRPC()
-    {
-        Writer = new FastWriter();
-        Reader = new FastReader();
-    }
-
-    public class FastWriter
-    {
-        private readonly MessageWriter _writer;
-
-        public FastWriter()
-        {
-            _writer = MessageWriter.Get();
-        }
-
-        public FastWriter(MessageWriter writer)
-        {
-            _writer = writer;
-        }
-
-        public void Write(bool value)
-        {
-            _writer.Write(value);
-        }
-
-        public void Write(int value)
-        {
-            _writer.Write(value);
-        }
-
-        public void Write(float value)
-        {
-            _writer.Write(value);
-        }
-
-        public void Write(string value)
-        {
-            _writer.Write(value);
-        }
-
-        public void Write(byte value)
-        {
-            _writer.Write(value);
-        }
-    }
+    public readonly FastReader Reader = new();
 
     [HarmonyPatch]
     public class FastReader

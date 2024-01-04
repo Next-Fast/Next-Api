@@ -10,7 +10,7 @@ public static class AllCosmeticsCache
     public static readonly List<NamePlateViewData> AllNamePlateViewDatasCache = [];
     public static readonly List<SkinViewData> AllSkinViewDatasCache = [];
     public static readonly List<VisorViewData> AllVisorViewDatasCache = [];
-    public static readonly List<PetBehaviour> AllPetBehavioursCache = new();
+    public static readonly List<PetBehaviour> AllPetBehavioursCache = [];
 
 
     public static bool StartCache(HatManager __instance)
