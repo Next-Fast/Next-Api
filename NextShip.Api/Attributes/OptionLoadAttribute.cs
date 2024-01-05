@@ -6,7 +6,7 @@ namespace NextShip.Api.Attributes;
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class OptionLoad : Attribute
 {
-    public static List<MethodInfo> MethodInfos = new();
+    public static readonly List<MethodInfo> MethodInfos = [];
 
     public static void Registration(Type type)
     {

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NextShip.Api.Enums;
-using NextShip.Cosmetics.Loaders;
-using PowerTools;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -47,7 +45,7 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
         hatData.ViewDataRef = assetRef;
         hatData.CreateAddressableAsset();
-        
+
         AllCosmeticsCache.AllHatViewDatasCache.Add(hatView);
 
         return (hatView, hatData);
@@ -68,7 +66,7 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
         namePlateData.ViewDataRef = assetRef;
         namePlateData.CreateAddressableAsset();
-        
+
         AllCosmeticsCache.AllNamePlateViewDatasCache.Add(namePlateView);
 
         return (namePlateView, namePlateData);
@@ -91,9 +89,9 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
         skinData.ViewDataRef = assetRef;
         skinData.CreateAddressableAsset();
-        
+
         AllCosmeticsCache.AllSkinViewDatasCache.Add(skinView);
-        
+
         return (skinView, skinData);
     }
 
@@ -116,12 +114,12 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
         visorData.ViewDataRef = assetRef;
         visorData.CreateAddressableAsset();
-        
+
         AllCosmeticsCache.AllVisorViewDatasCache.Add(visorView);
-        
+
         return (visorView, visorData);
     }
-    
+
     public (PetBehaviour, PetData) CreatePet(CosmeticsInfo info)
     {
         var petData = ScriptableObject.CreateInstance<PetData>();
@@ -132,7 +130,7 @@ public class CosmeticsCreator(List<Sprite> allSprites)
         visorView.ClimbFrame = Get(info.ClimbResource);
         visorView.IdleFrame = Get(info.FlipResource);
         visorView.LeftIdleFrame = Get(info.BackFlipResource);*/
-        
+
         petData.name = info.Name;
         petData.displayOrder = 99;
         petData.ProductId = info.Id;
@@ -142,9 +140,9 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
         petData.PetPrefabRef = assetRef;
         petData.CreateAddressableAsset();
-        
+
         AllCosmeticsCache.AllPetBehavioursCache.Add(Behaviour);
-        
+
         return (Behaviour, petData);
     }
 }

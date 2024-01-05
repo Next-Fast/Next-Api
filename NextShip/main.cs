@@ -1,5 +1,6 @@
+using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using BepInEx;
@@ -37,10 +38,14 @@ public sealed class NextShip : BasePlugin
     // 模组版本
     public const string VersionString = "1.0.0";
 
+    public const string BepInExVersion = "682";
+
     // Among Us游玩版本
-    public static readonly AmongUsVersion SupportVersion = new(2023, 10, 24);
+    public static readonly AmongUsVersion SupportVersion = new(2023, 11, 28);
 
     internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
+
+    public static List<INextAdd> Adds;
 
     private ManualLogSource TISLog;
 
@@ -60,11 +65,13 @@ public sealed class NextShip : BasePlugin
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
 
-        PluginManager.Get().Load();
-        
-        Init();
         Get(TISLog);
+        Init();
+
+        PluginManager.Get().Load();
+
         CreateService();
+        LoadDependent();
 
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
@@ -73,7 +80,7 @@ public sealed class NextShip : BasePlugin
         RegisterManager.Registration();
 
         AddComponent<NextManager>().DontDestroyOnLoad();
-        
+
         ServerPath.autoAddServer();
         LanguagePack.Init();
         CustomCosmeticsManager.LoadHat();
@@ -88,6 +95,10 @@ public sealed class NextShip : BasePlugin
         Info($"Support Among Us Version {SupportVersion}", "Info");
         Info("Hash: ", "Info");
         Info($"欢迎游玩{ModName} | Welcome to{ModName}", "Info");
+
+        Adds = INextAdd.GetAdds(RootAssembly);
+        foreach (var varType in Adds)
+            varType.ConfigBind(Instance.Config);
     }
 
 
@@ -99,23 +110,30 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IRoleManager, NextRoleManager>();
         builder._collection.AddSingleton<IEventManager, EventManager>();
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
+        builder._collection.AddSingleton<INextOptionManager, NextOptionManager>();
         builder.AddTransient<HttpClient>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
         builder.Add<HatService>();
         builder.Add<DataService>();
         builder.Add<DependentService>();
-        ServiceAdd(builder, RootAssembly);
+
+        foreach (var varType in Adds)
+            varType.ServiceAdd(builder);
 
         _Service = NextService.Build(builder);
-        _Service.Get<DependentService>().Init();
         ServiceAddAttribute.Registration(_Service._Provider, RootAssembly);
     }
 
-    private static void ServiceAdd(IServiceBuilder builder, Assembly addAssembly)
+    private static void LoadDependent()
     {
-        var types = addAssembly.GetTypes().Where(n => n.IsDefined(typeof(INextServiceAdd)))
-            .Select(AccessTools.CreateInstance).Select(n => (INextServiceAdd)n);
-        foreach (var varType in types) varType.ServiceAdd(builder);
+        var service = _Service.Get<DependentService>();
+        service.SetPath(new DirectoryInfo(NextPaths.TIS_Lib));
+
+        foreach (var varType in Adds)
+            varType.DependentAdd(service);
+
+        service.BuildDependent();
+        service.LoadDependent();
     }
 }

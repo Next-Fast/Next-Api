@@ -1,8 +1,10 @@
+using NextShip.Api.Interfaces;
+
 namespace NextShip.Api.Bases;
 
 public abstract class ShipPlugin
 {
-    public List<PluginCompatibility> PluginCompatibilities = new();
+    public List<PluginCompatibility> PluginCompatibilities = [];
     public ShipPluginInfo ShipPluginInfo = null!;
 
     public ShipPlugin()
@@ -15,4 +17,8 @@ public abstract class ShipPlugin
     }
 
     public abstract void Load();
+
+    public virtual void NextAdd(List<INextAdd> adds)
+    {
+    }
 }

@@ -15,5 +15,4 @@ public static class HatManagerPatch
 
         TaskUtils.StartTask(() => initialized = AllCosmeticsCache.StartCache(__instance));
     }
-    
 }

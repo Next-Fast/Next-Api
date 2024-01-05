@@ -10,15 +10,14 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using NextShip.Api.Config;
 using NextShip.Api.Enums;
-using NextShip.Manager;
 using UnityEngine;
 
 namespace NextShip.Cosmetics.Loaders;
 
 public class TORCosmeticsLoader : CosmeticsLoader
 {
-    private readonly CosmeticType CosmeticType = CosmeticType.Hat;
     private const string HatDirectoryName = "hats";
+    private readonly CosmeticType CosmeticType = CosmeticType.Hat;
 
     public override CosmeticType GetCosmeticType()
     {

@@ -1,11 +1,8 @@
-namespace NextShip.Options;
+namespace NextShip.Options.OptionValue;
 
-public class FloatOptionValue : OptionValue<float>
+public class FloatOptionValueBase(float defaultValue, float min, float step, float max)
+    : OptionValueBase<float>(defaultValue, min, step, max)
 {
-    public FloatOptionValue(float defaultValue, float min, float step, float max) : base(defaultValue, min, step, max)
-    {
-    }
-
     public override void decrease()
     {
         if (Value - Step < Min) return;

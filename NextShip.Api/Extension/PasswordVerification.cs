@@ -5,9 +5,8 @@ namespace NextShip.Api.Extension;
 
 public class PasswordVerification
 {
-    public static bool Enable { get; private set; }
-
     public static int Password;
+    public static bool Enable { get; private set; }
 
     public static void UseVerification()
     {

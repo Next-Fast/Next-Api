@@ -5,25 +5,36 @@ namespace NextShip.Api.RPCs;
 #nullable enable
 public class FastRpcWriter(MessageWriter? writer)
 {
-    private FastRpcWriter() : this(MessageWriter.Get()) { }
-    
-    private FastRpcWriter(SendOption option) : this(MessageWriter.Get(option)) { }
+    private byte CallId;
+
+    private int msgCount;
+
+    private SendOption Option = SendOption.None;
+
+    private int SendTargetId;
 
     private List<int> targetIds;
 
     private int targetObjectId;
 
-    private SendOption Option = SendOption.None;
+    private FastRpcWriter() : this(MessageWriter.Get())
+    {
+    }
 
-    private int msgCount = 0;
+    private FastRpcWriter(SendOption option) : this(MessageWriter.Get(option))
+    {
+    }
 
-    private byte CallId;
-    
-    public static FastRpcWriter StartNew() =>
-        new FastRpcWriter();
+    public static FastRpcWriter StartNew()
+    {
+        return new FastRpcWriter();
+    }
 
-    public static FastRpcWriter StartNew(byte call, SendOption option = SendOption.None) =>
-        new(AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer!.PlayerId, call, option));
+    public static FastRpcWriter StartNew(byte call, SendOption option = SendOption.None)
+    {
+        return new FastRpcWriter(
+            AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer!.PlayerId, call, option));
+    }
 
     public void StartSendAllRPCWriter()
     {
@@ -33,11 +44,69 @@ public class FastRpcWriter(MessageWriter? writer)
         StartRPCMessage();
     }
 
-    public void Set(SendOption option) => Option = option;
+    public void StartSendToPlayerRPCWriter()
+    {
+        Clear();
+        writer = MessageWriter.Get(Option);
+        StartDataToPlayerMessage();
+        StartRPCMessage();
+    }
 
-    public void SetTargetObjectId(int id) => targetObjectId = id;
+    private void StartNextContactWriter(params PlayerControl[] targetPlayers)
+    {
+        Clear();
 
-    public void SetRpcCallId(byte id) => CallId = id;
+        writer = MessageWriter.Get(Option = SendOption.Reliable);
+
+        StartMessage((byte)MessageFlags.NextContact);
+
+        Write(PlayerControl.LocalPlayer.PlayerId);
+
+        var players = targetPlayers.ToList();
+        players.Remove(PlayerControl.LocalPlayer);
+
+        WritePacked(players.Count);
+
+        if (players.Count == PlayerControl.AllPlayerControls.Count - 1)
+            return;
+
+        foreach (var player in targetPlayers) Write(player.PlayerId);
+    }
+
+    public void SetSendOption(SendOption option)
+    {
+        Option = option;
+    }
+
+    public void SetTargetObjectId(int id)
+    {
+        targetObjectId = id;
+    }
+
+    public void SetRpcCallId(byte id)
+    {
+        CallId = id;
+    }
+
+    public void SetTargetId(int id)
+    {
+        SendTargetId = id;
+    }
+
+    public void Set(SendOption option = SendOption.None, byte callId = byte.MaxValue, int targetId = -1,
+        int? objId = null)
+    {
+        Option = option;
+
+        if (callId != byte.MaxValue)
+            CallId = callId;
+
+        if (targetId != -1)
+            SendTargetId = targetId;
+
+        if (objId != null)
+            targetObjectId = (int)objId;
+    }
 
     public void Clear()
     {
@@ -45,7 +114,7 @@ public class FastRpcWriter(MessageWriter? writer)
         Recycle();
         writer = null;
     }
-    
+
     public void Write(bool value)
     {
         writer?.Write(value);
@@ -75,7 +144,7 @@ public class FastRpcWriter(MessageWriter? writer)
     {
         writer?.WritePacked(value);
     }
-    
+
     public void WritePacked(uint value)
     {
         writer?.WritePacked(value);
@@ -91,8 +160,7 @@ public class FastRpcWriter(MessageWriter? writer)
     {
         StartMessage((byte)MessageFlags.DataToPlayer);
         Write(AmongUsClient.Instance.GameId);
-        WritePacked(targetIds[0]);
-        targetIds.RemoveAt(0);
+        WritePacked(SendTargetId);
     }
 
     private void StartRPCMessage()
@@ -107,7 +175,7 @@ public class FastRpcWriter(MessageWriter? writer)
         writer?.StartMessage(flag);
         msgCount++;
     }
-    
+
     public void EndMessage()
     {
         writer?.EndMessage();
@@ -116,10 +184,7 @@ public class FastRpcWriter(MessageWriter? writer)
 
     public void EndAllMessage()
     {
-        while (msgCount > 0)
-        {
-            EndMessage();
-        }
+        while (msgCount > 0) EndMessage();
     }
 
     public void Recycle()
@@ -138,7 +203,7 @@ public class FastRpcWriter(MessageWriter? writer)
     {
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    
+
     public void Send()
     {
         AmongUsClient.Instance.connection.Send(writer);

@@ -8,9 +8,9 @@ namespace NextShip.Cosmetics;
 public static class CosmeticsChecks
 {
     private const string TORFolderName = "TheOtherHats";
-    public static string[] TORHatStrings;
 
     private const string ExtremeHatFolderName = "ExtremeHat";
+    public static string[] TORHatStrings;
 
     public static IEnumerator CheckCosmetics()
     {

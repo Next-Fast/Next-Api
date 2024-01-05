@@ -24,5 +24,7 @@ public enum MessageFlags : byte
     SetGameSession,
     SetActivePodType,
     QueryPlatformIds,
-    QueryLobbyInfo
+    QueryLobbyInfo,
+
+    NextContact = 51
 }

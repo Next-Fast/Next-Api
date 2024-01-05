@@ -1,11 +1,8 @@
-namespace NextShip.Options;
+namespace NextShip.Options.OptionValue;
 
-public class IntOptionValue : OptionValue<int>
+public class IntOptionValueBase(int defaultValue, int min, int step, int max)
+    : OptionValueBase<int>(defaultValue, min, step, max)
 {
-    public IntOptionValue(int defaultValue, int min, int step, int max) : base(defaultValue, min, step, max)
-    {
-    }
-
     public override void decrease()
     {
         if (Value - Step < Min) return;

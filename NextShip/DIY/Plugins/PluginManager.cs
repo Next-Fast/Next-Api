@@ -6,7 +6,6 @@ using System.Reflection;
 using HarmonyLib;
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
-using NextShip.Manager;
 
 namespace NextShip.DIY.Plugins;
 
@@ -75,6 +74,7 @@ public class PluginManager : Manager<PluginManager>
         try
         {
             pluginTuple.Item3.Load();
+            pluginTuple.Item3.NextAdd(Main.Adds);
             Info($"Name:{shipPluginInfo.Name} . Version:{shipPluginInfo.Version} . Id:{shipPluginInfo.Id} 运行成功 ",
                 filename: MethodUtils.GetClassName());
         }

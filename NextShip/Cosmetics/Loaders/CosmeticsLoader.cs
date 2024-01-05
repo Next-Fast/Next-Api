@@ -8,16 +8,15 @@ namespace NextShip.Cosmetics.Loaders;
 
 public abstract class CosmeticsLoader
 {
+    public const string HatJsonName = "CustomHats.json";
     public readonly List<CosmeticsInfo> AllCosmeticsInfo;
     public readonly List<HatViewData> AllHat;
     public readonly List<NamePlateViewData> AllNamePlate;
     public readonly List<Sprite> AllSprite;
+    public readonly Dictionary<string, Dictionary<HatData, HatViewData>> Hats = new();
 
 
     public List<VisorViewData> AllVisor;
-
-    public const string HatJsonName = "CustomHats.json";
-    public readonly Dictionary<string, Dictionary<HatData, HatViewData>> Hats = new();
 
     protected CosmeticsLoader()
     {

@@ -22,9 +22,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+
         <PackageReference Include="Csv" Version="2.0.93"/>
         <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098" PrivateAssets="all"/>
-        <PackageReference Include="Downloader" Version="3.0.6"/>
+        <PackageReference Include="Downloader" Version="3.1.0-beta"/>
+
         <!--nuget.bepinex.dev 的包                                       -->
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.682" Private="false" ExcludeAssets="runtime;native"/>
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.11.28" PrivateAssets="all"/>

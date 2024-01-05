@@ -19,14 +19,16 @@ public static class InnerNetClientPatch
 
         if (PasswordVerification.Enable)
             PasswordVerification.Write(ref Writer);
-        
+
         var bytes = Writer.ToByteArray(true);
         Writer.Recycle();
         return bytes;
     }
-    
+
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetConnectionData))]
     [HarmonyPostfix]
-    public static void GetConnectionData_Postfix(ref Il2CppStructArray<byte> __result) =>
+    public static void GetConnectionData_Postfix(ref Il2CppStructArray<byte> __result)
+    {
         __result = GetDataByte(__result);
+    }
 }

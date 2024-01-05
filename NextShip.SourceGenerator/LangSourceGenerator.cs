@@ -1,9 +1,11 @@
-namespace NextShip.Api.SourceGenerators;
+using Microsoft.CodeAnalysis;
 
-/*[Generator(LanguageNames.CSharp)]
+namespace NextShip.SourceGenerator;
+
+[Generator(LanguageNames.CSharp)]
 public class LangSourceGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
     }
-}*/
+}

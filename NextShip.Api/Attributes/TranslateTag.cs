@@ -7,8 +7,8 @@ public class TranslateTag : Attribute
 
     public readonly string Tag;
 
-    public Dictionary<SupportedLangs, string> Translate = new();
-    public SupportedLangs VanillaLang;
+    public readonly Dictionary<SupportedLangs, string> Translate = new();
+    public readonly SupportedLangs VanillaLang;
 
 
     public TranslateTag(string tag = "None", SupportedLangs Lang = 0, string VanillaText = "")

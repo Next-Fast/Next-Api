@@ -8,10 +8,9 @@ namespace NextShip.Manager;
 #nullable enable
 public sealed class NextRoleManager : IRoleManager
 {
-    public IRoleCreator? CurrentCreator { get; private set; }
-    
     public readonly List<IRole> Roles = [];
-    
+    public IRoleCreator? CurrentCreator { get; private set; }
+
     public void Register(IRole role)
     {
         Roles.Add(role);
@@ -22,17 +21,6 @@ public sealed class NextRoleManager : IRoleManager
         Roles.Remove(role);
     }
 
-    public FastCreator FastGetCreator()
-    {
-        if (CurrentCreator is FastCreator creator)
-            return creator;
-        
-        var newCreator = new FastCreator();
-        SetCreator(newCreator);
-
-        return newCreator;
-    }
-    
 
     public void AssignRole(PlayerControl player, IRole role)
     {
@@ -47,6 +35,17 @@ public sealed class NextRoleManager : IRoleManager
         CurrentCreator?.Dispose();
         CurrentCreator = null;
         CurrentCreator = creator;
+    }
+
+    public FastCreator FastGetCreator()
+    {
+        if (CurrentCreator is FastCreator creator)
+            return creator;
+
+        var newCreator = new FastCreator();
+        SetCreator(newCreator);
+
+        return newCreator;
     }
 
     public T? GetRole<T>() where T : class, IRole

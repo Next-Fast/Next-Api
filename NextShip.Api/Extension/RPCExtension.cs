@@ -4,6 +4,5 @@ public class RPCExtension
 {
     public static void UseFastRPC()
     {
-        
     }
 }

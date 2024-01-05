@@ -1,6 +1,6 @@
 using System;
 using NextShip.Api.Attributes;
-using NextShip.Options;
+using NextShip.Api.Bases;
 using TMPro;
 using UnityEngine;
 

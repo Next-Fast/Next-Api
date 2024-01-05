@@ -92,7 +92,7 @@ public static class TextUtils
     {
         return chars.Aggregate("", (current, c) => current + c);
     }
-    
+
     public static string Is(this string text, FileType type)
     {
         return text += type switch

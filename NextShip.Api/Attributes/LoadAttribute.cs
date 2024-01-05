@@ -6,11 +6,11 @@ namespace NextShip.Api.Attributes;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Constructor)]
 public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
 {
-    public static List<LoadAttribute> Loads = new();
+    public static readonly List<LoadAttribute> Loads = [];
 
     public static string[] MethodNames = EnumHelper.GetAllNames<LoadMode>();
 
-    public IEnumerator? Enumerator;
+    public IEnumerator Enumerator;
     public LoadMode Mode = mode;
 
     public static void Registration(Type type)
@@ -19,7 +19,7 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
 
         if (type.GetCustomAttribute<LoadAttribute>() == null) return;
 
-        ConstructorInfo? constructor;
+        ConstructorInfo constructor;
         if (
             (
                 constructor = type.GetConstructor

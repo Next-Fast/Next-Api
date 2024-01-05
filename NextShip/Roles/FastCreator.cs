@@ -9,7 +9,7 @@ namespace NextShip.Roles;
 public class FastCreator : IRoleCreator
 {
     public readonly List<IRole> AllRole = [];
-    
+
     public void Dispose()
     {
         Clear();

@@ -8,7 +8,6 @@ using HarmonyLib;
 using NextShip.Api.Config;
 using NextShip.Api.Enums;
 using NextShip.Cosmetics.Loaders;
-using NextShip.Manager;
 using UnityEngine;
 
 namespace NextShip.Cosmetics;
@@ -16,7 +15,7 @@ namespace NextShip.Cosmetics;
 public static partial class CustomCosmeticsManager
 {
     public const string RepoFile = "CosmeticRepo";
-    
+
     public static readonly Dictionary<string, CosmeticsInfo> AllCustomCosmeticNameAndInfo = new();
     public static readonly Dictionary<string, CosmeticRepoType> AllCosmeticRepoRepo = new();
 
@@ -36,7 +35,7 @@ public static partial class CustomCosmeticsManager
         Path.Combine(NextPaths.CreativityPath, RepoFile.Is(FileType.Json));
 
     private static readonly CosmeticsConfig[] ModConfig =
-    Array.Empty<CosmeticsConfig>();
+        Array.Empty<CosmeticsConfig>();
 
     public static Sprite GetSprite(string name)
     {
@@ -55,7 +54,7 @@ public static partial class CustomCosmeticsManager
             foreach (var config in from config in configs
                      let regex =
                          MyRegex()
-                                   where regex.IsMatch(config.RepoURL)
+                     where regex.IsMatch(config.RepoURL)
                      select config)
             {
                 Load(config.CosmeticRepoType);
