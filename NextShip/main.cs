@@ -8,9 +8,11 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NextShip.Api.Attributes;
 using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
+using NextShip.Api.RPCs;
 using NextShip.Api.Services;
 using NextShip.Cosmetics;
 using NextShip.DIY.Plugins;
@@ -42,6 +44,8 @@ public sealed class NextShip : BasePlugin
 
     // Among Us游玩版本
     public static readonly AmongUsVersion SupportVersion = new(2023, 11, 28);
+
+    public static readonly ShipVersion Version = new ShipVersion().Parse(VersionString);
 
     internal static readonly ServerManager serverManager = FastDestroyableSingleton<ServerManager>.Instance;
 
@@ -75,6 +79,8 @@ public sealed class NextShip : BasePlugin
 
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
+        FastRPCExtension.UseFastRPC();
+        FastRpcReaderPatch.AddFormAssembly(RootAssembly);
 
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
@@ -112,11 +118,12 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
         builder._collection.AddSingleton<INextOptionManager, NextOptionManager>();
         builder.AddTransient<HttpClient>();
+        builder.AddTransient<GithubAnalyzer>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
-        builder.Add<HatService>();
         builder.Add<DataService>();
         builder.Add<DependentService>();
+        builder.Add<EACService>();
 
         foreach (var varType in Adds)
             varType.ServiceAdd(builder);

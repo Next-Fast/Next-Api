@@ -6,7 +6,11 @@
         <DebugType>embedded</DebugType>
         <RootNamespace>NextShip.Api</RootNamespace>
         <PackageVersion>1.0.0</PackageVersion>
+        <PackageId>NextShip.Api</PackageId>
+        <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/TheIdealShipAU/NextShip</PackageProjectUrl>
         <PackageReadmeFile>APIReadme.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 

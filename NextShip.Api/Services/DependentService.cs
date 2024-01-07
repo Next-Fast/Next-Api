@@ -5,22 +5,36 @@ namespace NextShip.Api.Services;
 public class DependentService(HttpClient _client)
 {
     public readonly HashSet<(Assembly, FileInfo)> Dlls = [];
+    
+    public readonly Queue<string> RepoDownloadDependents = new();
 
     public readonly Queue<(Uri, string)> DownloadDependents = new();
 
     public readonly Queue<(Stream, string)> GenerateDependents = new();
 
     private DirectoryInfo Directory;
+    
     private string RootPath;
 
+    private string RepoURL;
+    
     public void SetPath(DirectoryInfo directoryInfo)
     {
         RootPath = directoryInfo.FullName;
         Directory = directoryInfo;
     }
 
+    public void SetRepoURL(string uri) => RepoURL = uri;
+
     public void BuildDependent()
     {
+        while (RepoDownloadDependents.Count > 0)
+        {
+            var name = RepoDownloadDependents.Dequeue();
+            var url = RepoURL + $"/{name}";
+            DownloadDependents.Enqueue((new Uri(url), name));
+        }
+        
         while (DownloadDependents.Count > 0)
         {
             var (url, name) = DownloadDependents.Dequeue();

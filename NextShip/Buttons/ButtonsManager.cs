@@ -4,8 +4,8 @@ namespace NextShip.Buttons;
 
 public class ButtonsManager
 {
-    public List<ButtonBase> _AllButtons = new();
-    public List<RoleButton> _AllRoleButton = new();
+    public List<ButtonBase> _AllButtons = [];
+    public List<RoleButton> _AllRoleButton = [];
     public static ButtonsManager Instance { get; private set; }
 
     public static ButtonsManager Get()

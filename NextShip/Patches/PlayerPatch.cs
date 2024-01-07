@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using NextShip.Api.Enums;
@@ -17,10 +19,30 @@ public static class PlayerPatch
             return;
     }
 
+    public static readonly List<PlayerVersionInfo> AllPlayerVersionInfos = [];
+    
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     [HarmonyPostfix]
-    public static void OnPlayerJoined()
+    public static void OnPlayerJoined(AmongUsClient __instance)
     {
-        FastRpcWriter.StartNew((byte)SystemRPCFlag.VersionCheck, SendOption.Reliable);
+       var writer = FastRpcWriter.StartNew();
+       writer.SetRpcCallId((byte)SystemRPCFlag.VersionShare);
+       writer.SetTargetObjectId(PlayerControl.LocalPlayer.NetId);
+       writer.SetSendOption(SendOption.Reliable);
+       writer.StartSendAllRPCWriter();
+       writer.Write(PlayerControl.LocalPlayer.PlayerId);
+       Main.Version.Write(writer);
+       writer.Write(Main.BepInExVersion);
+    }
+
+    [FastReadAdd((byte)SystemRPCFlag.VersionShare)]
+    public static void OnVersionShare(MessageReader reader)
+    {
+        var player = PlayerUtils.GetPlayerForId(reader.ReadByte());
+        var version = new ShipVersion().Read(reader);
+        var BepInExVersion = reader.ReadString();
+        AllPlayerVersionInfos.Add(new PlayerVersionInfo(player, version, BepInExVersion));
     }
 }
+
+public record PlayerVersionInfo(PlayerControl Player,ShipVersion Version,string BepInExVersion);

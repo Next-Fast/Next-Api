@@ -1,0 +1,75 @@
+using System.Reflection;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+
+namespace NextShip.Api.RPCs;
+
+public class FastRpcReader
+{
+    public byte CallId;
+    public Action<MessageReader> HandleRpc;
+}
+
+[Harmony]
+public static class FastRpcReaderPatch
+{
+    public static List<FastRpcReader> AllFastRpcReader = [];
+    
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleGameDataInner))]
+    [HarmonyPrefix]
+    public static void InnerNet_ReaderPath([HarmonyArgument(0)] MessageReader reader)
+    {
+        if (AllFastRpcReader.Count <= 0) return;
+        var HandleReader = MessageReader.Get(reader);
+        HandleReader.Position = 0;
+        var tag = reader.Tag;
+        if (reader.Tag != (int)DataFlags.Rpc)
+            return;
+        try
+        {
+            var TargetObjectId = HandleReader.ReadPackedUInt32();
+            var callId = HandleReader.ReadByte();
+            AllFastRpcReader.Where(n => n.CallId == callId).Do(n => n.HandleRpc(MessageReader.Get(HandleReader)));
+        }
+        catch (Exception e)
+        {
+            Exception(e);
+        }
+
+        finally
+        {
+            reader.Recycle();
+        }
+    }
+
+    public static void AddFormAssembly(Assembly assembly)
+    {
+        var types = assembly.GetTypes();
+        foreach (var type in types)
+        {
+            var methods = type.GetMethods().Where(n => n.IsDefined(typeof(FastReadAdd)) && n.IsStatic).ToList();
+            foreach (var method in methods)
+            {
+                var FastReadAdd = method.GetCustomAttribute<FastReadAdd>();
+                if (FastReadAdd == null)
+                    continue;
+
+                if (method.GetGenericArguments()[0] == typeof(MessageReader))
+                {
+                    AllFastRpcReader.Add(new FastRpcReader
+                    {
+                        CallId = FastReadAdd.CallId,
+                        HandleRpc = n => method.Invoke(null, [n])
+                    });
+                }
+            }
+        }
+    }
+}
+
+[AttributeUsage(AttributeTargets.Method)]
+public class FastReadAdd(byte callId) : Attribute
+{
+    public byte CallId = callId;
+}

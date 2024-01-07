@@ -15,7 +15,7 @@ public class FastRpcWriter(MessageWriter? writer)
 
     private List<int> targetIds;
 
-    private int targetObjectId;
+    private uint targetObjectId;
 
     private FastRpcWriter() : this(MessageWriter.Get())
     {
@@ -78,7 +78,7 @@ public class FastRpcWriter(MessageWriter? writer)
         Option = option;
     }
 
-    public void SetTargetObjectId(int id)
+    public void SetTargetObjectId(uint id)
     {
         targetObjectId = id;
     }
@@ -94,7 +94,7 @@ public class FastRpcWriter(MessageWriter? writer)
     }
 
     public void Set(SendOption option = SendOption.None, byte callId = byte.MaxValue, int targetId = -1,
-        int? objId = null)
+        uint? objId = null)
     {
         Option = option;
 
@@ -105,7 +105,7 @@ public class FastRpcWriter(MessageWriter? writer)
             SendTargetId = targetId;
 
         if (objId != null)
-            targetObjectId = (int)objId;
+            targetObjectId = (uint)objId;
     }
 
     public void Clear()

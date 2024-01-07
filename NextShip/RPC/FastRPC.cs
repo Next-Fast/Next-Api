@@ -65,30 +65,6 @@ public class FastRPC
         {
             return _Reader.ReadByte();
         }
-
-        [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleGameDataInner))]
-        [HarmonyPostfix]
-        public static void InnerNet_ReaderPath([HarmonyArgument(0)] MessageReader reader)
-        {
-            if (AllReader.Count <= 0) return;
-            var HandleReader = MessageReader.Get(reader);
-            if (reader.Tag == 2)
-                AllReader.Do(n => n.ParentReader = HandleReader);
-            try
-            {
-                var id = HandleReader.ReadByte();
-                AllReader.Where(n => n.TargetId != null && n.TargetId == id && n.HandleRpc != null)
-                    .Do(n => n.HandleRpc(id, HandleReader));
-            }
-            catch (Exception e)
-            {
-                Exception(e);
-            }
-
-            finally
-            {
-                reader.Recycle();
-            }
-        }
+        
     }
 }
