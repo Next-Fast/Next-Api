@@ -16,11 +16,11 @@ namespace NextShip.DIY.Plugins;
 public class PluginManager : Manager<PluginManager>
 {
     private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = [];
-    private List<string> PluginPathS = [];
     internal List<PluginLoadInfo> PluginLoadInfos = [];
+    private readonly List<string> PluginPathS = [];
 
     public List<ShipPlugin> Plugins = [];
-    
+
 
     public void InitPlugins()
     {
@@ -30,11 +30,9 @@ public class PluginManager : Manager<PluginManager>
 
     public void OnServiceBuild(ServiceBuilder serviceBuilder)
     {
-        foreach (var plugin in  PluginLoadInfos)
-        {
+        foreach (var plugin in PluginLoadInfos)
             INextAdd.GetAdds(plugin._Assembly).Do(n => n.ServiceAdd(serviceBuilder));
-        }
-        
+
         serviceBuilder._collection.AddActivatedSingleton(provider =>
             ActivatorUtilities.CreateInstance<PluginLoadService>(provider, this));
     }

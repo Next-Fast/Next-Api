@@ -5,19 +5,17 @@ namespace NextShip.Api.Extension;
 public static class ModStampExtension
 {
     private static bool Added;
+
     public static void UseModStamp()
     {
         if (Added)
             return;
-        
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
+
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
-            if (scene.name == "MainMenu")
-            {
-                ModManager.Instance.ShowModStamp();
-            }
+            if (scene.name == "MainMenu") ModManager.Instance.ShowModStamp();
         }));
-        
+
         Added = true;
     }
 }

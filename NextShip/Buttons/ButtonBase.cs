@@ -20,12 +20,12 @@ public class ButtonBase
     public ButtonBase Create(string _name = "", GameObject cloneTarget = null, ActionButton _ActionButton = null,
         Action action = null)
     {
-        this.name = _name;
+        name = _name;
         if (cloneTarget != null) ButtonGameObject = Object.Instantiate(cloneTarget);
 
         if (action != null) Action = action;
 
-        if (_ActionButton != null) this.ActionButton = _ActionButton;
+        if (_ActionButton != null) ActionButton = _ActionButton;
         return this;
     }
 }

@@ -26,11 +26,6 @@ public sealed class NextRoleManager : IRoleManager
     {
     }
 
-    public void CheckRoles()
-    {
-        
-    }
-
     public void Clear()
     {
     }
@@ -40,6 +35,10 @@ public sealed class NextRoleManager : IRoleManager
         CurrentCreator?.Dispose();
         CurrentCreator = null;
         CurrentCreator = creator;
+    }
+
+    public void CheckRoles()
+    {
     }
 
     public FastCreator FastGetCreator()

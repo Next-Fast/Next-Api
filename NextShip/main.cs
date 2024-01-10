@@ -78,6 +78,7 @@ public sealed class NextShip : BasePlugin
 
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
+        ModStampExtension.UseModStamp();
         FastRPCExtension.UseFastRPC();
         FastRpcReaderPatch.AddFormAssembly(RootAssembly);
 
@@ -112,9 +113,10 @@ public sealed class NextShip : BasePlugin
         manager.InitPlugins();
         OnBuilder += manager.OnServiceBuild;
     }
-    
+
     public static void AddOnBuild()
-    {}
+    {
+    }
 
     private static void CreateService()
     {

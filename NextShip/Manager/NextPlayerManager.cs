@@ -24,9 +24,13 @@ public class NextPlayerManager : IPlayerManager
         info.IsHost = AmongUsClient.Instance.HostId == info.clientId;
         info.IsLocal = CachedPlayer.LocalPlayer?.PlayerControl == player;
         return info;
-        bool IsInfo(NextInfo nextInfo) => nextInfo.PlayerControl == player || nextInfo.PlayerId == player.PlayerId;
+
+        bool IsInfo(NextInfo nextInfo)
+        {
+            return nextInfo.PlayerControl == player || nextInfo.PlayerId == player.PlayerId;
+        }
     }
-    
+
     public NextInfo CreateOrGetSetPlayerInfo(ClientData data)
     {
         var info = PlayerInfos.Exists(IsInfo) ? PlayerInfos.First(IsInfo) : new NextInfo();
@@ -42,16 +46,22 @@ public class NextPlayerManager : IPlayerManager
         info.IsHost = AmongUsClient.Instance.HostId == data.Id;
         info.IsLocal = CachedPlayer.LocalPlayer?.PlayerControl == data.Character;
         return info;
-        bool IsInfo(NextInfo nextInfo) => nextInfo.clientId == data.Id || nextInfo.PlayerControl == data.Character;
+
+        bool IsInfo(NextInfo nextInfo)
+        {
+            return nextInfo.clientId == data.Id || nextInfo.PlayerControl == data.Character;
+        }
     }
 
     public void InitPlayer(PlayerControl player)
     {
-        
     }
 
-    public bool IsHost(PlayerControl player) => PlayerInfos.First(n => n.PlayerControl == player).IsHost;
-        
+    public bool IsHost(PlayerControl player)
+    {
+        return PlayerInfos.First(n => n.PlayerControl == player).IsHost;
+    }
+
 
     public bool TryGetPlayer(PlayerControl player, out NextInfo? info)
     {

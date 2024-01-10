@@ -8,12 +8,11 @@ namespace NextShip.Roles;
 
 public class FastCreator : IRoleCreator
 {
+    private readonly NextRoleManager _RoleManager = Main._Service.Get<NextRoleManager>();
     public readonly List<IRole> AllRole = [];
 
-    private readonly NextRoleManager _RoleManager = Main._Service.Get<NextRoleManager>();
-
     private List<IRole> enableRoles = [];
-    
+
     public void Dispose()
     {
         Clear();
@@ -44,6 +43,6 @@ public class FastCreator : IRoleCreator
 
     private void SetList()
     {
-        enableRoles= _RoleManager.Roles.Where(n => n.EnableAssign).ToList();
+        enableRoles = _RoleManager.Roles.Where(n => n.EnableAssign).ToList();
     }
 }

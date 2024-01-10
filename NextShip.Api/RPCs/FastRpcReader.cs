@@ -15,7 +15,7 @@ public class FastRpcReader
 public static class FastRpcReaderPatch
 {
     public static List<FastRpcReader> AllFastRpcReader = [];
-    
+
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleGameDataInner))]
     [HarmonyPrefix]
     public static void InnerNet_ReaderPath([HarmonyArgument(0)] MessageReader reader)
@@ -56,13 +56,11 @@ public static class FastRpcReaderPatch
                     continue;
 
                 if (method.GetGenericArguments()[0] == typeof(MessageReader))
-                {
                     AllFastRpcReader.Add(new FastRpcReader
                     {
                         CallId = FastReadAdd.CallId,
                         HandleRpc = n => method.Invoke(null, [n])
                     });
-                }
             }
         }
     }

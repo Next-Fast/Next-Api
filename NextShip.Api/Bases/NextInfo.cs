@@ -6,34 +6,34 @@ namespace NextShip.Api.Bases;
 public record NextInfo
 {
     public float BodySpeed;
-    
-    public int clientId;
-
-    public byte PlayerId;
-
-    public string FriendCode;
-
-    public string PlayerName;
-    
-    public uint PlayerLevel;
-
-    public int ColorId;
-    
-    public float GhostSpeed;
-
-    public PlayerControl PlayerControl;
 
     public ClientData ClientData;
 
-    public GameData.PlayerInfo PlayerInfo;
+    public int clientId;
 
-    public string PUID;
+    public int ColorId;
 
-    public RoleBase RoleBase;
+    public string FriendCode;
 
-    public IRole Role;
+    public float GhostSpeed;
 
     public bool IsHost;
 
     public bool IsLocal;
+
+    public PlayerControl PlayerControl;
+
+    public byte PlayerId;
+
+    public GameData.PlayerInfo PlayerInfo;
+
+    public uint PlayerLevel;
+
+    public string PlayerName;
+
+    public string PUID;
+
+    public IRole Role;
+
+    public RoleBase RoleBase;
 }

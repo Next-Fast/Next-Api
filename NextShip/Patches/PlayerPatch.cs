@@ -11,6 +11,8 @@ namespace NextShip.Patches;
 [Harmony]
 public static class PlayerPatch
 {
+    public static readonly List<PlayerVersionInfo> AllPlayerVersionInfos = [];
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Awake))]
     [HarmonyPostfix]
     public static void PlayerControlAwake_PostfixPatch(PlayerControl __instance)
@@ -22,28 +24,30 @@ public static class PlayerPatch
 
     [HarmonyPatch(typeof(GameData), nameof(GameData.AddPlayer))]
     [HarmonyPostfix]
-    public static void GameDataAddPlayer_Postfix([HarmonyArgument(0)] PlayerControl pc) =>
+    public static void GameDataAddPlayer_Postfix([HarmonyArgument(0)] PlayerControl pc)
+    {
         NextPlayerManager.Instance.CreateOrGetSetPlayerInfo(pc);
+    }
 
     [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetOrCreateClient))]
     [HarmonyPostfix]
-    public static void GetOrCreateClient_Postfix(ClientData __result) =>
+    public static void GetOrCreateClient_Postfix(ClientData __result)
+    {
         NextPlayerManager.Instance.CreateOrGetSetPlayerInfo(__result);
+    }
 
-    public static readonly List<PlayerVersionInfo> AllPlayerVersionInfos = [];
-    
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
     [HarmonyPostfix]
     public static void OnPlayerJoined(AmongUsClient __instance)
     {
-       var writer = FastRpcWriter.StartNew();
-       writer.SetRpcCallId((byte)SystemRPCFlag.VersionShare);
-       writer.SetTargetObjectId(PlayerControl.LocalPlayer.NetId);
-       writer.SetSendOption(SendOption.Reliable);
-       writer.StartSendAllRPCWriter();
-       writer.Write(PlayerControl.LocalPlayer.PlayerId);
-       Main.Version.Write(writer);
-       writer.Write(Main.BepInExVersion);
+        var writer = FastRpcWriter.StartNew();
+        writer.SetRpcCallId((byte)SystemRPCFlag.VersionShare);
+        writer.SetTargetObjectId(PlayerControl.LocalPlayer.NetId);
+        writer.SetSendOption(SendOption.Reliable);
+        writer.StartSendAllRPCWriter();
+        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+        Main.Version.Write(writer);
+        writer.Write(Main.BepInExVersion);
     }
 
     [FastReadAdd((byte)SystemRPCFlag.VersionShare)]
@@ -56,4 +60,4 @@ public static class PlayerPatch
     }
 }
 
-public record PlayerVersionInfo(PlayerControl Player,ShipVersion Version,string BepInExVersion);
+public record PlayerVersionInfo(PlayerControl Player, ShipVersion Version, string BepInExVersion);

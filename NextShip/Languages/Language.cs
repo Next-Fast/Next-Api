@@ -11,7 +11,9 @@ public static class Language
         var langId = TranslationController.InstanceExists
             ? TranslationController.Instance.currentLanguage.languageID
             : SupportedLangs.English;
-        var str = File.Exists(@"Language\" + LanguagePack.languageName + ".dat") ? LanguagePack.GetPString(s) : LanguageCSV.GetCString(s, langId);
+        var str = File.Exists(@"Language\" + LanguagePack.languageName + ".dat")
+            ? LanguagePack.GetPString(s)
+            : LanguageCSV.GetCString(s, langId);
         return replacementDic == null
             ? str
             : replacementDic.Aggregate(str, (current, rd) => current.Replace(rd.Key, rd.Value));

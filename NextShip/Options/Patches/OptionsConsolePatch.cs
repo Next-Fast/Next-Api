@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
-
 using NextShip.UI.Module;
 using UnityEngine;
 

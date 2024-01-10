@@ -11,9 +11,9 @@ internal class PluginLoadInfo
     public Assembly _Assembly { get; set; }
     public Type _Type { get; set; }
     public ShipPlugin Plugin { get; set; }
-    
+
     public ShipPluginInfo PluginInfo { get; set; }
-    
+
     internal void Load()
     {
         Plugin.Load();
