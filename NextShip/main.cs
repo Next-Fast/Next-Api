@@ -1,14 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using NextShip.Api.Attributes;
 using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
@@ -61,6 +60,8 @@ public sealed class NextShip : BasePlugin
 
     private Harmony Harmony { get; } = new(Id);
 
+    private static event Action<ServiceBuilder> OnBuilder;
+
 
     public override void Load()
     {
@@ -69,10 +70,8 @@ public sealed class NextShip : BasePlugin
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
 
-        Get(TISLog);
+        Api.Logs.Log.Get(TISLog);
         Init();
-
-        PluginManager.Get().Load();
 
         CreateService();
         LoadDependent();
@@ -107,6 +106,15 @@ public sealed class NextShip : BasePlugin
             varType.ConfigBind(Instance.Config);
     }
 
+    private static void InitPlugins()
+    {
+        var manager = PluginManager.Get();
+        manager.InitPlugins();
+        OnBuilder += manager.OnServiceBuild;
+    }
+    
+    public static void AddOnBuild()
+    {}
 
     private static void CreateService()
     {
@@ -117,13 +125,14 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IEventManager, EventManager>();
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
         builder._collection.AddSingleton<INextOptionManager, NextOptionManager>();
-        builder.AddTransient<HttpClient>();
+        builder._collection.AddHttpClient();
         builder.AddTransient<GithubAnalyzer>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
         builder.Add<DataService>();
         builder.Add<DependentService>();
-        builder.Add<EACService>();
+
+        OnBuilder?.Invoke(builder);
 
         foreach (var varType in Adds)
             varType.ServiceAdd(builder);

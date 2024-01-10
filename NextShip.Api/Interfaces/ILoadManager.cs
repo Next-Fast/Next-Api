@@ -1,5 +1,3 @@
 namespace NextShip.Api.Interfaces;
 
-public interface ILoadManager
-{
-}
+public interface ILoadManager;

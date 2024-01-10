@@ -6,11 +6,11 @@ namespace NextShip.Services;
 
 public class ServiceBuilder : IServiceBuilder
 {
-    public ServiceCollection _collection { get; private set; }
+    public ServiceCollection _collection { get; set; }
 
     public IServiceBuilder CreateService()
     {
-        _collection = new ServiceCollection();
+        _collection = [];
         return this;
     }
 
@@ -23,6 +23,12 @@ public class ServiceBuilder : IServiceBuilder
     public IServiceBuilder Add(Type type)
     {
         _collection.AddSingleton(type);
+        return this;
+    }
+
+    public IServiceBuilder Add<TService>(Func<IServiceProvider, TService> func) where TService : class
+    {
+        _collection.AddSingleton(func);
         return this;
     }
 

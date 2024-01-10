@@ -1,4 +1,4 @@
-namespace NextShip.Options.OptionValue;
+namespace NextShip.Api.Bases;
 
 public abstract class OptionValueBase<T>(
     T defaultValue,

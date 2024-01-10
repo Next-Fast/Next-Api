@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#nullable enable
+using System.Reflection;
 using YamlDotNet.RepresentationModel;
 
 namespace NextShip.Api.Utilities;

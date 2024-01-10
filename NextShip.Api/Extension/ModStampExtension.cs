@@ -4,7 +4,7 @@ namespace NextShip.Api.Extension;
 
 public static class ModStampExtension
 {
-    private static bool Added = false;
+    private static bool Added;
     public static void UseModStamp()
     {
         if (Added)

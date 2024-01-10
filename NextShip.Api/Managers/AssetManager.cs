@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 namespace NextShip.Api.Managers;

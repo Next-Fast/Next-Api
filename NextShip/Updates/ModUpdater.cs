@@ -13,7 +13,8 @@ public class ModUpdater
     // 模组下载链接
     public string ModDownloadURL;
 
-    public async Task UpdateMod()
+    public Task UpdateMod()
     {
+        return Task.CompletedTask;
     }
 }

@@ -26,6 +26,11 @@ public sealed class NextRoleManager : IRoleManager
     {
     }
 
+    public void CheckRoles()
+    {
+        
+    }
+
     public void Clear()
     {
     }

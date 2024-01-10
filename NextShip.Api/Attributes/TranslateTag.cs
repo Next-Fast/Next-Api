@@ -14,7 +14,7 @@ public class TranslateTag : Attribute
     public TranslateTag(string tag = "None", SupportedLangs Lang = 0, string VanillaText = "")
     {
         Tag = tag;
-        VanillaLang = 0;
+        VanillaLang = Lang;
         Count = AllCount;
         AllCount++;
 

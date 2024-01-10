@@ -10,6 +10,10 @@ public class FastCreator : IRoleCreator
 {
     public readonly List<IRole> AllRole = [];
 
+    private readonly NextRoleManager _RoleManager = Main._Service.Get<NextRoleManager>();
+
+    private List<IRole> enableRoles = [];
+    
     public void Dispose()
     {
         Clear();
@@ -32,8 +36,14 @@ public class FastCreator : IRoleCreator
 
     public IRole GetAssign()
     {
+        SetList();
         var random = new Random();
-        var list = Main._Service.Get<NextRoleManager>().Roles.Where(n => n.EnableAssign).ToList();
+        var list = enableRoles;
         return list[random.Next(list.Count)];
+    }
+
+    private void SetList()
+    {
+        enableRoles= _RoleManager.Roles.Where(n => n.EnableAssign).ToList();
     }
 }

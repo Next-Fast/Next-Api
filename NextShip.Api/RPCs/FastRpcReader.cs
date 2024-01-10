@@ -24,11 +24,11 @@ public static class FastRpcReaderPatch
         var HandleReader = MessageReader.Get(reader);
         HandleReader.Position = 0;
         var tag = reader.Tag;
-        if (reader.Tag != (int)DataFlags.Rpc)
+        if (tag != (int)DataFlags.Rpc)
             return;
         try
         {
-            var TargetObjectId = HandleReader.ReadPackedUInt32();
+            HandleReader.ReadPackedUInt32();
             var callId = HandleReader.ReadByte();
             AllFastRpcReader.Where(n => n.CallId == callId).Do(n => n.HandleRpc(MessageReader.Get(HandleReader)));
         }

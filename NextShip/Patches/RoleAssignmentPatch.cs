@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using NextShip.Api.Attributes;
@@ -32,6 +34,24 @@ internal class RoleManagerPatch
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     public static void SelectRoles_Postfix(RoleManager __instance)
     {
+        GetPlayerRoleS(out var C, out var I);
+        var CAssign = new Queue<PlayerControl>(C);
+        var IAssign = new Queue<PlayerControl>(I); 
+        _StartAssign:
+            var player = (CAssign.Count > 0 ? CAssign : IAssign).Dequeue();
+            var _creator = _nextRoleManager.FastGetCreator();
+            var role = _creator.GetAssign();
+            _nextRoleManager.AssignRole(player, role);
+            if (IAssign.Count > 0)
+                goto _StartAssign;
+    }
+
+    private static void GetPlayerRoleS(out PlayerControl[] C, out PlayerControl[] I)
+    {
+        var ListC = CachedPlayer.AllPlayers.Where(n => n?.Data.Role.Role == RoleTypes.Crewmate).Select(n =>n.PlayerControl);
+        var ListI = CachedPlayer.AllPlayers.Where(n => n?.Data.Role.Role == RoleTypes.Impostor).Select(n => n.PlayerControl);
+        C = ListC.ToArray();
+        I = ListI.ToArray();
     }
 
     [HarmonyPatch(typeof(GameManager), nameof(GameManager.EndGame))]

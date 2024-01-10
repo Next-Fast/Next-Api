@@ -1,3 +1,4 @@
+#nullable enable
 using Newtonsoft.Json.Linq;
 
 namespace NextShip.Api.Utils;

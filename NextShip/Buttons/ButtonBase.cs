@@ -17,15 +17,15 @@ public class ButtonBase
         ButtonGameObject = new GameObject(base.ToString());
     }
 
-    public ButtonBase Create(string name = "", GameObject clonetarget = null, ActionButton ActionButton = null,
+    public ButtonBase Create(string _name = "", GameObject cloneTarget = null, ActionButton _ActionButton = null,
         Action action = null)
     {
-        this.name = name;
-        if (clonetarget != null) ButtonGameObject = Object.Instantiate(clonetarget);
+        this.name = _name;
+        if (cloneTarget != null) ButtonGameObject = Object.Instantiate(cloneTarget);
 
         if (action != null) Action = action;
 
-        if (ActionButton != null) this.ActionButton = ActionButton;
+        if (_ActionButton != null) this.ActionButton = _ActionButton;
         return this;
     }
 }

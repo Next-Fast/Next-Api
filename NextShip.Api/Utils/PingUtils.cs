@@ -1,3 +1,4 @@
+#nullable enable
 using System.Net.NetworkInformation;
 using System.Text;
 
@@ -11,9 +12,9 @@ public static class PingUtils
 
         var ping = new Ping();
         var reply = ping.Send(url);
-
+        
         var stringB = new StringBuilder();
-        var status = reply.Status switch
+        var status =  reply.Status switch
         {
             IPStatus.Success => "成功",
             IPStatus.TimedOut => "超时",

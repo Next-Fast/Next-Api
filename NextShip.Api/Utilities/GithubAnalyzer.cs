@@ -1,6 +1,3 @@
 namespace NextShip.Api.Utilities;
 
-public class GithubAnalyzer
-{
-    
-}
+public class GithubAnalyzer;

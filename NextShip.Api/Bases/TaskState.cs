@@ -1,3 +1,4 @@
+#nullable enable
 namespace NextShip.Api.Bases;
 
 public sealed class TaskState

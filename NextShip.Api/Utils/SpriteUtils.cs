@@ -1,3 +1,4 @@
+#nullable enable
 using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
@@ -17,7 +18,7 @@ public static class SpriteUtils
         CacheSprite.Add(sprite);
     }
 
-    public static Sprite GetCache(string name, bool NoCache = false)
+    public static Sprite? GetCache(string name, bool NoCache = false)
     {
         var sprite = CacheSprite.FirstOrDefault(n => n.name == name);
         if (sprite == null || sprite == default)
@@ -37,7 +38,7 @@ public static class SpriteUtils
         {
             if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
             var texture = LoadTextureFromResources(path);
-            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture!.width, texture.height), new Vector2(0.5f, 0.5f),
                 pixelsPerUnit);
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedSprites[path + pixelsPerUnit] = sprite;
@@ -57,7 +58,7 @@ public static class SpriteUtils
         {
             if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
             var texture = LoadTextureFromResources(path);
-            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot,
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture!.width, texture.height), pivot,
                 pixelsPerUnit, extrude, meshType, border);
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedSprites[path + pixelsPerUnit] = sprite;
@@ -102,7 +103,7 @@ public static class SpriteUtils
         return null;
     }
 
-    public static Texture2D? LoadTextureFromByte(Il2CppStructArray<byte> bytes)
+    public static Texture2D LoadTextureFromByte(Il2CppStructArray<byte> bytes)
     {
         var texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
         var byteTexture = bytes;
@@ -131,7 +132,7 @@ public static class SpriteUtils
         {
             if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
             var texture = LoadTextureFromDisk(path);
-            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture!.width, texture.height), new Vector2(0.5f, 0.5f),
                 pixelsPerUnit);
             sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
             return CachedSprites[path + pixelsPerUnit] = sprite;
@@ -155,13 +156,13 @@ public static class SpriteUtils
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f),
             100f);
 
-        bool isFile(string name)
+        bool isFile(string _name)
         {
-            if (name.EndsWith(FileName)) return true;
+            if (_name.EndsWith(FileName)) return true;
 
-            var strings = name.Split(".");
+            var strings = _name.Split(".");
             var str = names[strings.Length - 2];
-            var n = name.Replace(".png", "");
+            var n = _name.Replace(".png", "");
             return n == str;
         }
     }

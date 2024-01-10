@@ -4,11 +4,6 @@ using UnityEngine;
 namespace NextShip.Cosmetics;
 
 [HarmonyPatch]
-internal static class ShipCosmeticsCache
-{
-}
-
-[HarmonyPatch]
 internal static class ShipCosmeticsSet
 {
     [HarmonyPatch(typeof(PlayerMaterial), nameof(PlayerMaterial.SetColors), typeof(int), typeof(Renderer))]

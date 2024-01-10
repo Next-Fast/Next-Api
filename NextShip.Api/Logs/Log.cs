@@ -1,10 +1,11 @@
+#nullable enable
 using System.Text;
 using BepInEx;
 using BepInEx.Logging;
 
 namespace NextShip.Api.Logs;
 
-public sealed class log
+public sealed class Log
 {
     public static bool CreateEd;
 
@@ -12,12 +13,12 @@ public sealed class log
 
     public StreamWriter? DiskWriter;
 
-    static log()
+    static Log()
     {
         System.Console.OutputEncoding = Encoding.UTF8;
     }
 
-    private log(ManualLogSource logSource)
+    private Log(ManualLogSource logSource)
     {
         LogSource = logSource;
         ConsoleWriter = ConsoleManager.ConsoleStream;
@@ -26,7 +27,7 @@ public sealed class log
 
     public ManualLogSource LogSource { get; private set; }
 
-    public static log? Instance { get; set; }
+    public static Log? Instance { get; set; }
 
 
     public void CreateDiskLog(string name, string? path = null)
@@ -76,7 +77,7 @@ public sealed class log
         return stream;
     }
 
-    public static log? Get(ManualLogSource logSource)
+    public static Log? Get(ManualLogSource logSource)
     {
         if (CreateEd)
         {
@@ -84,7 +85,7 @@ public sealed class log
             return Instance;
         }
 
-        var _log = new log(logSource);
+        var _log = new Log(logSource);
         CreateEd = true;
         return _log;
     }

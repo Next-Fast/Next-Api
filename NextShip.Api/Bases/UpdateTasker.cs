@@ -8,7 +8,6 @@ public class UpdateTasker
 
     public void FixedUpdate()
     {
-        ;
         if (Tasks == null) return;
 
         Tasks.Do(UpdateTaskTime);

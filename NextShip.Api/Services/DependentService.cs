@@ -45,7 +45,7 @@ public class DependentService(HttpClient _client)
         while (GenerateDependents.Count > 0)
         {
             var (stream, name) = GenerateDependents.Dequeue();
-            var generateFile = File.Create(Directory.FullName + "/" + name);
+            var generateFile = File.Create(RootPath + "/" + name);
             stream.CopyToAsync(generateFile);
         }
     }

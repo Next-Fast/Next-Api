@@ -1,8 +1,8 @@
 namespace NextShip.Api.Roles;
 
-public abstract class RoleBase(PlayerControl? player) : IDisposable
+public abstract class RoleBase(PlayerControl player) : IDisposable
 {
-    public PlayerControl? Player { get; private set; } = player;
+    public PlayerControl Player { get; private set; } = player;
 
     public Func<bool> WinCheck { get; } = () => false;
     public bool CanKill { get; } = false;

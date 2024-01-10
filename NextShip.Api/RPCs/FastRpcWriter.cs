@@ -13,7 +13,7 @@ public class FastRpcWriter(MessageWriter? writer)
 
     private int SendTargetId;
 
-    private List<int> targetIds;
+    private List<int> targetIds = new ();
 
     private uint targetObjectId;
 

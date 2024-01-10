@@ -7,9 +7,13 @@
         <RootNamespace>NextShip.Api</RootNamespace>
         <PackageVersion>1.0.0</PackageVersion>
         <PackageId>NextShip.Api</PackageId>
-        <PackageLicenseExpression>GPL-3.0</PackageLicenseExpression>
+        <Copyright>@2024 MengChu</Copyright>
+        <Description>NextShip的API</Description>
+        <Author>MengChu</Author>
+        <RepositoryURL>https://github.com/TheIdealShipAU/NextShip</RepositoryURL>
+        <PackageLicenseUrl>https://github.com/TheIdealShipAU/NextShip/blob/main/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/TheIdealShipAU/NextShip</PackageProjectUrl>
-        <PackageReadmeFile>APIReadme.md</PackageReadmeFile>
+        <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
@@ -23,7 +27,8 @@
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0"/>
         <PackageReference Include="YamlDotNet" Version="13.7.1"/>
 
-
+        <None Include="Readme.md" Pack="true" PackagePath="\"/>
+        
         <ProjectReference Include="..\NextShip.SourceGenerator\NextShip.SourceGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer"/>
     </ItemGroup>
 

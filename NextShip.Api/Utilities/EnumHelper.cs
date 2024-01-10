@@ -1,3 +1,4 @@
+#nullable enable
 namespace NextShip.Api.Utilities;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Helpers/EnumHelper.cs#

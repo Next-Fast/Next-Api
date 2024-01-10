@@ -1,5 +1,7 @@
+#nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using InnerNet;
 using NextShip.Api.Bases;
 using NextShip.Api.Interfaces;
 
@@ -7,19 +9,49 @@ namespace NextShip.Manager;
 
 public class NextPlayerManager : IPlayerManager
 {
-    private readonly List<NextInfo> PlayerInfos = new();
+    private readonly List<NextInfo> PlayerInfos = [];
 
 
     public static NextPlayerManager Instance => Main._Service.Get<NextPlayerManager>();
 
-    public NextInfo GetPlayerInfo(PlayerControl player)
+    public NextInfo CreateOrGetSetPlayerInfo(PlayerControl player)
     {
-        return PlayerInfos.Find(n => n.PlayerControl == player)!;
+        var info = PlayerInfos.Exists(IsInfo) ? PlayerInfos.First(IsInfo) : new NextInfo();
+
+        info.PlayerControl = player;
+        info.PlayerId = player.PlayerId;
+        info.PlayerInfo = player.Data;
+        info.IsHost = AmongUsClient.Instance.HostId == info.clientId;
+        info.IsLocal = CachedPlayer.LocalPlayer?.PlayerControl == player;
+        return info;
+        bool IsInfo(NextInfo nextInfo) => nextInfo.PlayerControl == player || nextInfo.PlayerId == player.PlayerId;
+    }
+    
+    public NextInfo CreateOrGetSetPlayerInfo(ClientData data)
+    {
+        var info = PlayerInfos.Exists(IsInfo) ? PlayerInfos.First(IsInfo) : new NextInfo();
+
+        info.ClientData = data;
+        info.clientId = data.Id;
+        info.FriendCode = data.FriendCode;
+        info.PUID = data.ProductUserId;
+        info.PlayerLevel = data.PlayerLevel;
+        info.PlayerName = data.PlayerName;
+        info.PlayerControl = data.Character;
+        info.ColorId = data.ColorId;
+        info.IsHost = AmongUsClient.Instance.HostId == data.Id;
+        info.IsLocal = CachedPlayer.LocalPlayer?.PlayerControl == data.Character;
+        return info;
+        bool IsInfo(NextInfo nextInfo) => nextInfo.clientId == data.Id || nextInfo.PlayerControl == data.Character;
     }
 
-    public void CreatePlayerInfo()
+    public void InitPlayer(PlayerControl player)
     {
+        
     }
+
+    public bool IsHost(PlayerControl player) => PlayerInfos.First(n => n.PlayerControl == player).IsHost;
+        
 
     public bool TryGetPlayer(PlayerControl player, out NextInfo? info)
     {

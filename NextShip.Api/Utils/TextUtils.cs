@@ -95,7 +95,7 @@ public static class TextUtils
 
     public static string Is(this string text, FileType type)
     {
-        return text += type switch
+        return text + type switch
         {
             FileType.Csv => ".csv",
             FileType.Json => ".json",

@@ -1,3 +1,4 @@
+#nullable enable
 namespace NextShip.Api.UI;
 
 public class NextUIManager

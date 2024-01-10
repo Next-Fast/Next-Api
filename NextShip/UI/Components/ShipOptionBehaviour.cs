@@ -18,10 +18,6 @@ public class ShipOptionBehaviour : MonoBehaviour
     public Action<ShipOptionBehaviour> OnOptionValueChanged;
     public OptionBase OptionBase { private set; get; }
 
-    public void FixedUpdate()
-    {
-    }
-
     public void OnEnable()
     {
         if (OptionBase == null) return;

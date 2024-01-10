@@ -6,7 +6,6 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
 using AmongUs.Data;
-using csv = NextShip.Languages.LanguageCSV;
 
 namespace NextShip.Languages;
 
@@ -87,7 +86,7 @@ public class LanguagePack
     private static void CreateTT()
     {
         var text = "";
-        foreach (var title in csv.translateMaps)
+        foreach (var title in LanguageCSV.translateMaps)
         {
             text += '"' + $"{title.Key}" + '"' + " : " + '"' + LanguageCSV.GetCString(title.Key, 0) + '"' + "\n";
             File.WriteAllText(LPath, text);

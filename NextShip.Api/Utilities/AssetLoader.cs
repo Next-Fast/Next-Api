@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#nullable enable
+using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes;
 using NextShip.Api.Managers;
 using UnityEngine;
@@ -27,14 +28,14 @@ public sealed class AssetLoader
         return this;
     }
 
-    public T Load<T>(string name) where T : Il2CppObjectBase
+    public T? Load<T>(string name) where T : Il2CppObjectBase
     {
         return Asset.LoadAsset<T>(name);
     }
 
     public List<T> LoadAll<T>() where T : Il2CppObjectBase
     {
-        return Asset.LoadAllAsset<T>().ToList();
+        return Asset!.LoadAllAsset<T>().ToList();
     }
 
     public AssetLoader LoadFromDisk()

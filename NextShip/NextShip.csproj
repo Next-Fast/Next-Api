@@ -22,10 +22,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-
         <PackageReference Include="Csv" Version="2.0.93"/>
         <PackageReference Include="Costura.Fody" Version="5.8.0-alpha0098" PrivateAssets="all"/>
         <PackageReference Include="Downloader" Version="3.1.0-beta"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0"/>
 
         <!--nuget.bepinex.dev 的包                                       -->
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.682" Private="false" ExcludeAssets="runtime;native"/>
@@ -35,6 +37,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\NextShip.Api\NextShip.Api.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="RPC\" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="$(NextShipLast) != ''">

@@ -1,5 +1,3 @@
 namespace NextShip.Api.Plugins;
 
-public class IPluginManager
-{
-}
+public class IPluginManager;

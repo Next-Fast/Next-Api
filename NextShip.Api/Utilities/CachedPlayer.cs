@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections;
 using System.Reflection;
 using HarmonyLib;
@@ -71,7 +72,7 @@ public static class CachedPlayerPatches
     public static void RemoveCachedPlayerPatch(PlayerControl __instance)
     {
         if (__instance.notRealPlayer) return;
-        CachedPlayer.AllPlayers.RemoveAll(p => p.PlayerControl.Pointer == __instance.Pointer);
+        CachedPlayer.AllPlayers.RemoveAll(p => p!.PlayerControl.Pointer == __instance.Pointer);
         CachedPlayer.PlayerIntPtrS.Remove(__instance.Pointer);
     }
 
@@ -125,7 +126,7 @@ public static class CachedPlayerPatches
                 return;
             }
 
-            var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p.PlayerControl.Pointer == localPlayer.Pointer);
+            var cached = CachedPlayer.AllPlayers.FirstOrDefault(p => p!.PlayerControl.Pointer == localPlayer.Pointer);
             if (cached != null) CachedPlayer.LocalPlayer = cached;
         }
     }

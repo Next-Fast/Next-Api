@@ -18,7 +18,5 @@ public abstract class ShipPlugin
 
     public abstract void Load();
 
-    public virtual void NextAdd(List<INextAdd> adds)
-    {
-    }
+    public abstract List<INextAdd> NextAdd();
 }

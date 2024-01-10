@@ -4,8 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileSystemGlobbing;
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
+using NextShip.Api.Interfaces;
+using NextShip.Services;
 
 namespace NextShip.DIY.Plugins;
 
@@ -13,21 +17,26 @@ public class PluginManager : Manager<PluginManager>
 {
     private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = [];
     private List<string> PluginPathS = [];
+    internal List<PluginLoadInfo> PluginLoadInfos = [];
 
     public List<ShipPlugin> Plugins = [];
+    
 
-    public void Load()
+    public void InitPlugins()
     {
-        LoadPlugins();
+        FindPlugins();
+        LoadAssemblyFormPath();
     }
 
-    private void LoadPlugins()
+    public void OnServiceBuild(ServiceBuilder serviceBuilder)
     {
-        PluginPathS = FindPlugins();
-        if (PluginPathS == null) return;
-
-        PluginPathS.Do(Load);
-        PluginCreateS.Do(Load);
+        foreach (var plugin in  PluginLoadInfos)
+        {
+            INextAdd.GetAdds(plugin._Assembly).Do(n => n.ServiceAdd(serviceBuilder));
+        }
+        
+        serviceBuilder._collection.AddActivatedSingleton(provider =>
+            ActivatorUtilities.CreateInstance<PluginLoadService>(provider, this));
     }
 
     private void Load(string path)
@@ -49,9 +58,7 @@ public class PluginManager : Manager<PluginManager>
                 IsInherit = true;
                 has = true;
 
-                var plugin = (ShipPlugin)assembly.CreateInstance(n.FullName!);
-                if (plugin == null)
-                    return;
+                var plugin = (ShipPlugin)ActivatorUtilities.CreateInstance(Main._Service._Provider, n);
 
                 var shipPluginInfo = n.GetCustomAttribute<ShipPluginInfo>();
                 if (shipPluginInfo != null)
@@ -74,7 +81,7 @@ public class PluginManager : Manager<PluginManager>
         try
         {
             pluginTuple.Item3.Load();
-            pluginTuple.Item3.NextAdd(Main.Adds);
+            Main.Adds.AddRange(pluginTuple.Item3.NextAdd());
             Info($"Name:{shipPluginInfo.Name} . Version:{shipPluginInfo.Version} . Id:{shipPluginInfo.Id} 运行成功 ",
                 filename: MethodUtils.GetClassName());
         }
@@ -84,12 +91,27 @@ public class PluginManager : Manager<PluginManager>
         }
     }
 
-    private List<string> FindPlugins()
+    private void FindPlugins()
     {
-        var pluginPaths = new List<string>();
-        var plugins = new DirectoryInfo(NextPaths.TIS_PluginsPath);
-        var fileInfos = plugins.GetFiles();
-        fileInfos.Do(n => pluginPaths.Add(n.FullName));
-        return pluginPaths;
+        var matcher = new Matcher();
+        matcher.AddInclude(".dll");
+        PluginPathS.AddRange(matcher.GetResultsInFullPath(NextPaths.TIS_PluginsPath).ToList());
+    }
+
+    private void LoadAssemblyFormPath()
+    {
+        foreach (var varPath in PluginPathS)
+        {
+            var assembly = Assembly.LoadFile(varPath);
+            var type = assembly.GetTypes().FirstOrDefault(n => n.BaseType == typeof(ShipPlugin));
+            if (type == null) continue;
+            var LoadInfo = new PluginLoadInfo
+            {
+                _path = varPath,
+                _Assembly = assembly,
+                _Type = type
+            };
+            Info($"初始化插件 path:{varPath} type:{type}");
+        }
     }
 }

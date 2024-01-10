@@ -1,3 +1,5 @@
+using NextShip.Api.Bases;
+
 namespace NextShip.Options.OptionValue;
 
 public class IntOptionValueBase(int defaultValue, int min, int step, int max)

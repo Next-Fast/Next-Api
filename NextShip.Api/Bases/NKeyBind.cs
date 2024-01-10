@@ -1,5 +1,3 @@
 namespace NextShip.Api.Bases;
 
-public class NKeyBind
-{
-}
+public class NKeyBind;

@@ -1,3 +1,4 @@
+#nullable enable
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Il2CppInterop.Runtime.Attributes;

@@ -1,6 +1,6 @@
 ﻿using Hazel;
 
-namespace NextShip.RPC;
+namespace NextShip.Api.Utils;
 
 public static class RPCUtils
 {
@@ -73,23 +73,23 @@ public static class RPCUtils
             var type = reader.ReadByte();
             switch (type)
             {
-                case (byte)ReadType.Byte:
+                case (byte)RPCReadType.Byte:
                     ReadRPCValue.byteL = reader.ReadInt32();
                     break;
 
-                case (byte)ReadType.Int:
+                case (byte)RPCReadType.Int:
                     ReadRPCValue.intL = reader.ReadInt32();
                     break;
 
-                case (byte)ReadType.Bool:
+                case (byte)RPCReadType.Bool:
                     ReadRPCValue.boolL = reader.ReadInt32();
                     break;
 
-                case (byte)ReadType.Float:
+                case (byte)RPCReadType.Float:
                     ReadRPCValue.floatL = reader.ReadInt32();
                     break;
 
-                case (byte)ReadType.String:
+                case (byte)RPCReadType.String:
                     ReadRPCValue.stringL = reader.ReadInt32();
                     break;
             }
@@ -97,99 +97,6 @@ public static class RPCUtils
 
         ReadValue(reader);
     }
-
-    /*public static void SendValueLength(int byteL = 0, int intL = 0, int boolL = 0, int FloatL = 0, int StringL = 0)
-    {
-        var Length = 0;
-        if (byteL != 0) Length++;
-        if (intL != 0) Length++;
-        if (boolL != 0) Length++;
-        if (FloatL != 0) Length++;
-        if (StringL != 0) Length++;
-
-        if (byteL != 0)
-        {
-            rpcStart.Write((byte)ReadType.Byte);
-            rpcStart.Write(byteL);
-        }
-
-        if (intL != 0)
-        {
-            rpcStart.Write((byte)ReadType.Int);
-            rpcStart.Write(intL);
-        }
-
-        if (boolL != 0)
-        {
-            rpcStart.Write((byte)ReadType.Bool);
-            rpcStart.Write(boolL);
-        }
-
-        if (FloatL != 0)
-        {
-            rpcStart.Write((byte)ReadType.Float);
-            rpcStart.Write(FloatL);
-        }
-
-        if (StringL != 0)
-        {
-            rpcStart.Write((byte)ReadType.String);
-            rpcStart.Write(StringL);
-        }
-
-        AmongUsClient.Instance.FinishRpcImmediately(rpcStart);
-    }*/
-
-    /*public static void StartRPC(byte rpc, MessageReader reader)
-    {
-        switch (rpc)
-        {
-            case (byte)CustomRPC.ResetVariables:
-                RPCProcedure.ResetVariables();
-                break;
-
-            case (byte)CustomRPC.WorkaroundSetRoles:
-                RPCProcedure.WorkaroundSetRoles(reader.ReadByte(), reader);
-                break;
-
-            case (byte)CustomRPC.SetRole:
-                RPCProcedure.setRole(reader.ReadByte(), reader.ReadByte());
-                break;
-
-            case (byte)CustomRPC.SetModifier:
-                RPCProcedure.setModifier(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                break;
-
-            case (byte)CustomRPC.setDead:
-                RPCProcedure.setDead(reader.ReadByte(), reader.ReadBoolean());
-                break;
-
-            case (byte)CustomRPC.SheriffKill:
-                RPCProcedure.SheriffKill(reader.ReadByte());
-                break;
-
-            case (byte)CustomRPC.RestoreRole:
-                var RestoreRoleId = reader.ReadByte();
-                RPCProcedure.RestoreRole(RestoreRoleId);
-                break;
-
-            case (byte)CustomRPC.RestorePlayerLook:
-                RPCProcedure.RestorePlayerLook();
-                break;
-
-            case (byte)CustomRPC.ChangeRole:
-                RPCProcedure.ChangeRole(reader.ReadByte(), reader.ReadByte());
-                break;
-
-            case (byte)CustomRPC.Camouflager:
-                RPCProcedure.Camouflager();
-                break;
-
-            case (byte)CustomRPC.Illusory:
-                RPCProcedure.Illusory();
-                break;
-        }
-    }*/
 }
 
 public static class ReadRPCValue
@@ -218,13 +125,4 @@ public static class ReadRPCValue
         floatL = 0;
         stringL = 0;
     }
-}
-
-public enum ReadType
-{
-    Byte,
-    Int,
-    Bool,
-    Float,
-    String
 }

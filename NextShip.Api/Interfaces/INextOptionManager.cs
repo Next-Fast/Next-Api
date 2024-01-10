@@ -1,5 +1,3 @@
 namespace NextShip.Api.Interfaces;
 
-public class INextOptionManager
-{
-}
+public class INextOptionManager;

@@ -64,7 +64,8 @@ public static class LoadManager
             yield return null;
         }
 
-        var Co = new StackFullCoroutine(AllLoad.GetEnumerator());
+        using var enumerator = AllLoad.GetEnumerator();
+        var Co = new StackFullCoroutine(enumerator);
 
         while (Co.CanMove())
         {

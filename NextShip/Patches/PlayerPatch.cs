@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using InnerNet;
 using NextShip.Api.Enums;
 using NextShip.Api.RPCs;
 using NextShip.Manager;
@@ -17,7 +17,18 @@ public static class PlayerPatch
     {
         if (NextPlayerManager.Instance.TryGetPlayer(__instance, out _))
             return;
+        NextPlayerManager.Instance.InitPlayer(__instance);
     }
+
+    [HarmonyPatch(typeof(GameData), nameof(GameData.AddPlayer))]
+    [HarmonyPostfix]
+    public static void GameDataAddPlayer_Postfix([HarmonyArgument(0)] PlayerControl pc) =>
+        NextPlayerManager.Instance.CreateOrGetSetPlayerInfo(pc);
+
+    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.GetOrCreateClient))]
+    [HarmonyPostfix]
+    public static void GetOrCreateClient_Postfix(ClientData __result) =>
+        NextPlayerManager.Instance.CreateOrGetSetPlayerInfo(__result);
 
     public static readonly List<PlayerVersionInfo> AllPlayerVersionInfos = [];
     

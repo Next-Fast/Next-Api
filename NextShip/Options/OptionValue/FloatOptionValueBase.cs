@@ -1,3 +1,5 @@
+using NextShip.Api.Bases;
+
 namespace NextShip.Options.OptionValue;
 
 public class FloatOptionValueBase(float defaultValue, float min, float step, float max)

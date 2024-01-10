@@ -1,5 +1,3 @@
 namespace NextShip.Services;
 
-public class DataService
-{
-}
+public class DataService;
