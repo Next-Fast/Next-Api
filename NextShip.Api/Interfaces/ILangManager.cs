@@ -6,5 +6,7 @@ public interface ILangManager
 
     public void UnRegisterLang(ILang lang);
 
-    public void SetLang(SupportedLangs langId, ILang lang);
+    public void Set(SupportedLangs langId, ILang lang);
+
+    public void SetCurrentLang(SupportedLangs langId);
 }

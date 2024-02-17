@@ -21,7 +21,7 @@ public class PluginLoadService
         Load();
     }
 
-    public void Load()
+    private void Load()
     {
         Info("开始加载插件");
         foreach (var plugin in _pluginLoadInfos)

@@ -1,3 +1,4 @@
+using System;
 using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 using NextShip.Api.UI;
@@ -8,21 +9,14 @@ namespace NextShip.Manager;
 [Il2CppRegister]
 public class NextManager : MonoBehaviour
 {
-    private static NextManager _instance;
+    public readonly UpdateTasker _Tasker = new();
 
-    public UpdateTasker _Tasker;
-
-    public NextManager()
-    {
-        _Tasker = new UpdateTasker();
-        _instance = this;
-    }
-
-    public static NextManager Instance => _instance ??= Main.Instance.AddComponent<NextManager>();
+    public event Action OnUpdate;
 
     public void Update()
     {
         NextUIManager.Instance.Update();
+        OnUpdate?.Invoke();
     }
 
     public void FixedUpdate()

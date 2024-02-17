@@ -106,6 +106,8 @@ public class FastRpcWriter(MessageWriter? writer)
 
         if (objId != null)
             targetObjectId = (uint)objId;
+        
+        DebugInfo($"Set CallId{CallId} SendTargetId{targetId} TargetObjectId{targetObjectId}");
     }
 
     public void Clear()
@@ -113,47 +115,56 @@ public class FastRpcWriter(MessageWriter? writer)
         if (writer == null) return;
         Recycle();
         writer = null;
+        DebugInfo("Clear");
     }
 
     public void Write(bool value)
     {
         writer?.Write(value);
+        DebugInfo($"Write bool {value}");
     }
 
     public void Write(int value)
     {
         writer?.Write(value);
+        DebugInfo($"Write int {value}");
     }
 
     public void Write(float value)
     {
         writer?.Write(value);
+        DebugInfo($"Write float {value}");
     }
 
     public void Write(string value)
     {
         writer?.Write(value);
+        DebugInfo($"Write string {value}");
     }
 
     public void Write(byte value)
     {
         writer?.Write(value);
+        DebugInfo($"Write byte {value}");
     }
 
     public void WritePacked(int value)
     {
         writer?.WritePacked(value);
+        DebugInfo($"WritePacked int {value}");
     }
 
     public void WritePacked(uint value)
     {
         writer?.WritePacked(value);
+        DebugInfo($"WritePacked uint {value}");
     }
 
     private void StartDataAllMessage()
     {
         StartMessage((byte)MessageFlags.DataAll);
         Write(AmongUsClient.Instance.GameId);
+        DebugInfo("StartToALLMessage");
     }
 
     private void StartDataToPlayerMessage()
@@ -161,6 +172,7 @@ public class FastRpcWriter(MessageWriter? writer)
         StartMessage((byte)MessageFlags.DataToPlayer);
         Write(AmongUsClient.Instance.GameId);
         WritePacked(SendTargetId);
+        DebugInfo("StartToPlayerMessage");
     }
 
     private void StartRPCMessage()
@@ -168,28 +180,33 @@ public class FastRpcWriter(MessageWriter? writer)
         StartMessage((byte)DataFlags.Rpc);
         WritePacked(targetObjectId);
         Write(CallId);
+        DebugInfo("StartRpcMessage");
     }
 
     public void StartMessage(byte flag)
     {
         writer?.StartMessage(flag);
         msgCount++;
+        DebugInfo($"StartMessage {flag}");
     }
 
     public void EndMessage()
     {
         writer?.EndMessage();
         msgCount--;
+        DebugInfo("EndMessage");
     }
 
     public void EndAllMessage()
     {
         while (msgCount > 0) EndMessage();
+        DebugInfo("EndAllMessage");
     }
 
     public void Recycle()
     {
         writer?.Recycle();
+        DebugInfo("Recycle");
     }
 
     public void RPCSend()
@@ -207,5 +224,10 @@ public class FastRpcWriter(MessageWriter? writer)
     public void Send()
     {
         AmongUsClient.Instance.connection.Send(writer);
+    }
+
+    private void DebugInfo(string info)
+    {
+        Debug($"[FastWriter] CallId{CallId} sendOption{Option} msgCout{msgCount} || [FastWriterInfo]:{info}");
     }
 }

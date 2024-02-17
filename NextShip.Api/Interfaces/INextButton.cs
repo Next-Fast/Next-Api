@@ -1,3 +1,6 @@
 namespace NextShip.Api.Interfaces;
 
-public interface ILoadManager;
+public class INextButton
+{
+    
+}

@@ -9,9 +9,9 @@ namespace NextShip.Api.Utilities;
 // from TheOtherRole
 public class CachedPlayer
 {
-    public static readonly Dictionary<IntPtr, CachedPlayer?> PlayerIntPtrS = new();
-    public static readonly List<CachedPlayer?> AllPlayers = new();
-    public static CachedPlayer? LocalPlayer;
+    public static readonly Dictionary<IntPtr, CachedPlayer> PlayerIntPtrS = new();
+    public static readonly List<CachedPlayer> AllPlayers = [];
+    public static CachedPlayer LocalPlayer = null!;
     public GameData.PlayerInfo Data = null!;
     public CustomNetworkTransform NetTransform = null!;
     public PlayerControl PlayerControl = null!;
@@ -82,7 +82,7 @@ public static class CachedPlayerPatches
     {
         foreach (var cachedPlayer in CachedPlayer.AllPlayers)
         {
-            cachedPlayer!.Data = cachedPlayer.PlayerControl.Data;
+            cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
             cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
         }
     }
@@ -122,7 +122,7 @@ public static class CachedPlayerPatches
             var localPlayer = PlayerControl.LocalPlayer;
             if (!localPlayer)
             {
-                CachedPlayer.LocalPlayer = null;
+                CachedPlayer.LocalPlayer = null!;
                 return;
             }
 

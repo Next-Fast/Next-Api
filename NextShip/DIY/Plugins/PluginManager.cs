@@ -19,7 +19,7 @@ public class PluginManager : Manager<PluginManager>
     internal List<PluginLoadInfo> PluginLoadInfos = [];
     private readonly List<string> PluginPathS = [];
 
-    public List<ShipPlugin> Plugins = [];
+    public readonly List<ShipPlugin> Plugins = [];
 
 
     public void InitPlugins()

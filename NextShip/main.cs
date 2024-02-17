@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
@@ -17,7 +18,6 @@ using NextShip.Cosmetics;
 using NextShip.DIY.Plugins;
 using NextShip.Languages;
 using NextShip.Manager;
-using NextShip.Patches;
 using NextShip.Services;
 using BepInExLogger = BepInEx.Logging.Logger;
 
@@ -62,6 +62,8 @@ public sealed class NextShip : BasePlugin
 
     private static event Action<ServiceBuilder> OnBuilder;
 
+    private NextManager _nextManager;
+
 
     public override void Load()
     {
@@ -69,12 +71,18 @@ public sealed class NextShip : BasePlugin
         RootAssembly = Assembly.GetExecutingAssembly();
         TISLog = BepInExLogger.CreateLogSource(ModName.RemoveBlank());
         Harmony.PatchAll();
+        _nextManager = AddComponent<NextManager>().DontDestroyOnLoad();
 
         Api.Logs.Log.Get(TISLog);
         Init();
 
         CreateService();
         LoadDependent();
+        Task.Run(() =>
+        {
+            var roleManager = _Service.Get<NextRoleManager>();
+            FastAddRole.Registration(roleManager, RootAssembly);
+        });
 
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
@@ -84,10 +92,7 @@ public sealed class NextShip : BasePlugin
 
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
-
-        AddComponent<NextManager>().DontDestroyOnLoad();
-
-        ServerPath.autoAddServer();
+        
         LanguagePack.Init();
         CustomCosmeticsManager.LoadHat();
     }
@@ -114,11 +119,7 @@ public sealed class NextShip : BasePlugin
         OnBuilder += manager.OnServiceBuild;
     }
 
-    public static void AddOnBuild()
-    {
-    }
-
-    private static void CreateService()
+    private void CreateService()
     {
         var builder = new ServiceBuilder();
         builder.CreateService();
@@ -126,13 +127,21 @@ public sealed class NextShip : BasePlugin
         builder._collection.AddSingleton<IRoleManager, NextRoleManager>();
         builder._collection.AddSingleton<IEventManager, EventManager>();
         builder._collection.AddSingleton<IPatchManager, NextPatchManager>();
+        builder._collection.AddSingleton<IPlayerManager, NextPlayerManager>();
         builder._collection.AddSingleton<INextOptionManager, NextOptionManager>();
+        builder._collection.AddSingleton<INextButtonManager, NextButtonsManager>();
+        builder._collection.AddSingleton<INextScreenManager, NextScreenManager>();
+        builder._collection.AddSingleton<IBotManager, NextBotManager>();
+        builder._collection.AddSingleton<ILangManager, NextLangManager>();
+        builder._collection.AddSingleton<IKeyBindManager, NextKeyBindManager>();
+        builder._collection.AddSingleton(_nextManager);
         builder._collection.AddHttpClient();
         builder.AddTransient<GithubAnalyzer>();
         builder.Add<DownloadService>();
         builder.Add<MetadataService>();
         builder.Add<DataService>();
         builder.Add<DependentService>();
+        builder.Add<InstanceManager>();
 
         OnBuilder?.Invoke(builder);
 

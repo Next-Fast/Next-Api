@@ -22,12 +22,18 @@ public sealed class Log
     {
         LogSource = logSource;
         ConsoleWriter = ConsoleManager.ConsoleStream;
-        Instance = this;
+        _Instance = this;
+    }
+
+    private Log() : this(new ManualLogSource("NextShip.Api"))
+    {
     }
 
     public ManualLogSource LogSource { get; private set; }
 
-    public static Log? Instance { get; set; }
+    private static Log? _Instance;
+
+    public static Log Instance => _Instance ?? new Log();
 
 
     public void CreateDiskLog(string name, string? path = null)
@@ -81,7 +87,7 @@ public sealed class Log
     {
         if (CreateEd)
         {
-            Instance?.Set(logSource);
+            _Instance?.Set(logSource);
             return Instance;
         }
 
@@ -98,7 +104,7 @@ public sealed class Log
 
     internal void SendToFile(string? tag, string? filename, string text, LogLevel level = LogLevel.Info)
     {
-        var logger = Instance?.LogSource;
+        var logger = Instance.LogSource;
 
         var t = DateTime.Now.ToString("HH:mm:ss");
 
@@ -115,31 +121,31 @@ public sealed class Log
         switch (level)
         {
             case LogLevel.Info:
-                logger?.LogInfo(log_text);
+                logger.LogInfo(log_text);
                 break;
             case LogLevel.Warning:
-                logger?.LogWarning(log_text);
+                logger.LogWarning(log_text);
                 break;
             case LogLevel.Error:
-                logger?.LogError(log_text);
+                logger.LogError(log_text);
                 break;
             case LogLevel.Fatal:
-                logger?.LogFatal(log_text);
+                logger.LogFatal(log_text);
                 break;
             case LogLevel.Message:
-                logger?.LogMessage(log_text);
+                logger.LogMessage(log_text);
                 break;
             case LogLevel.Debug:
-                logger?.LogDebug(log_text);
+                logger.LogDebug(log_text);
                 break;
             case LogLevel.None:
-                logger?.LogInfo(log_text);
+                logger.LogInfo(log_text);
                 break;
             case LogLevel.All:
                 break;
             default:
-                logger?.LogWarning("Error:Invalid LogLevel");
-                logger?.LogInfo(log_text);
+                logger.LogWarning("Error:Invalid LogLevel");
+                logger.LogInfo(log_text);
                 break;
         }
     }

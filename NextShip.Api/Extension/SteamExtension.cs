@@ -12,6 +12,11 @@ public static class SteamExtension
     {
         var path = Paths.GameRootPath.CombinePath(file_Name);
         if (!File.Exists(path))
-            File.WriteAllText(path, Among_Us_SteamId);
+            File.WriteAllText(path!, Among_Us_SteamId);
+        else
+        {
+            return;
+        }
+        Info("Use steam_appid.txt");
     }
 }

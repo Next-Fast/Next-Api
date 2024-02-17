@@ -14,6 +14,12 @@ public class EventManager : IEventManager
 
     private readonly List<INextEvent> RegisterEvents = [];
 
+    public void CallEvent<T>(T @event) where T : INextEvent
+    {
+        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName && n is T))
+            @event.Call(_event);
+    }
+    
     public void RegisterEvent(INextEvent @event)
     {
         @event.OnRegister(this);

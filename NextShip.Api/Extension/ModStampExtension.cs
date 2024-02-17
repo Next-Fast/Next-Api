@@ -15,7 +15,7 @@ public static class ModStampExtension
         {
             if (scene.name == "MainMenu") ModManager.Instance.ShowModStamp();
         }));
-
+        Info(MethodUtils.GetVoidName()!);
         Added = true;
     }
 }

@@ -28,7 +28,8 @@
         <PackageReference Include="YamlDotNet" Version="13.7.1"/>
 
         <None Include="Readme.md" Pack="true" PackagePath="\"/>
-
+        
+        <ProjectReference Include="..\NSLangAnalyzer\NSLangAnalyzer.csproj"/>
         <ProjectReference Include="..\NextShip.SourceGenerator\NextShip.SourceGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer"/>
     </ItemGroup>
 

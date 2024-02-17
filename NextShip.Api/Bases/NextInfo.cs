@@ -23,6 +23,8 @@ public record NextInfo
 
     public PlayerControl PlayerControl;
 
+    public PlayerPhysics PlayerPhysics;
+
     public byte PlayerId;
 
     public GameData.PlayerInfo PlayerInfo;

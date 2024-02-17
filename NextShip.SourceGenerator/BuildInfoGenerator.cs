@@ -3,9 +3,11 @@ using Microsoft.CodeAnalysis;
 namespace NextShip.SourceGenerator;
 
 [Generator(LanguageNames.CSharp)]
-public class LangSourceGenerator : IIncrementalGenerator
+public class BuildInfoGenerator : IIncrementalGenerator
 {
+    
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+       var Time = DateTime.Now.ToString("G").Replace(" ", "-").Replace("/", "-");
     }
 }

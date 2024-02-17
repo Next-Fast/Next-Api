@@ -60,7 +60,8 @@ public class DependentService(HttpClient _client)
         {
             if (file.Extension == ".dll")
             {
-                Dlls.Add((Assembly.LoadFile(file.FullName), file));
+                var assembly = Assembly.LoadFile(file.FullName);
+                Dlls.Add((assembly, file));
                 continue;
             }
 

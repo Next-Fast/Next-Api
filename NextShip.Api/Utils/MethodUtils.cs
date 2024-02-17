@@ -58,4 +58,25 @@ public static class MethodUtils
 
         return types.SelectMany(varType => varType.GetFields()).ToList();
     }
+    
+    public static List<MethodInfo> GetMethodInfos(this Assembly assembly)
+    {
+        var types = assembly.GetTypes();
+
+        return types.SelectMany(varType => varType.GetMethods()).ToList();
+    }
+    
+    public static List<ConstructorInfo> GetConstructorInfos(this Assembly assembly)
+    {
+        var types = assembly.GetTypes();
+
+        return types.SelectMany(varType => varType.GetConstructors()).ToList();
+    }
+    
+    public static List<MemberInfo> GetMemberInfos(this Assembly assembly)
+    {
+        var types = assembly.GetTypes();
+
+        return types.SelectMany(varType => varType.GetMembers()).ToList();
+    }
 }

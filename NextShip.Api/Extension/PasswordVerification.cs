@@ -18,6 +18,7 @@ public class PasswordVerification
     {
         if (Password == 0) return;
         var messageString = $"Password:{Password.ToString()}";
+        Info(messageString);
         writer.Write(messageString);
     }
 }

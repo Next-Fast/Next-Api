@@ -1,6 +1,6 @@
 namespace NextShip.Api.Interfaces;
 
-public interface IRole
+public interface IRole : IDisposable
 {
     public Type RoleBaseType { get; set; }
     public Type RoleType { get; set; }

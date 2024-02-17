@@ -11,7 +11,7 @@ public static class PlayerPhysicsPatch
     [HarmonyPostfix]
     public static void Update_Postfix(PlayerPhysics __instance)
     {
-        var playerInfo = NextPlayerManager.Instance.GetPlayerInfo(__instance.myPlayer);
+        var playerInfo = NextPlayerManager.Instance.CreateOrGetSetPlayerInfo(__instance.myPlayer);
         __instance.GhostSpeed = playerInfo.GhostSpeed;
         __instance.Speed = playerInfo.BodySpeed;
     }
