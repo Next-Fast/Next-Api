@@ -2,6 +2,8 @@ using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using JetBrains.Annotations;
+using OtherAttribute;
 
 namespace NextShip.Api.RPCs;
 
@@ -64,10 +66,4 @@ public static class FastRpcReaderPatch
             }
         }
     }
-}
-
-[AttributeUsage(AttributeTargets.Method)]
-public class FastReadAdd(byte callId) : Attribute
-{
-    public byte CallId = callId;
 }

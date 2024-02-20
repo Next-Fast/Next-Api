@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.682" Private="false" ExcludeAssets="runtime;native"/>
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.688" Private="false" ExcludeAssets="runtime;native" />
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.11.28" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" PrivatPeAssets="all" ExcludeAssets="runtime"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0"/>
@@ -31,6 +31,7 @@
         
         <ProjectReference Include="..\NSLangAnalyzer\NSLangAnalyzer.csproj"/>
         <ProjectReference Include="..\NextShip.SourceGenerator\NextShip.SourceGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer"/>
+        <ProjectReference Include="..\OtherAttribute\OtherAttribute.csproj" />
     </ItemGroup>
 
 </Project>
