@@ -1,8 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using InnerNet;
-using JetBrains.Annotations;
 using OtherAttribute;
 
 namespace NextShip.Api.RPCs;
@@ -16,9 +14,9 @@ public class FastRpcReader
 [Harmony]
 public static class FastRpcReaderPatch
 {
-    public static List<FastRpcReader> AllFastRpcReader = [];
+    public static readonly List<FastRpcReader> AllFastRpcReader = [];
 
-    [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HandleGameDataInner))]
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.HandleGameDataInner))]
     [HarmonyPrefix]
     public static void InnerNet_ReaderPath([HarmonyArgument(0)] MessageReader reader)
     {

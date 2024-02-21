@@ -81,7 +81,7 @@ public sealed class NextShip : BasePlugin
         Task.Run(() =>
         {
             var roleManager = _Service.Get<NextRoleManager>();
-            FastAddRole.Registration(roleManager, RootAssembly);
+            FastAddRoleExt.Registration(roleManager, RootAssembly);
         });
 
         SteamExtension.UseSteamIdFile();

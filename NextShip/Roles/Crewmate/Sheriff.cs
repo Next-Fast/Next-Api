@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NextShip.Api.Attributes;
 using NextShip.Api.Interfaces;
+using OtherAttribute;
 using UnityEngine;
 
 namespace NextShip.Roles.Crewmate;
@@ -12,7 +12,7 @@ public class Sheriff : IRole
     public Type RoleBaseType { get; set; } = typeof(SheriffBase);
     
     public Type RoleType { get; set; } = typeof(Sheriff);
-    public List<RoleBase> RoleBase { get; set; }
+    public List<RoleBase> RoleBase { get; set; } = [];
     public List<PlayerControl> Players { get; set; } = [];
     public bool EnableAssign { get; set; } = true;
     
@@ -25,7 +25,6 @@ public class Sheriff : IRole
         roleType = Api.Roles.RoleType.MainRole,
         Name = nameof(Sheriff),
         RoleStringId = nameof(Sheriff)
-        
     };
     
     public bool CanCreate(IRole role, PlayerControl player)

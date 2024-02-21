@@ -1,10 +1,10 @@
 using System.Reflection;
 using NextShip.Api.Interfaces;
+using OtherAttribute;
 
 namespace NextShip.Api.Attributes;
 
-[AttributeUsage(AttributeTargets.Class | AttributeTargets.Constructor)]
-public class FastAddRole : Attribute
+public static class FastAddRoleExt
 {
     public static void Registration(IRoleManager _roleManager, Assembly assembly)
     {
