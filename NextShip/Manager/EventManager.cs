@@ -8,7 +8,7 @@ namespace NextShip.Manager;
 
 public class EventManager : IEventManager
 {
-    public static EventManager _eventManager = Main._Service.Get<EventManager>();
+    public static readonly EventManager _eventManager = Main._Service.Get<EventManager>();
 
     private readonly HashSet<IEventListener> EventListeners = [];
 
@@ -51,6 +51,11 @@ public class EventManager : IEventManager
     public void CallListener(string name)
     {
         EventListeners.Do(n => n.On(name));
+    }
+    
+    public void CallListener(string name, object[] Instances)
+    {
+        EventListeners.Do(n => n.On(name, Instances));
     }
 
     public void CallListener(INextEvent @event)

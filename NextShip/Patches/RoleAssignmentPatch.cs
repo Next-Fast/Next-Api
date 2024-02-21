@@ -37,9 +37,9 @@ internal class RoleManagerPatch
         GetPlayerRoleS(out var C, out var I);
         var CAssign = new Queue<PlayerControl>(C);
         var IAssign = new Queue<PlayerControl>(I);
+        var _creator = _nextRoleManager.GetCreator();
         _StartAssign:
         var player = (CAssign.Count > 0 ? CAssign : IAssign).Dequeue();
-        var _creator = _nextRoleManager.FastGetCreator();
         var role = _creator.GetAssign();
         _nextRoleManager.AssignRole(player, role);
         if (IAssign.Count > 0)

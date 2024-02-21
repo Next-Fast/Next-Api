@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using NextShip.Api.Bases;
 using NextShip.Api.Interfaces;
+using NextShip.Manager;
+using NextShip.Services;
 using OtherAttribute;
 using UnityEngine;
 
@@ -18,6 +21,8 @@ public class Sheriff : IRole
     
     public Func<PlayerControl, RoleBase> CreateRoleBase { get; set; }
 
+    public List<OptionBase> AllOption = [];
+
     public SimpleRoleInfo SimpleRoleInfo { get; set; } = new()
     {
         RoleColor = Color.yellow,
@@ -26,18 +31,40 @@ public class Sheriff : IRole
         Name = nameof(Sheriff),
         RoleStringId = nameof(Sheriff)
     };
+
+    public Sheriff()
+    {
+        var manager = Main._Service.Get<NextOptionManager>();
+        
+    }
     
     public bool CanCreate(IRole role, PlayerControl player)
     {
         return true;
     }
 
-    public class SheriffBase(PlayerControl player) : RoleBase(player)
-    {
-        
-    }
-
     public void Dispose()
     {
+    }
+    
+}
+
+public class SheriffBase : RoleBase
+{
+    public SheriffBase(PlayerControl player) : base(player)
+    {
+        _eventManager.RegisterListener(new EventListener());
+    }
+    
+    private class EventListener : IEventListener
+    {
+        public void On(string name)
+        {
+        }
+
+        public void On(INextEvent @event)
+        {
+            
+        }
     }
 }
