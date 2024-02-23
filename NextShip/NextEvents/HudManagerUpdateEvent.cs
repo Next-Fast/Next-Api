@@ -8,6 +8,9 @@ public class HudManagerUpdateEvent(HudManager Instance) : INextEvent
     
     public int Id { get; set; }
 
+    public HudManager _HudManager = Instance;
+
+
     public void OnRegister(IEventManager eventManager)
     {
     }
@@ -18,5 +21,6 @@ public class HudManagerUpdateEvent(HudManager Instance) : INextEvent
 
     public void Call(INextEvent @event)
     {
+        
     }
 }

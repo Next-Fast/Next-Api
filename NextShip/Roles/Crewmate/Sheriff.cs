@@ -36,6 +36,12 @@ public class Sheriff : IRole
     {
         var manager = Main._Service.Get<NextOptionManager>();
         
+        OptionCreate();
+    }
+
+    public void OptionCreate()
+    {
+        var OptionManager = ServiceExt.ServiceGet<NextOptionManager>();
     }
     
     public bool CanCreate(IRole role, PlayerControl player)
@@ -58,13 +64,5 @@ public class SheriffBase : RoleBase
     
     private class EventListener : IEventListener
     {
-        public void On(string name)
-        {
-        }
-
-        public void On(INextEvent @event)
-        {
-            
-        }
     }
 }
