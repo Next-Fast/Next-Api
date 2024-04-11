@@ -94,10 +94,10 @@ public static class LoveChatPatch
 [Harmony]
 public static class OnHudManagerUpdatePatch
 {
-    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPostfix]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    [HarmonyPostfix]
     public static void OnHudManagerUpdate(HudManager __instance)
     {
         _eventManager.CallEvent(new HudManagerUpdateEvent(__instance));
     }
 }
-

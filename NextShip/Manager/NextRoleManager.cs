@@ -41,8 +41,11 @@ public sealed class NextRoleManager : IRoleManager
     {
     }
 
-    public IRoleCreator GetCreator() => CurrentCreator ?? FastGetCreator();
-    
+    public IRoleCreator GetCreator()
+    {
+        return CurrentCreator ?? FastGetCreator();
+    }
+
     public FastCreator FastGetCreator()
     {
         if (CurrentCreator is FastCreator creator)

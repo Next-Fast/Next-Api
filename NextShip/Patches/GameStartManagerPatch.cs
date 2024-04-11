@@ -1,4 +1,3 @@
-using System.Linq;
 using HarmonyLib;
 
 namespace NextShip.Patches;
@@ -10,6 +9,5 @@ public static class GameStartManagerPatch
     [HarmonyPostfix]
     public static void OnGameStartManagerUpdatePatch()
     {
-        
     }
 }

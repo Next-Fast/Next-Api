@@ -1,6 +1,4 @@
-﻿using System;
-using NextShip.Api.Attributes;
-using NextShip.UI.Module;
+﻿using NextShip.UI.Module;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
@@ -14,6 +12,7 @@ public class NextMenuOption : MonoBehaviour
 
     public void Start()
     {
+        _eventManager.GetFastListener().Call("OptionCreate", [__OptionMenu, this]);
         CreateOption();
     }
 

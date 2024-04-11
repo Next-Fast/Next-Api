@@ -1,7 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using OtherAttribute;
 
 namespace NextShip.Api.RPCs;
 
@@ -39,7 +38,7 @@ public static class FastRpcReaderPatch
 
         finally
         {
-            reader.Recycle();
+            HandleReader.Recycle();
         }
     }
 

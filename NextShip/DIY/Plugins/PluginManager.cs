@@ -6,7 +6,6 @@ using System.Reflection;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileSystemGlobbing;
-using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 using NextShip.Api.Interfaces;
 using NextShip.Services;
@@ -16,10 +15,10 @@ namespace NextShip.DIY.Plugins;
 public class PluginManager : Manager<PluginManager>
 {
     private readonly List<(Assembly, Type, ShipPlugin)> PluginCreateS = [];
-    internal List<PluginLoadInfo> PluginLoadInfos = [];
     private readonly List<string> PluginPathS = [];
 
     public readonly List<ShipPlugin> Plugins = [];
+    internal List<PluginLoadInfo> PluginLoadInfos = [];
 
 
     public void InitPlugins()

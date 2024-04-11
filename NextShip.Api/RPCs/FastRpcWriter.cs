@@ -30,6 +30,17 @@ public class FastRpcWriter(MessageWriter? writer)
         return new FastRpcWriter();
     }
 
+    public static FastRpcWriter StartNewRpcWriter(SystemRPCFlag rpc)
+    {
+        var writer = StartNew();
+        writer.SetRpcCallId(rpc);
+        writer.SetSendOption(SendOption.Reliable);
+        writer.SetTargetObjectId(PlayerControl.LocalPlayer.NetId);
+        writer.StartDataAllMessage();
+        writer.StartRPCMessage();
+        return writer;
+    }
+
     public static FastRpcWriter StartNew(byte call, SendOption option = SendOption.None)
     {
         return new FastRpcWriter(
@@ -83,6 +94,11 @@ public class FastRpcWriter(MessageWriter? writer)
         targetObjectId = id;
     }
 
+    public void SetRpcCallId(SystemRPCFlag id)
+    {
+        CallId = (byte)id;
+    }
+
     public void SetRpcCallId(byte id)
     {
         CallId = id;
@@ -106,7 +122,7 @@ public class FastRpcWriter(MessageWriter? writer)
 
         if (objId != null)
             targetObjectId = (uint)objId;
-        
+
         DebugInfo($"Set CallId{CallId} SendTargetId{targetId} TargetObjectId{targetObjectId}");
     }
 

@@ -41,7 +41,10 @@ public abstract class OptionBase(
     public abstract string GetValueString();
     public abstract OptionBase GetBase();
 
-    public T GetBase<T>() where T : OptionBase => GetBase() as T;
+    public T GetBase<T>() where T : OptionBase
+    {
+        return GetBase() as T;
+    }
 
     // 设置OptionBehaviour隐性转换
     public static explicit operator OptionBehaviour(OptionBase @base)

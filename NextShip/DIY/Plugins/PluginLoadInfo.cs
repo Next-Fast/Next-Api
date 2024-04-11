@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 
 namespace NextShip.DIY.Plugins;

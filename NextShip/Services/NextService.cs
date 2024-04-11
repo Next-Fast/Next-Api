@@ -58,7 +58,10 @@ public class NextService : INextService
         return (NextService)service;
     }
 
-    public static NextService Get(int id) => Services.FirstOrDefault(n => n.id == id);
+    public static NextService Get(int id)
+    {
+        return Services.FirstOrDefault(n => n.id == id);
+    }
 
     public T Get<T>()
     {
@@ -78,11 +81,23 @@ public class NextService : INextService
 
 internal static class ServiceExt
 {
-    internal static T ServiceGet<T>() => Main._Service.Get<T>();
+    internal static T ServiceGet<T>()
+    {
+        return Main._Service.Get<T>();
+    }
 
-    internal static object ServiceGet(this Type type) => Main._Service.Get(type);
-    
-    internal static IEnumerable<T> ServiceGets<T>() => Main._Service._Provider.GetServices<T>();
-    
-    internal static IEnumerable<object> ServiceGets(this Type type) => Main._Service._Provider.GetServices(type);
+    internal static object ServiceGet(this Type type)
+    {
+        return Main._Service.Get(type);
+    }
+
+    internal static IEnumerable<T> ServiceGets<T>()
+    {
+        return Main._Service._Provider.GetServices<T>();
+    }
+
+    internal static IEnumerable<object> ServiceGets(this Type type)
+    {
+        return Main._Service._Provider.GetServices(type);
+    }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NextShip.Api.Interfaces;
-using OtherAttribute;
 using UnityEngine;
 
 namespace NextShip.Roles.Neutral;
@@ -9,11 +8,6 @@ namespace NextShip.Roles.Neutral;
 [FastAddRole]
 public class SchrodingerCat : IRole
 {
-    public SchrodingerCat()
-    {
-        
-    }
-    
     public void Dispose()
     {
     }
@@ -21,7 +15,7 @@ public class SchrodingerCat : IRole
     public Type RoleBaseType { get; set; } = typeof(SchrodingerCatBase);
 
     public Type RoleType { get; set; } = typeof(SchrodingerCat);
-    
+
     public SimpleRoleInfo SimpleRoleInfo { get; set; } = new()
     {
         RoleColor = Color.gray,
@@ -30,20 +24,24 @@ public class SchrodingerCat : IRole
         Name = nameof(SchrodingerCat),
         RoleStringId = nameof(SchrodingerCat)
     };
+
     public List<RoleBase> RoleBase { get; set; } = [];
     public List<PlayerControl> Players { get; set; } = [];
 
     public bool EnableAssign { get; set; } = true;
-    
+
     public Func<PlayerControl, RoleBase> CreateRoleBase { get; set; }
-    
+
     public bool CanCreate(IRole role, PlayerControl player)
     {
         return true;
     }
-    
+
+    public void OptionCreate(INextOptionManager _nextOptionManager)
+    {
+    }
+
     public class SchrodingerCatBase(PlayerControl player) : RoleBase(player)
     {
-        
     }
 }

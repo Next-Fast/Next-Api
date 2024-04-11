@@ -2,28 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using NextShip.Api.Bases;
+using NextShip.Api.Enums;
 using NextShip.Api.Interfaces;
+using NextShip.Api.RPCs;
 
 namespace NextShip.Manager;
 
 public class EventManager : IEventManager
 {
-    public static readonly EventManager _eventManager = Main._Service.Get<EventManager>();
-
     private readonly HashSet<IEventListener> EventListeners = [];
 
     private readonly List<INextEvent> RegisterEvents = [];
 
     private FastListener _listener;
 
-    public FastListener GetFastListener() => _listener ??= new FastListener();
-
-    public void CallEvent<T>(T @event) where T : INextEvent
+    public EventManager()
     {
-        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName && n is T))
-            @event.Call(_event);
+        _eventManager = this;
     }
-    
+
+    public static EventManager _eventManager { get; private set; }
+
     public void RegisterEvent(INextEvent @event)
     {
         @event.OnRegister(this);
@@ -34,6 +34,17 @@ public class EventManager : IEventManager
     {
         @event.OnUnRegister(this);
         RegisterEvents.Remove(@event);
+    }
+
+    public FastListener GetFastListener()
+    {
+        return _listener ??= new FastListener();
+    }
+
+    public void CallEvent<T>(T @event) where T : INextEvent
+    {
+        foreach (var _event in RegisterEvents.FindAll(n => n.EventName == @event.EventName && n is T))
+            @event.Call(_event);
     }
 
     public void RegisterListener(IEventListener listener)
@@ -56,7 +67,20 @@ public class EventManager : IEventManager
     {
         EventListeners.Do(n => n.On(name));
     }
-    
+
+    public void CallListenerToRPC(string name, object[] instances = null)
+    {
+        var writer = FastRpcWriter.StartNewRpcWriter(SystemRPCFlag.EventMessage);
+        writer.Write(name);
+        if (instances != null)
+        {
+            writer.WritePacked(instances.Length);
+            foreach (var obj in instances) writer.Write(obj.GetType().Name);
+        }
+
+        writer.RPCSend();
+    }
+
     public void CallListener(string name, object[] Instances)
     {
         EventListeners.Do(n => n.On(name, Instances));
@@ -87,25 +111,5 @@ public class EventManager : IEventManager
     public INextEvent GetEvent(Type type)
     {
         return RegisterEvents.FirstOrDefault(n => n.GetType() == type);
-    }
-}
-
-public class FastListener
-{
-    private readonly List<Action<string, object[]>> AllListener = [];
-    
-    public void Register(Action<string, object[]> action)
-    {
-       AllListener.Add(action);
-    }
-
-    public void UnRegister(Action<string, object[]> action)
-    {
-        AllListener.Remove(action);
-    }
-
-    public void Call(string name, object[] instances = null)
-    {
-        AllListener.Do(n => n.Invoke(name, instances));
     }
 }

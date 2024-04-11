@@ -13,10 +13,9 @@ public abstract class CosmeticsLoader
     public readonly List<HatViewData> AllHat;
     public readonly List<NamePlateViewData> AllNamePlate;
     public readonly List<Sprite> AllSprite;
+    public readonly List<VisorViewData> AllVisor;
     public readonly Dictionary<string, Dictionary<HatData, HatViewData>> Hats = new();
 
-
-    public List<VisorViewData> AllVisor;
 
     protected CosmeticsLoader()
     {

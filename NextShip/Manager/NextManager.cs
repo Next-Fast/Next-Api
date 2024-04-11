@@ -1,5 +1,4 @@
 using System;
-using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 using NextShip.Api.UI;
 using UnityEngine;
@@ -10,8 +9,6 @@ namespace NextShip.Manager;
 public class NextManager : MonoBehaviour
 {
     public readonly UpdateTasker _Tasker = new();
-
-    public event Action OnUpdate;
 
     public void Update()
     {
@@ -28,4 +25,6 @@ public class NextManager : MonoBehaviour
     {
         _Tasker.LateUpdate();
     }
+
+    public event Action OnUpdate;
 }

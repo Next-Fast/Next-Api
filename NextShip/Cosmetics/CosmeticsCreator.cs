@@ -8,8 +8,6 @@ namespace NextShip.Cosmetics;
 
 public class CosmeticsCreator(List<Sprite> allSprites)
 {
-    private static Material hatShader;
-
     public readonly List<Sprite> AllSprites = allSprites;
 
     private Sprite Get(string name)
@@ -19,14 +17,15 @@ public class CosmeticsCreator(List<Sprite> allSprites)
 
     public (HatViewData, HatData) CreateHat(CosmeticsInfo info)
     {
-        if (hatShader == null) hatShader = FastDestroyableSingleton<HatManager>.Instance.PlayerMaterial;
-
         var hatData = ScriptableObject.CreateInstance<HatData>();
         var hatView = ScriptableObject.CreateInstance<HatViewData>();
 
+        hatView.MatchPlayerColor = info.Adaptive;
         hatView.MainImage = hatView.FloorImage = Get(info.Resource);
-        if (info.ClimbResource != null) hatView.LeftClimbImage = hatView.ClimbImage = Get(info.ClimbResource);
-        if (info.Adaptive && hatShader != null) hatView.AltShader = hatShader;
+
+        if (info.ClimbResource != null)
+            hatView.LeftClimbImage = hatView.ClimbImage = Get(info.ClimbResource);
+
         if (info.BackResource != null)
         {
             hatView.BackImage = Get(info.BackResource);

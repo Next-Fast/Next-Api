@@ -1,6 +1,5 @@
 using System.Collections;
 using System.IO;
-using NextShip.Api.Attributes;
 
 namespace NextShip.Cosmetics;
 

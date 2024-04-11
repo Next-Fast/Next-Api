@@ -9,6 +9,8 @@ public sealed class Log
 {
     public static bool CreateEd;
 
+    private static Log? _Instance;
+
     public TextWriter? ConsoleWriter;
 
     public StreamWriter? DiskWriter;
@@ -30,8 +32,6 @@ public sealed class Log
     }
 
     public ManualLogSource LogSource { get; private set; }
-
-    private static Log? _Instance;
 
     public static Log Instance => _Instance ?? new Log();
 

@@ -79,7 +79,7 @@ public static class SpriteUtils
         return FullRectSprite;
     }
 
-    public static unsafe Texture2D? LoadTextureFromResources(string path)
+    public static Texture2D? LoadTextureFromResources(string path)
     {
         try
         {

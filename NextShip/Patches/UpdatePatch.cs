@@ -16,12 +16,6 @@ internal class HudManagerUpdatePatch
                 player.NameText.color = color;
     }
 
-    private static void SetNameColors()
-    {
-        var localPlayer = CachedPlayer.LocalPlayer.PlayerControl;
-
-    }
-
     private static void updateVentButton(HudManager __instance)
     {
         if (MeetingHud.Instance || CachedPlayer.LocalPlayer.Data.IsDead) __instance.ImpostorVentButton.Hide();
@@ -48,7 +42,6 @@ internal class HudManagerUpdatePatch
     private static void Postfix(HudManager __instance)
     {
         if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started) return;
-        SetNameColors();
         updateVentButton(__instance);
         updateSabotageButton(__instance);
         updateUseButton(__instance);

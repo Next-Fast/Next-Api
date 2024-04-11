@@ -17,4 +17,6 @@ public interface IRole : IDisposable
     public Func<PlayerControl, RoleBase> CreateRoleBase { get; set; }
 
     public bool CanCreate(IRole role, PlayerControl player);
+
+    public void OptionCreate(INextOptionManager _nextOptionManager);
 }

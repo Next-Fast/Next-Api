@@ -1,10 +1,11 @@
 using System.Reflection;
 using NextShip.Api.Interfaces;
-using OtherAttribute;
 
 namespace NextShip.Api.Attributes;
 
-public static class FastAddRoleExt
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Constructor)]
+[MeansImplicitUse]
+public class FastAddRole : Attribute
 {
     public static void Registration(IRoleManager _roleManager, Assembly assembly)
     {
@@ -14,9 +15,7 @@ public static class FastAddRoleExt
         {
             var constructorInfos = VarType.GetConstructors().Where(n => n.Is<FastAddRole>());
             foreach (var variableConstructorInfo in constructorInfos)
-            {
                 _roleManager.Register(variableConstructorInfo.Invoke(null, null) as IRole);
-            }
         }
     }
 }

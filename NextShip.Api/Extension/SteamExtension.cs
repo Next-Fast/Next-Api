@@ -14,9 +14,7 @@ public static class SteamExtension
         if (!File.Exists(path))
             File.WriteAllText(path!, Among_Us_SteamId);
         else
-        {
             return;
-        }
         Info("Use steam_appid.txt");
     }
 }

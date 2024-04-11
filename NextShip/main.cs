@@ -9,7 +9,6 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using Microsoft.Extensions.DependencyInjection;
-using NextShip.Api.Attributes;
 using NextShip.Api.Extension;
 using NextShip.Api.Interfaces;
 using NextShip.Api.RPCs;
@@ -50,6 +49,8 @@ public sealed class NextShip : BasePlugin
 
     public static List<INextAdd> Adds;
 
+    private NextManager _nextManager;
+
     private ManualLogSource TISLog;
 
     public static NextService _Service { get; private set; }
@@ -61,8 +62,6 @@ public sealed class NextShip : BasePlugin
     private Harmony Harmony { get; } = new(Id);
 
     private static event Action<ServiceBuilder> OnBuilder;
-
-    private NextManager _nextManager;
 
 
     public override void Load()
@@ -78,11 +77,7 @@ public sealed class NextShip : BasePlugin
 
         CreateService();
         LoadDependent();
-        Task.Run(() =>
-        {
-            var roleManager = _Service.Get<NextRoleManager>();
-            FastAddRoleExt.Registration(roleManager, RootAssembly);
-        });
+        RunTasks();
 
         SteamExtension.UseSteamIdFile();
         ReactorExtension.UseReactorHandshake();
@@ -92,7 +87,7 @@ public sealed class NextShip : BasePlugin
 
         ConsoleManager.SetConsoleTitle("Among Us " + ModName + " Game");
         RegisterManager.Registration();
-        
+
         LanguagePack.Init();
         CustomCosmeticsManager.LoadHat();
     }
@@ -162,5 +157,14 @@ public sealed class NextShip : BasePlugin
 
         service.BuildDependent();
         service.LoadDependent();
+    }
+
+    private static void RunTasks()
+    {
+        Task.Run(() =>
+        {
+            var roleManager = _Service.Get<NextRoleManager>();
+            FastAddRole.Registration(roleManager, RootAssembly);
+        });
     }
 }

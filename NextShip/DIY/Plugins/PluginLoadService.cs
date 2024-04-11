@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 
 namespace NextShip.DIY.Plugins;

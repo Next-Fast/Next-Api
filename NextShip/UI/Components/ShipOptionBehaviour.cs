@@ -1,5 +1,4 @@
 using System;
-using NextShip.Api.Attributes;
 using NextShip.Api.Bases;
 using TMPro;
 using UnityEngine;
@@ -30,7 +29,7 @@ public class ShipOptionBehaviour : MonoBehaviour
         OptionBase = optionBase;
     }
 
-    /*internal static GameObject GenerateOption(Transform Parent, string Name = "Temp")
+    internal static GameObject GenerateOption(Transform Parent, string Name = "Temp")
     {
         var Option = new GameObject(Name);
         Option.transform.SetParent(Parent);
@@ -75,5 +74,5 @@ public class ShipOptionBehaviour : MonoBehaviour
         });
 
         return Option;
-    }*/
+    }
 }

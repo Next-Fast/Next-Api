@@ -2,11 +2,9 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using JetBrains.Annotations;
 using NextShip.Api.Enums;
 using NextShip.Api.RPCs;
 using NextShip.Manager;
-using OtherAttribute;
 
 namespace NextShip.Patches;
 
@@ -50,9 +48,10 @@ public static class PlayerPatch
         writer.Write(PlayerControl.LocalPlayer.PlayerId);
         Main.Version.Write(writer);
         writer.Write(Main.BepInExVersion);
-        
+
         if (!AllPlayerVersionInfos.Exists(n => n.Player == CachedPlayer.LocalPlayer.PlayerControl))
-            AllPlayerVersionInfos.Add(new PlayerVersionInfo(CachedPlayer.LocalPlayer.PlayerControl, Main.Version, Main.BepInExVersion));
+            AllPlayerVersionInfos.Add(new PlayerVersionInfo(CachedPlayer.LocalPlayer.PlayerControl, Main.Version,
+                Main.BepInExVersion));
     }
 
     [FastReadAdd((byte)SystemRPCFlag.VersionShare)]

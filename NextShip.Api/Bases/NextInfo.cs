@@ -23,8 +23,6 @@ public record NextInfo
 
     public PlayerControl PlayerControl;
 
-    public PlayerPhysics PlayerPhysics;
-
     public byte PlayerId;
 
     public GameData.PlayerInfo PlayerInfo;
@@ -32,6 +30,8 @@ public record NextInfo
     public uint PlayerLevel;
 
     public string PlayerName;
+
+    public PlayerPhysics PlayerPhysics;
 
     public string PUID;
 

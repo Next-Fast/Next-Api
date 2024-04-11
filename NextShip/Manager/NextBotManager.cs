@@ -4,5 +4,4 @@ namespace NextShip.Manager;
 
 public class NextBotManager : IBotManager
 {
-    
 }

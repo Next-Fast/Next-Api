@@ -1,3 +1,5 @@
+extern alias JetBrainsRoot;
+global using MeansImplicitUse = MeansImplicitUseAttribute;
 global using NextShip.Api;
 global using NextShip.Api.Roles;
 global using NextShip.Api.Utils;
