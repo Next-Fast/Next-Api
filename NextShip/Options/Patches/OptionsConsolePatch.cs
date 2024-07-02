@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
-using NextShip.UI;
+using NextShip.UI.Module;
 using UnityEngine;
 
 namespace NextShip.Options.Patches;
@@ -20,8 +20,6 @@ public class OptionsConsolePatch
     [HarmonyPrefix]
     public static bool OptionsConsoleUsePatch(OptionsConsole __instance)
     {
-        /*if (!AllowNoHostUse) return true;*/
-
         var @object = PlayerControl.LocalPlayer;
         var couldUse = @object.CanMove;
         var canUse =
@@ -36,17 +34,16 @@ public class OptionsConsolePatch
         nextOptionMenu ??= new NextOptionMenu(__instance, NextMenuParent);
         nextOptionMenu.__instance = __instance;
 
-        if (!nextOptionMenu.Initd) nextOptionMenu.Init();
+        if (!nextOptionMenu.Initd)
+            nextOptionMenu.Init();
 
         if (nextOptionMenu.Initd)
             OpenNextOptionMenu(__instance);
-        else
-            OpenVanillaOptionMenu(__instance);
 
         return false;
     }
 
-    public static void OpenVanillaOptionMenu(OptionsConsole __instance)
+    /*public static void OpenVanillaOptionMenu(OptionsConsole __instance)
     {
         if (!Camera.main) return;
         PlayerControl.LocalPlayer.NetTransform.Halt();
@@ -54,14 +51,15 @@ public class OptionsConsolePatch
         optionMenu.transform.localPosition = __instance.CustomPosition;
         FastDestroyableSingleton<TransitionFade>.Instance.DoTransitionFade(null, optionMenu.gameObject, null);
         IsNextMenu = false;
-    }
+    }*/
 
 
     private static void OpenNextOptionMenu(OptionsConsole __instance)
     {
         if (!Camera.main) return;
         IsNextMenu = NextOptionMenu.Instance.OpenMenu(__instance.CustomPosition);
-        if (!IsNextMenu) OpenVanillaOptionMenu(__instance);
+        /*if (!IsNextMenu)
+            OpenVanillaOptionMenu(__instance);*/
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]

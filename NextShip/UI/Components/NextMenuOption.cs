@@ -1,5 +1,4 @@
-﻿using NextShip.Api.Utilities.Attributes;
-using NextShip.Options;
+﻿using NextShip.UI.Module;
 using UnityEngine;
 
 namespace NextShip.UI.Components;
@@ -9,21 +8,12 @@ public class NextMenuOption : MonoBehaviour
 {
     public Transform List;
     public bool Open;
-    public OptionManager __OptionManager;
     public NextOptionMenu __OptionMenu;
-
-    public void Awake()
-    {
-        __OptionManager = OptionManager.Get();
-    }
 
     public void Start()
     {
+        _eventManager.GetFastListener().Call("OptionCreate", [__OptionMenu, this]);
         CreateOption();
-    }
-
-    public void Update()
-    {
     }
 
 

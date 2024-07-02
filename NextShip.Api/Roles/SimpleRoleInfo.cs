@@ -1,23 +1,15 @@
+using System.Text.Json.Serialization;
 using UnityEngine;
 
 namespace NextShip.Api.Roles;
 
 public sealed class SimpleRoleInfo
 {
-    public string Name;
-    public Color RoleColor;
-    public RoleId roleId;
-    public int roleIntId;
-    public string RoleStringId;
-    public RoleTeam roleTeam;
-    public RoleType roleType;
-
     public SimpleRoleInfo()
     {
     }
 
-    public SimpleRoleInfo
-    (
+    public SimpleRoleInfo(
         RoleId id,
         Color color,
         RoleTeam team,
@@ -26,17 +18,13 @@ public sealed class SimpleRoleInfo
         string roleName,
         int roleIntId)
     {
-        RoleColor = color;
         Name = roleName;
+        RoleColor = color;
         roleId = id;
-        this.roleIntId = roleIntId;
-        RoleStringId = roleStringId;
         roleTeam = team;
         roleType = type;
-
-        // Add to RoleManager        
-
-        RoleManager.Get().AllSimpleRoleInfos.Add(this);
+        RoleStringId = roleStringId;
+        RoleIntId = roleIntId;
     }
 
     public SimpleRoleInfo
@@ -60,5 +48,31 @@ public sealed class SimpleRoleInfo
     {
     }
 
-    public Role ParentRole { get; }
+    [JsonPropertyName("Name")]
+    [JsonInclude]
+    public string Name { get; set; }
+
+    [JsonPropertyName("Color")]
+    [JsonInclude]
+    public Color RoleColor { get; set; }
+
+    [JsonPropertyName("EnumId")]
+    [JsonInclude]
+    public RoleId roleId { get; set; }
+
+    [JsonPropertyName("IntId")]
+    [JsonInclude]
+    public int RoleIntId { get; set; }
+
+    [JsonPropertyName("StringId")]
+    [JsonInclude]
+    public string RoleStringId { get; set; }
+
+    [JsonPropertyName("Team")]
+    [JsonInclude]
+    public RoleTeam roleTeam { get; set; }
+
+    [JsonPropertyName("Type")]
+    [JsonInclude]
+    public RoleType roleType { get; set; }
 }

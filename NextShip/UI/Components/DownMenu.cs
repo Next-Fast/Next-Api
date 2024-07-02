@@ -1,12 +1,6 @@
-﻿using NextShip.Api.Utilities.Attributes;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NextShip.UI.Components;
 
 [Il2CppRegister]
-public class DownMenu : MonoBehaviour
-{
-    public void Start()
-    {
-    }
-}
+public class DownMenu : MonoBehaviour;
