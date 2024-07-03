@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Weavers>
-  <Costura>
-    <IncludeAssemblies>
-      Csv
-      Downloader
-    </IncludeAssemblies>
-  </Costura>
-</Weavers>
