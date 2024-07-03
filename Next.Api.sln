@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSLangAnalyzer", "NSLangAnalyzer\NSLangAnalyzer.csproj", "{81EC6168-530F-45B4-92A5-5FFEB719C0A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Next.Api", "Next.Api\Next.Api.csproj", "{CBE05E3D-D591-4DC4-9FF0-630ACED28B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Next.Api.SourceGenerator", "Next.Api.SourceGenerator\Next.Api.SourceGenerator.csproj", "{3145D862-8AB9-4320-8926-CFB204B02722}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81EC6168-530F-45B4-92A5-5FFEB719C0A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81EC6168-530F-45B4-92A5-5FFEB719C0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81EC6168-530F-45B4-92A5-5FFEB719C0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81EC6168-530F-45B4-92A5-5FFEB719C0A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE05E3D-D591-4DC4-9FF0-630ACED28B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE05E3D-D591-4DC4-9FF0-630ACED28B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE05E3D-D591-4DC4-9FF0-630ACED28B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE05E3D-D591-4DC4-9FF0-630ACED28B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3145D862-8AB9-4320-8926-CFB204B02722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3145D862-8AB9-4320-8926-CFB204B02722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3145D862-8AB9-4320-8926-CFB204B02722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3145D862-8AB9-4320-8926-CFB204B02722}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
