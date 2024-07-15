@@ -5,8 +5,8 @@ using Hazel;
 using InnerNet;
 using Next.Api.Attributes;
 using Next.Api.Config;
+using Next.Api.Enums;
 using Next.Api.Patches;
-using NextShip.Api.Enums;
 
 namespace Next.Api.Extension;
 

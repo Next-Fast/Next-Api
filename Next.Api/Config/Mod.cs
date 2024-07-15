@@ -1,6 +1,5 @@
 #nullable enable
 using Next.Api.Enums;
-using NextShip.Api.Enums;
 
 namespace Next.Api.Config;
 

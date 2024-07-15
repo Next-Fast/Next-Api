@@ -18,6 +18,4 @@ public abstract class ShipPlugin
     }
 
     public abstract void Load();
-
-    public abstract List<INextAdd> NextAdd();
 }

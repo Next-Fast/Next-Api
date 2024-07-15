@@ -3,7 +3,7 @@ using BepInEx.Logging;
 
 namespace Next.Api.Logs;
 
-public static class FastLog
+internal static class FastLog
 {
     /*
     各消息作用:
@@ -54,7 +54,7 @@ public static class FastLog
 
     public static void Exception(Exception ex, string? tag = null, string? filename = null)
     {
-        Log.Instance?.SendToFile(tag, filename, ex.ToString(), LogLevel.Error);
+        Log.Instance.SendToFile(tag, filename, ex.ToString(), LogLevel.Error);
     }
 
     public static void Debug(string text, string? tag = null, string? filename = null)

@@ -5,7 +5,7 @@ using BepInEx.Logging;
 
 namespace Next.Api.Logs;
 
-public sealed class Log
+internal sealed class Log
 {
     public static bool CreateEd;
 

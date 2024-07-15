@@ -7,16 +7,17 @@ namespace Next.Api.Utilities;
 public static class EnumerationHelpers
 {
     public static IEnumerable<T> GetFastEnumerator<T>(this Il2CppSystem.Collections.Generic.List<T> list)
+        where T : UnityEngine.Object
     {
         return new Il2CppListEnumerable<T>(list);
     }
 }
 
-public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T>
+public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T> where T : UnityEngine.Object
 {
     private static readonly int _elemSize;
     private static readonly int _offset;
-    private static readonly Func<IntPtr, T> _objFactory;
+    private static readonly System.Func<IntPtr, T> _objFactory;
 
     private readonly IntPtr _arrayPointer;
     private readonly int _count;
@@ -27,10 +28,10 @@ public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T>
         _elemSize = IntPtr.Size;
         _offset = 4 * IntPtr.Size;
 
-        var constructor = typeof(T).GetConstructor(new[] { typeof(IntPtr) });
+        var constructor = typeof(T).GetConstructor([typeof(IntPtr)]);
         var ptr = Expression.Parameter(typeof(IntPtr));
         var create = Expression.New(constructor!, ptr);
-        var lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
+        var lambda = Expression.Lambda<System.Func<IntPtr, T>>(create, ptr);
         _objFactory = lambda.Compile();
     }
 

@@ -1,6 +1,4 @@
 using InnerNet;
-using Next.Api.Interfaces;
-using Next.Api.Roles;
 
 namespace Next.Api.Bases;
 
@@ -35,8 +33,4 @@ public record NextInfo
     public PlayerPhysics PlayerPhysics;
 
     public string PUID;
-
-    public IRole Role;
-
-    public RoleBase RoleBase;
 }
