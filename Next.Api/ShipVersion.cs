@@ -20,7 +20,7 @@ public class ShipVersion
     public int Minor { get; protected set; }
     public int Info { get; protected set; }
 
-    public string StringText { get; protected set; }
+    public string StringText => $"{Major}.{Minor}.{Info}";
 
     public void set(int major, int minor, int info)
     {

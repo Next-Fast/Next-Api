@@ -1,5 +1,5 @@
 using BepInEx;
-using Next.Api.Utils;
+using BepInEx.Core;
 
 namespace Next.Api.Extension;
 
@@ -11,9 +11,9 @@ public static class SteamExtension
 
     public static void UseSteamIdFile()
     {
-        var path = Paths.GameRootPath.CombinePath(file_Name);
+        var path = Paths.GameRootPath!.CombinePath(file_Name);
         if (!File.Exists(path))
-            File.WriteAllText(path!, Among_Us_SteamId);
+            File.WriteAllText(path, Among_Us_SteamId);
         else
             return;
         Info("Use steam_appid.txt");

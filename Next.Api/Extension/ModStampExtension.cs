@@ -1,4 +1,3 @@
-using Next.Api.Utils;
 using UnityEngine.SceneManagement;
 
 namespace Next.Api.Extension;

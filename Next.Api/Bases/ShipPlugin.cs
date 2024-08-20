@@ -1,5 +1,4 @@
 using Next.Api.Attributes;
-using Next.Api.Interfaces;
 
 namespace Next.Api.Bases;
 

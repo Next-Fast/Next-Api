@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Reflection;
-using Next.Api.Enums;
 using Next.Api.Utilities;
-using Next.Api.Utils;
 
 namespace Next.Api.Attributes;
 
@@ -13,16 +11,16 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
 
     public static string[] MethodNames = EnumHelper.GetAllNames<LoadMode>();
 
-    public IEnumerator Enumerator;
+    public IEnumerator? Enumerator;
     public LoadMode Mode = mode;
 
     public static void Registration(Type type)
     {
-        Info("Start Registration", filename: MethodUtils.GetClassName());
+        Info("Start Registration");
 
         if (type.GetCustomAttribute<LoadAttribute>() == null) return;
 
-        ConstructorInfo constructor;
+        ConstructorInfo? constructor;
         if (
             (
                 constructor = type.GetConstructor
@@ -30,7 +28,7 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
                     BindingFlags.Public |
                     BindingFlags.Static |
                     BindingFlags.NonPublic,
-                    Array.Empty<Type>()
+                    []
                 )
             )
             != null && constructor.Is<LoadAttribute>())
@@ -61,6 +59,6 @@ public sealed class LoadAttribute(LoadMode mode = LoadMode.Load) : Attribute
                 });
         }
 
-        Info($"Statically Initialized Class {type}", "LoadAttribute");
+        Info($"Statically Initialized Class {type}");
     }
 }

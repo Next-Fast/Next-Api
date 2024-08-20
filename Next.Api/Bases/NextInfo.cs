@@ -2,35 +2,50 @@ using InnerNet;
 
 namespace Next.Api.Bases;
 
-public record NextInfo
+public record NextInfo(
+    float BodySpeed,
+    ClientData ClientData,
+    int clientId,
+    int ColorId,
+    string FriendCode,
+    float GhostSpeed,
+    bool IsHost,
+    bool IsLocal,
+    PlayerControl PlayerControl,
+    byte PlayerId,
+    NetworkedPlayerInfo PlayerInfo,
+    uint PlayerLevel,
+    string PlayerName,
+    PlayerPhysics PlayerPhysics,
+    string PUID)
 {
-    public float BodySpeed;
+    public float BodySpeed = BodySpeed;
 
-    public ClientData ClientData;
+    public ClientData ClientData = ClientData;
 
-    public int clientId;
+    public int clientId = clientId;
 
-    public int ColorId;
+    public int ColorId = ColorId;
 
-    public string FriendCode;
+    public string FriendCode = FriendCode;
 
-    public float GhostSpeed;
+    public float GhostSpeed = GhostSpeed;
 
-    public bool IsHost;
+    public bool IsHost = IsHost;
 
-    public bool IsLocal;
+    public bool IsLocal = IsLocal;
 
-    public PlayerControl PlayerControl;
+    public PlayerControl PlayerControl = PlayerControl;
 
-    public byte PlayerId;
+    public byte PlayerId = PlayerId;
 
-    public NetworkedPlayerInfo PlayerInfo;
+    public NetworkedPlayerInfo PlayerInfo = PlayerInfo;
 
-    public uint PlayerLevel;
+    public uint PlayerLevel = PlayerLevel;
 
-    public string PlayerName;
+    public string PlayerName = PlayerName;
 
-    public PlayerPhysics PlayerPhysics;
+    public PlayerPhysics PlayerPhysics = PlayerPhysics;
 
-    public string PUID;
+    public string PUID = PUID;
 }

@@ -1,15 +1,13 @@
-using Next.Api.Utilities;
-
 namespace Next.Api.Utils;
 
 public static class PlayerUtils
 {
-    public static PlayerControl GetPlayerForId(byte id)
+    public static PlayerControl? GetPlayerForId(byte id)
     {
         return PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault(AP => AP.PlayerId == id);
     }
 
-    public static PlayerControl GetPlayerForPlayerInfo(this NetworkedPlayerInfo exile)
+    public static PlayerControl? GetPlayerForPlayerInfo(this NetworkedPlayerInfo exile)
     {
         return GetPlayerForId(exile.PlayerId);
     }

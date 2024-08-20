@@ -6,7 +6,7 @@ namespace Next.Api.Utilities;
 
 public static class IL2CPPHelper
 {
-    public static object TryCast(this Il2CppObjectBase self, Type type)
+    public static object? TryCast(this Il2CppObjectBase self, Type type)
     {
         return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type)
             .Invoke(self, []);

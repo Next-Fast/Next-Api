@@ -1,4 +1,3 @@
-#nullable enable
 using Next.Api.Utilities;
 using UnityEngine;
 

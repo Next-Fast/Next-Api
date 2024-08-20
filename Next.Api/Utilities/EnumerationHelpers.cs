@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq.Expressions;
+using Object = UnityEngine.Object;
 
 namespace Next.Api.Utilities;
 
@@ -7,17 +8,17 @@ namespace Next.Api.Utilities;
 public static class EnumerationHelpers
 {
     public static IEnumerable<T> GetFastEnumerator<T>(this Il2CppSystem.Collections.Generic.List<T> list)
-        where T : UnityEngine.Object
+        where T : Object
     {
         return new Il2CppListEnumerable<T>(list);
     }
 }
 
-public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T> where T : UnityEngine.Object
+public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T> where T : Object
 {
     private static readonly int _elemSize;
     private static readonly int _offset;
-    private static readonly System.Func<IntPtr, T> _objFactory;
+    private static readonly Func<IntPtr, T> _objFactory;
 
     private readonly IntPtr _arrayPointer;
     private readonly int _count;
@@ -31,7 +32,7 @@ public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T> whe
         var constructor = typeof(T).GetConstructor([typeof(IntPtr)]);
         var ptr = Expression.Parameter(typeof(IntPtr));
         var create = Expression.New(constructor!, ptr);
-        var lambda = Expression.Lambda<System.Func<IntPtr, T>>(create, ptr);
+        var lambda = Expression.Lambda<Func<IntPtr, T>>(create, ptr);
         _objFactory = lambda.Compile();
     }
 
@@ -53,7 +54,7 @@ public unsafe class Il2CppListEnumerable<T> : IEnumerable<T>, IEnumerator<T> whe
     }
 
     object IEnumerator.Current => Current;
-    public T Current { get; private set; }
+    public T Current { get; private set; } = null!;
 
     public bool MoveNext()
     {

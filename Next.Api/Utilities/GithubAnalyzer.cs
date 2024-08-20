@@ -1,8 +1,9 @@
-#nullable enable
 namespace Next.Api.Utilities;
 
 public class GithubAnalyzer(string RepoUrl)
 {
+    public string RepoUrl { get; } = RepoUrl;
+
     public GithubData GetData()
     {
         return new GithubData();

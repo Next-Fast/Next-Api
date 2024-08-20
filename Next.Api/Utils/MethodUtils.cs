@@ -1,4 +1,3 @@
-#nullable enable
 using System.Reflection;
 
 namespace Next.Api.Utils;
@@ -34,15 +33,11 @@ public static class MethodUtils
     {
         return info.GetCustomAttribute<T>() != null;
     }
-
-    public static bool IsD(this MemberInfo info, Type type)
-    {
-        return info.IsDefined(type);
-    }
+    
 
     public static bool IsD<T>(this MemberInfo info)
     {
-        return info.IsD(typeof(T));
+        return info.IsDefined(typeof(T));
     }
 
     public static IEnumerable<T> GetMembers<T>(this Type type, Func<T, bool>? Is)

@@ -7,7 +7,7 @@ public static class DirectoryUtils
         if (Directory.Exists(path))
             return path;
 
-        Directory.CreateDirectory(path!);
+        Directory.CreateDirectory(path);
 
         return path;
     }

@@ -1,18 +1,17 @@
 using System.Reflection;
-using Next.Api.Utils;
 
 namespace Next.Api.Attributes;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Method)]
 public sealed class ServiceAddAttribute : Attribute
 {
-    private readonly object _instance;
+    private readonly object? _instance;
 
     public ServiceAddAttribute()
     {
     }
 
-    public ServiceAddAttribute(object instance)
+    public ServiceAddAttribute(object? instance)
     {
         _instance = instance;
     }

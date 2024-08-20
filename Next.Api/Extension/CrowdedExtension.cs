@@ -4,7 +4,7 @@ public static class CrowdedExtension
 {
     private static bool Started;
 
-    public static void UseCrowded()
+    public static void Use()
     {
         if (Started) return;
 

@@ -1,4 +1,3 @@
-#nullable enable
 using System.Reflection;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
@@ -17,14 +16,14 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
 
     public static void Registration(Type? type)
     {
-        Info("Start Registration", "Il2CppRegister");
+        Info("[Il2CppRegister] Start Registration");
 
         var attribute =
             type?.GetCustomAttribute<Il2CppRegisterAttribute>();
 
         if (attribute != null) registrationForTarget(type, attribute.Interfaces);
 
-        Info("Complete Registration", "Il2CppRegister");
+        Info("[Il2CppRegister]Complete Registration");
     }
 
     private static void registrationForTarget(Type? targetType, Type[] interfaces)
@@ -39,7 +38,7 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
         if (baseAttribute != null)
             registrationForTarget(targetBase, baseAttribute.Interfaces);
 
-        Debug($"Registration {targetType}", "Register");
+        Debug($"Registration {targetType}");
 
         if (ClassInjector.IsTypeRegisteredInIl2Cpp(targetType)) return;
 
@@ -57,7 +56,7 @@ public sealed class Il2CppRegisterAttribute(params Type[] interfaces) : Attribut
         catch (Exception e)
         {
             var excStr = targetType.FullDescription();
-            Error($"Registion Fail!!    Target:{excStr}\n Il2CppError:{e}", "Register");
+            Error($"Registion Fail!!    Target:{excStr}\n Il2CppError:{e}");
         }
     }
 }

@@ -4,8 +4,6 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using Next.Api.Attributes;
-using Next.Api.Config;
-using Next.Api.Enums;
 using Next.Api.Patches;
 
 namespace Next.Api.Extension;

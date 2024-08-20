@@ -1,4 +1,3 @@
-#nullable enable
 using System.Reflection;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
@@ -8,7 +7,7 @@ namespace Next.Api.Utils;
 public static class SpriteUtils
 {
     public static Dictionary<string, Sprite> CachedSprites = new();
-    public static HashSet<Sprite> CacheSprite = new();
+    public static readonly HashSet<Sprite> CacheSprite = new();
 
     public static void CaChe(this Sprite sprite, string name = "")
     {
@@ -45,7 +44,7 @@ public static class SpriteUtils
         }
         catch
         {
-            Warn("加载图片失败路径:" + path, filename: "Helpers");
+            Warn("加载图片失败路径:" + path);
         }
 
         return null;
@@ -65,7 +64,7 @@ public static class SpriteUtils
         }
         catch
         {
-            Warn("加载图片失败路径:" + path, filename: "Helpers");
+            Warn("加载图片失败路径:" + path);
         }
 
         return null;
@@ -96,7 +95,7 @@ public static class SpriteUtils
         }
         catch
         {
-            Warn("加载图片失败路径:" + path, filename: "Helpers");
+            Warn("加载图片失败路径:" + path);
         }
 
         return null;
@@ -119,7 +118,7 @@ public static class SpriteUtils
         }
         catch
         {
-            Warn("加载图片失败路径:" + path, filename: "Helpers");
+            Warn("加载图片失败路径:" + path);
         }
 
         return null;
@@ -138,7 +137,7 @@ public static class SpriteUtils
         }
         catch
         {
-            Warn("加载图片失败路径:" + path, filename: "Helpers");
+            Warn("加载图片失败路径:" + path);
         }
 
         return null;

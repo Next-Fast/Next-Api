@@ -1,5 +1,6 @@
 namespace Next.Api.Enums;
 
+#nullable disable
 public record CosmeticsInfo
 {
     public CosmeticType CosmeticType { get; set; }

@@ -18,7 +18,7 @@ public class HttpUtils
         }
         catch
         {
-            Error("读取失败", "Http-Get");
+            Error("Http-Get 读取失败");
         }
 
         finally

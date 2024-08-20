@@ -1,6 +1,3 @@
-#nullable enable
-using Next.Api.Enums;
-
 namespace Next.Api.Config;
 
 /*

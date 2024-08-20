@@ -1,5 +1,4 @@
 using System.Drawing;
-using Next.Api.Enums;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -92,17 +91,5 @@ public static class TextUtils
     public static string ToText(this IEnumerable<char> chars)
     {
         return chars.Aggregate("", (current, c) => current + c);
-    }
-
-    public static string Is(this string text, FileType type)
-    {
-        return text + type switch
-        {
-            FileType.Csv => ".csv",
-            FileType.Json => ".json",
-            FileType.Yaml => ".yaml",
-            FileType.Txt => ".txt",
-            _ => ""
-        };
     }
 }

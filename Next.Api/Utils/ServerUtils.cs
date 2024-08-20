@@ -33,4 +33,7 @@ public static class ServerUtils
         return regionInfo.TranslateName is StringNames.ServerAS or StringNames.ServerEU or StringNames.ServerNA
             or StringNames.ServerSA;
     }
+
+
+    public static IRegionInfo CurrentServer => FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion;
 }

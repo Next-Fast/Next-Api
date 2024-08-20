@@ -1,5 +1,6 @@
 namespace Next.Api.Config;
 
+#nullable disable
 public class AddonsInfo
 {
     public string name { get; set; }

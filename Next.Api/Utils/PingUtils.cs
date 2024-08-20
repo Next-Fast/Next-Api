@@ -1,4 +1,3 @@
-#nullable enable
 using System.Net.NetworkInformation;
 using System.Text;
 
@@ -8,7 +7,7 @@ public static class PingUtils
 {
     public static PingInfo Ping(string url)
     {
-        Msg($"ping {url}", MethodUtils.GetVoidName(), MethodUtils.GetClassName());
+        Message($"[{MethodUtils.GetVoidName()}], [{MethodUtils.GetClassName()}]ping {url}");
 
         var ping = new Ping();
         var reply = ping.Send(url);

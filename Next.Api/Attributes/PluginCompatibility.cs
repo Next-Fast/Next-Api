@@ -1,5 +1,3 @@
-using Next.Api.Enums;
-
 namespace Next.Api.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]

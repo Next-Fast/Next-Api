@@ -1,5 +1,4 @@
-﻿#nullable enable
-using HarmonyLib;
+﻿using HarmonyLib;
 using Il2CppInterop.Runtime;
 using Il2CppInterop.Runtime.InteropTypes;
 using Next.Api.Utilities;

@@ -1,4 +1,3 @@
-#nullable enable
 using Newtonsoft.Json.Linq;
 
 namespace Next.Api.Utils;
